@@ -104,8 +104,6 @@ public class Workspace extends AppCompatActivity {
             editor.clear();
             editor.apply();
             finishAffinity();
-
-
         }
         return true;
     }

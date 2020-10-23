@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".EquipmentSearch.QrDetails">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_QRDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EA3D51"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="Scanned Equipment Details"
+        app:titleMargin="8dp"
+        app:titleTextColor="#000000"
+        app:menu="@menu/menu"/>
+
+
+    <Button
+        android:id="@+id/first_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="18dp"
+        android:text="Fault Reports On Equipment"
+        app:titleTextColor="#000000"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/second_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="18dp"
+        app:titleTextColor="#000000"
+        android:text="Tasks on Equipment"
+        android:textAlignment="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="18dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/eq_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="#000000"
+            android:layout_marginLeft="6dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/eq_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="#000000"
+            android:layout_marginLeft="6dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/eq_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="#000000"
+            android:layout_marginLeft="6dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/eq_building"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="#000000"
+            android:layout_marginLeft="6dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/eq_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="#000000"
+            android:layout_marginLeft="6dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/eq_assetn0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="#000000"
+            android:layout_marginLeft="6dp"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_view_equip"
+        android:layout_margin="10sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:visibility="invisible"/>
+
+
+</LinearLayout>

@@ -3,6 +3,7 @@ package com.synergy;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.faultReport.CreateFaultRequestPojo;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface UserService {
 
@@ -65,5 +67,10 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<Void> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo,@Header("workspace")String workspace);
 
+
+    //equipment search
+    @GET("equip/{equipmentCode}")
+    @Headers("Content-Type: application/json")
+    Call<EquipmentSearchResponse> getCallEquipment(@Path("equipmentCode") String path);
 
 }
