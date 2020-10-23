@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.synergy.R;
+import com.synergy.dashboard.Dashboard;
 import com.synergy.faultReport.FaultReportActivity;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
                 TextView tvWoekspaceid= holder.itemView.findViewById(R.id.worskspace_tv);
                 String id=tvWoekspaceid.getText().toString();
-                Intent intent = new Intent(v.getContext(), FaultReportActivity.class);
+                Intent intent = new Intent(v.getContext(), Dashboard.class);
                 intent.putExtra("workspaceId", id);
                 v.getContext().startActivity(intent);
 

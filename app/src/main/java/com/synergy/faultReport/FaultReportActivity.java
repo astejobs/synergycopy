@@ -2,10 +2,13 @@ package com.synergy.faultReport;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -22,9 +26,15 @@ import com.synergy.APIClient;
 import com.synergy.R;
 
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +58,11 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
     private Button buttonCreateFaultReport;
     private TextView datePickerEdit, timePickerEdit;
 
+    private String requestorName, locDesc, faultDesc;
+    String contactNo;
+    String dateinStr, timeStr;
+    int depId, locId, buildId, maintId, priroityId, faultId, divisionid;
+
     private ArrayAdapter<list> deptListAdapter;
     private ArrayAdapter<list> priAdapter;
     private ArrayAdapter<list> divisionAdapter;
@@ -64,6 +79,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         progressDialog = new ProgressDialog(FaultReportActivity.this);
         progressDialog.setTitle("Loading");
 
+
         Intent intent = getIntent();
         workSpaceid = intent.getStringExtra("workspaceId");
         initViews();
@@ -75,16 +91,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         callSpinnerMaintGrp();
         callGenLoaction();
 
-/*
-        datePickerEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        FaultReportActivity.this, FaultReportActivity.this, startYear, starthMonth, startDay);
 
-            }
-        });
-*/
         deptListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDepList);
         deptListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         departmentSpinner.setAdapter(deptListAdapter);
@@ -93,8 +100,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 departmentSpinner.setSelection(position);
                 list p = (list) parent.getItemAtPosition(position);
-                int i = p.id;
-                Log.d(TAG, "onItemSelected: Dept  " + i);
+                depId = p.id;
+                Log.d(TAG, "onItemSelected: Dept  " + depId);
 
             }
 
@@ -112,8 +119,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 prioritySpinner.setSelection(position);
                 list p = (list) parent.getItemAtPosition(position);
-                int idd = p.id;
-                Log.d(TAG, "onItemSelected: prity id " + idd);
+                priroityId = p.id;
+                Log.d(TAG, "onItemSelected: prity id " + priroityId);
             }
 
             @Override
@@ -129,8 +136,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
-                int idd = p.id;
-                Log.d(TAG, "onItemSelected: division  id " + idd);
+                divisionid = p.id;
+                Log.d(TAG, "onItemSelected: division  id " + divisionid);
 
             }
 
@@ -147,8 +154,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
-                int idd = p.id;
-                Log.d(TAG, "onItemSelected: building id " + idd);
+                buildId = p.id;
+                Log.d(TAG, "onItemSelected: building id " + buildId);
             }
 
             @Override
@@ -165,8 +172,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
-                int idd = p.id;
-                Log.d(TAG, "onItemSelected: Fault  id " + idd);
+                faultId = p.id;
+                Log.d(TAG, "onItemSelected: Fault  id " + faultId);
             }
 
             @Override
@@ -182,8 +189,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
-                int idd = p.id;
-                Log.d(TAG, "onItemSelected: Maint id " + idd);
+                maintId = p.id;
+                Log.d(TAG, "onItemSelected: Maint id " + maintId);
             }
 
             @Override
@@ -199,20 +206,27 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
-                int idd = p.id;
-                Log.d(TAG, "onItemSelected :Location id " + idd);
-
+                locId = p.id;
+                Log.d(TAG, "onItemSelected :Location id " + locId);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
     }
 
-
+    private void showDatePickerDailog() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
+    }
 
     private void callGenLoaction() {
 
@@ -438,6 +452,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
     }
 
     private void initViews() {
+
         requestorNameEditText = findViewById(R.id.requestorNameEditText);
         contactNumberEditText = findViewById(R.id.contactNumber_fault);
         locationDescriptionEditText = findViewById(R.id.LocationDescriptionEditText);
@@ -461,10 +476,116 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         genralFaultMaintGrp.add(new list("Select Maintainence", 0));
         genralLoaction.add(new list("Select Location", 0));
 
+        datePickerEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDailog();
+
+            }
+        });
+
+
+        timePickerEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = 0, i1 = 0;
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        FaultReportActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                                i = i;
+                                i1 = i1;
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(0, 0, 0, i, i1);
+                                timePickerEdit.setText(DateFormat.format("HH:mm", calendar));
+                            }
+                        }, 12, 0, true
+                );
+                timePickerDialog.updateTime(i, i1);
+                timePickerDialog.show();
+            }
+        });
+
+        buttonCreateFaultReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    createFaultReport();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    private void createFaultReport() throws ParseException {
+        timeStr = timePickerEdit.getText().toString();
+        dateinStr = datePickerEdit.getText().toString();
+        requestorName = requestorNameEditText.getText().toString();
+        faultDesc = faultDescriptionEditText.getText().toString();
+        locDesc = locationDescriptionEditText.getText().toString();
+        contactNo = contactNumberEditText.getText().toString();
+        long dateStr = 0;
+        SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+        Date d = f.parse(dateinStr);
+        dateStr = d.getTime();
+        if (!requestorNameEditText.getText().toString().isEmpty() || !timePickerEdit.getText().toString().isEmpty()
+                || !datePickerEdit.getText().toString().isEmpty() || depId != 0 || faultId != 0 ||
+                !faultDescriptionEditText.getText().toString().isEmpty() ||
+                !locationDescriptionEditText.getText().toString().isEmpty()
+                || buildId != 0 || locId != 0 || maintId != 0 || priroityId != 0) {
+
+
+            Location location=new Location();
+            location.setId(locId);
+            Building building=new Building();
+            building.setId(buildId);
+            Priority priority=new Priority();
+            priority.setId(priroityId);
+            MaintGrp maintGrp=new MaintGrp();
+            maintGrp.setId(priroityId);
+            FaultCategory faultCategory=new FaultCategory();
+            faultCategory.setId(faultId);
+            Department department=new Department();
+            department.setId(depId);
+            Division division=new Division();
+            division.setId(divisionid);
+
+
+            CreateFaultRequestPojo createFaultRequestPojo = new CreateFaultRequestPojo(requestorName, timeStr,
+                    building,location , contactNo, dateStr, priority, maintGrp, faultCategory, department, faultDesc, locDesc,division);
+
+            Call<Void> call = APIClient.getUserServices().createFault(createFaultRequestPojo, workSpaceid);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.code() == 200) {
+                        Toast.makeText(FaultReportActivity.this, "Fault Report Created Successfully",
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else
+                        Toast.makeText(FaultReportActivity.this, "Error : " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(FaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onFailure:  " + t.getCause());
+                }
+            });
+        } else {
+            Toast.makeText(this, "Please Fill All Details", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Date date = new Date(year - 1900, month, dayOfMonth);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        String cdate = formatter.format(date);
+        datePickerEdit.setText(cdate);
 
 
     }

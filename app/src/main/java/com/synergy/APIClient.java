@@ -22,7 +22,9 @@ public class APIClient {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.107:8080/lsme/api/")
+                //.baseUrl("http://192.168.1.112:8080/lsme//api/")
+               .baseUrl("http://ifarms.com.sg:8086/lsme/api/")
+
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create()))
                 .client(okHttpClient)
                 .build();
@@ -30,7 +32,7 @@ public class APIClient {
         return retrofit;
     }
 
-    public static UserService getUserServices(){
+    public static UserService getUserServices() {
         UserService userService = getRetrofit().create(UserService.class);
         return userService;
     }

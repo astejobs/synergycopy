@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity">
-        <activity android:name=".faultReport.FaultReportActivity"></activity>
+        <activity android:name=".search.Search"></activity>
+        <activity android:name=".dashboard.Dashboard" />
+        <activity android:name=".faultReport.FaultReportActivity" />
         <activity
             android:name=".workspace.Workspace"
             android:noHistory="true">

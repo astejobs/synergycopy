@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".workspace.Workspace">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_fault"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EA3D51"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:menu="@menu/menu"
+        app:title="WorkSpaces"
+        app:titleMargin="8dp"
+        app:titleTextColor="#000000" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_workspace"

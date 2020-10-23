@@ -3,6 +3,7 @@ package com.synergy;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.synergy.faultReport.CreateFaultRequestPojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,4 +59,11 @@ public interface UserService {
     @GET("general/locations/1")
     @Headers("Content-Type: application/json")
     Call<JsonArray> getGenLocation();
+
+    //create fault
+    @POST("faultreport")
+    @Headers("Content-Type: application/json")
+    Call<Void> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo,@Header("workspace")String workspace);
+
+
 }

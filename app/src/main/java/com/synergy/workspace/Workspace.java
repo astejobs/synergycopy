@@ -1,13 +1,16 @@
 package com.synergy.workspace;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -20,6 +23,8 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class Workspace extends AppCompatActivity {
     private static final String TAG = "Message";
@@ -34,7 +39,7 @@ public class Workspace extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
         recyclerView = findViewById(R.id.recycler_view_workspace);
-        progressDialog=new ProgressDialog(Workspace.this);
+        progressDialog = new ProgressDialog(Workspace.this);
         progressDialog.setTitle("Loading");
 
 
@@ -66,6 +71,7 @@ public class Workspace extends AppCompatActivity {
                     recyclerView.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
                 } else progressDialog.dismiss();
+                Log.d(TAG, "onResponse: "+response.message());
             }
 
             @Override
@@ -79,5 +85,28 @@ public class Workspace extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.logoutmenu) {
+            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+            finishAffinity();
+
+
+        }
+        return true;
     }
 }

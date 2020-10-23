@@ -13,7 +13,7 @@
         android:id="@+id/toolbar_fault"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#c4c9d6"
+        android:background="#EA3D51"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:menu="@menu/menu"
         app:title="Fault Report"
