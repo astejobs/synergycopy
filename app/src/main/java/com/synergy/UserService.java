@@ -73,4 +73,9 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<EquipmentSearchResponse> getCallEquipment(@Path("equipmentCode") String path);
 
+    @GET("task/{equipmentCode}/{status}")
+    @Headers("Content-Type: application/json")
+    Call<List<TaskResponse>> getTaskOnQrList(@Path("equipmentCode") String path,
+                                    @Path("status") String status);
+
 }

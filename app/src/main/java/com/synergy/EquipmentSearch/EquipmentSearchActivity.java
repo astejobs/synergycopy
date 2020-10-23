@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -87,6 +88,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     private void callQrCodeSearch(String result) {
         mProgress.show();
 
+        Log.d("TAG", "callQrCodeSearch: " + result);
         Call<EquipmentSearchResponse> callEquipment = APIClient.getUserServices().getCallEquipment(result);
         callEquipment.enqueue(new Callback<EquipmentSearchResponse>() {
             @Override

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,15 +14,22 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.synergy.APIClient;
 import com.synergy.R;
+import com.synergy.TaskResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class QrDetails extends AppCompatActivity {
 
@@ -30,13 +38,10 @@ public class QrDetails extends AppCompatActivity {
     private Button searchFaultButton, searchTaskButton;
     private ProgressDialog mProgress;
     private ArrayList<String> frIdList = new ArrayList();
-    private String token, workspace;
-    private ListView listView, listView_qr;
+    private ListView listView;
     private String code;
-    private ArrayList<String> tno_list = new ArrayList<>();
+    private ArrayList<String> taskNumberList = new ArrayList<>();
     private ArrayAdapter<String> taskListAdapter;
-    private ArrayAdapter<String> frIdAdapter;
-    private String user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,14 +50,16 @@ public class QrDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
-        String code = intent.getStringExtra("code");
+        code = intent.getStringExtra("code");
         String type = intent.getStringExtra("type");
-        int buildingId = intent.getIntExtra("bId", 0);
-        int locationId = intent.getIntExtra("locationId", 0);
+//        int buildingId = intent.getIntExtra("bId", 0);
+//        int locationId = intent.getIntExtra("locationId", 0);
         String locationName = intent.getStringExtra("locationName");
         String buildingName = intent.getStringExtra("building");
         String asset = intent.getStringExtra("asset");
-
+        mProgress = new ProgressDialog(QrDetails.this);
+        mProgress.setIndeterminate(true);
+        mProgress.setCancelable(false);
         codeTV = findViewById(R.id.eq_code);
         typeTV = findViewById(R.id.eq_type);
         nameTV = findViewById(R.id.eq_name);
@@ -73,8 +80,6 @@ public class QrDetails extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_QRDetails);
         setSupportActionBar(toolbar);
 
-        listView.setAdapter(null);
-
         searchFaultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +91,6 @@ public class QrDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog();
-
             }
         });
     }
@@ -109,12 +113,9 @@ public class QrDetails extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 RadioButton radioSelectedButton = radioGroup.findViewById(selectedId);
-
                 String status = radioSelectedButton.getText().toString();
                 status = status.substring(0, status.length() - 6);
-
                 loadTaskOnEq(status);
-
             }
         });
         alertDialog.setButton(Dialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
@@ -126,7 +127,71 @@ public class QrDetails extends AppCompatActivity {
     }
 
     private void loadTaskOnEq(String status) {
-        mProgress.setTitle("Loading Tasks..");
+        taskNumberList.clear();
+        listView.setAdapter(taskListAdapter);
+        mProgress.setTitle("Loading tasks...");
+        mProgress.show();
+
+        Call<List<TaskResponse>> call = APIClient.getUserServices().getTaskOnQrList(code, status);
+        call.enqueue(new Callback<List<TaskResponse>>() {
+            @Override
+            public void onResponse(Call<List<TaskResponse>> call, Response<List<TaskResponse>> response) {
+                mProgress.dismiss();
+                if (response.code() == 200) {
+                    /*mProgress.dismiss();
+                    JsonArray jsonArray = response.body();
+                    if (jsonArray.contains(null)) {
+                        Toast.makeText(QrDetails.this, "No Tasks Available", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        for (int i = 0; i < jsonArray.size(); i++) {
+                            JsonObject jo = jsonArray.get(i).getAsJsonObject();
+                            String tno = String.valueOf(jo.get("task_number"));
+                            tno = tno.replace("\"", "");
+                            tno_list.add(tno);
+                            listView.setVisibility(View.VISIBLE);
+                            taskListAdapter = new ArrayAdapter<String>(QrDetails.this, android.R.layout.simple_list_item_1, tno_list);
+                            listView.setAdapter(taskListAdapter);
+                        }
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                                String taskNumber = tno_list.get(i);
+
+                                *//*Intent intent = new Intent(QrDetails.this, PmTaskActivity.class);
+                                intent.putExtra("taskNumber", taskNumber);
+                                intent.putExtra("token", token);
+                                intent.putExtra("workspace", workspace);
+                                intent.putExtra("username", user);
+                                startActivity(intent);*//*
+                            }
+                        });
+*/
+
+                    List<TaskResponse> list = response.body();
+                    if (!list.isEmpty()) {
+                        for (int i = 0; i < list.size(); i++) {
+                            String taskNumber = list.get(i).getTask_number();
+                            taskNumberList.add(taskNumber);
+                            listView.setVisibility(View.VISIBLE);
+                            taskListAdapter = new ArrayAdapter<String>(QrDetails.this, android.R.layout.simple_list_item_1, taskNumberList);
+                            listView.setAdapter(taskListAdapter);
+                        }
+                    } else
+                        Toast.makeText(QrDetails.this, "No Tasks Available!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TaskResponse>> call, Throwable t) {
+                Toast.makeText(QrDetails.this, "Failed: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                mProgress.dismiss();
+            }
+        });
+
+
     }
 
 }
