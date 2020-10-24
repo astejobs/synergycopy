@@ -95,11 +95,11 @@
 
     <ListView
         android:id="@+id/list_view_equip"
+        android:background="#D88F8F"
         android:layout_margin="10sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:visibility="invisible"/>
-
 
 </LinearLayout>

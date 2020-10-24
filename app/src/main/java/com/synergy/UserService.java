@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.synergy.EquipmentSearch.EquipmentSearchResponse;
+import com.synergy.EquipmentSearch.PmTaskResponse;
 import com.synergy.faultReport.CreateFaultRequestPojo;
 
 import java.util.ArrayList;
@@ -78,4 +79,7 @@ public interface UserService {
     Call<List<TaskResponse>> getTaskOnQrList(@Path("equipmentCode") String path,
                                     @Path("status") String status);
 
+    @GET("task/{id}")
+    @Headers("Content-Type: application/json")
+    Call<PmTaskResponse> getCallPmTask(@Path("id") String  id);
 }

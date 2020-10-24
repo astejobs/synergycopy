@@ -41,9 +41,6 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equipment_search);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_qr);
-        setSupportActionBar(toolbar);
-
         btn = findViewById(R.id.qr_btn_click);
         scanTextView = findViewById(R.id.scan_tv);
         codeScannerView = findViewById(R.id.qr_btn);
@@ -93,8 +90,6 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         callEquipment.enqueue(new Callback<EquipmentSearchResponse>() {
             @Override
             public void onResponse(Call<EquipmentSearchResponse> call, Response<EquipmentSearchResponse> response) {
-                Toast.makeText(EquipmentSearchActivity.this, "Success: " + response.code(), Toast.LENGTH_SHORT).show();
-
                 if (response.code() == 200) {
                     scanTextView.setText(result);
                     EquipmentSearchResponse equipmentSearchResponse = response.body();
@@ -118,6 +113,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                     intent.putExtra("locationName", locationName);
                     intent.putExtra("asset", assetNumber);
                     startActivity(intent);
+                    finish();
 
                 } else
                     Toast.makeText(EquipmentSearchActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();

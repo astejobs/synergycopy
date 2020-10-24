@@ -5,9 +5,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -41,7 +41,7 @@ public class QrDetails extends AppCompatActivity {
     private ListView listView;
     private String code;
     private ArrayList<String> taskNumberList = new ArrayList<>();
-    private ArrayAdapter<String> taskListAdapter;
+    private ArrayAdapter<String> listAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,8 +77,6 @@ public class QrDetails extends AppCompatActivity {
         listView = findViewById(R.id.list_view_equip);
         searchFaultButton = findViewById(R.id.first_btn);
         searchTaskButton = findViewById(R.id.second_btn);
-        Toolbar toolbar = findViewById(R.id.toolbar_QRDetails);
-        setSupportActionBar(toolbar);
 
         searchFaultButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +95,7 @@ public class QrDetails extends AppCompatActivity {
 
     private void loadFaultReportEquip() {
         mProgress.setTitle("Loading FaultReports...");
+        mProgress.dismiss();
     }
 
     private void dialog() {
@@ -128,7 +127,7 @@ public class QrDetails extends AppCompatActivity {
 
     private void loadTaskOnEq(String status) {
         taskNumberList.clear();
-        listView.setAdapter(taskListAdapter);
+        listView.setAdapter(listAdapter);
         mProgress.setTitle("Loading tasks...");
         mProgress.show();
 
@@ -170,15 +169,29 @@ public class QrDetails extends AppCompatActivity {
                         });
 */
 
-                    List<TaskResponse> list = response.body();
-                    if (!list.isEmpty()) {
-                        for (int i = 0; i < list.size(); i++) {
-                            String taskNumber = list.get(i).getTask_number();
+                    Integer taskId = null;
+                    List<TaskResponse> responseList = response.body();
+                    if (!responseList.isEmpty()) {
+                        for (int i = 0; i < responseList.size(); i++) {
+                            String taskNumber = responseList.get(i).getTask_number();
+                            taskId = responseList.get(i).getTaskId();
                             taskNumberList.add(taskNumber);
                             listView.setVisibility(View.VISIBLE);
-                            taskListAdapter = new ArrayAdapter<String>(QrDetails.this, android.R.layout.simple_list_item_1, taskNumberList);
-                            listView.setAdapter(taskListAdapter);
+                            listAdapter = new ArrayAdapter<String>(QrDetails.this, android.R.layout.simple_list_item_1, taskNumberList);
+                            listView.setAdapter(listAdapter);
                         }
+                        int finalTaskId = taskId;
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                                String taskNumber = taskNumberList.get(i);
+                                Intent intent = new Intent(QrDetails.this, PmTaskActivity.class);
+                                intent.putExtra("taskNumber", taskNumber);
+                                intent.putExtra("taskId", finalTaskId);
+                                startActivity(intent);
+                            }
+                        });
                     } else
                         Toast.makeText(QrDetails.this, "No Tasks Available!", Toast.LENGTH_LONG).show();
                 }
