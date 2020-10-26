@@ -26,7 +26,6 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +38,7 @@ public class QrDetails extends AppCompatActivity {
     private ProgressDialog mProgress;
     private ArrayList<String> frIdList = new ArrayList();
     private ListView listView;
-    private String code;
+    private String equipmentCode;
     private ArrayList<String> taskNumberList = new ArrayList<>();
     private ArrayAdapter<String> listAdapter;
 
@@ -50,10 +49,8 @@ public class QrDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
-        code = intent.getStringExtra("code");
+        equipmentCode = intent.getStringExtra("code");
         String type = intent.getStringExtra("type");
-//        int buildingId = intent.getIntExtra("bId", 0);
-//        int locationId = intent.getIntExtra("locationId", 0);
         String locationName = intent.getStringExtra("locationName");
         String buildingName = intent.getStringExtra("building");
         String asset = intent.getStringExtra("asset");
@@ -67,7 +64,7 @@ public class QrDetails extends AppCompatActivity {
         locationTV = findViewById(R.id.eq_location);
         assetTV = findViewById(R.id.eq_assetn0);
 
-        codeTV.setText("Equipment code: " + code);
+        codeTV.setText("Equipment code: " + equipmentCode);
         typeTV.setText("Equipment type: " + type);
         nameTV.setText("Equipment name: " + name);
         buildingTV.setText("Equipment building: " + buildingName);
@@ -131,7 +128,7 @@ public class QrDetails extends AppCompatActivity {
         mProgress.setTitle("Loading tasks...");
         mProgress.show();
 
-        Call<List<TaskResponse>> call = APIClient.getUserServices().getTaskOnQrList(code, status);
+        Call<List<TaskResponse>> call = APIClient.getUserServices().getTaskOnQrList(equipmentCode, status);
         call.enqueue(new Callback<List<TaskResponse>>() {
             @Override
             public void onResponse(Call<List<TaskResponse>> call, Response<List<TaskResponse>> response) {

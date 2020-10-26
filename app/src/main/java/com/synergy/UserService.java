@@ -1,16 +1,15 @@
 package com.synergy;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.synergy.EquipmentSearch.CheckListAddRequest;
 import com.synergy.EquipmentSearch.EquipmentSearchResponse;
-import com.synergy.EquipmentSearch.PmTaskResponse;
+import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
+import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
+import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
 import com.synergy.faultReport.CreateFaultRequestPojo;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -66,7 +65,7 @@ public interface UserService {
     //create fault
     @POST("faultreport")
     @Headers("Content-Type: application/json")
-    Call<Void> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo,@Header("workspace")String workspace);
+    Call<Void> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo, @Header("workspace") String workspace);
 
 
     //equipment search
@@ -77,9 +76,23 @@ public interface UserService {
     @GET("task/{equipmentCode}/{status}")
     @Headers("Content-Type: application/json")
     Call<List<TaskResponse>> getTaskOnQrList(@Path("equipmentCode") String path,
-                                    @Path("status") String status);
+                                             @Path("status") String status);
 
     @GET("task/{id}")
     @Headers("Content-Type: application/json")
-    Call<PmTaskResponse> getCallPmTask(@Path("id") String  id);
+    Call<GetPmTaskItemsResponse> getCallPmTask(@Path("id") String id);
+
+    @POST("task/updateTask")
+    @Headers("Content-Type: application/json")
+    Call<GetUpdatePmTaskResponse> postPmTaskUpdate(GetUpdatePmTaskRequest getUpdatePmTaskRequest);
+
+    //checklistActivityView
+    @GET("task/{path}/checklist")
+    @Headers("Content-Type: application/json")
+    Call<List<GetCheckListResponse>> getChecklist(@Path("path") String path);
+
+    //checkListActivitiesSave
+    @POST("task/updateChecklists")
+    @Headers("Content-Type: application/json")
+    Call<List<CheckListAddRequest>> postCheckList(@Body List<CheckListAddRequest> checkListAddRequest);
 }

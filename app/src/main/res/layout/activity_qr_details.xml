@@ -26,6 +26,7 @@
         android:layout_margin="18dp"
         android:text="Fault Reports On Equipment"
         app:titleTextColor="#000000"
+        android:background="@drawable/mybutton"
         android:textAlignment="center" />
 
     <Button
@@ -34,21 +35,23 @@
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
         app:titleTextColor="#000000"
+        android:background="@drawable/mybutton"
         android:text="Tasks on Equipment"
         android:textAlignment="center" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="18dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:background="@drawable/mybutton">
 
         <TextView
             android:id="@+id/eq_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="#000000"
-            android:layout_marginLeft="6dp"
+            android:layout_margin="5dp"
             android:textSize="12sp" />
 
         <TextView
@@ -56,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="#000000"
-            android:layout_marginLeft="6dp"
+            android:layout_margin="5dp"
             android:textSize="12sp" />
 
         <TextView
@@ -64,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="#000000"
-            android:layout_marginLeft="6dp"
+            android:layout_margin="5dp"
             android:textSize="12sp" />
 
         <TextView
@@ -72,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="#000000"
-            android:layout_marginLeft="6dp"
+            android:layout_margin="5dp"
             android:textSize="12sp" />
 
         <TextView
@@ -80,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="#000000"
-            android:layout_marginLeft="6dp"
+            android:layout_margin="5dp"
             android:textSize="12sp" />
 
         <TextView
@@ -88,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="#000000"
-            android:layout_marginLeft="6dp"
+            android:layout_margin="5dp"
             android:textSize="12sp" />
 
     </LinearLayout>
