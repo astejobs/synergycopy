@@ -4,30 +4,18 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class GetUpdatePmTaskRequest {
-
-    @SerializedName("task_number")
-    @Expose
-    private String taskNumber;
-    @SerializedName("status")
-    @Expose
-    private String status;
-    @SerializedName("compDate")
-    @Expose
-    private String compDate;
-    @SerializedName("compTime")
-    @Expose
-    private String compTime;
-    @SerializedName("completedBy")
-    @Expose
-    private String completedBy;
+    String status;
     String remarks;
+    long completedTime;
+    long completedDate;
+    int taskId;
 
-    public String getTaskNumber() {
-        return taskNumber;
-    }
-
-    public void setTaskNumber(String taskNumber) {
-        this.taskNumber = taskNumber;
+    public GetUpdatePmTaskRequest(String status, String remarks, long completedTime, long completedDate, int taskId) {
+        this.status = status;
+        this.remarks = remarks;
+        this.completedTime = completedTime;
+        this.completedDate = completedDate;
+        this.taskId = taskId;
     }
 
     public String getStatus() {
@@ -38,36 +26,35 @@ public class GetUpdatePmTaskRequest {
         this.status = status;
     }
 
-    public String getCompDate() {
-        return compDate;
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setCompDate(String compDate) {
-        this.compDate = compDate;
-    }
-
-    public String getCompTime() {
-        return compTime;
-    }
-
-    public void setCompTime(String compTime) {
-        this.compTime = compTime;
-    }
-
-    public String getCompletedBy() {
-        return completedBy;
-    }
-
-    public void setCompletedBy(String completedBy) {
-        this.completedBy = completedBy;
-    }
-
-    public GetUpdatePmTaskRequest(String taskNumber, String status, String compDate, String compTime, String completedBy, String remarks) {
-        this.taskNumber = taskNumber;
-        this.status = status;
-        this.compDate = compDate;
-        this.compTime = compTime;
-        this.completedBy = completedBy;
+    public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public long getCompletedTime() {
+        return completedTime;
+    }
+
+    public void setCompletedTime(long completedTime) {
+        this.completedTime = completedTime;
+    }
+
+    public long getCompletedDate() {
+        return completedDate;
+    }
+
+    public void setCompletedDate(long completedDate) {
+        this.completedDate = completedDate;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 }

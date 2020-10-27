@@ -3,7 +3,7 @@ package com.synergy.EquipmentSearch;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetUpdatePmTaskResponse {
+public class GetUpdatePmTaskResponse /*{
 
     @SerializedName("task_number")
     @Expose
@@ -170,5 +170,7 @@ public class GetUpdatePmTaskResponse {
     public void setStatus(String status) {
         this.status = status;
     }
+
+}*/{
 
 }

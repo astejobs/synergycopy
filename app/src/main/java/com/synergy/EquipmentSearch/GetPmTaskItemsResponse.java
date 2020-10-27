@@ -4,6 +4,16 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class GetPmTaskItemsResponse {
+    int taskId;
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
     @SerializedName("task_number")
     @Expose
     private String taskNumber;
@@ -52,7 +62,7 @@ public class GetPmTaskItemsResponse {
 
     public GetPmTaskItemsResponse(String taskNumber, String remarks, String pmTaskNo, String pmScheduleNo, String briefDescription,
                                   String equipmentCode, String equipmentLocation, String equipmentBuilding, double scheduleDate,
-                                  double compDate, double compTime, double dueDate, double endDate, String completedBy, String status) {
+                                  double compDate, double compTime, double dueDate, double endDate, String completedBy, String status, int taskId) {
         this.taskNumber = taskNumber;
         this.remarks = remarks;
         this.pmTaskNo = pmTaskNo;
@@ -68,6 +78,7 @@ public class GetPmTaskItemsResponse {
         this.endDate = endDate;
         this.completedBy = completedBy;
         this.status = status;
+        this.taskId = taskId;
     }
 
     public String getTaskNumber() {

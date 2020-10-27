@@ -19,6 +19,8 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface UserService {
 
@@ -87,18 +89,23 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<EquipmentSearchResponse> getCallEquipment(@Path("equipmentCode") String path);
 
+
+    //getEquipment Scan code
     @GET("task/{equipmentCode}/{status}")
     @Headers("Content-Type: application/json")
     Call<List<TaskResponse>> getTaskOnQrList(@Path("equipmentCode") String path,
                                              @Path("status") String status);
 
+
+    //pm View Task
     @GET("task/{id}")
     @Headers("Content-Type: application/json")
     Call<GetPmTaskItemsResponse> getCallPmTask(@Path("id") String id);
 
-    @POST("task/updateTask")
+    //Update pm task
+    @PUT("task/updateTask")
     @Headers("Content-Type: application/json")
-    Call<GetUpdatePmTaskResponse> postPmTaskUpdate(GetUpdatePmTaskRequest getUpdatePmTaskRequest);
+    Call<GetUpdatePmTaskResponse> postPmTaskUpdate(@Body GetUpdatePmTaskRequest getUpdatePmTaskRequest);
 
     //checklistActivityView
     @GET("task/{path}/checklist")
@@ -109,4 +116,5 @@ public interface UserService {
     @POST("task/updateChecklists")
     @Headers("Content-Type: application/json")
     Call<List<CheckListAddRequest>> postCheckList(@Body List<CheckListAddRequest> checkListAddRequest);
+
 }

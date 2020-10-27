@@ -2,7 +2,6 @@ package com.synergy.EquipmentSearch;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,6 +28,7 @@ import android.widget.Toast;
 import com.synergy.APIClient;
 import com.synergy.R;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+import java.util.SimpleTimeZone;
 
 public class PmTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -123,7 +123,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    updateTaskMethod();
+                    updateTaskMethod(taskId);
                 }
             }
         });
@@ -140,31 +140,32 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void updateTaskMethod() {
+    private void updateTaskMethod(int taskId) {
         String timeString = timePickerEdit.getText().toString();
         String dateString = datePickerEdit.getText().toString();
         String completedByString = nameTextView.getText().toString();
         String status = statusSpinner.getSelectedItem().toString();
         String remarksString = remarksTextView.getText().toString();
 
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        Date newDate = null;
+        String dateTimeString = dateString + timeString;
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyyHH:mm");
+        Date date = null;
         try {
-            newDate = format.parse(dateString);
+            date = (Date) formatter.parse(dateTimeString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        format = new SimpleDateFormat("yyyy-MM-dd");
-        String date = format.format(newDate);
 
-        GetUpdatePmTaskRequest getUpdatePmTaskRequest = new GetUpdatePmTaskRequest(taskNumberString, status, date, timeString, completedByString, remarksString);
+        GetUpdatePmTaskRequest getUpdatePmTaskRequest = new GetUpdatePmTaskRequest(status, remarksString, date.getTime(), date.getTime(), taskId);
 
         if (!nameTextView.getText().toString().isEmpty() && !remarksTextView.getText().toString().isEmpty()) {
-            LocalDate now = Instant.ofEpochMilli((long) scheduleDate).atZone(ZoneId.systemDefault()).toLocalDate();
-            if (!now.isBefore(LocalDate.now())) {
-                updatePmTaskService(getUpdatePmTaskRequest);
-            } else
+            /*LocalDate now = Instant.ofEpochMilli((long) scheduleDate).atZone(ZoneId.systemDefault()).toLocalDate();
+            if (!now.isBefore(LocalDate.now())) {*/
+            updatePmTaskService(getUpdatePmTaskRequest);
+            /*} else
                 Toast.makeText(PmTaskActivity.this, "Overdue tasks cannot be updated.", Toast.LENGTH_SHORT).show();
+        */
         } else
             Toast.makeText(PmTaskActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
     }
@@ -202,11 +203,9 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                     if (getPmTaskItemsResponse.getScheduleDate() != 0) {
                         scheduleDate = (long) getPmTaskItemsResponse.getScheduleDate();
                         LocalDateTime date = null;
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                            date = Instant.ofEpochMilli((long) getPmTaskItemsResponse.getScheduleDate()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-                        }
                         String dateStr = null;
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            date = Instant.ofEpochMilli((long) getPmTaskItemsResponse.getScheduleDate()).atZone(ZoneId.systemDefault()).toLocalDateTime();
                             dateStr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                         }
                         scheduleDateTextView.setText(dateStr);
