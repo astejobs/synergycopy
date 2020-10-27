@@ -7,6 +7,8 @@ import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
 import com.synergy.faultReport.CreateFaultRequestPojo;
+import com.synergy.faultReport.CreateResponse;
+import com.synergy.search.SearchResponse;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface UserService {
 
@@ -67,6 +69,18 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<Void> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo, @Header("workspace") String workspace);
 
+    //get search https://ifarms.com.sg:8085/lsme/api/faultreport/search/?query=00005
+    @GET("faultreport/search/?")
+    @Headers("Content-Type: application/json")
+    Call<List<SearchResponse>> getSearchResult(@Header("workspace") int dynamicWorkSpace,
+                                               @Query("query") String param);
+    //before image upload http://ifarms.com.sg:8086/lsme/api/faultreport/beforeimage
+   /* @POST("ws/upload{before}image")
+    @Headers("Content-Type: application/json")
+    Call<Void> uploadCaptureImage(@Path("before") String before,
+                                  @Header("X-Auth-Token") String token,
+                                  @Header("workspace") String workspace,
+                                  @Body UploadPictureRequest uploadPictureRequest);*/
 
     //equipment search
     @GET("equip/{equipmentCode}")

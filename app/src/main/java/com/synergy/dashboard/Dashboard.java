@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.R;
 import com.synergy.faultReport.FaultReportActivity;
+import com.synergy.search.Search;
 
 public class Dashboard extends AppCompatActivity {
     private LinearLayout linearLayoutEquipmentSearch, l_Search, l_Tasksearch, l_Createfault;
@@ -38,6 +39,14 @@ public class Dashboard extends AppCompatActivity {
                 Intent intent1 = new Intent(Dashboard.this, FaultReportActivity.class);
                 intent1.putExtra("workspaceId", workspaceid);
                 startActivity(intent1);
+            }
+        });
+        l_Search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(Dashboard.this, Search.class);
+                i.putExtra("workspaceId",workspaceid);
+                startActivity(i);
             }
         });
 

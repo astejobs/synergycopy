@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -22,19 +23,17 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonPrimitive;
+import com.google.zxing.common.StringUtils;
 import com.synergy.APIClient;
 import com.synergy.R;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -510,6 +509,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         buttonCreateFaultReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 try {
                     createFaultReport();
                 } catch (ParseException e) {
@@ -529,41 +530,62 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         contactNo = contactNumberEditText.getText().toString();
         long dateStr = 0;
         SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+
         Date d = f.parse(dateinStr);
+        assert d != null;
         dateStr = d.getTime();
-        if (!requestorNameEditText.getText().toString().isEmpty() || !timePickerEdit.getText().toString().isEmpty()
+
+        if (TextUtils.isEmpty(contactNumberEditText.getText())
+                || buildId == 0 || locId == 0 || maintId == 0 ||
+                priroityId == 0 || depId == 0 || faultId == 0 ||
+                TextUtils.isEmpty(locationDescriptionEditText.getText())
+                || TextUtils.isEmpty(timePickerEdit.getText()) ||
+                TextUtils.isEmpty(datePickerEdit.getText())
+                || TextUtils.isEmpty(requestorNameEditText.getText())) {
+            Toast.makeText(this, "Please Select All Feilds", Toast.LENGTH_SHORT).show();
+        } else if (contactNo.length() < 8) {
+            Toast.makeText(this, "Contact Number not Valid", Toast.LENGTH_SHORT).show();
+        } else {/* (!requestorNameEditText.getText().toString().isEmpty() || !timePickerEdit.getText().toString().isEmpty()
                 || !datePickerEdit.getText().toString().isEmpty() || depId != 0 || faultId != 0 ||
                 !faultDescriptionEditText.getText().toString().isEmpty() ||
                 !locationDescriptionEditText.getText().toString().isEmpty()
-                || buildId != 0 || locId != 0 || maintId != 0 || priroityId != 0) {
-
-
-            Location location=new Location();
+                || buildId != 0 || locId != 0 || maintId != 0 || priroityId != 0 ||
+                !contactNumberEditText.getText().toString().isEmpty() || contactNumberEditText.getText().toString().length() > 8)
+*/
+            Log.d(TAG, "createFaultReport: " + timePickerEdit.getText().toString());
+            Location location = new Location();
             location.setId(locId);
-            Building building=new Building();
+            Building building = new Building();
             building.setId(buildId);
-            Priority priority=new Priority();
+            Priority priority = new Priority();
             priority.setId(priroityId);
-            MaintGrp maintGrp=new MaintGrp();
+            MaintGrp maintGrp = new MaintGrp();
             maintGrp.setId(priroityId);
-            FaultCategory faultCategory=new FaultCategory();
+            FaultCategory faultCategory = new FaultCategory();
             faultCategory.setId(faultId);
-            Department department=new Department();
+            Department department = new Department();
             department.setId(depId);
-            Division division=new Division();
+            Division division = new Division();
             division.setId(divisionid);
 
 
             CreateFaultRequestPojo createFaultRequestPojo = new CreateFaultRequestPojo(requestorName, timeStr,
-                    building,location , contactNo, dateStr, priority, maintGrp, faultCategory, department, faultDesc, locDesc,division);
+                    building, location, contactNo, dateStr, priority, maintGrp
+                    , faultCategory, department, faultDesc, locDesc, division);
 
             Call<Void> call = APIClient.getUserServices().createFault(createFaultRequestPojo, workSpaceid);
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.code() == 200) {
-                        Toast.makeText(FaultReportActivity.this, "Fault Report Created Successfully",
+                        Log.d(TAG, "onResponse: "+response);
+                        Log.d(TAG, "onResponse: "+response.body());
+
+                        Toast.makeText(FaultReportActivity.this, "Fault Report Created Successfully"+response.toString(),
                                 Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(FaultReportActivity.this, BeforeImage.class);
+                        intent.putExtra("Frid", "df");
+                        startActivity(intent);
                         finish();
                     } else
                         Toast.makeText(FaultReportActivity.this, "Error : " + response.code(), Toast.LENGTH_SHORT).show();
@@ -571,12 +593,12 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
+
                     Toast.makeText(FaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onFailure:  " + t.getCause());
+                    Log.d(TAG, "onFailure: " + t.getMessage());
                 }
             });
-        } else {
-            Toast.makeText(this, "Please Fill All Details", Toast.LENGTH_SHORT).show();
         }
     }
 

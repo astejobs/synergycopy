@@ -16,7 +16,6 @@
         app:title="WorkSpaces"
         app:titleMargin="8dp"
         app:titleTextColor="#000000" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_workspace"
         android:layout_width="match_parent"
