@@ -28,7 +28,7 @@
         <activity android:name=".EquipmentSearch.QrDetails" />
         <activity android:name=".faultReport.FaultReportActivity" />
         <activity
-            android:name=".workspace.Workspace"
+            android:name=".workspace.WorkspaceActivity"
             android:noHistory="true">
 
         </activity>

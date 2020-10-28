@@ -2,6 +2,7 @@ package com.synergy.workspace;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,30 +27,34 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class Workspace extends AppCompatActivity {
+public class WorkspaceActivity extends AppCompatActivity {
     private static final String TAG = "Message";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     ProgressDialog progressDialog;
+    private Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
+        toolbar = findViewById(R.id.toolbar_workspace);
         recyclerView = findViewById(R.id.recycler_view_workspace);
-        progressDialog = new ProgressDialog(Workspace.this);
+        progressDialog = new ProgressDialog(WorkspaceActivity.this);
         progressDialog.setTitle("Loading");
 
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
 
-        callForWorkspace();
+        callForWorkspace(token);
 
     }
 
-    private void callForWorkspace() {
+    private void callForWorkspace(String token) {
         progressDialog.show();
-        Call<JsonArray> call = APIClient.getUserServices().getWorkspace();
+        Call<JsonArray> call = APIClient.getUserServices().getWorkspace(token);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -65,7 +70,7 @@ public class Workspace extends AppCompatActivity {
                         cardDetailsArrayList.add(new CardDetails(workspacetItemId, buildingDescription));
                     }
                     recyclerView.setHasFixedSize(true);
-                    mLayoutManager = new LinearLayoutManager(Workspace.this);
+                    mLayoutManager = new LinearLayoutManager(WorkspaceActivity.this);
                     mAdapter = new CardAdapter(cardDetailsArrayList);
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(mAdapter);
@@ -73,15 +78,13 @@ public class Workspace extends AppCompatActivity {
                 } else progressDialog.dismiss();
                 Log.d(TAG, "onResponse: "+response.message());
                 Log.d(TAG, "onResponse: "+response.code());
-            }
+}
 
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(Workspace.this, "Failed : " + t.getCause(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(Workspace.this, "Failed : " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(WorkspaceActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.d(TAG, "onFailure:  " + t.getCause());
-                Log.d(TAG, "onFailure: " + t.getMessage());
             }
         });
 

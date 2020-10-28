@@ -4,27 +4,27 @@ public class UserResponse {
 
 
 
-    private String buildingDescription;
-    private String workspaceId;
+    private String role;
+    private String token;
 
-    public String getBuildingDescription ()
-    {
-        return buildingDescription;
+    public String getRole() {
+        return role;
     }
 
-    public void setBuildingDescription (String buildingDescription)
-    {
-        this.buildingDescription = buildingDescription;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public String getWorkspaceId ()
-    {
-        return workspaceId;
+    public String getToken() {
+        return token;
     }
 
-    public void setWorkspaceId (String workspaceId)
-    {
-        this.workspaceId = workspaceId;
+    public void setToken(String token) {
+        this.token = token;
     }
 
+    public UserResponse(String role, String token) {
+        this.role = role;
+        this.token = token;
+    }
 }

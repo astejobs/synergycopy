@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.GsonBuilder;
+import com.synergy.workspace.WorkspaceActivity;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -45,7 +47,7 @@ public class MainActivityLogin extends AppCompatActivity {
     public static final String TEXT1 = "text";
     public static final String PASSWORD1 = "password";
     private Button buttonLogin;
-    private String userTokenReceived, nameString, passwordString, userName;
+    private String nameString, passwordString, userName;
     private ArrayList<String> workSpacelistReceived = new ArrayList<String>();
     private static final String TAG = "Tag";
     private static final String CHANNEL_ID = "channel Id";
@@ -83,22 +85,10 @@ public class MainActivityLogin extends AppCompatActivity {
             public void onClick(View view) {
                 nameString = editTextName.getText().toString();
                 passwordString = passwordEdit.getText().toString();
-
-                Toast.makeText(MainActivityLogin.this, ""+nameString   + passwordString, Toast.LENGTH_SHORT).show();
                 UserRequest userRequest = new UserRequest(nameString, passwordString);
                 loginUser(userRequest);
-                saveData(userTokenReceived);
             }
         });
-    }
-
-    public void saveData(String userTokenReceived) {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(TEXT1, editTextName.getText().toString());
-        editor.putString(PASSWORD1, passwordEdit.getText().toString());
-        editor.putString("token", userTokenReceived);
-        editor.apply();
     }
 
     public void loadData() {
@@ -163,33 +153,28 @@ public class MainActivityLogin extends AppCompatActivity {
         mProgress.setIndeterminate(true);
         mProgress.show();
 
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(httpLoggingInterceptor)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                //.baseUrl("http://192.168.1.112:8080/lsme/api/")
-                //.baseUrl("http://ifarms.com.sg:8086/api/")
-                .baseUrl("http://192.168.1.117:8082/api/")
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create()))
-                .client(okHttpClient)
-                .build();
-
-        UserService userService = retrofit.create(UserService.class);
-        Call<UserResponse> call = userService.saveUser(userRequest);
+        Call<UserResponse> call = APIClient.getUserServices().saveUser(userRequest);
 
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 mProgress.dismiss();
                 if (response.code() == 200) {
-                  String workspace=response.body().getWorkspaceId();
-                    Toast.makeText(MainActivityLogin.this, "Hi: "+workspace, Toast.LENGTH_SHORT).show();
+
+                    UserResponse userResponse = response.body();
+                    String token = userResponse.getToken();
+                    String role = userResponse.getRole();
+
+                    SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("token", token);
+                    editor.apply();
+
+                    Intent intent = new Intent(getApplicationContext(), WorkspaceActivity.class);
+                    startActivity(intent);
+
+                    Toast.makeText(MainActivityLogin.this, "Login Success", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 202) {
                     Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_SHORT).show();
                 } else

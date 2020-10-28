@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".workspace.Workspace">
+    tools:context=".workspace.WorkspaceActivity">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_fault"
+        android:id="@+id/toolbar_workspace"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#EA3D51"
