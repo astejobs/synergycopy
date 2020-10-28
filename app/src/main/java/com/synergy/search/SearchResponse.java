@@ -8,6 +8,15 @@ public class SearchResponse {
             department, maintGrp, status, reportedTime, equipment, observation, actionTaken, remarks, startDate,
             endDate, startTime, endTime, costCenter, labourHrs;
     long reportedDate;
+    String workspaceId;
+
+    public String getWorkspaceId() {
+        return workspaceId;
+    }
+
+    public void setWorkspaceId(String workspaceId) {
+        this.workspaceId = workspaceId;
+    }
 
     public SearchResponse() {
     }
@@ -17,8 +26,9 @@ public class SearchResponse {
                           String locationDesc, String faultCategory, String faultCategoryName, String priority,
                           String department, String maintGrp, String status, String reportedTime,
                           String equipment, String observation, String actionTaken, String remarks, String startDate,
-                          String endDate, String startTime, String endTime, String costCenter, String labourHrs, long reportedDate) {
+                          String endDate, String startTime, String endTime, String costCenter, String labourHrs, long reportedDate,String workspaceId) {
         this.frId = frId;
+        this.workspaceId=workspaceId;
         this.clientFrId = clientFrId;
         this.customerRefId = customerRefId;
         this.requestorName = requestorName;

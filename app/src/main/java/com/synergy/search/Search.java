@@ -3,6 +3,7 @@ package com.synergy.search;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class Search extends AppCompatActivity {
     private SearchResponseAdapter searchResponseAdapter;
     Toolbar toolbar;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,13 +122,15 @@ public class Search extends AppCompatActivity {
                         searchResp.setStatus(status);
                         searchResp.setBuilding(buildingg);
                         searchResp.setLocation(locationn);
-                        frIdList.add(frId);
+                        searchResp.setWorkspaceId(workspaceId);
+                      //  frIdList.add(frId);
                         contacts.add(searchResp);
                     }
                     Collections.sort(frIdList);
-                    searchResponseAdapter = new SearchResponseAdapter(Search.this, contacts);
+                    searchResponseAdapter = new SearchResponseAdapter(Search.this, contacts,workspaceId);
                     listView.setAdapter(searchResponseAdapter);
                     searchResponseAdapter.notifyDataSetChanged();
+
 
                 }
             }

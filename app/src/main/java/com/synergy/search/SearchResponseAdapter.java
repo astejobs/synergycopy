@@ -3,6 +3,7 @@ package com.synergy.search;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,12 @@ public class SearchResponseAdapter extends BaseAdapter {
     private Context context; //context
     private ArrayList<SearchResponse> contacts; //data source of the list adapter
     private static final String TAG = "SearchResponseAdapter";
-    private String wk = "";
-    private String tokenGen;
-    private String workspaceSearchString;
-    private String user;
+    private String workspaceId;
 
-    public SearchResponseAdapter(Context context, ArrayList<SearchResponse> items) {
+
+    public SearchResponseAdapter(Context context, ArrayList<SearchResponse> items, String workspaceId) {
         this.context = context;
+        this.workspaceId = workspaceId;
         this.contacts = items;
     }
 
@@ -61,27 +61,29 @@ public class SearchResponseAdapter extends BaseAdapter {
         TextView to = convertView.findViewById(R.id.tokenGen);
         TextView workspaceSearchTextView = convertView.findViewById(R.id.workspace_search);
 
-
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(currentItem.getReportedDate());
         String report = DateFormat.format("dd-MM-yyyy", cal).toString();
         Calendar cal2 = Calendar.getInstance(Locale.ENGLISH);
         String ctreate = DateFormat.format("dd-MM-yyyy", cal2).toString();
-        frIdTextView.setText(" FrId:" +currentItem.getFrId());
-        re.setText(" Reported Date:" +report);
-        cr.setText(" Crated Date:" +ctreate);
-        st.setText(" Status:" +currentItem.getStatus());
-        bu.setText(" Building:" +currentItem.getBuilding());
-        lo.setText(" Location:" +currentItem.getLocation());
-
+        frIdTextView.setText(" FrId:" + currentItem.getFrId().trim());
+        re.setText(" Reported Date:" + report);
+        cr.setText(" Crated Date:" + ctreate);
+        st.setText(" Status:" + currentItem.getStatus());
+        bu.setText(" Building:" + currentItem.getBuilding());
+        lo.setText(" Location:" + currentItem.getLocation());
+        workspaceId = currentItem.getWorkspaceId();
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String frid = ((TextView) view.findViewById(R.id.textView_frid)).getText().toString();
+                String frid = ((TextView) view.findViewById(R.id.textView_frid)).getText().toString().substring(6);
+
                 Intent intent = new Intent(context.getApplicationContext(), EditFaultReportActivity.class);
+
                 intent.putExtra("frId", frid);
+                intent.putExtra("workspaceId", workspaceId);
                 context.startActivity(intent);
             }
         });

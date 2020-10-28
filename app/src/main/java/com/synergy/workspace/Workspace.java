@@ -72,6 +72,7 @@ public class Workspace extends AppCompatActivity {
                     mAdapter.notifyDataSetChanged();
                 } else progressDialog.dismiss();
                 Log.d(TAG, "onResponse: "+response.message());
+                Log.d(TAG, "onResponse: "+response.code());
             }
 
             @Override

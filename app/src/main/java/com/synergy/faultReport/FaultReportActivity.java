@@ -22,11 +22,18 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.JsonUtils;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.stream.JsonToken;
 import com.google.zxing.common.StringUtils;
 import com.synergy.APIClient;
 import com.synergy.R;
+
+import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -245,7 +253,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
                 } else
                     progressDialog.dismiss();
-                Toast.makeText(FaultReportActivity.this, "Error : " + response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -275,7 +282,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
                 } else
                     progressDialog.dismiss();
-                Toast.makeText(FaultReportActivity.this, "Error : " + response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -296,7 +302,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                     progressDialog.dismiss();
 
                     JsonArray jsonArrayofGenFaultCat = response.body();
-                    Toast.makeText(FaultReportActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < jsonArrayofGenFaultCat.size(); i++) {
                         String name = jsonArrayofGenFaultCat.get(i).getAsJsonObject().get("name").getAsString();
                         int id = jsonArrayofGenFaultCat.get(i).getAsJsonObject().get("id").getAsInt();
@@ -306,7 +311,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
                 } else
                     progressDialog.dismiss();
-                Toast.makeText(FaultReportActivity.this, "Error : " + response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -327,7 +331,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                     progressDialog.dismiss();
 
                     JsonArray jsonArrayofGenBuilding = response.body();
-                    Toast.makeText(FaultReportActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < jsonArrayofGenBuilding.size(); i++) {
                         String name = jsonArrayofGenBuilding.get(i).getAsJsonObject().get("name").getAsString();
                         int id = jsonArrayofGenBuilding.get(i).getAsJsonObject().get("id").getAsInt();
@@ -337,7 +340,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
                 } else
                     progressDialog.dismiss();
-                Toast.makeText(FaultReportActivity.this, "Error : " + response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -359,7 +361,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                     progressDialog.dismiss();
 
                     JsonArray jsonArrayofGenDiv = response.body();
-                    Toast.makeText(FaultReportActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < jsonArrayofGenDiv.size(); i++) {
                         String name = jsonArrayofGenDiv.get(i).getAsJsonObject().get("name").getAsString();
                         int id = jsonArrayofGenDiv.get(i).getAsJsonObject().get("id").getAsInt();
@@ -369,7 +370,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
                 } else
                     progressDialog.dismiss();
-                Toast.makeText(FaultReportActivity.this, "Error : " + response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -391,7 +391,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                     progressDialog.dismiss();
 
                     JsonArray jsonArrayofGenPriorty = response.body();
-                    Toast.makeText(FaultReportActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < jsonArrayofGenPriorty.size(); i++) {
                         String name = jsonArrayofGenPriorty.get(i).getAsJsonObject().get("name").getAsString();
                         int id = jsonArrayofGenPriorty.get(i).getAsJsonObject().get("id").getAsInt();
@@ -402,7 +401,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
                 } else
                     progressDialog.dismiss();
-                Toast.makeText(FaultReportActivity.this, "Error : " + response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -426,7 +424,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                     progressDialog.dismiss();
 
                     JsonArray jsonArrayofGenDep = response.body();
-                    Toast.makeText(FaultReportActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < jsonArrayofGenDep.size(); i++) {
                         String name = jsonArrayofGenDep.get(i).getAsJsonObject().get("name").getAsString();
                         int id = jsonArrayofGenDep.get(i).getAsJsonObject().get("id").getAsInt();
@@ -437,7 +434,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
                 } else
                     progressDialog.dismiss();
-                Toast.makeText(FaultReportActivity.this, "Error : " + response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -573,28 +569,28 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                     building, location, contactNo, dateStr, priority, maintGrp
                     , faultCategory, department, faultDesc, locDesc, division);
 
-            Call<Void> call = APIClient.getUserServices().createFault(createFaultRequestPojo, workSpaceid);
-            call.enqueue(new Callback<Void>() {
+            Call<FaultReportResponse> call = APIClient.getUserServices().createFault(createFaultRequestPojo, workSpaceid);
+            call.enqueue(new Callback<FaultReportResponse>() {
                 @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
+                public void onResponse(Call<FaultReportResponse> call, Response<FaultReportResponse> response) {
                     if (response.code() == 200) {
-                        Log.d(TAG, "onResponse: "+response);
-                        Log.d(TAG, "onResponse: "+response.body());
-
-                        Toast.makeText(FaultReportActivity.this, "Fault Report Created Successfully"+response.toString(),
-                                Toast.LENGTH_SHORT).show();
+                        //  Object jsonObject = response.body();
+                        /*  String frId = jsonObject.getFrId();*/
+                        Log.d(TAG, "onResponse: " + response.body());
                         Intent intent = new Intent(FaultReportActivity.this, BeforeImage.class);
-                        intent.putExtra("Frid", "df");
+                        //  intent.putExtra("Frid", frId);
                         startActivity(intent);
+                        Toast.makeText(FaultReportActivity.this, "Fault Report Created Successfully",
+                                Toast.LENGTH_SHORT).show();
                         finish();
                     } else
                         Toast.makeText(FaultReportActivity.this, "Error : " + response.code(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
-                public void onFailure(Call<Void> call, Throwable t) {
+                public void onFailure(Call<FaultReportResponse> call, Throwable t) {
 
-                    Toast.makeText(FaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_LONG).show();
                     Log.d(TAG, "onFailure:  " + t.getCause());
                     Log.d(TAG, "onFailure: " + t.getMessage());
                 }

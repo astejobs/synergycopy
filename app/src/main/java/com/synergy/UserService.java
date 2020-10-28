@@ -1,6 +1,11 @@
 package com.synergy;
 
+import com.google.android.gms.common.util.JsonUtils;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.stream.JsonToken;
 import com.synergy.EquipmentSearch.CheckListAddRequest;
 import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
@@ -8,9 +13,15 @@ import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
 import com.synergy.faultReport.CreateFaultRequestPojo;
 import com.synergy.faultReport.CreateResponse;
+import com.synergy.faultReport.FaultReportResponse;
+import com.synergy.faultReport.Model;
 import com.synergy.search.SearchResponse;
 
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,11 +29,16 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface UserService {
+    //login
+    @POST("authenticate")
+    @Headers("Content-Type: application/json")
+    Call<JsonObject> getLoggedIn(@Body UserRequest userRequest);
 
     //login to user account
     @POST("authenticate")
@@ -74,9 +90,9 @@ public interface UserService {
     //create fault
     @POST("faultreport")
     @Headers("Content-Type: application/json")
-    Call<Void> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo, @Header("workspace") String workspace);
+    Call<FaultReportResponse> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo, @Header("workspace") String workspace);
 
-    //get search https://ifarms.com.sg:8085/lsme/api/faultreport/search/?query=00005
+    //get search
     @GET("faultreport/search/?")
     @Headers("Content-Type: application/json")
     Call<List<SearchResponse>> getSearchResult(@Header("workspace") int dynamicWorkSpace,
@@ -121,5 +137,11 @@ public interface UserService {
     @POST("task/updateChecklists")
     @Headers("Content-Type: application/json")
     Call<List<CheckListAddRequest>> postCheckList(@Body List<CheckListAddRequest> checkListAddRequest);
+
+    //get edit fault details
+    @GET("faultreport/edit/{frid}")
+    @Headers("Content-Type: application/json")
+    Call<JsonObject> getEditfaultDetails(@Path("frid")String frid,
+                                   @Header("WorkspaceId")String workspaceId);
 
 }
