@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -30,10 +31,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.synergy.MainActivityLogin.SHARED_PREFS;
+
 public class Search extends AppCompatActivity {
     private String TAG;
     private String frId = "";
-    private String workspaceId;
+    private String workspaceId,token;
     private List<String> frIdList = new ArrayList<>();
 
 
@@ -47,6 +50,8 @@ public class Search extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        token=sharedPreferences.getString("token", "");
 
         ScrollView view = (ScrollView) findViewById(R.id.scrollViewSearch);
         view.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -98,7 +103,7 @@ public class Search extends AppCompatActivity {
         progressDialog.show();
 
         int workspace=1;
-        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspace, callQueryDependent);
+        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspace, callQueryDependent,token);
         call.enqueue(new Callback<List<SearchResponse>>() {
             @Override
             public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {

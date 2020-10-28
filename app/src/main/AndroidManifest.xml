@@ -20,6 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity">
         <activity android:name=".EquipmentSearch.CheckListActivity"/>
+        <activity android:name=".search.EditFaultReportActivity"/>
         <activity android:name=".EquipmentSearch.PmTaskActivity" />
         <activity android:name=".MainActivityLogin">
             <intent-filter>

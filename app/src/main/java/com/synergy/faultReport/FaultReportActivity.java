@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -47,6 +48,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.synergy.MainActivityLogin.SHARED_PREFS;
+
 public class FaultReportActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = "";
     String workSpaceid;
@@ -65,7 +68,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
     private Button buttonCreateFaultReport;
     private TextView datePickerEdit, timePickerEdit;
 
-    private String requestorName, locDesc, faultDesc;
+    private String requestorName, locDesc, faultDesc,token;
     String contactNo;
     String dateinStr, timeStr;
     int depId, locId, buildId, maintId, priroityId, faultId, divisionid;
@@ -85,6 +88,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         setContentView(R.layout.activity_fault_report);
         progressDialog = new ProgressDialog(FaultReportActivity.this);
         progressDialog.setTitle("Loading");
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        token=sharedPreferences.getString("token", "");
 
 
         Intent intent = getIntent();
@@ -237,7 +242,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
     private void callGenLoaction() {
 
-        Call<JsonArray> call = APIClient.getUserServices().getGenLocation();
+        Call<JsonArray> call = APIClient.getUserServices().getGenLocation(token);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -266,7 +271,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
     private void callSpinnerMaintGrp() {
 
-        Call<JsonArray> call = APIClient.getUserServices().getGenMaintGrp();
+        Call<JsonArray> call = APIClient.getUserServices().getGenMaintGrp(token);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -294,7 +299,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
     }
 
     private void callSpinnerFaultCat() {
-        Call<JsonArray> call = APIClient.getUserServices().getGenFaultCat();
+        Call<JsonArray> call = APIClient.getUserServices().getGenFaultCat(token);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -323,7 +328,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
     }
 
     private void callSpinnerBuilding() {
-        Call<JsonArray> call = APIClient.getUserServices().getGenBuildings();
+        Call<JsonArray> call = APIClient.getUserServices().getGenBuildings(token);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -353,7 +358,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
     private void callSpinnerGenDivision() {
         //http://192.168.1.106:8080/lsme/api/divisions/1
-        Call<JsonArray> call = APIClient.getUserServices().getGenDivisions();
+        Call<JsonArray> call = APIClient.getUserServices().getGenDivisions(token);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -383,7 +388,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
     private void callspinnerGenPriority() {
 
-        Call<JsonArray> call = APIClient.getUserServices().getGenproirity();
+        Call<JsonArray> call = APIClient.getUserServices().getGenproirity(token);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -416,7 +421,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
     private void callSpinerGenDep() {
         progressDialog.show();
-        Call<JsonArray> call = APIClient.getUserServices().getGenDep(workSpaceid);
+        Call<JsonArray> call = APIClient.getUserServices().getGenDep(workSpaceid,token);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -569,7 +574,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                     building, location, contactNo, dateStr, priority, maintGrp
                     , faultCategory, department, faultDesc, locDesc, division);
 
-            Call<FaultReportResponse> call = APIClient.getUserServices().createFault(createFaultRequestPojo, workSpaceid);
+            Call<FaultReportResponse> call = APIClient.getUserServices().createFault(createFaultRequestPojo, workSpaceid,token);
             call.enqueue(new Callback<FaultReportResponse>() {
                 @Override
                 public void onResponse(Call<FaultReportResponse> call, Response<FaultReportResponse> response) {

@@ -36,7 +36,7 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class CheckListActivity extends AppCompatActivity {
 
-    private String descType;
+    private String descType,token;
     private LinearLayout linearLayout;
     private Button saveButton;
     private final List<EditText> remarksEditTextList = new ArrayList<>();
@@ -49,6 +49,9 @@ public class CheckListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_list);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        token=sharedPreferences.getString("token", "");
+
 
         linearLayout = findViewById(R.id.linearLayoutCheck);
         saveButton = findViewById(R.id.saveButtonCheckList);
@@ -98,8 +101,7 @@ public class CheckListActivity extends AppCompatActivity {
             CheckListAddRequest checkListAddRequest = new CheckListAddRequest(id, taskId, objectName, remarks);
             checkListAddRequestList.add(checkListAddRequest);
         }
-        Call<List<CheckListAddRequest>> saveCall = APIClient.getUserServices().postCheckList(checkListAddRequestList, token);
-
+        Call<List<CheckListAddRequest>> saveCall = APIClient.getUserServices().postCheckList(checkListAddRequestList);
         saveCall.enqueue(new Callback<List<CheckListAddRequest>>() {
             @Override
             public void onResponse(Call<List<CheckListAddRequest>> call, Response<List<CheckListAddRequest>> response) {
@@ -126,8 +128,7 @@ public class CheckListActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Getting Checklist");
         progressDialog.show();
-        Call<List<GetCheckListResponse>> checkListResponseCall = APIClient.getUserServices().getChecklist(String.valueOf(taskId), token);
-        checkListResponseCall.enqueue(new Callback<List<GetCheckListResponse>>() {
+        Call<List<GetCheckListResponse>> checkListResponseCall = APIClient.getUserServices().getChecklist(String.valueOf(taskId));        checkListResponseCall.enqueue(new Callback<List<GetCheckListResponse>>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<List<GetCheckListResponse>> call, Response<List<GetCheckListResponse>> response) {

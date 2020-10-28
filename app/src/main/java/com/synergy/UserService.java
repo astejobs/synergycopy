@@ -86,8 +86,8 @@ public interface UserService {
     //create fault
     @POST("faultreport")
     @Headers("Content-Type: application/json")
-    Call<FaultReportResponse> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo, @Header("workspace") String workspace, @Header("Authorization") String token);
-    //Call<Void> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo, @Header("workspace") String workspace, @Header("X-Auth-Token") String token);
+    Call<FaultReportResponse> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo,
+                                          @Header("workspace") String workspace, @Header("Authorization") String token);
 
     //get search
     @GET("faultreport/search/?")
@@ -148,5 +148,10 @@ public interface UserService {
     Call<JsonObject> getEditfaultDetails(@Path("frid") String frid,
                                          @Header("WorkspaceId") String workspaceId,
                                          @Header("Authorization") String token);
+    //to get the technician list
+    @GET("ws/techlist4")
+    @Headers("Content-Type: application/json")
+    Call<JsonArray> technicianCall(@Header("Authorization") String token,
+                                                      @Header("workspace") String workspace);
 
 }

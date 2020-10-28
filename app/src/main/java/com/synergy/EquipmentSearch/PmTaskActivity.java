@@ -64,7 +64,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private ProgressDialog mProgress;
     private ArrayAdapter<String> statusSpinnerAdapter;
     private final List<String> statusList = new ArrayList<>();
-    private String taskNumberString;
+    private String taskNumberString,token;
     private ProgressDialog updateProgress;
     private Button checkListButton;
     private long scheduleDate;
@@ -73,6 +73,9 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pm_task);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        token=sharedPreferences.getString("token", "");
+
 
         taskNumberTextView = findViewById(R.id.textViewTaskNumberPm);
         scheduleNumberTextView = findViewById(R.id.textViewScheduleNumberPm);
@@ -179,8 +182,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         mProgress.show();
         taskNumberTextView.setText(taskNumberString);
 
-        Call<GetPmTaskItemsResponse> callPmTask = APIClient.getUserServices().getCallPmTask(String.valueOf(taskId), token);
-        callPmTask.enqueue(new Callback<GetPmTaskItemsResponse>() {
+        Call<GetPmTaskItemsResponse> callPmTask = APIClient.getUserServices().getCallPmTask(String.valueOf(taskId));        callPmTask.enqueue(new Callback<GetPmTaskItemsResponse>() {
             @Override
             public void onResponse(Call<GetPmTaskItemsResponse> call, Response<GetPmTaskItemsResponse> response) {
                 mProgress.dismiss();
@@ -315,8 +317,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private void updatePmTaskService(GetUpdatePmTaskRequest getUpdatePmTaskRequest, String token) {
         updateProgress.show();
 
-        Call<GetUpdatePmTaskResponse> callTaskUpdate = APIClient.getUserServices().postPmTaskUpdate(getUpdatePmTaskRequest, token);
-
+        Call<GetUpdatePmTaskResponse> callTaskUpdate = APIClient.getUserServices().postPmTaskUpdate(getUpdatePmTaskRequest);
         callTaskUpdate.enqueue(new Callback<GetUpdatePmTaskResponse>() {
             @Override
             public void onResponse(Call<GetUpdatePmTaskResponse> call, Response<GetUpdatePmTaskResponse> response) {

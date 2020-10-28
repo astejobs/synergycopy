@@ -43,6 +43,9 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equipment_search);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        token=sharedPreferences.getString("token", "");
+
 
         btn = findViewById(R.id.qr_btn_click);
         scanTextView = findViewById(R.id.scan_tv);
@@ -92,8 +95,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         mProgress.show();
 
         Log.d("TAG", "callQrCodeSearch: " + result);
-        Call<EquipmentSearchResponse> callEquipment = APIClient.getUserServices().getCallEquipment(result, token);
-        callEquipment.enqueue(new Callback<EquipmentSearchResponse>() {
+        Call<EquipmentSearchResponse> callEquipment = APIClient.getUserServices().getCallEquipment(result);        callEquipment.enqueue(new Callback<EquipmentSearchResponse>() {
             @Override
             public void onResponse(Call<EquipmentSearchResponse> call, Response<EquipmentSearchResponse> response) {
                 if (response.code() == 200) {

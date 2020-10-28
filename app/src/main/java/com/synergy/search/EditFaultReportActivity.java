@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -39,6 +40,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.synergy.MainActivityLogin.SHARED_PREFS;
+
 public class EditFaultReportActivity extends AppCompatActivity {
 
 
@@ -56,7 +59,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private Spinner statusSpinner, technicianSpinner, costCenterSpinner, mainGrpSpinner,
             faultCategorySpinner, divisionSpinner, locationSpinner, buildingSpinner, prioritySpinner, deptSpinner;
     private TextView timePickerResponse, timePickerStart, timePickerEnd, datePickerResponse, datePickerStart, datePickerEnd;
-    private String requestorName;
+    private String requestorName,token;
     private String remarksString, startTimeString;
     private String locationString, locDesc, faultDetailString, locationName;
     private long startDateLong;
@@ -81,7 +84,11 @@ public class EditFaultReportActivity extends AppCompatActivity {
     List<list> genralFaultCatList = new ArrayList<list>();
     List<list> genralFaultMaintGrp = new ArrayList<list>();
     List<list> genralLoaction = new ArrayList<list>();
+    List<list> genralStatusList = new ArrayList<list>();
+    List<list> genralTechnicalList = new ArrayList<list>();
 
+    private ArrayAdapter<list> statusListAdapter;
+    private ArrayAdapter<list> technicalListAdapter;
     private ArrayAdapter<list> deptListAdapter;
     private ArrayAdapter<list> priAdapter;
     private ArrayAdapter<list> divisionAdapter;
@@ -102,14 +109,14 @@ public class EditFaultReportActivity extends AppCompatActivity {
         datePicker();
         timePickerMethod();
 
-      /*  spinnerCalls();
-        initviewsAndGetInitialData();*/
+       spinnerCalls();
+        initviewsAndGetInitialData();
     }
 
     private void spinnerCalls() {
 
         progressDialog.setTitle("Loading...");
-            Call<JsonArray> call = APIClient.getUserServices().getGenLocation();
+            Call<JsonArray> call = APIClient.getUserServices().getGenLocation(token);
             call.enqueue(new Callback<JsonArray>() {
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -138,7 +145,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
 
-            Call<JsonArray> call2 = APIClient.getUserServices().getGenMaintGrp();
+            Call<JsonArray> call2 = APIClient.getUserServices().getGenMaintGrp(token);
             call2.enqueue(new Callback<JsonArray>() {
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -166,7 +173,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
 
-            Call<JsonArray> call3 = APIClient.getUserServices().getGenFaultCat();
+            Call<JsonArray> call3 = APIClient.getUserServices().getGenFaultCat(token);
             call3.enqueue(new Callback<JsonArray>() {
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -195,7 +202,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
 
-            Call<JsonArray> call4 = APIClient.getUserServices().getGenBuildings();
+            Call<JsonArray> call4 = APIClient.getUserServices().getGenBuildings(token);
             call4.enqueue(new Callback<JsonArray>() {
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -224,8 +231,35 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
 
+        /*    Call<JsonArray> callTechAllGet = APIClient.getUserServices().technicianCall(token, workspaceString);
+            callTechAllGet.enqueue(new Callback<JsonArray>() {
+                @Override
+                public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+
+                    JsonArray jsonarraytech = response.body();
+
+                    for (int i = 0; i < jsonarraytech.size(); i++) {
+                        String name = jsonarraytech.get(i).getAsJsonObject().get("name").getAsString();
+                        int id = jsonarraytech.get(i).getAsJsonObject().get("id").getAsInt();
+                        genralTechnicalList.add(new list(name, id));
+                        technicianSpinner.setAdapter(technicalListAdapter);
+                    }
+                    technicianSpinner.setAdapter(technicalListAdapter);
+
+
+                }
+
+                @Override
+                public void onFailure(Call<JsonArray> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(EditFaultReportActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });*/
+
+
+
             //http://192.168.1.106:8080/lsme/api/divisions/1
-            Call<JsonArray> call5 = APIClient.getUserServices().getGenDivisions();
+            Call<JsonArray> call5 = APIClient.getUserServices().getGenDivisions(token);
             call5.enqueue(new Callback<JsonArray>() {
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -237,8 +271,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
                             String name = jsonArrayofGenDiv.get(i).getAsJsonObject().get("name").getAsString();
                             int id = jsonArrayofGenDiv.get(i).getAsJsonObject().get("id").getAsInt();
                             genralDivisionList.add(new list(name, id));
-                            divisionSpinner.setAdapter(divisionAdapter);
-                        }
+
+                        } divisionSpinner.setAdapter(divisionAdapter);
 
                     } else
                         progressDialog.dismiss();
@@ -254,7 +288,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
 
-            Call<JsonArray> call6 = APIClient.getUserServices().getGenproirity();
+            Call<JsonArray> call6 = APIClient.getUserServices().getGenproirity(token);
             call6.enqueue(new Callback<JsonArray>() {
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -287,7 +321,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
             progressDialog.show();
-            Call<JsonArray> call7 = APIClient.getUserServices().getGenDep(workSpaceid);
+            Call<JsonArray> call7 = APIClient.getUserServices().getGenDep(workSpaceid,token);
             call7.enqueue(new Callback<JsonArray>() {
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -358,6 +392,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
         fab_before = findViewById(R.id.before_id);
         fab_after = findViewById(R.id.after_id);
         fab_esc = findViewById(R.id.esc_id);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        token=sharedPreferences.getString("token", "");
+
         spinnerSet();
     }
 
@@ -365,7 +402,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         Intent i = getIntent();
         frid = i.getStringExtra("frId");
         workSpaceid = i.getStringExtra("workspaceId");
-        Call<JsonObject> call = APIClient.getUserServices().getEditfaultDetails(frid, workSpaceid);
+        Call<JsonObject> call = APIClient.getUserServices().getEditfaultDetails(frid, workSpaceid,token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -375,22 +412,45 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     frIdEditText.setText(jsonObject.get("frId").getAsString());
                     reqNameEditText.setText(jsonObject.get("requestorName").getAsString());
                     requestorNumberEditText.setText(jsonObject.get("requestorContactNo").getAsString());
-                    actionTakenEditText.setText(jsonObject.get("actionTaken").getAsString());
-                    observationEditText.setText(jsonObject.get("observation").getAsString());
-                    equipmentTextView.setText(jsonObject.get("equipment").getAsString());
-                    datePickerEnd.setText(jsonObject.get("endDate").getAsString());
+
+                   String lname= jsonObject.get("location").getAsJsonObject().get("name").getAsString();
+                   if (genralLoaction.equals(lname)){
+                       locationSpinner.setSelection(Integer.parseInt(lname));
+                   }
+                    String buildingname= jsonObject.get("location").getAsJsonObject().get("name").getAsString();
+                    if (genralBuildingList.equals(buildingname)){
+                        buildingSpinner.setSelection(Integer.parseInt(buildingname));
+                    }
+                    String divisionname= jsonObject.get("location").getAsJsonObject().get("name").getAsString();
+                    if (genralDivisionList.contains(divisionname)){
+                        divisionSpinner.setSelection(Integer.parseInt(divisionname));
+                    }
+                    String deptname= jsonObject.get("location").getAsJsonObject().get("name").getAsString();
+                    if (genralDepList.equals(deptname)){
+                        deptSpinner.setSelection(Integer.parseInt(deptname));
+                    }
+                    String prirityname= jsonObject.get("location").getAsJsonObject().get("name").getAsString();
+                    if (genralPriorityList.equals(prirityname)){
+                        prioritySpinner.setSelection(Integer.parseInt(prirityname));
+                    }
+                    String maintname= jsonObject.get("location").getAsJsonObject().get("name").getAsString();
+                    if (genralFaultMaintGrp.equals(maintname)){
+                        mainGrpSpinner.setSelection(Integer.parseInt(maintname));
+                    }
+                    String faulname= jsonObject.get("location").getAsJsonObject().get("name").getAsString();
+                    if (genralFaultCatList.equals(faulname)){
+                        faultCategorySpinner.setSelection(Integer.parseInt(faulname));
+                    }
+
+
+                  /*  datePickerEnd.setText(jsonObject.get("endDate").getAsString());
                     datePickerStart.setText(jsonObject.get("startDate").getAsString());
                     timePickerEnd.setText(jsonObject.get("endTime").getAsString());
                     timePickerStart.setText(jsonObject.get("startTime").getAsString());
                     locDescEditText.setText(jsonObject.get("location").getAsJsonObject().get("description").getAsString());
                     faultDetailsEditText.setText(jsonObject.get("faultCategory").getAsJsonObject().get("description").getAsString());
                     labourHoursEditText.setText(jsonObject.get("labourHrs").getAsString());
-
-
-
-
-
-
+*/
 
                 }
             }
@@ -402,8 +462,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
             }
         });
-        //http://192.168.1.117:8080/lsme/api/faultreport/edit/FR-DEMO-102020-00010
-
     }
 
     private void spinnerSet() {
@@ -420,7 +478,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         buildingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         buildingSpinner.setAdapter(buildingAdapter);
 
-        locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDepList);
+        locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralLoaction);
         locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(locationAdapter);
 
@@ -435,6 +493,15 @@ public class EditFaultReportActivity extends AppCompatActivity {
         faultCatAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralFaultCatList);
         faultCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         faultCategorySpinner.setAdapter(faultCatAdapter);
+
+        technicalListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralTechnicalList);
+        technicalListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        technicianSpinner.setAdapter(technicalListAdapter);
+
+        statusListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralStatusList);
+        statusListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(statusListAdapter);
+
 
 
 

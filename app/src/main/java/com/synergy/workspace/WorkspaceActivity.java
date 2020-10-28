@@ -34,6 +34,7 @@ public class WorkspaceActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     ProgressDialog progressDialog;
     private Toolbar toolbar;
+    String token;
 
 
     @Override
@@ -41,12 +42,13 @@ public class WorkspaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
         toolbar = findViewById(R.id.toolbar_workspace);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        token=sharedPreferences.getString("token", "");
+
         recyclerView = findViewById(R.id.recycler_view_workspace);
         progressDialog = new ProgressDialog(WorkspaceActivity.this);
         progressDialog.setTitle("Loading");
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", "");
 
         callForWorkspace(token);
 
