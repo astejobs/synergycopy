@@ -24,10 +24,15 @@ import retrofit2.http.Path;
 
 public interface UserService {
 
+    //login to user account
+    @POST("authenticate")
+    @Headers("Content-Type: application/json")
+    Call<UserResponse> saveUser(@Body UserRequest userRequest );
+
+    //generate workspace
     @GET("workspaces")
     @Headers("Content-Type: application/json")
     Call<JsonArray> getWorkspace();
-
 
     //gen dep for fault
     @GET("general/departments/1")

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -15,8 +14,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,10 +26,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivityLogin extends AppCompatActivity {
@@ -81,8 +85,8 @@ public class MainActivityLogin extends AppCompatActivity {
                 passwordString = passwordEdit.getText().toString();
 
                 Toast.makeText(MainActivityLogin.this, ""+nameString   + passwordString, Toast.LENGTH_SHORT).show();
-                UserRequest userRequest = new UserRequest(nameString, passwordString, deviceGCM);
-                saveUser(userRequest);
+                UserRequest userRequest = new UserRequest(nameString, passwordString);
+                loginUser(userRequest);
                 saveData(userTokenReceived);
             }
         });
@@ -103,9 +107,9 @@ public class MainActivityLogin extends AppCompatActivity {
         nameString = sharedPreferences.getString(TEXT1, "");
         passwordString = sharedPreferences.getString(PASSWORD1, "");
         String userToken = sharedPreferences.getString("token", "");
-        UserRequest request = new UserRequest(nameString, passwordString, deviceGCM);
+        UserRequest request = new UserRequest(nameString, passwordString);
         if (!nameString.equals("")) {
-            saveUser(request);
+            loginUser(request);
         }
     }
 
@@ -151,16 +155,33 @@ public class MainActivityLogin extends AppCompatActivity {
         return context.getSharedPreferences("_", MODE_PRIVATE).getString("fcm_token", "empty");
     }
 
-    public void saveUser(UserRequest userRequest) {
+    public void loginUser(UserRequest userRequest) {
 
-/*
         mProgress = new ProgressDialog(MainActivityLogin.this);
         mProgress.setTitle("Authenticating...");
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
         mProgress.show();
 
-        Call<UserResponse> call = APIClient.getUserServices().saveUser(userRequest);
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                //.baseUrl("http://192.168.1.112:8080/lsme/api/")
+                //.baseUrl("http://ifarms.com.sg:8086/api/")
+                .baseUrl("http://192.168.1.117:8082/api/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create()))
+                .client(okHttpClient)
+                .build();
+
+        UserService userService = retrofit.create(UserService.class);
+        Call<UserResponse> call = userService.saveUser(userRequest);
 
         call.enqueue(new Callback<UserResponse>() {
             @Override
@@ -168,7 +189,7 @@ public class MainActivityLogin extends AppCompatActivity {
                 mProgress.dismiss();
                 if (response.code() == 200) {
                   String workspace=response.body().getWorkspaceId();
-                    Toast.makeText(MainActivityLogin.this, "hi : "+workspace, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivityLogin.this, "Hi: "+workspace, Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 202) {
                     Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_SHORT).show();
                 } else
@@ -181,6 +202,5 @@ public class MainActivityLogin extends AppCompatActivity {
                 Toast.makeText(MainActivityLogin.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-*/
     }
 }

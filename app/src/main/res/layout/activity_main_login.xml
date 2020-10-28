@@ -15,7 +15,6 @@
         android:layout_marginRight="20dp"
         android:padding="20dp"
         android:orientation="vertical"
-        android:src="@drawable/stie"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -82,7 +81,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:background="#ffffff"
+            android:background="@drawable/mybutton"
             android:padding="10dp"
             android:shadowColor="#c4c9d6"
             android:text="Login"

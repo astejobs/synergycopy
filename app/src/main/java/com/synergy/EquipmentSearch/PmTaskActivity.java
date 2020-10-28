@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.SimpleTimeZone;
 
 public class PmTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -81,9 +82,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         briefDescTextView = findViewById(R.id.textViewBriefDescriptionPm);
         scheduleDateTextView = findViewById(R.id.textViewScheduleDatePm);
         datePickerEdit = findViewById(R.id.date_picker_pmtasksPm);
-        datePickerEdit.setEnabled(false);
         timePickerEdit = findViewById(R.id.time_picker_pmtasks);
-        timePickerEdit.setEnabled(false);
         buttonUpdate = findViewById(R.id.buttonUpdateTaskPm);
         buttonUpdate.setEnabled(false);
         statusSpinner = findViewById(R.id.spinner_status_pmtasks);
@@ -209,6 +208,18 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                             dateStr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                         }
                         scheduleDateTextView.setText(dateStr);
+                    }
+                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                    if (getPmTaskItemsResponse.getCompDate() != 0) {
+                        long compDate = (long) getPmTaskItemsResponse.getCompDate();
+                        cal.setTimeInMillis(compDate);
+                        String date = String.valueOf(DateFormat.format("dd-MM-yyyy", cal));
+                        datePickerEdit.setText(date);
+                    }
+                    if (getPmTaskItemsResponse.getCompTime() != 0) {
+                        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                        String dateString = formatter.format(getPmTaskItemsResponse.getCompTime());
+                        timePickerEdit.setText(dateString);
                     }
                     if (getPmTaskItemsResponse.getStatus() != null) {
                         statusList.add(getPmTaskItemsResponse.getStatus());
