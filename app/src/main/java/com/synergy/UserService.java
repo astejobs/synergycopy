@@ -35,15 +35,11 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface UserService {
-    //login
-    @POST("authenticate")
-    @Headers("Content-Type: application/json")
-    Call<JsonObject> getLoggedIn(@Body UserRequest userRequest);
 
     //login to user account
     @POST("authenticate")
     @Headers("Content-Type: application/json")
-    Call<UserResponse> saveUser(@Body UserRequest userRequest );
+    Call<UserResponse> saveUser(@Body UserRequest userRequest);
 
     //generate workspace
     @GET("workspaces")
@@ -53,44 +49,44 @@ public interface UserService {
     //gen dep for fault
     @GET("general/departments/1")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenDep(@Header("workspaceId") String workspaceId, @Header("X-Auth-Token") String token);
+    Call<JsonArray> getGenDep(@Header("workspaceId") String workspaceId, @Header("Authorization") String token);
 
     //gen priority for fault
     @GET("general/priorty/1")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenproirity(@Header("X-Auth-Token") String token);
+    Call<JsonArray> getGenproirity(@Header("Authorization") String token);
 
 
     //gen division for fault
     @GET("general/divisions/1")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenDivisions(@Header("X-Auth-Token") String token);
+    Call<JsonArray> getGenDivisions(@Header("Authorization") String token);
 
     //get building for fault
 
     @GET("general/buildings/1")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenBuildings(@Header("X-Auth-Token") String token);
+    Call<JsonArray> getGenBuildings(@Header("Authorization") String token);
 
     //get fayult caTegories for fault
     @GET("general/faultCategories/1")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenFaultCat(@Header("X-Auth-Token") String token);
+    Call<JsonArray> getGenFaultCat(@Header("Authorization") String token);
 
     //get fault maint grp
     @GET("general/maintenanceGrpCategory/1")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenMaintGrp(@Header("X-Auth-Token") String token);
+    Call<JsonArray> getGenMaintGrp(@Header("Authorization") String token);
 
     //get fault location grp
     @GET("general/locations/1")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenLocation(@Header("X-Auth-Token") String token);
+    Call<JsonArray> getGenLocation(@Header("Authorization") String token);
 
     //create fault
     @POST("faultreport")
     @Headers("Content-Type: application/json")
-    Call<FaultReportResponse> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo, @Header("workspace") String workspace);
+    Call<FaultReportResponse> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo, @Header("workspace") String workspace, @Header("Authorization") String token);
     //Call<Void> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo, @Header("workspace") String workspace, @Header("X-Auth-Token") String token);
 
     //get search
@@ -98,7 +94,7 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<List<SearchResponse>> getSearchResult(@Header("workspace") int dynamicWorkSpace,
                                                @Query("query") String param,
-                                               @Header("X-Auth-Token") String token);
+                                               @Header("Authorization") String token);
     //before image upload http://ifarms.com.sg:8086/lsme/api/faultreport/beforeimage
    /* @POST("ws/upload{before}image")
     @Headers("Content-Type: application/json")
@@ -111,7 +107,7 @@ public interface UserService {
     @GET("equip/{equipmentCode}")
     @Headers("Content-Type: application/json")
     Call<EquipmentSearchResponse> getCallEquipment(@Path("equipmentCode") String path,
-                                                   @Header("X-Auth-Token") String token);
+                                                   @Header("Authorization") String token);
 
 
     //getEquipment Scan code
@@ -119,37 +115,38 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<List<TaskResponse>> getTaskOnQrList(@Path("equipmentCode") String path,
                                              @Path("status") String status,
-                                             @Header("X-Auth-Token") String token);
+                                             @Header("Authorization") String token);
 
 
     //pm View Task
     @GET("task/{id}")
     @Headers("Content-Type: application/json")
     Call<GetPmTaskItemsResponse> getCallPmTask(@Path("id") String id,
-                                               @Header("X-Auth-Token") String token);
+                                               @Header("Authorization") String token);
 
     //Update pm task
     @PUT("task/updateTask")
     @Headers("Content-Type: application/json")
     Call<GetUpdatePmTaskResponse> postPmTaskUpdate(@Body GetUpdatePmTaskRequest getUpdatePmTaskRequest,
-                                                   @Header("X-Auth-Token") String token);
+                                                   @Header("Authorization") String token);
 
     //checklistActivityView
     @GET("task/{path}/checklist")
     @Headers("Content-Type: application/json")
     Call<List<GetCheckListResponse>> getChecklist(@Path("path") String path,
-                                                  @Header("X-Auth-Token") String token);
+                                                  @Header("Authorization") String token);
 
     //checkListActivitiesSave
     @POST("task/updateChecklists")
     @Headers("Content-Type: application/json")
     Call<List<CheckListAddRequest>> postCheckList(@Body List<CheckListAddRequest> checkListAddRequest,
-                                                  @Header("X-Auth-Token") String token);
+                                                  @Header("Authorization") String token);
 
     //get edit fault details
     @GET("faultreport/edit/{frid}")
     @Headers("Content-Type: application/json")
-    Call<JsonObject> getEditfaultDetails(@Path("frid")String frid,
-                                   @Header("WorkspaceId")String workspaceId);
+    Call<JsonObject> getEditfaultDetails(@Path("frid") String frid,
+                                         @Header("WorkspaceId") String workspaceId,
+                                         @Header("Authorization") String token);
 
 }
