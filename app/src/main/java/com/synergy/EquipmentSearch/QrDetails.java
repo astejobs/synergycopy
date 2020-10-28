@@ -41,7 +41,7 @@ public class QrDetails extends AppCompatActivity {
     private ProgressDialog mProgress;
     private ArrayList<String> frIdList = new ArrayList();
     private ListView listView;
-    private String equipmentCode,token;
+    private String equipmentCode;
     private ArrayList<String> taskNumberList = new ArrayList<>();
     private ArrayAdapter<String> listAdapter;
 
@@ -49,9 +49,6 @@ public class QrDetails extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_details);
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        token=sharedPreferences.getString("token", "");
-
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
@@ -137,7 +134,8 @@ public class QrDetails extends AppCompatActivity {
         mProgress.setTitle("Loading tasks...");
         mProgress.show();
 
-        Call<List<TaskResponse>> call = APIClient.getUserServices().getTaskOnQrList(equipmentCode, status);        call.enqueue(new Callback<List<TaskResponse>>() {
+        Call<List<TaskResponse>> call = APIClient.getUserServices().getTaskOnQrList(equipmentCode, status, token);
+        call.enqueue(new Callback<List<TaskResponse>>() {
             @Override
             public void onResponse(Call<List<TaskResponse>> call, Response<List<TaskResponse>> response) {
                 mProgress.dismiss();
