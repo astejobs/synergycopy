@@ -8,6 +8,7 @@ import retrofit2.Response;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -31,6 +32,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.synergy.MainActivityLogin.SHARED_PREFS;
+
 public class CheckListActivity extends AppCompatActivity {
 
     private String descType;
@@ -51,22 +54,25 @@ public class CheckListActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.saveButtonCheckList);
         saveButton.setEnabled(false);
 
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
+
         Intent intent = getIntent();
         int taskId = intent.getIntExtra("taskId", 0);
 
-        getCheckList(taskId);
+        getCheckList(taskId, token);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveChecklist(taskId);
+                saveChecklist(taskId, token);
             }
         });
 
 
     }
 
-    private void saveChecklist(int taskId) {
+    private void saveChecklist(int taskId, String token) {
 
         ProgressDialog mProgress = new ProgressDialog(this);
         mProgress.setIndeterminate(true);
@@ -92,7 +98,7 @@ public class CheckListActivity extends AppCompatActivity {
             CheckListAddRequest checkListAddRequest = new CheckListAddRequest(id, taskId, objectName, remarks);
             checkListAddRequestList.add(checkListAddRequest);
         }
-        Call<List<CheckListAddRequest>> saveCall = APIClient.getUserServices().postCheckList(checkListAddRequestList);
+        Call<List<CheckListAddRequest>> saveCall = APIClient.getUserServices().postCheckList(checkListAddRequestList, token);
 
         saveCall.enqueue(new Callback<List<CheckListAddRequest>>() {
             @Override
@@ -114,13 +120,13 @@ public class CheckListActivity extends AppCompatActivity {
         });
     }
 
-    private void getCheckList(int taskId) {
+    private void getCheckList(int taskId, String token) {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Getting Checklist");
         progressDialog.show();
-        Call<List<GetCheckListResponse>> checkListResponseCall = APIClient.getUserServices().getChecklist(String.valueOf(taskId));
+        Call<List<GetCheckListResponse>> checkListResponseCall = APIClient.getUserServices().getChecklist(String.valueOf(taskId), token);
         checkListResponseCall.enqueue(new Callback<List<GetCheckListResponse>>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

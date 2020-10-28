@@ -10,6 +10,7 @@ import retrofit2.Response;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 import com.synergy.APIClient;
 import com.synergy.R;
+
+import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class EquipmentSearchActivity extends AppCompatActivity {
 
@@ -51,6 +54,9 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
 
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
+
         Intent intent = getIntent();
         workspace = intent.getStringExtra("workspaceId");
 
@@ -72,7 +78,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     codeScannerView.setVisibility(View.INVISIBLE);
-                                    callQrCodeSearch(result.getText());
+                                    callQrCodeSearch(result.getText(),token);
                                 }
                             });
                         }
@@ -82,11 +88,11 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         }
     }
 
-    private void callQrCodeSearch(String result) {
+    private void callQrCodeSearch(String result, String token) {
         mProgress.show();
 
         Log.d("TAG", "callQrCodeSearch: " + result);
-        Call<EquipmentSearchResponse> callEquipment = APIClient.getUserServices().getCallEquipment(result);
+        Call<EquipmentSearchResponse> callEquipment = APIClient.getUserServices().getCallEquipment(result, token);
         callEquipment.enqueue(new Callback<EquipmentSearchResponse>() {
             @Override
             public void onResponse(Call<EquipmentSearchResponse> call, Response<EquipmentSearchResponse> response) {

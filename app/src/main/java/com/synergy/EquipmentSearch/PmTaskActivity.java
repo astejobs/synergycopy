@@ -10,6 +10,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -42,6 +43,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.SimpleTimeZone;
+
+import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class PmTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -115,14 +118,17 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         taskNumberString = intent.getStringExtra("taskNumber");
         int taskId = intent.getIntExtra("taskId", 0);
 
-        getPmTask(taskNumberString, taskId);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
+
+        getPmTask(taskNumberString, taskId, token);
 
 
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    updateTaskMethod(taskId);
+                    updateTaskMethod(taskId, token);
                 }
             }
         });
@@ -139,7 +145,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void updateTaskMethod(int taskId) {
+    private void updateTaskMethod(int taskId, String token) {
         String timeString = timePickerEdit.getText().toString();
         String dateString = datePickerEdit.getText().toString();
         String completedByString = nameTextView.getText().toString();
@@ -161,7 +167,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         if (!nameTextView.getText().toString().isEmpty() && !remarksTextView.getText().toString().isEmpty()) {
             /*LocalDate now = Instant.ofEpochMilli((long) scheduleDate).atZone(ZoneId.systemDefault()).toLocalDate();
             if (!now.isBefore(LocalDate.now())) {*/
-            updatePmTaskService(getUpdatePmTaskRequest);
+            updatePmTaskService(getUpdatePmTaskRequest, token);
             /*} else
                 Toast.makeText(PmTaskActivity.this, "Overdue tasks cannot be updated.", Toast.LENGTH_SHORT).show();
         */
@@ -169,11 +175,11 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
             Toast.makeText(PmTaskActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
     }
 
-    private void getPmTask(String taskNumberString, int taskId) {
+    private void getPmTask(String taskNumberString, int taskId, String token) {
         mProgress.show();
         taskNumberTextView.setText(taskNumberString);
 
-        Call<GetPmTaskItemsResponse> callPmTask = APIClient.getUserServices().getCallPmTask(String.valueOf(taskId));
+        Call<GetPmTaskItemsResponse> callPmTask = APIClient.getUserServices().getCallPmTask(String.valueOf(taskId), token);
         callPmTask.enqueue(new Callback<GetPmTaskItemsResponse>() {
             @Override
             public void onResponse(Call<GetPmTaskItemsResponse> call, Response<GetPmTaskItemsResponse> response) {
@@ -306,10 +312,10 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
 
     }
 
-    private void updatePmTaskService(GetUpdatePmTaskRequest getUpdatePmTaskRequest) {
+    private void updatePmTaskService(GetUpdatePmTaskRequest getUpdatePmTaskRequest, String token) {
         updateProgress.show();
 
-        Call<GetUpdatePmTaskResponse> callTaskUpdate = APIClient.getUserServices().postPmTaskUpdate(getUpdatePmTaskRequest);
+        Call<GetUpdatePmTaskResponse> callTaskUpdate = APIClient.getUserServices().postPmTaskUpdate(getUpdatePmTaskRequest, token);
 
         callTaskUpdate.enqueue(new Callback<GetUpdatePmTaskResponse>() {
             @Override

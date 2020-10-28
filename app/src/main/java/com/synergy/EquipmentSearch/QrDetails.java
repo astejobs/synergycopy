@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class QrDetails extends AppCompatActivity {
 
@@ -75,6 +78,9 @@ public class QrDetails extends AppCompatActivity {
         searchFaultButton = findViewById(R.id.first_btn);
         searchTaskButton = findViewById(R.id.second_btn);
 
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
+
         searchFaultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +91,7 @@ public class QrDetails extends AppCompatActivity {
         searchTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog();
+                dialog(token);
             }
         });
     }
@@ -95,7 +101,7 @@ public class QrDetails extends AppCompatActivity {
         mProgress.dismiss();
     }
 
-    private void dialog() {
+    private void dialog(String token) {
         AlertDialog alertDialog = new AlertDialog.Builder(QrDetails.this).create(); //Read Update
         LayoutInflater layoutInflater = this.getLayoutInflater();
         View radioLayoutView = layoutInflater.inflate(R.layout.custom_dialog_radio_layout_qr, null);
@@ -111,7 +117,7 @@ public class QrDetails extends AppCompatActivity {
                 RadioButton radioSelectedButton = radioGroup.findViewById(selectedId);
                 String status = radioSelectedButton.getText().toString();
                 status = status.substring(0, status.length() - 6);
-                loadTaskOnEq(status);
+                loadTaskOnEq(status, token);
             }
         });
         alertDialog.setButton(Dialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
@@ -122,13 +128,13 @@ public class QrDetails extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void loadTaskOnEq(String status) {
+    private void loadTaskOnEq(String status, String token) {
         taskNumberList.clear();
         listView.setAdapter(listAdapter);
         mProgress.setTitle("Loading tasks...");
         mProgress.show();
 
-        Call<List<TaskResponse>> call = APIClient.getUserServices().getTaskOnQrList(equipmentCode, status);
+        Call<List<TaskResponse>> call = APIClient.getUserServices().getTaskOnQrList(equipmentCode, status, token);
         call.enqueue(new Callback<List<TaskResponse>>() {
             @Override
             public void onResponse(Call<List<TaskResponse>> call, Response<List<TaskResponse>> response) {
