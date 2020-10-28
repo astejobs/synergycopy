@@ -36,7 +36,6 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     private CodeScannerView codeScannerView;
     private TextView scanTextView;
     private Button btn;
-    private String workspace;
     private ProgressDialog mProgress;
 
     @Override
@@ -59,7 +58,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         String token = sharedPreferences.getString("token", "");
 
         Intent intent = getIntent();
-        workspace = intent.getStringExtra("workspaceId");
+        String workspace = intent.getStringExtra("workspaceId");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -92,7 +91,6 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     private void callQrCodeSearch(String result, String token) {
         mProgress.show();
 
-        Log.d("TAG", "callQrCodeSearch: " + result);
         Call<EquipmentSearchResponse> callEquipment = APIClient.getUserServices().getCallEquipment(result, token);
         callEquipment.enqueue(new Callback<EquipmentSearchResponse>() {
             @Override
@@ -125,12 +123,14 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                 } else
                     Toast.makeText(EquipmentSearchActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
                 mProgress.dismiss();
+                finish();
             }
 
             @Override
             public void onFailure(Call<EquipmentSearchResponse> call, Throwable t) {
                 Toast.makeText(EquipmentSearchActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
                 mProgress.dismiss();
+                finish();
             }
         });
     }

@@ -168,8 +168,7 @@ public class MainActivityLogin extends AppCompatActivity {
 
                     Intent intent = new Intent(getApplicationContext(), WorkspaceActivity.class);
                     startActivity(intent);
-
-                    Toast.makeText(MainActivityLogin.this, "Login Success", Toast.LENGTH_SHORT).show();
+                    finish();
                 } else if (response.code() == 202) {
                     Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_SHORT).show();
                 } else

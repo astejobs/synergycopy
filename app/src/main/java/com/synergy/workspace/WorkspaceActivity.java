@@ -6,13 +6,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -34,9 +38,9 @@ public class WorkspaceActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
     private Toolbar toolbar;
-    String token;
+    private LinearLayout linearLayout;
 
 
     @Override
@@ -44,20 +48,23 @@ public class WorkspaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
         toolbar = findViewById(R.id.toolbar_workspace);
+        setSupportActionBar(toolbar);
+        linearLayout = findViewById(R.id.workLinear);
+        linearLayout.setVisibility(View.GONE);
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        token=sharedPreferences.getString("token", "");
+        String token = sharedPreferences.getString("token", "");
 
         recyclerView = findViewById(R.id.recycler_view_workspace);
         progressDialog = new ProgressDialog(WorkspaceActivity.this);
         progressDialog.setTitle("Loading");
-
 
         callForWorkspace(token);
 
     }
 
     private void callForWorkspace(String token) {
+        linearLayout.setVisibility(View.VISIBLE);
         progressDialog.show();
         Call<JsonArray> call = APIClient.getUserServices().getWorkspace(token);
         call.enqueue(new Callback<JsonArray>() {
@@ -92,8 +99,25 @@ public class WorkspaceActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(WorkspaceActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d(TAG, "onFailure:  " + t.getCause());
+
+                if (t.getMessage().substring(0, 5).equals("Faile")) {
+                    new AlertDialog.Builder(WorkspaceActivity.this).
+                            setTitle("Failed to connect to internet.")
+                            .setMessage("Please check the connection")
+                            .setCancelable(false)
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                                    intent.addCategory(Intent.CATEGORY_HOME);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
+                                    System.exit(0);
+                                }
+                            }).show();
+                } else
+                    Toast.makeText(WorkspaceActivity.this, "Failed: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -116,6 +140,8 @@ public class WorkspaceActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
             editor.apply();
+            Intent intent = new Intent(this, MainActivityLogin.class);
+            startActivity(intent);
             finishAffinity();
         }
         return true;

@@ -70,7 +70,6 @@ public class CheckListActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void saveChecklist(int taskId, String token) {
