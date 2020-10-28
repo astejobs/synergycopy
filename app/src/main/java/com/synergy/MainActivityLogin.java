@@ -40,20 +40,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivityLogin extends AppCompatActivity {
 
     private ProgressDialog mProgress;
-    private int STORAGE_PERMISSION_CODE = 1;
+    private final int STORAGE_PERMISSION_CODE = 1;
     private TextInputEditText editTextName;
     private EditText passwordEdit;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String TEXT1 = "text";
     public static final String PASSWORD1 = "password";
     private Button buttonLogin;
-    private String nameString, passwordString, userName;
-    private ArrayList<String> workSpacelistReceived = new ArrayList<String>();
+    private String nameString, passwordString;
     private static final String TAG = "Tag";
-    private static final String CHANNEL_ID = "channel Id";
-    private static final String CHANNEL_NAME = "channel Name";
-    private static final String CHANNEL_DESC = "channel Desc";
-    private String deviceGCM;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +59,7 @@ public class MainActivityLogin extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextUsername);
         passwordEdit = findViewById(R.id.editTextPassword);
 
-        deviceGCM = getToken(this);
+        String deviceGCM = getToken(this);
 
         if (!(ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -78,7 +73,7 @@ public class MainActivityLogin extends AppCompatActivity {
             buttonLogin.setEnabled(false);
         } else {
             buttonLogin.setEnabled(true);
-            loadData();
+            //loadData();
         }
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override

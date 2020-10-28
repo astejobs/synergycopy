@@ -23,11 +23,7 @@
         <activity android:name=".search.EditFaultReportActivity"/>
         <activity android:name=".EquipmentSearch.PmTaskActivity" />
         <activity android:name=".MainActivityLogin">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".EquipmentSearch.EquipmentSearchActivity" />
         <activity android:name=".search.Search" />
@@ -38,7 +34,11 @@
         <activity
             android:name=".workspace.WorkspaceActivity"
             android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

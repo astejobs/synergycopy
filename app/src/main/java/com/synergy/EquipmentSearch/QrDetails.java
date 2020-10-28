@@ -164,12 +164,12 @@ public class QrDetails extends AppCompatActivity {
 
                                 String taskNumber = tno_list.get(i);
 
-                                *//*Intent intent = new Intent(QrDetails.this, PmTaskActivity.class);
+                                Intent intent = new Intent(QrDetails.this, PmTaskActivity.class);
                                 intent.putExtra("taskNumber", taskNumber);
                                 intent.putExtra("token", token);
                                 intent.putExtra("workspace", workspace);
                                 intent.putExtra("username", user);
-                                startActivity(intent);*//*
+                                startActivity(intent);
                             }
                         });
 */

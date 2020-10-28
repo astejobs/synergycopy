@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
+import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public class WorkspaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
         toolbar = findViewById(R.id.toolbar_workspace);
+
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token=sharedPreferences.getString("token", "");
 
@@ -61,15 +64,14 @@ public class WorkspaceActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 if (response.code() == 200) {
-                    progressDialog.dismiss();
                     JsonArray jsonArray = response.body();
                     ArrayList<CardDetails> cardDetailsArrayList = new ArrayList<>();
 
                     for (int i = 0; i < jsonArray.size(); i++) {
                         JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-                        String workspacetItemId = jsonObject.get("workspaceId").getAsString();
+                        String workSpaceItemId = jsonObject.get("workspaceId").getAsString();
                         String buildingDescription = jsonObject.get("buildingDescription").getAsString();
-                        cardDetailsArrayList.add(new CardDetails(workspacetItemId, buildingDescription));
+                        cardDetailsArrayList.add(new CardDetails(workSpaceItemId, buildingDescription));
                     }
                     recyclerView.setHasFixedSize(true);
                     mLayoutManager = new LinearLayoutManager(WorkspaceActivity.this);
@@ -77,10 +79,15 @@ public class WorkspaceActivity extends AppCompatActivity {
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
-                } else progressDialog.dismiss();
-                Log.d(TAG, "onResponse: "+response.message());
-                Log.d(TAG, "onResponse: "+response.code());
-}
+                } else if (response.code() == 401) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
+                    startActivity(intent);
+                } else
+                    Toast.makeText(WorkspaceActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+
+                progressDialog.dismiss();
+
+            }
 
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
