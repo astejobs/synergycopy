@@ -2,6 +2,7 @@ package com.synergy.EquipmentSearch;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,6 +17,8 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,6 +30,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
 import java.sql.Time;
@@ -68,6 +72,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private ProgressDialog updateProgress;
     private Button checkListButton;
     private long scheduleDate;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,8 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         scheduleNumberTextView = findViewById(R.id.textViewScheduleNumberPm);
         scheduleNumberTextView.setMovementMethod(new ScrollingMovementMethod());
         nameTextView = findViewById(R.id.namePmTasks);
+        toolbar = findViewById(R.id.pmtool);
+        setSupportActionBar(toolbar);
         remarksTextView = findViewById(R.id.remarks_pmTasks);
         buildingNameTextView = findViewById(R.id.textViewBuildingNumberPm);
         locationNameTextView = findViewById(R.id.textViewLocationNumberPm);
@@ -335,4 +342,26 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.logoutmenu) {
+            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+            Intent intent = new Intent(this, MainActivityLogin.class);
+            startActivity(intent);
+            finishAffinity();
+        }
+        return true;
+    }
 }

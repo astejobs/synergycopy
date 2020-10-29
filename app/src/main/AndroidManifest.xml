@@ -22,19 +22,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity">
         <activity android:name=".EquipmentSearch.CheckListActivity"/>
-        <activity android:name=".search.EditFaultReportActivity"/>
+        <activity android:name=".Search.EditFaultReportActivity"/>
         <activity android:name=".EquipmentSearch.PmTaskActivity" />
         <activity android:name=".MainActivityLogin">
 
         </activity>
         <activity android:name=".EquipmentSearch.EquipmentSearchActivity" />
-        <activity android:name=".search.Search" />
-        <activity android:name=".faultReport.BeforeImage" />
-        <activity android:name=".dashboard.Dashboard" />
+        <activity android:name=".Search.Search" />
+        <activity android:name=".FaultReport.BeforeImage" />
+        <activity android:name=".Dashboard.Dashboard" />
         <activity android:name=".EquipmentSearch.QrDetails" />
-        <activity android:name=".faultReport.FaultReportActivity" />
+        <activity android:name=".FaultReport.FaultReportActivity" />
         <activity
-            android:name=".workspace.WorkspaceActivity"
+            android:name=".Workspace.WorkspaceActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

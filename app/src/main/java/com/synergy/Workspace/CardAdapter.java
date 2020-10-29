@@ -1,23 +1,18 @@
-package com.synergy.workspace;
+package com.synergy.Workspace;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.synergy.R;
-import com.synergy.dashboard.Dashboard;
-import com.synergy.faultReport.FaultReportActivity;
+import com.synergy.Dashboard.Dashboard;
 
 import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public CardAdapter(ArrayList<CardDetails> mCardDetails) {

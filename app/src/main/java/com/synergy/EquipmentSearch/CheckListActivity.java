@@ -2,6 +2,7 @@ package com.synergy.EquipmentSearch;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -12,6 +13,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
 import com.synergy.GetCheckListResponse;
+import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
 import java.util.ArrayList;
@@ -44,6 +48,7 @@ public class CheckListActivity extends AppCompatActivity {
     private final List<Object> objectList = new ArrayList<>();
     private final List<String> descTypeList = new ArrayList<>();
     private final List<Integer> idList = new ArrayList<>();
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,8 @@ public class CheckListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_list);
 
 
+        toolbar = findViewById(R.id.checkListToolbar);
+        setSupportActionBar(toolbar);
         linearLayout = findViewById(R.id.linearLayoutCheck);
         saveButton = findViewById(R.id.saveButtonCheckList);
         saveButton.setEnabled(false);
@@ -213,5 +220,28 @@ public class CheckListActivity extends AppCompatActivity {
         remarksEditText.setLayoutParams(lparams);
         remarksEditTextList.add(remarksEditText);
         linearLayout.addView(remarksEditText, lparams);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.logoutmenu) {
+            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+            Intent intent = new Intent(this, MainActivityLogin.class);
+            startActivity(intent);
+            finishAffinity();
+        }
+        return true;
     }
 }

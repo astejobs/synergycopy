@@ -1,4 +1,4 @@
-package com.synergy.search;
+package com.synergy.Search;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,7 +28,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
 import com.synergy.R;
-import com.synergy.faultReport.list;
+import com.synergy.FaultReport.list;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

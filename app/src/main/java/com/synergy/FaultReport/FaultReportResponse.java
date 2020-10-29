@@ -1,4 +1,4 @@
-package com.synergy.faultReport;
+package com.synergy.FaultReport;
 import java.util.HashMap;
 
 public class FaultReportResponse {

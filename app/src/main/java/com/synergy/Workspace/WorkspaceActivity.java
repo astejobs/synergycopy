@@ -1,4 +1,4 @@
-package com.synergy.workspace;
+package com.synergy.Workspace;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +12,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +23,7 @@ import com.google.gson.JsonObject;
 import com.synergy.APIClient;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
+import com.synergy.databinding.ActivityWorkspaceBinding;
 
 import java.util.ArrayList;
 
@@ -89,6 +89,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                 } else if (response.code() == 401) {
                     Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
                     startActivity(intent);
+                    finish();
                 } else
                     Toast.makeText(WorkspaceActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
 
@@ -101,8 +102,8 @@ public class WorkspaceActivity extends AppCompatActivity {
                 progressDialog.dismiss();
 
                 if (t.getMessage().substring(0, 5).equals("Faile")) {
-                    new AlertDialog.Builder(WorkspaceActivity.this).
-                            setTitle("Failed to connect to internet.")
+                    new AlertDialog.Builder(WorkspaceActivity.this)
+                            .setTitle("Failed to connect to internet.")
                             .setMessage("Please check the connection")
                             .setCancelable(false)
                             .setPositiveButton("ok", new DialogInterface.OnClickListener() {

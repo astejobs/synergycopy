@@ -1,4 +1,4 @@
-package com.synergy.search;
+package com.synergy.Search;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,11 +17,8 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
 import com.synergy.APIClient;
 import com.synergy.R;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Collections;

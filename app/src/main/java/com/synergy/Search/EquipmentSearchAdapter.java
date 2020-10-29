@@ -1,4 +1,4 @@
-package com.synergy.search;
+package com.synergy.Search;
 
 import android.app.Activity;
 import android.content.Context;

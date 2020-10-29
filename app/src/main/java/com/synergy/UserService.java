@@ -1,27 +1,17 @@
 package com.synergy;
 
-import com.google.android.gms.common.util.JsonUtils;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.stream.JsonToken;
 import com.synergy.EquipmentSearch.CheckListAddRequest;
 import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
-import com.synergy.faultReport.CreateFaultRequestPojo;
-import com.synergy.faultReport.CreateResponse;
-import com.synergy.faultReport.FaultReportResponse;
-import com.synergy.faultReport.Model;
-import com.synergy.search.SearchResponse;
-
-import org.json.JSONObject;
-import org.json.JSONStringer;
+import com.synergy.FaultReport.CreateFaultRequestPojo;
+import com.synergy.FaultReport.FaultReportResponse;
+import com.synergy.Search.SearchResponse;
 
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -32,7 +22,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 
 public interface UserService {
 

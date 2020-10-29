@@ -16,6 +16,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 import com.synergy.APIClient;
+import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
@@ -37,6 +40,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     private TextView scanTextView;
     private Button btn;
     private ProgressDialog mProgress;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,8 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         btn = findViewById(R.id.qr_btn_click);
         scanTextView = findViewById(R.id.scan_tv);
         codeScannerView = findViewById(R.id.qr_btn);
+        toolbar = findViewById(R.id.toolbar_equipmentSearch);
+        setSupportActionBar(toolbar);
 
         mProgress = new ProgressDialog(EquipmentSearchActivity.this);
         mProgress.setTitle("Searching Equipment...");
@@ -138,5 +144,28 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.logoutmenu) {
+            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+            Intent intent = new Intent(this, MainActivityLogin.class);
+            startActivity(intent);
+            finishAffinity();
+        }
+        return true;
     }
 }

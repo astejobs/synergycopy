@@ -1,4 +1,4 @@
-package com.synergy.faultReport;
+package com.synergy.FaultReport;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

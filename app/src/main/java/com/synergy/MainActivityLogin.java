@@ -15,11 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.gson.GsonBuilder;
-import com.synergy.workspace.WorkspaceActivity;
-
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import com.synergy.Workspace.WorkspaceActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,13 +24,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivityLogin extends AppCompatActivity {
@@ -78,6 +70,13 @@ public class MainActivityLogin extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                mProgress = new ProgressDialog(MainActivityLogin.this);
+                mProgress.setTitle("Authenticating...");
+                mProgress.setCancelable(false);
+                mProgress.setIndeterminate(true);
+                mProgress.show();
+
                 nameString = editTextName.getText().toString();
                 passwordString = passwordEdit.getText().toString();
                 UserRequest userRequest = new UserRequest(nameString, passwordString);
@@ -142,19 +141,11 @@ public class MainActivityLogin extends AppCompatActivity {
 
     public void loginUser(UserRequest userRequest) {
 
-        mProgress = new ProgressDialog(MainActivityLogin.this);
-        mProgress.setTitle("Authenticating...");
-        mProgress.setCancelable(false);
-        mProgress.setIndeterminate(true);
-        mProgress.show();
-
-
         Call<UserResponse> call = APIClient.getUserServices().saveUser(userRequest);
 
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                mProgress.dismiss();
                 if (response.code() == 200) {
 
                     UserResponse userResponse = response.body();
@@ -173,6 +164,8 @@ public class MainActivityLogin extends AppCompatActivity {
                     Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(MainActivityLogin.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+
+                mProgress.dismiss();
             }
 
             @Override

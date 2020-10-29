@@ -1,21 +1,16 @@
-package com.synergy.search;
+package com.synergy.Search;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import com.synergy.APIClient;
+
 import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.R;
 
 import java.util.ArrayList;
-import java.util.List;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class EquipmentSearchActivity extends AppCompatActivity {
     private static final String TAG = "";

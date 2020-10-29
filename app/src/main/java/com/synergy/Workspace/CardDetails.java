@@ -1,4 +1,4 @@
-package com.synergy.workspace;
+package com.synergy.Workspace;
 
 public class CardDetails {
     public CardDetails(String buildingDescription, String workspaceId) {

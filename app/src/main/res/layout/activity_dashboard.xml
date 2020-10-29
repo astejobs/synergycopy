@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="2"
-    tools:context=".dashboard.Dashboard">
+    tools:context=".Dashboard.Dashboard">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_fault"
+        android:id="@+id/toolbar_dashboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#EA3D51"

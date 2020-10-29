@@ -1,4 +1,4 @@
-package com.synergy.faultReport;
+package com.synergy.FaultReport;
 
 public class CreateFaultResponse {
     String frId;

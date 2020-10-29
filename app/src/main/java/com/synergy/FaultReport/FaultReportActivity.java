@@ -1,4 +1,4 @@
-package com.synergy.faultReport;
+package com.synergy.FaultReport;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,18 +23,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.common.util.JsonUtils;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.stream.JsonToken;
-import com.google.zxing.common.StringUtils;
 import com.synergy.APIClient;
 import com.synergy.R;
-
-import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;

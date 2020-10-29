@@ -1,4 +1,4 @@
-package com.synergy.search;
+package com.synergy.Search;
 
 public class EquipmentSearchResponse {
     int id;

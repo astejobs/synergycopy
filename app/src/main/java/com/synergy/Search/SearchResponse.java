@@ -1,6 +1,4 @@
-package com.synergy.search;
-
-import java.nio.charset.Charset;
+package com.synergy.Search;
 
 public class SearchResponse {
     String frId, clientFrId, customerRefId, requestorName, requestorContactNo, location,

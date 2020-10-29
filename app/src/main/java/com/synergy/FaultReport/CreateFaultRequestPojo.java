@@ -1,6 +1,4 @@
-package com.synergy.faultReport;
-
-import java.sql.Timestamp;
+package com.synergy.FaultReport;
 
 public class CreateFaultRequestPojo {
 

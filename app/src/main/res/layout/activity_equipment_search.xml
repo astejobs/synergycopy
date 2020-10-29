@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_qr"
+        android:id="@+id/toolbar_equipmentSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#EA3D51"

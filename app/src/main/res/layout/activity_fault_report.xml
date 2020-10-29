@@ -7,7 +7,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tools:context=".faultReport.FaultReportActivity">
+    tools:context=".FaultReport.FaultReportActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_fault"
