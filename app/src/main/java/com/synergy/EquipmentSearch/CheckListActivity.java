@@ -55,7 +55,6 @@ public class CheckListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_list);
 
-
         toolbar = findViewById(R.id.checkListToolbar);
         setSupportActionBar(toolbar);
         linearLayout = findViewById(R.id.linearLayoutCheck);
@@ -76,7 +75,6 @@ public class CheckListActivity extends AppCompatActivity {
                 saveChecklist(taskId, token);
             }
         });
-
     }
 
     private void saveChecklist(int taskId, String token) {

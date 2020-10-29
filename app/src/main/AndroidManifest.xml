@@ -33,9 +33,7 @@
         <activity android:name=".Dashboard.Dashboard" />
         <activity android:name=".EquipmentSearch.QrDetails" />
         <activity android:name=".FaultReport.FaultReportActivity" />
-        <activity
-            android:name=".Workspace.WorkspaceActivity"
-            android:noHistory="true">
+        <activity android:name=".Workspace.WorkspaceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

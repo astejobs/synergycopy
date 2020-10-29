@@ -148,37 +148,6 @@ public class QrDetails extends AppCompatActivity {
             public void onResponse(Call<List<TaskResponse>> call, Response<List<TaskResponse>> response) {
                 mProgress.dismiss();
                 if (response.code() == 200) {
-                    /*mProgress.dismiss();
-                    JsonArray jsonArray = response.body();
-                    if (jsonArray.contains(null)) {
-                        Toast.makeText(QrDetails.this, "No Tasks Available", Toast.LENGTH_SHORT).show();
-                    } else {
-
-                        for (int i = 0; i < jsonArray.size(); i++) {
-                            JsonObject jo = jsonArray.get(i).getAsJsonObject();
-                            String tno = String.valueOf(jo.get("task_number"));
-                            tno = tno.replace("\"", "");
-                            tno_list.add(tno);
-                            listView.setVisibility(View.VISIBLE);
-                            taskListAdapter = new ArrayAdapter<String>(QrDetails.this, android.R.layout.simple_list_item_1, tno_list);
-                            listView.setAdapter(taskListAdapter);
-                        }
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-                                String taskNumber = tno_list.get(i);
-
-                                Intent intent = new Intent(QrDetails.this, PmTaskActivity.class);
-                                intent.putExtra("taskNumber", taskNumber);
-                                intent.putExtra("token", token);
-                                intent.putExtra("workspace", workspace);
-                                intent.putExtra("username", user);
-                                startActivity(intent);
-                            }
-                        });
-*/
 
                     Integer taskId = null;
                     List<TaskResponse> responseList = response.body();
@@ -195,7 +164,6 @@ public class QrDetails extends AppCompatActivity {
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
                                 String taskNumber = taskNumberList.get(i);
                                 Intent intent = new Intent(QrDetails.this, PmTaskActivity.class);
                                 intent.putExtra("taskNumber", taskNumber);

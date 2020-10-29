@@ -34,7 +34,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-
         final CardDetails currentItem = mCardDetails.get(position);
         String workSpace = mCardDetails.get(position).getWorkspaceId();
         String descId = mCardDetails.get(position).getBuildingDescription();
@@ -44,8 +43,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
 
-                TextView tvWoekspaceid= holder.itemView.findViewById(R.id.worskspace_tv);
-                String id=tvWoekspaceid.getText().toString();
+                TextView workspaceTextView= holder.itemView.findViewById(R.id.worskspace_tv);
+                String id=workspaceTextView.getText().toString();
                 Intent intent = new Intent(v.getContext(), Dashboard.class);
                 intent.putExtra("workspaceId", id);
                 v.getContext().startActivity(intent);

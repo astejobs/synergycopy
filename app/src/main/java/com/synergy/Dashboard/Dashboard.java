@@ -29,10 +29,6 @@ public class Dashboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        initViews();
-    }
-
-    private void initViews() {
         Intent intent = getIntent();
         workspaceId = intent.getStringExtra("workspaceId");
         linearCreateReport = findViewById(R.id.linear_create_fault);
@@ -45,29 +41,24 @@ public class Dashboard extends AppCompatActivity {
         linearCreateReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(Dashboard.this, FaultReportActivity.class);
-                intent1.putExtra("workspaceId", workspaceId);
-                startActivity(intent1);
+                intentMethod(FaultReportActivity.class);
             }
         });
         linearSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(Dashboard.this, Search.class);
-                newIntent.putExtra("workspaceId", workspaceId);
-                startActivity(newIntent);
+                intentMethod(Search.class);
             }
         });
 
         linearEquipmentSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1 = new Intent(Dashboard.this, EquipmentSearchActivity.class);
-                intent1.putExtra("workspaceId", workspaceId);
-                startActivity(intent1);
+                intentMethod(EquipmentSearchActivity.class);
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,5 +81,13 @@ public class Dashboard extends AppCompatActivity {
             finishAffinity();
         }
         return true;
+    }
+
+    private void intentMethod(Class cla) {
+
+        Intent intent = new Intent(getApplicationContext(), cla);
+        intent.putExtra("workspaceId", workspaceId);
+        startActivity(intent);
+
     }
 }
