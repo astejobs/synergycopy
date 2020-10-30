@@ -2,9 +2,9 @@ package com.synergy.Search;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.SearchView;
-<<<<<<< Updated upstream:app/src/main/java/com/synergy/Search/EquipmentSearchActivity.java
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +12,6 @@ import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.R;
 
 import java.util.ArrayList;
-=======
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +25,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
->>>>>>> Stashed changes:app/src/main/java/com/synergy/Search/EquipmentSearchActivityforEdit.java
 
 public class EquipmentSearchActivityforEdit extends AppCompatActivity {
     private static final String TAG = "";

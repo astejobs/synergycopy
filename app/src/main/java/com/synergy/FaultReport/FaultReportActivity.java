@@ -91,7 +91,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         callSpinnerBuilding();
         callSpinnerFaultCat();
         callSpinnerMaintGrp();
-        callGenLoaction();
 
 
         deptListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDepList);
@@ -103,7 +102,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                 departmentSpinner.setSelection(position);
                 list p = (list) parent.getItemAtPosition(position);
                 depId = p.id;
-                Log.d(TAG, "onItemSelected: Dept  " + depId);
+
 
             }
 
@@ -157,6 +156,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
                 buildId = p.id;
+                callGenLoaction(buildId);
                 Log.d(TAG, "onItemSelected: building id " + buildId);
             }
 
@@ -175,7 +175,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
                 faultId = p.id;
-                Log.d(TAG, "onItemSelected: Fault  id " + faultId);
             }
 
             @Override
@@ -192,7 +191,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
                 maintId = p.id;
-                Log.d(TAG, "onItemSelected: Maint id " + maintId);
             }
 
             @Override
@@ -209,7 +207,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
                 locId = p.id;
-                Log.d(TAG, "onItemSelected :Location id " + locId);
+
             }
 
             @Override
@@ -230,9 +228,9 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         datePickerDialog.show();
     }
 
-    private void callGenLoaction() {
+    private void callGenLoaction(int buildId) {
 
-        Call<JsonArray> call = APIClient.getUserServices().getGenLocation(token);
+        Call<JsonArray> call = APIClient.getUserServices().getGenLocation(token,buildId);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -336,6 +334,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                 } else
                     progressDialog.dismiss();
             }
+
+
 
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
@@ -536,14 +536,9 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             Toast.makeText(this, "Please Select All Feilds", Toast.LENGTH_SHORT).show();
         } else if (contactNo.length() < 8) {
             Toast.makeText(this, "Contact Number not Valid", Toast.LENGTH_SHORT).show();
-        } else {/* (!requestorNameEditText.getText().toString().isEmpty() || !timePickerEdit.getText().toString().isEmpty()
-                || !datePickerEdit.getText().toString().isEmpty() || depId != 0 || faultId != 0 ||
-                !faultDescriptionEditText.getText().toString().isEmpty() ||
-                !locationDescriptionEditText.getText().toString().isEmpty()
-                || buildId != 0 || locId != 0 || maintId != 0 || priroityId != 0 ||
-                !contactNumberEditText.getText().toString().isEmpty() || contactNumberEditText.getText().toString().length() > 8)
-*/
-            Log.d(TAG, "createFaultReport: " + timePickerEdit.getText().toString());
+        } else
+           // Log.d(TAG, "createFaultReport: " + timePickerEdit.getText().toString());
+        {
             Location location = new Location();
             location.setId(locId);
             Building building = new Building();
@@ -564,16 +559,17 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                     building, location, contactNo, dateStr, priority, maintGrp
                     , faultCategory, department, faultDesc, locDesc, division);
 
-            Call<FaultReportResponse> call = APIClient.getUserServices().createFault(createFaultRequestPojo, workSpaceid,token);
-            call.enqueue(new Callback<FaultReportResponse>() {
+            Call<JsonObject> call = APIClient.getUserServices().createFault(createFaultRequestPojo, workSpaceid,token);
+            call.enqueue(new Callback<JsonObject>() {
                 @Override
-                public void onResponse(Call<FaultReportResponse> call, Response<FaultReportResponse> response) {
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     if (response.code() == 200) {
-                        //  Object jsonObject = response.body();
-                        /*  String frId = jsonObject.getFrId();*/
-                        Log.d(TAG, "onResponse: " + response.body());
+                        JsonObject jo=response.body();
+                        String frid=jo.get("frId").getAsString();
                         Intent intent = new Intent(FaultReportActivity.this, BeforeImage.class);
-                        //  intent.putExtra("Frid", frId);
+                        intent.putExtra("frId",frid);
+                        intent.putExtra("workspace",workSpaceid);
+                        intent.putExtra("token",token);
                         startActivity(intent);
                         Toast.makeText(FaultReportActivity.this, "Fault Report Created Successfully",
                                 Toast.LENGTH_SHORT).show();
@@ -583,7 +579,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                 }
 
                 @Override
-                public void onFailure(Call<FaultReportResponse> call, Throwable t) {
+                public void onFailure(Call<JsonObject> call, Throwable t) {
 
                     Toast.makeText(FaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_LONG).show();
                     Log.d(TAG, "onFailure:  " + t.getCause());

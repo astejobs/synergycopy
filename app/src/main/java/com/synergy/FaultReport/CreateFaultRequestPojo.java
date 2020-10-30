@@ -3,7 +3,7 @@ package com.synergy.FaultReport;
 public class CreateFaultRequestPojo {
 
     String requestorName;
-    String reportedTime, requestorContactN, faultCategoryName, locationDesc;
+    String reportedTime, requestorContactNo, faultCategoryName, locationDesc;
     long reportedDate;
     Location location;
     Building building;
@@ -29,12 +29,12 @@ public class CreateFaultRequestPojo {
         this.reportedTime = reportedTime;
     }
 
-    public String getRequestorContactN() {
-        return requestorContactN;
+    public String getRequestorContactNo() {
+        return requestorContactNo;
     }
 
-    public void setRequestorContactN(String requestorContactN) {
-        this.requestorContactN = requestorContactN;
+    public void setRequestorContactNo(String requestorContactNo) {
+        this.requestorContactNo = requestorContactNo;
     }
 
     public String getFaultCategoryName() {
@@ -120,7 +120,7 @@ public class CreateFaultRequestPojo {
 
 
     public CreateFaultRequestPojo(String requestorName, String reportedTime, Building building, Location location,
-                                  String requestorContactN, long reportedDate,
+                                  String requestorContactNo, long reportedDate,
                                   Priority priority, MaintGrp maintGrp, FaultCategory faultCategory, Department department,
                                   String faultCategoryDesc, String locationDesc,Division division) {
 
@@ -131,7 +131,7 @@ public class CreateFaultRequestPojo {
         this.reportedTime = reportedTime;
         this.building = building;
         this.location = location;
-        this.requestorContactN = requestorContactN;
+        this.requestorContactNo = requestorContactNo;
         this.reportedDate = reportedDate;
         this.priority = priority;
         this.maintGrp = maintGrp;

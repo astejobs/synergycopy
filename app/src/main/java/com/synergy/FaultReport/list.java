@@ -3,8 +3,8 @@ package com.synergy.FaultReport;
 import androidx.annotation.NonNull;
 
 public class list {
-    String name;
-    int id;
+    public String name;
+    public int id;
 
     public list(String name, int id) {
         this.name = name;

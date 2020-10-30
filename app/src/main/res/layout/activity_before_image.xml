@@ -1,9 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< Updated upstream
     tools:context=".FaultReport.BeforeImage">
+=======
+    android:layout_gravity="center"
+    android:background="@drawable/tryme"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".faultReport.BeforeImage">
+>>>>>>> Stashed changes
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_globe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EA3D51"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu"
+        app:title="Before Image"
+        app:titleMargin="8dp"
+        app:titleTextColor="#000000" />
+
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="600dp"
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/take_photo_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/mybutton"
+            android:padding="4dp"
+            android:text="Take photo"
+            android:textSize="22sp" />
+
+        <ImageView
+            android:id="@+id/before_image_preview"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_launcher"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/upload_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/mybutton"
+            android:padding="4dp"
+            android:text="Upload"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/done_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/mybutton"
+            android:padding="4dp"
+            android:text="Done"
+            android:textSize="22sp" />
+
+
+    </LinearLayout>
+</LinearLayout>

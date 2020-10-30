@@ -9,6 +9,8 @@ import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
 import com.synergy.FaultReport.CreateFaultRequestPojo;
 import com.synergy.FaultReport.FaultReportResponse;
+import com.synergy.FaultReport.UploadPictureRequest;
+import com.synergy.Search.EquipmentSearchResponseforEdit;
 import com.synergy.Search.SearchResponse;
 
 import java.util.List;
@@ -68,14 +70,14 @@ public interface UserService {
     Call<JsonArray> getGenMaintGrp(@Header("Authorization") String token);
 
     //get fault location grp
-    @GET("general/locations/1")
+    @GET("general/locations/{buildId}")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenLocation(@Header("Authorization") String token);
+    Call<JsonArray> getGenLocation(@Header("Authorization") String token,@Path("buildId")Integer buildId);
 
     //create fault
     @POST("faultreport")
     @Headers("Content-Type: application/json")
-    Call<FaultReportResponse> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo,
+    Call<JsonObject> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo,
                                           @Header("workspace") String workspace, @Header("Authorization") String token);
 
     //get search
@@ -142,5 +144,19 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<JsonArray> technicianCall(@Header("Authorization") String token,
                                                       @Header("workspace") String workspace);
+    //upload image
+
+    @POST("ws/upload{before}image")
+    @Headers("Content-Type: application/json")
+    Call<Void> uploadCaptureImage(@Path("before") String before,
+                                  @Header("X-Auth-Token") String token,
+                                  @Header("workspace") String workspace,
+                                  @Body UploadPictureRequest uploadPictureRequest);
+    // eq search http://192.168.1.117:8082/api/equip/acmv8310
+    @GET("equip/{equipmentCode}")
+    @Headers("Content-Type: application/json")
+    Call<EquipmentSearchResponseforEdit> getSearchEquipment(@Path("equipmentCode") String path,
+                                                            @Header("Authorization") String token);
+
 
 }
