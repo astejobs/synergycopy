@@ -23,7 +23,6 @@ import com.google.gson.JsonObject;
 import com.synergy.APIClient;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
-import com.synergy.databinding.ActivityWorkspaceBinding;
 
 import java.util.ArrayList;
 

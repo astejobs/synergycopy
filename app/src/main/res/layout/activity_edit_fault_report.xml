@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/tryme"
     android:layout_height="match_parent"
+    android:background="@drawable/tryme"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -93,8 +93,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center"
+                        android:orientation="horizontal"
                         android:weightSum="2">
 
                         <TextView
@@ -128,8 +128,8 @@
                             android:id="@+id/reqNameEditTextEditFault"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_margin="10dp"
+                            android:layout_weight="1"
                             android:textSize="18sp" />
 
 
@@ -532,9 +532,9 @@
                         android:id="@+id/timeJob"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Job Time"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
+                        android:hint="Job Time"
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
@@ -740,8 +740,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center"
+                        android:orientation="horizontal"
                         android:weightSum="2">
 
                         <TextView
@@ -756,10 +756,16 @@
                             android:id="@+id/equipmentTextViewEditFault"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_margin="10dp"
+                            android:layout_weight="1"
                             android:hint="Equipment Code"
                             android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/eq_id_send"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -840,6 +846,7 @@
                 android:id="@+id/esc_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/esdetail"
                 android:layout_margin="3dp"
                 app:elevation="6dp"
                 app:fabSize="auto" />
@@ -849,6 +856,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
+                android:src="@drawable/before"
                 app:backgroundTint="#E11A1A"
                 app:elevation="6dp"
                 app:fabSize="auto" />
@@ -858,7 +866,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
+                android:elevation="6dp"
+                android:src="@drawable/after"
+                android:text="After"
                 app:backgroundTint="#85E614"
+                app:borderWidth="0dp"
                 app:elevation="6dp"
                 app:fabSize="auto" />
 
@@ -868,6 +880,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:backgroundTint="#ECA040"
+                android:src="@drawable/images"
                 android:text="images"
                 app:borderWidth="0dp"
                 app:elevation="6dp"

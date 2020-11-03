@@ -24,6 +24,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.synergy.APIClient;
 import com.synergy.R;
 
@@ -568,6 +569,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                         String frid=jo.get("frId").getAsString();
                         Intent intent = new Intent(FaultReportActivity.this, BeforeImage.class);
                         intent.putExtra("frId",frid);
+                        intent.putExtra("value", "Before");
                         intent.putExtra("workspace",workSpaceid);
                         intent.putExtra("token",token);
                         startActivity(intent);

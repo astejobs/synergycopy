@@ -4,12 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< Updated upstream
-    tools:context=".Search.EquipmentSearchActivity">
-=======
-    android:background="@drawable/tryme"
-    tools:context=".search.EquipmentSearchActivityforEdit">
->>>>>>> Stashed changes
+    tools:context=".Search.EquipmentSearchActivityforEdit"
+    android:background="@drawable/tryme">
 
     <SearchView
         android:id="@+id/search_equip_bar"

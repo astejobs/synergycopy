@@ -10,8 +10,10 @@ import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
 import com.synergy.FaultReport.CreateFaultRequestPojo;
 import com.synergy.FaultReport.FaultReportResponse;
 import com.synergy.FaultReport.UploadPictureRequest;
+import com.synergy.Search.EditFaultReportRequest;
 import com.synergy.Search.EquipmentSearchResponseforEdit;
 import com.synergy.Search.SearchResponse;
+import com.synergy.Search.UpdateFaultReportResponse;
 
 import java.util.List;
 
@@ -72,13 +74,13 @@ public interface UserService {
     //get fault location grp
     @GET("general/locations/{buildId}")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenLocation(@Header("Authorization") String token,@Path("buildId")Integer buildId);
+    Call<JsonArray> getGenLocation(@Header("Authorization") String token, @Path("buildId") Integer buildId);
 
     //create fault
     @POST("faultreport")
     @Headers("Content-Type: application/json")
     Call<JsonObject> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo,
-                                          @Header("workspace") String workspace, @Header("Authorization") String token);
+                                 @Header("workspace") String workspace, @Header("Authorization") String token);
 
     //get search
     @GET("faultreport/search/?")
@@ -134,29 +136,43 @@ public interface UserService {
                                                   @Header("Authorization") String token);
 
     //get edit fault details
-    @GET("faultreport/edit/{frid}")
+    @GET("faultreport/{frid}")
     @Headers("Content-Type: application/json")
     Call<JsonObject> getEditfaultDetails(@Path("frid") String frid,
                                          @Header("WorkspaceId") String workspaceId,
                                          @Header("Authorization") String token);
+
     //to get the technician list
-    @GET("ws/techlist4")
+    @GET("general/technicians")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> technicianCall(@Header("Authorization") String token,
-                                                      @Header("workspace") String workspace);
+    Call<JsonArray> getTechnicianCall(@Header("Authorization") String token,
+                                      @Header("workspace") String workspace);
+
+    //get cost center
+    @GET("general/costcenter")
+    @Headers("Content-Type: application/json")
+    Call<JsonArray> getCostCenter(@Header("Authorization") String token,
+                                  @Header("workspace") String workspace);
     //upload image
 
-    @POST("ws/upload{before}image")
+    @POST("faultreport/{Before}image")
     @Headers("Content-Type: application/json")
-    Call<Void> uploadCaptureImage(@Path("before") String before,
-                                  @Header("X-Auth-Token") String token,
-                                  @Header("workspace") String workspace,
+    Call<Void> uploadCaptureImage(@Path("Before") String befpore,
+                                  @Header("Authorization") String token,
                                   @Body UploadPictureRequest uploadPictureRequest);
+
     // eq search http://192.168.1.117:8082/api/equip/acmv8310
     @GET("equip/{equipmentCode}")
     @Headers("Content-Type: application/json")
     Call<EquipmentSearchResponseforEdit> getSearchEquipment(@Path("equipmentCode") String path,
                                                             @Header("Authorization") String token);
+
+    //update
+    @PUT("faultreport")
+    @Headers("Content-Type: application/json")
+    Call<Void> updateReport(@Body EditFaultReportRequest editFaultReportRequest,
+                            @Header("Authorization") String token,
+                            @Header("workspace") String workspace);
 
 
 }

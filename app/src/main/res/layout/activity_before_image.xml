@@ -4,15 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< Updated upstream
-    tools:context=".FaultReport.BeforeImage">
-=======
     android:layout_gravity="center"
     android:background="@drawable/tryme"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".faultReport.BeforeImage">
->>>>>>> Stashed changes
+    tools:context=".FaultReport.BeforeImage">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_globe"
@@ -29,9 +25,9 @@
 
 
     <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="600dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -48,7 +44,7 @@
         <ImageView
             android:id="@+id/before_image_preview"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="300dp"
             android:layout_gravity="center"
             android:src="@mipmap/ic_launcher"
             android:visibility="gone" />

@@ -3,6 +3,17 @@ package com.synergy.FaultReport;
 import androidx.annotation.NonNull;
 
 public class list {
+    public list() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public String name;
     public int id;
 

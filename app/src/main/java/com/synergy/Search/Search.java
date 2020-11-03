@@ -107,8 +107,14 @@ public class Search extends AppCompatActivity {
 
                 progressDialog.dismiss();
                 if (response.code() == 200) {
-                    Toast.makeText(Search.this, "sucessfullsearch", Toast.LENGTH_SHORT).show();
                     List<SearchResponse> list = response.body();
+                    if (list.isEmpty()){
+                        Toast.makeText(Search.this, "Nothing Here", Toast.LENGTH_SHORT).show();
+                    }else {
+
+
+                    Toast.makeText(Search.this, "sucessfullsearch", Toast.LENGTH_SHORT).show();
+
                     for (SearchResponse searchResponse : list) {
 
                         SearchResponse searchResp = new SearchResponse();
@@ -117,7 +123,6 @@ public class Search extends AppCompatActivity {
                         String status = searchResponse.getStatus();
                         String buildingg = searchResponse.getBuilding();
                         String locationn = searchResponse.getLocation();
-                        Log.d(TAG, "onResponse: "+status+buildingg+locationn);
 
                         searchResp.setFrId(frId);
                         searchResp.setReportedDate(rtdate);
@@ -127,7 +132,7 @@ public class Search extends AppCompatActivity {
                         searchResp.setWorkspaceId(workspaceId);
                       //  frIdList.add(frId);
                         contacts.add(searchResp);
-                    }
+                    }}
                     Collections.sort(frIdList);
                     searchResponseAdapter = new SearchResponseAdapter(Search.this, contacts,workspaceId);
                     listView.setAdapter(searchResponseAdapter);

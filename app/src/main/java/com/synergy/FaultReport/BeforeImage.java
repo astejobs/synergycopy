@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.synergy.APIClient;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
-import com.synergy.dashboard.Dashboard;
+import com.synergy.Dashboard.Dashboard;
 
 import java.io.ByteArrayOutputStream;
 
@@ -37,44 +37,41 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class BeforeImage extends AppCompatActivity {
 
-    private static final String TAG = "";
-    String frid,token,workspaceid;
-    private Button takeBtn,uploadBtn,doneBtn;
-    Toolbar toolbar;
+    Button takeBtn, uploadBtn, doneBtn;
     ImageView beforeImgPre;
     static final int REQUEST_IMAGE_CAPTURE = 0;
     private Intent takePictureIntent;
+    private String token;
+    private String workspace;
+    private String frId;
     private ProgressDialog progressDialog;
     private String value;
+    private Toolbar toolbar;
+    private String user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before_image);
 
-        initviews();
-        Intent intent=getIntent();
-        frid=intent.getStringExtra("FrId");
-        workspaceid=intent.getStringExtra("workspcae");
-        token=intent.getStringExtra("token");
-        Log.d(TAG, "onCreate: "+frid+token+workspaceid);
-
-    }
-
-    private void initviews() {
-        Intent intent=getIntent();
-        frid=intent.getStringExtra("FrId");
-        workspaceid=intent.getStringExtra("workspcae");
-        token=intent.getStringExtra("token");
-        Log.d(TAG, "onCreate: "+frid+token+workspaceid);
+        Intent receivedFromFaultReport = getIntent();
+        token = receivedFromFaultReport.getStringExtra("token");
+        workspace = receivedFromFaultReport.getStringExtra("workspace");
+        frId = receivedFromFaultReport.getStringExtra("frId");
+        value = receivedFromFaultReport.getStringExtra("value");
+        user = receivedFromFaultReport.getStringExtra("user");
 
         takeBtn = findViewById(R.id.take_photo_btn);
         uploadBtn = findViewById(R.id.upload_btn);
         uploadBtn.setEnabled(false);
         toolbar = findViewById(R.id.toolbar_globe);
-        setSupportActionBar(toolbar);
         doneBtn = findViewById(R.id.done_btn);
         beforeImgPre = findViewById(R.id.before_image_preview);
+        progressDialog = new ProgressDialog(BeforeImage.this);
+
+        toolbar.setTitle(value + " Image");
+        setSupportActionBar(toolbar);
 
         takeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,13 +88,16 @@ public class BeforeImage extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(BeforeImage.this, Dashboard.class);
                 intent.putExtra("token", token);
+                intent.putExtra("variable", workspace);
+                intent.putExtra("username", user);
                 startActivity(intent);
                 finish();
             }
         });
 
-
     }
+
+
     private void compressImage(Bitmap bitmap) {
         try {
 
@@ -110,6 +110,7 @@ public class BeforeImage extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     private void uploadPicture(StringBuilder basePicture) {
 
         progressDialog.setCancelable(false);
@@ -117,17 +118,15 @@ public class BeforeImage extends AppCompatActivity {
         progressDialog.setTitle("Uploading");
         progressDialog.show();
 
-        UploadPictureRequest uploadPictureRequest = new UploadPictureRequest(frid, basePicture);
-
+        UploadPictureRequest uploadPictureRequest = new UploadPictureRequest(frId, basePicture);
         value = value.toLowerCase();
-
-        Call<Void> uploadImageCall = APIClient.getUserServices().uploadCaptureImage(value, token, workspaceid, uploadPictureRequest);
+        Call<Void> uploadImageCall = APIClient.getUserServices().uploadCaptureImage( value,token, uploadPictureRequest);
 
         uploadImageCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 progressDialog.dismiss();
-                if (response.code() == 201) {
+                if (response.code() == 200) {
                     Toast.makeText(BeforeImage.this, "Image saved successfully", Toast.LENGTH_SHORT).show();
                     uploadBtn.setEnabled(false);
                     new AlertDialog.Builder(BeforeImage.this)
@@ -196,6 +195,7 @@ public class BeforeImage extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello: " + user);
         return true;
     }
 
@@ -215,7 +215,5 @@ public class BeforeImage extends AppCompatActivity {
         }
         return true;
     }
-
-
 
 }

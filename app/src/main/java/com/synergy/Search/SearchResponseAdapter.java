@@ -78,9 +78,7 @@ public class SearchResponseAdapter extends BaseAdapter {
             public void onClick(View view) {
 
                 String frid = ((TextView) view.findViewById(R.id.textView_frid)).getText().toString().substring(6);
-
                 Intent intent = new Intent(context.getApplicationContext(), EditFaultReportActivity.class);
-
                 intent.putExtra("frId", frid);
                 intent.putExtra("workspaceId", workspaceId);
                 context.startActivity(intent);

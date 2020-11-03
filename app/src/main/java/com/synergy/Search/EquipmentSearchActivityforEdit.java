@@ -58,7 +58,7 @@ public class EquipmentSearchActivityforEdit extends AppCompatActivity {
             public boolean onQueryTextChange(String queryParam) {
                 if (queryParam.isEmpty()) {
                     equipDetails.clear();
-                    equipmentSearchAdapterforEdit.notifyDataSetInvalidated();
+                  //  equipmentSearchAdapterforEdit.notifyDataSetInvalidated();
                 } else {
                     equipDetails.clear();
                     getEquipment(queryParam, token);
@@ -105,7 +105,8 @@ public class EquipmentSearchActivityforEdit extends AppCompatActivity {
                     listView.setAdapter(equipmentSearchAdapterforEdit);
                     equipmentSearchAdapterforEdit.notifyDataSetChanged();
 
-                }
+                }else
+                    Toast.makeText(EquipmentSearchActivityforEdit.this, "Error : "+response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
