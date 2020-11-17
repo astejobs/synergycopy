@@ -15,7 +15,7 @@
         android:background="#EA3D51"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:menu="@menu/menu"
-        app:title="WorkSpaces"
+        app:title="Workspaces"
         app:titleMargin="8dp"
         app:titleTextColor="#000000" />
     <androidx.recyclerview.widget.RecyclerView

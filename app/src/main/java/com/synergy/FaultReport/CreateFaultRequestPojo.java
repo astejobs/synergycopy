@@ -1,17 +1,21 @@
 package com.synergy.FaultReport;
 
+import java.util.ArrayList;
+
 public class CreateFaultRequestPojo {
 
     String requestorName;
-    String reportedTime, requestorContactNo, faultCategoryName, locationDesc;
-    long reportedDate;
+    String requestorContactNo, faultCategoryDesc, locationDesc;
     Location location;
     Building building;
     MaintGrp maintGrp;
+    Equipment equipment;
     Division division;
     Department department;
     Priority priority;
     FaultCategory faultCategory;
+    private ArrayList<AttendedBy> attendedBy;
+
 
     public String getRequestorName() {
         return requestorName;
@@ -21,13 +25,6 @@ public class CreateFaultRequestPojo {
         this.requestorName = requestorName;
     }
 
-    public String getReportedTime() {
-        return reportedTime;
-    }
-
-    public void setReportedTime(String reportedTime) {
-        this.reportedTime = reportedTime;
-    }
 
     public String getRequestorContactNo() {
         return requestorContactNo;
@@ -38,11 +35,11 @@ public class CreateFaultRequestPojo {
     }
 
     public String getFaultCategoryName() {
-        return faultCategoryName;
+        return faultCategoryDesc;
     }
 
-    public void setFaultCategoryName(String faultCategoryName) {
-        this.faultCategoryName = faultCategoryName;
+    public void setFaultCategoryName(String faultCategoryDesc) {
+        this.faultCategoryDesc = faultCategoryDesc;
     }
 
     public String getLocationDesc() {
@@ -53,13 +50,6 @@ public class CreateFaultRequestPojo {
         this.locationDesc = locationDesc;
     }
 
-    public long getReportedDate() {
-        return reportedDate;
-    }
-
-    public void setReportedDate(long reportedDate) {
-        this.reportedDate = reportedDate;
-    }
 
     public Location getLocation() {
         return location;
@@ -116,178 +106,178 @@ public class CreateFaultRequestPojo {
     public void setFaultCategory(FaultCategory faultCategory) {
         this.faultCategory = faultCategory;
     }
-    //: { "Obj1" : { "key1" : "val1" } }
 
 
-    public CreateFaultRequestPojo(String requestorName, String reportedTime, Building building, Location location,
-                                  String requestorContactNo, long reportedDate,
+    public CreateFaultRequestPojo(String requestorName, Building building, Location location,
+                                  String requestorContactNo,
                                   Priority priority, MaintGrp maintGrp, FaultCategory faultCategory, Department department,
-                                  String faultCategoryDesc, String locationDesc,Division division) {
-
-        this.division=division;
-        this.faultCategoryName = faultCategoryDesc;
+                                  String faultCategoryDesc, String locationDesc, Division division, Equipment equipment,
+                                  ArrayList<AttendedBy> attendedBy) {
+        this.division = division;
+        this.attendedBy=attendedBy;
+        this.faultCategoryDesc = faultCategoryDesc;
         this.locationDesc = locationDesc;
         this.requestorName = requestorName;
-        this.reportedTime = reportedTime;
         this.building = building;
         this.location = location;
         this.requestorContactNo = requestorContactNo;
-        this.reportedDate = reportedDate;
         this.priority = priority;
         this.maintGrp = maintGrp;
         this.faultCategory = faultCategory;
         this.department = department;
+        this.equipment = equipment;
     }
+
     @Override
-    public String toString()
-    {
-        return "ClassPojo [ faultCategory = "+faultCategory+", maintGrp = "+maintGrp+", priority = "+priority+"," +
-                " building = "+building+", faultCategoryName = "+faultCategoryName+", division = "+division+", " +
-                "reportedDate = "+reportedDate+", locationDesc = "+locationDesc+", location = "+location+"," +
-                " requestorName = "+requestorName+", department = "+department+", reportedTime = "+reportedTime+"]";
+    public String toString() {
+        return "ClassPojo [ faultCategory = " + faultCategory + ", maintGrp = " + maintGrp + ", priority = " + priority + "," +
+                " building = " + building + ", faultCategoryName = " + faultCategoryDesc + ", division = " + division + " locationDesc = " + locationDesc + ", location = " + location + "," +
+                " requestorName = " + requestorName + ", department = " + department + " ]";
     }
 }
 
- class Division
-{
+class Division {
     private int id;
 
-    public int getId ()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [id = " + id + "]";
     }
 }
 
 
-class Department
-{
+class Department {
     private int id;
 
-    public int getId ()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [id = " + id + "]";
     }
 }
- class Priority
-{
+
+class Priority {
     private int id;
 
-    public int getId ()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [id = " + id + "]";
     }
 }
-class FaultCategory
-{
+
+class FaultCategory {
     private int id;
 
-    public int getId ()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [id = " + id + "]";
     }
 }
 
-class MaintGrp
-{
+class MaintGrp {
     private int id;
 
-    public int getId ()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [id = " + id + "]";
     }
 }
-class Building
-{
+
+class Building {
     private int id;
 
-    public int getId ()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [id = " + id + "]";
     }
 }
- class  Location{
-     private int id;
 
-     public int getId ()
-     {
-         return id;
-     }
+class Location {
+    private int id;
 
-     public void setId (int id)
-     {
-         this.id = id;
-     }
+    public int getId() {
+        return id;
+    }
 
-     @Override
-     public String toString()
-     {
-         return "ClassPojo [id = "+id+"]";
-     }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "ClassPojo [id = " + id + "]";
+    }
+
+}
+
+class Equipment {
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+}
+
+class AttendedBy {
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
 

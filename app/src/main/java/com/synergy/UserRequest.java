@@ -4,9 +4,11 @@ public class UserRequest {
 
     String username;
     String password;
+    String deviceToken;
     //String deviceToken;
 
-    public UserRequest(String username, String password) {
+    public UserRequest(String username, String password,String deviceToken) {
+        this.deviceToken=deviceToken;
         this.username = username;
         this.password = password;
     }

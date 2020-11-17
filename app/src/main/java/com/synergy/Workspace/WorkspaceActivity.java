@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
+import static com.synergy.MainActivityLogin.getToken;
 
 public class WorkspaceActivity extends AppCompatActivity {
     private static final String TAG = "Message";
@@ -40,6 +42,7 @@ public class WorkspaceActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private Toolbar toolbar;
     private LinearLayout linearLayout;
+    private String user;
 
 
     @Override
@@ -53,6 +56,9 @@ public class WorkspaceActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
+        user = sharedPreferences.getString("role", "Role");
+      //  String devicetoken=sharedPreferences.getString("devicetoken","");
+
 
         recyclerView = findViewById(R.id.recycler_view_workspace);
         progressDialog = new ProgressDialog(WorkspaceActivity.this);
@@ -127,7 +133,7 @@ public class WorkspaceActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello");
+        MenuItem item = menu.findItem(R.id.admin).setTitle(user);
         return true;
     }
 

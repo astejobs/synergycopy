@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -26,7 +27,9 @@ import com.synergy.APIClient;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
 import com.synergy.Dashboard.Dashboard;
+import com.synergy.Search.PreviousImagesActivity;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import retrofit2.Call;
@@ -37,7 +40,8 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class BeforeImage extends AppCompatActivity {
 
-    Button takeBtn, uploadBtn, doneBtn;
+    private static final String TAG = "before";
+    Button takeBtn, uploadBtn, doneBtn, previousImagesbtn;
     ImageView beforeImgPre;
     static final int REQUEST_IMAGE_CAPTURE = 0;
     private Intent takePictureIntent;
@@ -55,23 +59,35 @@ public class BeforeImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before_image);
 
-        Intent receivedFromFaultReport = getIntent();
-        token = receivedFromFaultReport.getStringExtra("token");
-        workspace = receivedFromFaultReport.getStringExtra("workspace");
-        frId = receivedFromFaultReport.getStringExtra("frId");
-        value = receivedFromFaultReport.getStringExtra("value");
-        user = receivedFromFaultReport.getStringExtra("user");
+        Intent intent = getIntent();
+        token = intent.getStringExtra("token");
+        workspace = intent.getStringExtra("workspace");
+        frId = intent.getStringExtra("frId");
+        value = intent.getStringExtra("value");
+        user = intent.getStringExtra("user");
 
         takeBtn = findViewById(R.id.take_photo_btn);
         uploadBtn = findViewById(R.id.upload_btn);
         uploadBtn.setEnabled(false);
         toolbar = findViewById(R.id.toolbar_globe);
         doneBtn = findViewById(R.id.done_btn);
+        previousImagesbtn = findViewById(R.id.previous_images);
         beforeImgPre = findViewById(R.id.before_image_preview);
         progressDialog = new ProgressDialog(BeforeImage.this);
 
         toolbar.setTitle(value + " Image");
         setSupportActionBar(toolbar);
+        previousImagesbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BeforeImage.this, PreviousImagesActivity.class);
+                intent.putExtra("token", token);
+                intent.putExtra("workspace", workspace);
+                intent.putExtra("frid", frId);
+                intent.putExtra("value", value);
+                startActivity(intent);
+            }
+        });
 
         takeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,28 +115,37 @@ public class BeforeImage extends AppCompatActivity {
 
 
     private void compressImage(Bitmap bitmap) {
+
         try {
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 80, baos);
             byte[] b = baos.toByteArray();
-            StringBuilder encodedStringBuilder = new StringBuilder().append(Base64.encodeToString(b, Base64.DEFAULT));
+            // String encodedStringBuilder = Base64.encodeToString(b, Base64.DEFAULT);
+
+            StringBuilder encodedStringBuilder = new StringBuilder()
+                    .append(Base64.encodeToString(b, Base64.DEFAULT));
+
+            byte[] decodedString = Base64.decode(String.valueOf(encodedStringBuilder), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            ImageView imageView = findViewById(R.id.decoded_img);
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageBitmap(decodedByte);
+
             uploadPicture(encodedStringBuilder);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    private void uploadPicture(StringBuilder basePicture) {
+    private void uploadPicture(StringBuilder encodedStringBuilder) {
 
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
         progressDialog.setTitle("Uploading");
         progressDialog.show();
-
-        UploadPictureRequest uploadPictureRequest = new UploadPictureRequest(frId, basePicture);
+        UploadPictureRequest uploadPictureRequest = new UploadPictureRequest(frId, encodedStringBuilder);
         value = value.toLowerCase();
-        Call<Void> uploadImageCall = APIClient.getUserServices().uploadCaptureImage( value,token, uploadPictureRequest);
+        Call<Void> uploadImageCall = APIClient.getUserServices().uploadCaptureImage(value, token, workspace, uploadPictureRequest);
 
         uploadImageCall.enqueue(new Callback<Void>() {
             @Override
@@ -131,7 +156,7 @@ public class BeforeImage extends AppCompatActivity {
                     uploadBtn.setEnabled(false);
                     new AlertDialog.Builder(BeforeImage.this)
                             .setTitle("Image saved successfully")
-                            .setMessage("Wish to upload more picture?")
+                            .setMessage("Want to upload more pictures ?")
                             .setIcon(R.drawable.ic_error)
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
@@ -177,13 +202,16 @@ public class BeforeImage extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            assert data != null;
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             beforeImgPre.setVisibility(View.VISIBLE);
             beforeImgPre.setImageBitmap(photo);
             uploadBtn.setEnabled(true);
 
+
             uploadBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
+
                 public void onClick(View view) {
                     compressImage(photo);
                 }

@@ -25,7 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"
-
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
@@ -50,38 +49,43 @@
                 android:orientation="vertical"
                 android:paddingBottom="20dp"
                 android:showDividers="middle">
-
                 <LinearLayout
+                    android:id="@+id/layout_disable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="?dividerHorizontal"
-                    android:orientation="vertical"
-                    android:padding="20dp"
-                    android:showDividers="middle">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:divider="?dividerHorizontal"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        android:showDividers="middle">
 
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="FR ID" />
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                        <EditText
-                            android:id="@+id/frIdEditText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:inputType="text" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:text="FR ID" />
 
-                    </LinearLayout>
+                            <EditText
+                                android:id="@+id/frIdEditText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
+                                android:inputType="text" />
 
-                    <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
+                        </LinearLayout>
+
+                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
                         android:id="@+id/frIdEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -90,52 +94,52 @@
                         android:gravity="center"
                         app:prefix="FR ID: " />-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Department" />
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                        <Spinner
-                            android:id="@+id/dept_number"
-                            android:layout_width="0dp"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Department" />
+
+                            <Spinner
+                                android:id="@+id/dept_number"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Requestor Name"
+                                android:textSize="14sp" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Requestor Name"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/reqNameEditTextEditFault"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_weight="1"
-                            android:textSize="18sp" />
+                            <TextView
+                                android:id="@+id/reqNameEditTextEditFault"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:textSize="18sp" />
 
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                    <!--<TextView
+                        <!--<TextView
                         android:id="@+id/mobileNumberTextView"
                         android:layout_width="match_parent"
                         android:gravity="center"
@@ -145,179 +149,179 @@
                         android:padding="18sp"
                         android:textSize="14sp" />-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Reported Date" />
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                        <TextView
-                            android:id="@+id/dateAdded"
-                            android:layout_width="0dp"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Activation Date" />
+
+                            <TextView
+                                android:id="@+id/activation_date"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:hint="Activation Date" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_weight="1"
-                            android:hint="Reported Date" />
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Activation Time" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                            <TextView
+                                android:id="@+id/activation_time"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:hint="Activation Time" />
 
-                        <TextView
-                            android:layout_width="0dp"
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Reported Time" />
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                        <TextView
-                            android:id="@+id/timeAdded"
-                            android:layout_width="0dp"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Contact No" />
+
+                            <EditText
+                                android:id="@+id/contactNumber"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="Contact No: "
+                                android:inputType="phone"
+                                android:maxLength="12" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_weight="1"
-                            android:hint="Start Time" />
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Priority" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                            <Spinner
+                                android:id="@+id/priorityNumber"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
 
-                        <TextView
-                            android:layout_width="0dp"
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Contact No" />
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                        <EditText
-                            android:id="@+id/contactNumber"
-                            android:layout_width="0dp"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Building/Zone" />
+
+                            <Spinner
+
+                                android:id="@+id/buildingNumber"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="Contact No: "
-                            android:inputType="phone"
-                            android:maxLength="12" />
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Location/Sub Zone" />
 
+                            <Spinner
+                                android:id="@+id/unitNumber"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Priority" />
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                        <Spinner
-                            android:id="@+id/priorityNumber"
-                            android:layout_width="0dp"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Division" />
+
+                            <Spinner
+                                android:id="@+id/divisionNumberSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1" />
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
 
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:text="Location Description" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                            <EditText
+                                android:id="@+id/locationDescrip"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:inputType="text" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Building/Zone" />
+                        </LinearLayout>
 
-                        <Spinner
-
-                            android:id="@+id/buildingNumber"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Location/Sub Zone" />
-
-                        <Spinner
-                            android:id="@+id/unitNumber"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Division" />
-
-                        <Spinner
-                            android:id="@+id/divisionNumberSpinner"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="Location Description" />
-
-                        <EditText
-                            android:id="@+id/locationDescrip"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:inputType="text" />
-
-                    </LinearLayout>
-
-                    <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
+                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
                         android:id="@+id/locationDescrip"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -326,47 +330,47 @@
                         android:inputType="text"
                         app:prefix="Location Description: " />-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Fault Category" />
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                        <Spinner
-                            android:id="@+id/faultCategory"
-                            android:layout_width="0dp"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Fault Category" />
+
+                            <Spinner
+                                android:id="@+id/faultCategory"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:text="Fault Details" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="Fault Details" />
+                            <EditText
+                                android:id="@+id/faultDetails"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:inputType="text" />
 
-                        <EditText
-                            android:id="@+id/faultDetails"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:inputType="text" />
-
-                    </LinearLayout>
-                    <!-- <com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
+                        </LinearLayout>
+                        <!-- <com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
                          android:id="@+id/faultDetails"
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content"
@@ -375,400 +379,400 @@
                          android:inputType="text"
                          app:prefix="Fault Details: " />-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Select Maintenance Group" />
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                        <Spinner
-                            android:id="@+id/mainGrp"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Select Maintenance Group" />
 
-                    <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
+                            <Spinner
+                                android:id="@+id/mainGrp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
                         android:id="@+id/observation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:prefix="Observation: " />-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="Observation" />
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
 
-                        <EditText
-                            android:id="@+id/observation"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:inputType="text" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:text="Observation" />
 
-                    </LinearLayout>
+                            <EditText
+                                android:id="@+id/observation"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:inputType="text" />
 
-                    <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
+                        </LinearLayout>
+
+                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
                         android:id="@+id/diagnosis"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         app:prefix="Diagnosis: " />-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="Diagnosis" />
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
 
-                        <EditText
-                            android:id="@+id/diagnosis"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:inputType="text" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:text="Diagnosis" />
 
-                    </LinearLayout>
+                            <EditText
+                                android:id="@+id/diagnosis"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:inputType="text" />
 
-                    <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
+                        </LinearLayout>
+
+                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
                         android:id="@+id/actionTaken"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         app:prefix="Action Taken: " />-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="Action Taken" />
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
 
-                        <EditText
-                            android:id="@+id/actionTaken"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:inputType="text" />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:text="Action Taken" />
 
-                    </LinearLayout>
+                            <EditText
+                                android:id="@+id/actionTaken"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:inputType="text" />
 
-                    <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
+                        </LinearLayout>
+
+                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
                         android:id="@+id/labourHours"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         app:prefix="Labour Hours: " />-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                        <!--
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            android:weightSum="1">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="Labour Hours" />
+                                            <TextView
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight=".5"
+                                                android:text="Labour Hours" />
 
-                        <EditText
-                            android:id="@+id/labourHours"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:inputType="text" />
+                                            <EditText
+                                                android:id="@+id/labourHours"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight=".5"
+                                                android:inputType="text" />
 
-                    </LinearLayout>
+                                        </LinearLayout>
+                    -->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Select Cost Center" />
-
-                        <Spinner
-                            android:id="@+id/costCenter"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/timeJob"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:hint="Job Time"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Response Date" />
-
-                        <TextView
-                            android:id="@+id/dateResponse"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"
-                            android:datePickerMode="spinner"
-                            android:hint="dd-mm-yyyy"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Response Time" />
-
-                        <TextView
-                            android:id="@+id/timeResponse"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"
-                            android:hint="hh:mm"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp"
-                            android:timePickerMode="spinner" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Start Date" />
-
-                        <TextView
-                            android:id="@+id/dateStart"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"
-                            android:datePickerMode="spinner"
-                            android:hint="dd-mm-yyyy"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Start Time" />
-
-                        <TextView
-                            android:id="@+id/timeStart"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"
-                            android:hint="hh:mm"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp"
-                            android:timePickerMode="spinner" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="End Date" />
-
-                        <TextView
-                            android:id="@+id/dateEnd"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"
-                            android:datePickerMode="spinner"
-                            android:hint="dd-mm-yyyy"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="End Time" />
-
-                        <TextView
-                            android:id="@+id/timeEnd"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"
-                            android:hint="hh:mm"
-                            android:textColor="@android:color/black"
-                            android:textSize="18sp"
-                            android:timePickerMode="spinner" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Technician" />
-
-                        <Spinner
-                            android:id="@+id/technicianSpinner"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Select status" />
-
-                        <Spinner
-                            android:id="@+id/statusSpinner"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/selectEquipmentButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/mybutton"
-                        android:text="Select Equipment" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Equipment  "
-                            android:textAlignment="viewStart"
-                            android:textSize="18sp" />
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                        <TextView
-                            android:id="@+id/equipmentTextViewEditFault"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Select Cost Center" />
+
+                            <Spinner
+                                android:id="@+id/costCenter"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <!--
+                                        <TextView
+                                            android:id="@+id/timeJob"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="5dp"
+                                            android:layout_marginBottom="5dp"
+                                            android:hint="Job Time"
+                                            android:textColor="#000000"
+                                            android:textSize="18sp" />
+                    -->
+
+                        <!--
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            android:weightSum="2">
+
+                                            <TextView
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Response Date" />
+
+                                            <TextView
+                                                android:id="@+id/dateResponse"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="20dp"
+                                                android:layout_weight="1"
+                                                android:datePickerMode="spinner"
+                                                android:hint="dd-mm-yyyy"
+                                                android:textColor="@android:color/black"
+                                                android:textSize="18sp" />
+                                        </LinearLayout>
+                    -->
+
+                        <!--
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            android:weightSum="2">
+
+                                            <TextView
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Response Time" />
+
+                                            <TextView
+                                                android:id="@+id/timeResponse"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="20dp"
+                                                android:layout_weight="1"
+                                                android:hint="hh:mm"
+                                                android:textColor="@android:color/black"
+                                                android:textSize="18sp"
+                                                android:timePickerMode="spinner" />
+                                        </LinearLayout>
+                    -->
+
+                        <!--
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            android:weightSum="2">
+
+                                            <TextView
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Start Date" />
+
+                                            <TextView
+                                                android:id="@+id/dateStart"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="20dp"
+                                                android:layout_weight="1"
+                                                android:datePickerMode="spinner"
+                                                android:hint="dd-mm-yyyy"
+                                                android:textColor="@android:color/black"
+                                                android:textSize="18sp" />
+                                        </LinearLayout>
+                    -->
+
+
+                        <!--
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            android:weightSum="2">
+
+                                            <TextView
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Start Time" />
+
+                                            <TextView
+                                                android:id="@+id/timeStart"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="20dp"
+                                                android:layout_weight="1"
+                                                android:hint="hh:mm"
+                                                android:textColor="@android:color/black"
+                                                android:textSize="18sp"
+                                                android:timePickerMode="spinner" />
+                                        </LinearLayout>
+                    -->
+
+                        <!--
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            android:weightSum="2">
+
+                                            <TextView
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="End Date" />
+
+                                            <TextView
+                                                android:id="@+id/dateEnd"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="20dp"
+                                                android:layout_weight="1"
+                                                android:datePickerMode="spinner"
+                                                android:hint="dd-mm-yyyy"
+                                                android:textColor="@android:color/black"
+                                                android:textSize="18sp" />
+                                        </LinearLayout>
+                    -->
+
+
+                        <!--
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            android:weightSum="2">
+
+                                            <TextView
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="End Time" />
+
+                                            <TextView
+                                                android:id="@+id/timeEnd"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_margin="20dp"
+                                                android:layout_weight="1"
+                                                android:hint="hh:mm"
+                                                android:textColor="@android:color/black"
+                                                android:textSize="18sp"
+                                                android:timePickerMode="spinner" />
+                                        </LinearLayout>
+                    -->
+
+<!--
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Technician" />
+
+                            <Spinner
+                                android:id="@+id/technicianSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                        </LinearLayout>
+-->
+
+
+                        <Button
+                            android:id="@+id/selectEquipmentButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:layout_weight="1"
-                            android:hint="Equipment Code"
-                            android:textSize="18sp" />
+                            android:background="@drawable/mybutton"
+                            android:text="Select Equipment" />
 
-                        <TextView
-                            android:id="@+id/eq_id_send"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="gone" />
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Equipment  "
+                                android:textAlignment="viewStart"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/equipmentTextViewEditFault"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:hint="Equipment Code"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/eq_id_send"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
 
                 <LinearLayout
@@ -814,6 +818,42 @@
                         android:background="@drawable/delete" />
                 </LinearLayout>
 
+
+
+            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Select status" />
+
+                    <Spinner
+                        android:id="@+id/statusSpinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/techtv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp" />
+
+                <Button
+                    android:id="@+id/selecttech"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/mybutton"
+                    android:text="Select technician" />
+
+
                 <Button
                     android:id="@+id/updateFaultReportButton"
                     android:layout_width="match_parent"
@@ -846,8 +886,8 @@
                 android:id="@+id/esc_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/esdetail"
                 android:layout_margin="3dp"
+                android:src="@drawable/esdetail"
                 app:elevation="6dp"
                 app:fabSize="auto" />
 

@@ -8,21 +8,27 @@ import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
 import com.synergy.FaultReport.CreateFaultRequestPojo;
-import com.synergy.FaultReport.FaultReportResponse;
 import com.synergy.FaultReport.UploadPictureRequest;
 import com.synergy.Search.EditFaultReportRequest;
 import com.synergy.Search.EquipmentSearchResponseforEdit;
 import com.synergy.Search.SearchResponse;
-import com.synergy.Search.UpdateFaultReportResponse;
+import com.synergy.Search.UploadFile;
+import com.synergy.Search.UploadFileRequest;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.PUT;
@@ -40,47 +46,67 @@ public interface UserService {
     Call<JsonArray> getWorkspace(@Header("Authorization") String token);
 
     //gen dep for fault
-    @GET("general/departments/1")
+    @GET("general/departments/{workspaceIdPath}")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenDep(@Header("workspaceId") String workspaceId, @Header("Authorization") String token);
+    Call<JsonArray> getGenDep(@Header("workspaceId") String workspaceId
+            , @Header("Authorization") String token
+            , @Path("workspaceIdPath") String workspaceIdPath);
 
     //gen priority for fault
-    @GET("general/priorty/1")
+    @GET("general/priorty/{workspaceIdPath}")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenproirity(@Header("Authorization") String token);
+    Call<JsonArray> getGenproirity(@Header("Authorization") String token,
+                                   @Path("workspaceIdPath") String workspaceIdPath);
 
 
     //gen division for fault
-    @GET("general/divisions/1")
+    @GET("general/divisions/{workspaceIdPath}")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenDivisions(@Header("Authorization") String token);
+    Call<JsonArray> getGenDivisions(@Header("Authorization") String token
+            , @Path("workspaceIdPath") String workspaceIdPath);
 
     //get building for fault
 
-    @GET("general/buildings/1")
+    @GET("general/buildings/{workspaceIdPath}")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenBuildings(@Header("Authorization") String token);
+    Call<JsonArray> getGenBuildings(@Header("Authorization") String token,
+                                    @Path("workspaceIdPath") String workspaceIdPath);
 
     //get fayult caTegories for fault
-    @GET("general/faultCategories/1")
+    @GET("general/faultCategories/{workspaceIdPath}")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenFaultCat(@Header("Authorization") String token);
+    Call<JsonArray> getGenFaultCat(@Header("Authorization") String token,
+                                   @Path("workspaceIdPath") String workspaceIdPath);
 
     //get fault maint grp
-    @GET("general/maintenanceGrpCategory/1")
+    @GET("general/maintenanceGrpCategory/{workspaceIdPath}")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenMaintGrp(@Header("Authorization") String token);
+    Call<JsonArray> getGenMaintGrp(@Header("Authorization") String token,
+                                   @Path("workspaceIdPath") String workspaceIdPath);
 
     //get fault location grp
     @GET("general/locations/{buildId}")
     @Headers("Content-Type: application/json")
-    Call<JsonArray> getGenLocation(@Header("Authorization") String token, @Path("buildId") Integer buildId);
+    Call<JsonArray> getGenLocation(@Header("Authorization") String token,
+                                   @Path("buildId") Integer buildId);
+
+
+    //get fault equipment list
+    @GET("general/building/{buildId}/location/{locId}")
+    @Headers("Content-Type: application/json")
+    Call<JsonArray> getGenEquip(@Header("Authorization") String token,
+                                @Header("role") String role,
+                                @Header("workspace") String workspace,
+                                @Path("buildId") Integer buildId,
+                                @Path("locId") Integer locId);
 
     //create fault
     @POST("faultreport")
     @Headers("Content-Type: application/json")
     Call<JsonObject> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo,
-                                 @Header("workspace") String workspace, @Header("Authorization") String token);
+                                 @Header("workspace") String workspace,
+                                 @Header("Authorization") String token
+            , @Header("role") String role);
 
     //get search
     @GET("faultreport/search/?")
@@ -97,10 +123,12 @@ public interface UserService {
                                   @Body UploadPictureRequest uploadPictureRequest);*/
 
     //equipment search
-    @GET("equip/{equipmentCode}")
+    @GET("faultreport/equipment/{equipmentCode}")
     @Headers("Content-Type: application/json")
-    Call<EquipmentSearchResponse> getCallEquipment(@Path("equipmentCode") String path,
-                                                   @Header("Authorization") String token);
+    Call<JsonObject> getCallEquipment(@Path("equipmentCode") String path,
+                                      @Header("Authorization") String token,
+                                      @Header("role") String role,
+                                      @Header("workspace") String workspace);
 
 
     //getEquipment Scan code
@@ -155,10 +183,11 @@ public interface UserService {
                                   @Header("workspace") String workspace);
     //upload image
 
-    @POST("faultreport/{Before}image")
+    @POST("faultreport/{value}image")
     @Headers("Content-Type: application/json")
-    Call<Void> uploadCaptureImage(@Path("Before") String befpore,
+    Call<Void> uploadCaptureImage(@Path("value") String value,
                                   @Header("Authorization") String token,
+                                  @Header("workspace") String workspace,
                                   @Body UploadPictureRequest uploadPictureRequest);
 
     // eq search http://192.168.1.117:8082/api/equip/acmv8310
@@ -172,7 +201,40 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<Void> updateReport(@Body EditFaultReportRequest editFaultReportRequest,
                             @Header("Authorization") String token,
-                            @Header("workspace") String workspace);
+                            @Header("workspace") String workspace,
+                            @Header("role") String role);
 
+    @GET("faultreport/{value}image/{frId}")
+    @Headers("Content-Type: application/json")
+    Call<JsonObject> getBeforeImage(@Path("value") String value,
+                                    @Path("frId") String frId,
+                                    @Header("workspace") String workspace,
+                                    @Header("Authorization") String token);
+
+    //call alreaddy images
+    @GET("faultreport/getimage/{imageName}")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> getImageBase64(@Path("imageName") String imagename,
+                                      @Header("workspace") String workspace,
+                                      @Header("Authorization") String token);
+
+
+    //upload file
+    @POST("faultreport/quotationUpload")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> uploadFilePdf(@Body UploadFileRequest uploadFileRequest,
+                                     @Header("Authorization" +
+                                             "") String token,
+                                     @Header("workspace") String workspace,
+                                     @Header("role") String role);
+
+
+    //enable notification
+    @GET("ws/dr/not/{zero}/{path}")
+    @Headers("Content-Type: application/json")
+    Call<Void> getNotification(@Path("zero") String zeroOrOne,
+                               @Path("path") String devicetoken,
+                               @Header("Authentication") String token,
+                               @Header("workspace") String workspace);
 
 }

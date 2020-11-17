@@ -3,6 +3,7 @@ package com.synergy.EquipmentSearch;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,10 +27,12 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.gson.JsonObject;
 import com.google.zxing.Result;
 import com.synergy.APIClient;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
+import com.synergy.Search.EditFaultReportActivity;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
@@ -41,13 +44,15 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     private Button btn;
     private ProgressDialog mProgress;
     private Toolbar toolbar;
+    String workpace, role, token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equipment_search);
 
-
+        SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        role = preferences.getString("role", "Role");
         btn = findViewById(R.id.qr_btn_click);
         scanTextView = findViewById(R.id.scan_tv);
         codeScannerView = findViewById(R.id.qr_btn);
@@ -61,10 +66,11 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         mProgress.setIndeterminate(true);
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", "");
+        token = sharedPreferences.getString("token", "");
+        role = sharedPreferences.getString("role", "");
 
         Intent intent = getIntent();
-        String workspace = intent.getStringExtra("workspaceId");
+        workpace = intent.getStringExtra("workspaceId");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -84,7 +90,14 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     codeScannerView.setVisibility(View.INVISIBLE);
-                                    callQrCodeSearch(result.getText(),token);
+                                    scanTextView.setVisibility(View.VISIBLE);
+                                    scanTextView.setText(result.getText());
+                                    Intent intent1 = new Intent(EquipmentSearchActivity
+                                            .this, EditFaultReportActivity.class);
+                                    intent1.putExtra("equipcode", result.getText());
+                                    intent1.putExtra("workspaceId",workpace);
+                                    startActivity(intent1);
+                                    // callQrCodeSearch(result.getText(), token);
                                 }
                             });
                         }
@@ -97,12 +110,12 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     private void callQrCodeSearch(String result, String token) {
         mProgress.show();
 
-        Call<EquipmentSearchResponse> callEquipment = APIClient.getUserServices().getCallEquipment(result, token);
-        callEquipment.enqueue(new Callback<EquipmentSearchResponse>() {
+        Call<JsonObject> callEquipment = APIClient.getUserServices().getCallEquipment(result, token, role, workpace);
+        callEquipment.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<EquipmentSearchResponse> call, Response<EquipmentSearchResponse> response) {
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.code() == 200) {
-                    scanTextView.setText(result);
+                /*    scanTextView.setText(result);
                     EquipmentSearchResponse equipmentSearchResponse = response.body();
 
                     Intent intent = new Intent(getApplicationContext(), QrDetails.class);
@@ -124,7 +137,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                     intent.putExtra("locationName", locationName);
                     intent.putExtra("asset", assetNumber);
                     startActivity(intent);
-                    finish();
+                    finish();*/
 
                 } else
                     Toast.makeText(EquipmentSearchActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
@@ -133,7 +146,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<EquipmentSearchResponse> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(EquipmentSearchActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
                 mProgress.dismiss();
                 finish();
@@ -149,7 +162,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello");
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(role);
         return true;
     }
 

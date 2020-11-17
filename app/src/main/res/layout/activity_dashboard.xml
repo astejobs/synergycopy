@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lay_dashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="2"
+    android:weightSum="3"
     tools:context=".Dashboard.Dashboard">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_dashboard"
         android:layout_width="match_parent"
@@ -14,115 +17,190 @@
         android:background="#EA3D51"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:menu="@menu/menu"
-        app:title="DashBoard"
+        app:title="Dashboard"
         app:titleMargin="8dp"
         app:titleTextColor="#000000" />
 
 
     <LinearLayout
+        android:id="@+id/linear_lay_1_m"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
         android:weightSum="2">
+
         <LinearLayout
             android:id="@+id/linear_create_fault"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
             android:orientation="vertical">
+
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:src="@drawable/faultpng"/>
+                android:src="@drawable/create" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Create Fault"
                 android:gravity="center"
-                android:textSize="26dp"
-                android:textColor="#F30C0C"/>
+                android:text="Create Fault Report"
+                android:textColor="#F30C0C"
+                android:textSize="26dp" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/linear_search"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
             android:orientation="vertical">
+
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pngsearch"/>
+                android:src="@drawable/searchs" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Search"
+                android:autoSizeTextType="uniform"
                 android:gravity="center"
-                android:textSize="26dp"
-                android:textColor="#F30C0C"/>
+                android:text="Search"
+                android:textColor="#F30C0C"
+                android:textSize="26dp" />
         </LinearLayout>
 
 
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/linear_lay_2_m"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
         android:weightSum="2">
+
         <LinearLayout
             android:id="@+id/linear_qr_create"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/qrr" />
+                android:src="@drawable/equipment" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Equip Qr Scan"
+                android:autoSizeTextType="uniform"
                 android:gravity="center"
-                android:textSize="26dp"
-                android:textColor="#F30C0C"/>
+                android:text="Faults On Equipment"
+                android:textColor="#F30C0C"
+                android:textSize="26dp" />
         </LinearLayout>
+
         <LinearLayout
-            android:id="@+id/linear_task_search"
+            android:id="@+id/linear_qr_taskseacr_qr"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
+            android:layout_height="160dp"
             android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
             android:orientation="vertical">
+
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:src="@drawable/dem"/>
+                android:src="@drawable/equipment" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TaskSearch"
+                android:autoSizeTextType="uniform"
                 android:gravity="center"
-                android:textSize="26dp"
-                android:textColor="#F30C0C"/>
+                android:text="Task On Equipment"
+                android:textColor="#F30C0C"
+                android:textSize="26dp" />
         </LinearLayout>
 
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linear_lay_3_m"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:id="@+id/linear_task_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/tasksearchs" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Task Search"
+                android:textColor="#F30C0C"
+                android:textSize="26dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/setting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/settingss"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Setting"
+                android:textColor="#F30C0C"
+                android:textSize="26dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

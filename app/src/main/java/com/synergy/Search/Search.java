@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
 import java.util.ArrayList;
@@ -33,7 +36,7 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 public class Search extends AppCompatActivity {
     private String TAG;
     private String frId = "";
-    private String workspaceId,token;
+    private String workspaceId, token;
     private List<String> frIdList = new ArrayList<>();
 
 
@@ -47,8 +50,10 @@ public class Search extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        toolbar = findViewById(R.id.tool_search);
+        setSupportActionBar(toolbar);
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        token=sharedPreferences.getString("token", "");
+        token = sharedPreferences.getString("token", "");
 
         ScrollView view = (ScrollView) findViewById(R.id.scrollViewSearch);
         view.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -79,7 +84,7 @@ public class Search extends AppCompatActivity {
             public boolean onQueryTextChange(String onTextChangeQueryCall) {
                 if (onTextChangeQueryCall.isEmpty()) {
                     contacts.clear();
-              searchResponseAdapter.notifyDataSetChanged();
+                    //   searchResponseAdapter.notifyDataSetChanged();
                 } else {
                     contacts.clear();
                     loadSearch(workspaceId, onTextChangeQueryCall);
@@ -99,8 +104,8 @@ public class Search extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.show();
 
-        int workspace=1;
-        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspace, callQueryDependent,token);
+        int workspace = 1;
+        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspace, callQueryDependent, token);
         call.enqueue(new Callback<List<SearchResponse>>() {
             @Override
             public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {
@@ -108,33 +113,34 @@ public class Search extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.code() == 200) {
                     List<SearchResponse> list = response.body();
-                    if (list.isEmpty()){
+                    if (list.isEmpty()) {
                         Toast.makeText(Search.this, "Nothing Here", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
 
+                        Toast.makeText(Search.this, "sucessfullsearch", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(Search.this, "sucessfullsearch", Toast.LENGTH_SHORT).show();
+                        for (SearchResponse searchResponse : list) {
 
-                    for (SearchResponse searchResponse : list) {
+                            SearchResponse searchResp = new SearchResponse();
+                            frId = searchResponse.getFrId();
+                            long rtdate = searchResponse.getReportedDate();
+                            String status = searchResponse.getStatus();
+                            String buildingg = searchResponse.getBuilding();
+                            String locationn = searchResponse.getLocation();
+                            Log.d(TAG, "onResponse: lov" + locationn + buildingg);
 
-                        SearchResponse searchResp = new SearchResponse();
-                        frId = searchResponse.getFrId();
-                        long rtdate = searchResponse.getReportedDate();
-                        String status = searchResponse.getStatus();
-                        String buildingg = searchResponse.getBuilding();
-                        String locationn = searchResponse.getLocation();
-
-                        searchResp.setFrId(frId);
-                        searchResp.setReportedDate(rtdate);
-                        searchResp.setStatus(status);
-                        searchResp.setBuilding(buildingg);
-                        searchResp.setLocation(locationn);
-                        searchResp.setWorkspaceId(workspaceId);
-                      //  frIdList.add(frId);
-                        contacts.add(searchResp);
-                    }}
+                            searchResp.setFrId(frId);
+                            searchResp.setReportedDate(rtdate);
+                            searchResp.setStatus(status);
+                            searchResp.setBuilding(buildingg);
+                            searchResp.setLocation(locationn);
+                            searchResp.setWorkspaceId(workspaceId);
+                            //  frIdList.add(frId);
+                            contacts.add(searchResp);
+                        }
+                    }
                     Collections.sort(frIdList);
-                    searchResponseAdapter = new SearchResponseAdapter(Search.this, contacts,workspaceId);
+                    searchResponseAdapter = new SearchResponseAdapter(Search.this, contacts, workspaceId);
                     listView.setAdapter(searchResponseAdapter);
                     searchResponseAdapter.notifyDataSetChanged();
 
@@ -147,8 +153,8 @@ public class Search extends AppCompatActivity {
             public void onFailure(Call<List<SearchResponse>> call, Throwable t) {
                 Toast.makeText(Search.this, "fail", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
-                Log.d(TAG, "onFailure: "+t.getCause());
-                Log.d(TAG, "onFailure: "+t.getMessage());
+                Log.d(TAG, "onFailure: " + t.getCause());
+                Log.d(TAG, "onFailure: " + t.getMessage());
 
             }
         });
@@ -192,4 +198,28 @@ public class Search extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String role = preferences.getString("role", "Role");
+        MenuItem item = menu.findItem(R.id.admin).setTitle(role);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.logoutmenu) {
+            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+            Intent intent = new Intent(this, MainActivityLogin.class);
+            startActivity(intent);
+            finishAffinity();
+        }
+        return true;
+    }
 }

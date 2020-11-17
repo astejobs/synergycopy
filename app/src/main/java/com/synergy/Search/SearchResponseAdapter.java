@@ -61,13 +61,15 @@ public class SearchResponseAdapter extends BaseAdapter {
         TextView workspaceSearchTextView = convertView.findViewById(R.id.workspace_search);
 
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(currentItem.getReportedDate());
+       // cal.setTimeInMillis(currentItem.getReportedDate());
         String report = DateFormat.format("dd-MM-yyyy", cal).toString();
+
         Calendar cal2 = Calendar.getInstance(Locale.ENGLISH);
         String ctreate = DateFormat.format("dd-MM-yyyy", cal2).toString();
+
         frIdTextView.setText(" FrId:" + currentItem.getFrId().trim());
         re.setText(" Reported Date:" + report);
-        cr.setText(" Crated Date:" + ctreate);
+        cr.setText(" Created Date:" + ctreate);
         st.setText(" Status:" + currentItem.getStatus());
         bu.setText(" Building:" + currentItem.getBuilding());
         lo.setText(" Location:" + currentItem.getLocation());

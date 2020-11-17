@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tryme"
+    android:orientation="vertical"
+    tools:context=".Search.PreviousImagesActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EA3D51"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:menu="@menu/menu"
+        app:title="Available Image"
+        app:titleMargin="8dp"
+        app:titleTextColor="#000000" />
+
+    <LinearLayout
+        android:id="@+id/image_layout_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:columnCount="2"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager_layout"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_margin="20dp" />
+
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/dot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            app:dotsColor="#000000"
+            app:dotsSize="5dp"
+            app:dotsSpacing="8dp"
+            app:progressMode="true"
+            app:selectedDotColor="#6CF10C" />
+
+    </LinearLayout>
+</LinearLayout>

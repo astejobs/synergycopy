@@ -12,12 +12,16 @@ import com.synergy.R;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-    public class MyFirebaseInstanceService extends FirebaseMessagingService {
+import org.jetbrains.annotations.NotNull;
+
+public class MyFirebaseInstanceService extends FirebaseMessagingService {
+
 
         @Override
-        public void onNewToken(String token) {
+        public void onNewToken(@NotNull String token) {
             super.onNewToken(token);
             Log.e("newToken", token);
+            Log.d("tag", "onNewToken: "+token);
             getSharedPreferences("_", MODE_PRIVATE).edit().putString("fcm_token", token).apply();
         }
 
@@ -35,8 +39,11 @@ import androidx.core.app.NotificationCompat;
             notificationBuilder.setContentTitle(title);
             notificationBuilder.setContentText(message);
             notificationBuilder.setAutoCancel(true);
+            notificationBuilder.setSmallIcon(R.drawable.notification_icon);
             //notificationBuilder.setContentIntent(pendingIntent);
             NotificationManager notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(0,notificationBuilder.build());
         }
+
+
     }

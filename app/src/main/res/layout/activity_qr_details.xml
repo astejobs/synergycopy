@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
         app:titleTextColor="#000000"
+        android:visibility="gone"
         android:background="@drawable/mybutton"
         android:text="Tasks on Equipment"
         android:textAlignment="center" />

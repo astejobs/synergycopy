@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tryme"
+    android:orientation="vertical"
+    tools:context=".Setting.SettingActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EA3D51"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Settings"
+        app:titleMargin="8dp"
+        app:titleTextColor="#000000"
+        app:menu="@menu/menu"/>
+
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/notification_switch"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:checked="true"
+        android:text="Notification"/>
+        <!--app:track="@drawable/track"-->
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:layout_width="match_parent"
+        android:id="@+id/permission_switch"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:text="Permission" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:layout_width="match_parent"
+        android:id="@+id/admin_sswitch"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:text="Admin" />
+
+
+
+</LinearLayout>

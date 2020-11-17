@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tryme"
+    android:orientation="vertical"
+    tools:context=".Search.UploadFile">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_edit_fault"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#DA1228"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu"
+        app:title="Upload File"
+        app:titleMargin="8dp"
+        app:titleTextColor="#000000" />
+
+    <TextView
+        android:id="@+id/upload_file"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_margin="20dp"
+        android:drawableRight="@drawable/ic_baseline_file"
+        android:text="Upload File"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/upload_file_btn"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/mybutton"
+        android:text="UPLOAD" />
+
+</LinearLayout>

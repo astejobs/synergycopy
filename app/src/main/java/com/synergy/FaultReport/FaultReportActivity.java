@@ -1,38 +1,38 @@
 package com.synergy.FaultReport;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
+import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -41,28 +41,34 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class FaultReportActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class FaultReportActivity extends AppCompatActivity {
+
     private static final String TAG = "";
-    String workSpaceid;
-    List<list> genralDepList = new ArrayList<list>();
-    List<list> genralPriorityList = new ArrayList<list>();
-    List<list> genralDivisionList = new ArrayList<list>();
-    List<list> genralBuildingList = new ArrayList<list>();
-    List<list> genralFaultCatList = new ArrayList<list>();
-    List<list> genralFaultMaintGrp = new ArrayList<list>();
-    List<list> genralLoaction = new ArrayList<list>();
-    ProgressDialog progressDialog;
+    private String workSpaceid, role;
+    private List<list> genralDepList = new ArrayList<list>();
+    private List<list> genralPriorityList = new ArrayList<list>();
+    private List<list> genralDivisionList = new ArrayList<list>();
+    private List<list> genralBuildingList = new ArrayList<list>();
+    private List<list> genralFaultCatList = new ArrayList<list>();
+    private List<list> genralFaultMaintGrp = new ArrayList<list>();
+    private List<list> genralLoaction = new ArrayList<list>();
+    private List<list> genralEquipment = new ArrayList<list>();
+    private List<list> genraltechlist = new ArrayList<list>();
+
+    private ProgressDialog progressDialog;
 
 
-    private EditText requestorNameEditText, contactNumberEditText, locationDescriptionEditText, faultDescriptionEditText;
-    private Spinner departmentSpinner, buildingSpinner, locationSpinner, prioritySpinner, divisionSpinner, faultCategorySpinner, selectMaintenanceSpinner;
-    private Button buttonCreateFaultReport;
-    private TextView datePickerEdit, timePickerEdit;
+    private EditText requestorNameEditText, remarksEt, contactNumberEditText, locationDescriptionEditText, faultDescriptionEditText;
+    private Spinner departmentSpinner, buildingSpinner, equipmentSpinner, locationSpinner, prioritySpinner,
+            divisionSpinner, faultCategorySpinner,
+            selectMaintenanceSpinner; //spinnerTechnician;
 
-    private String requestorName, locDesc, faultDesc,token;
-    String contactNo;
-    String dateinStr, timeStr;
-    int depId, locId, buildId, maintId, priroityId, faultId, divisionid;
+    private Button buttonCreateFaultReport, selectTech;
+    private TextView datePickerEdit, timePickerEdit, techTv;
+
+    private String requestorName, locDesc, faultDesc, token;
+    private String contactNo;
+    private int depId, locId, buildId, maintId, priroityId, faultId, divisionid, equipId, techId;
 
     private ArrayAdapter<list> deptListAdapter;
     private ArrayAdapter<list> priAdapter;
@@ -71,20 +77,35 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
     private ArrayAdapter<list> faultCatAdapter;
     private ArrayAdapter<list> maintAdapter;
     private ArrayAdapter<list> locationAdapter;
+    private ArrayAdapter<list> equipmentAdapter;
+    //  private ArrayAdapter<list> technicianAdapter;
+    Toolbar toolbar;
 
+
+    boolean[] checkedItems;
+    ArrayList<Integer> mUserItems = new ArrayList<>();
+    List<String> stockList = new ArrayList<>();
+    String[] listItems;
+    List attendedByIdsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fault_report);
+        toolbar = findViewById(R.id.toolbar_fault);
+        setSupportActionBar(toolbar);
+        attendedByIdsList = new ArrayList();
+
+
         progressDialog = new ProgressDialog(FaultReportActivity.this);
         progressDialog.setTitle("Loading");
+
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        token=sharedPreferences.getString("token", "");
-
-
+        token = sharedPreferences.getString("token", "");
+        role = sharedPreferences.getString("role", "");
         Intent intent = getIntent();
         workSpaceid = intent.getStringExtra("workspaceId");
+
         initViews();
         callSpinerGenDep();
         callspinnerGenPriority();
@@ -92,6 +113,71 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         callSpinnerBuilding();
         callSpinnerFaultCat();
         callSpinnerMaintGrp();
+        callTechSpinner();
+        selectTech.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(FaultReportActivity.this, "dialog", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder mbuilder = new AlertDialog.Builder(FaultReportActivity.this);
+                mbuilder.setTitle("Select Technicians");
+                mbuilder.setMultiChoiceItems(listItems, checkedItems, (dialog, position, isChecked) -> {
+                    if (isChecked) {
+                        if (!mUserItems.contains(position)) {
+                            mUserItems.add(position);
+                        }
+                    } else if (mUserItems.contains(position)) {
+                        mUserItems.remove(position);
+
+                    }
+                });
+                mbuilder.setCancelable(false);
+                mbuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String item = "";
+                        for (int i = 0; i < mUserItems.size(); i++) {
+                            item = item + listItems[mUserItems.get(i)];
+                            if (i != mUserItems.size() - 1) {
+                                item = item + ", ";
+                            }
+                        }
+                        techTv.setText(item);
+                    }
+                });
+                mbuilder.show();
+                mbuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+            }
+
+        });
+
+/*
+
+        technicianAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genraltechlist);
+        technicianAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTechnician.setAdapter(technicianAdapter);
+        spinnerTechnician.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spinnerTechnician.setSelection(position);
+                list p = (list) parent.getItemAtPosition(position);
+                techId = p.id;
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+*/
 
 
         deptListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDepList);
@@ -123,6 +209,23 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                 list p = (list) parent.getItemAtPosition(position);
                 priroityId = p.id;
                 Log.d(TAG, "onItemSelected: prity id " + priroityId);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        equipmentAdapter = new ArrayAdapter<list>(this, android.R.layout.simple_spinner_dropdown_item, genralEquipment);
+        equipmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        equipmentSpinner.setAdapter(equipmentAdapter);
+        equipmentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                list p = (list) parent.getItemAtPosition(position);
+                equipId = p.id;
+                Log.d(TAG, "onItemSelected: equpid" + equipId);
+
             }
 
             @Override
@@ -208,6 +311,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
                 locId = p.id;
+                callSpinnerEquipment(locId);
 
             }
 
@@ -218,20 +322,67 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
     }
 
-    private void showDatePickerDailog() {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                this,
-                Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.show();
+    private void callTechSpinner() {
+
+
+        Call<JsonArray> jsonArrayCall = APIClient.getUserServices().getTechnicianCall(token, workSpaceid);
+        jsonArrayCall.enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                if (response.code() == 200) {
+                    JsonArray jsonArray = response.body();
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        String eqName = jsonArray.get(i).getAsJsonObject().get("name").getAsString();
+                        int eqId = jsonArray.get(i).getAsJsonObject().get("id").getAsInt();
+                        genraltechlist.add(new list(eqName, eqId));
+                        //   spinnerTechnician.setAdapter(technicianAdapter);
+                        stockList.add(eqName);
+                    }
+                    Log.d(TAG, "onResponse: geb" + genraltechlist);
+                    listItems = new String[stockList.size()];
+                    listItems = stockList.toArray(listItems);
+                    checkedItems = new boolean[listItems.length];
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+                Toast.makeText(FaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
+
+    private void callSpinnerEquipment(int buildId) {
+        Call<JsonArray> jsonArrayCall = APIClient.getUserServices().getGenEquip(token, role, workSpaceid, buildId, locId);
+        jsonArrayCall.enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                if (response.code() == 200) {
+                    JsonArray jsonArray = response.body();
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        String eqName = jsonArray.get(i).getAsJsonObject().get("name").getAsString();
+                        int eqId = jsonArray.get(i).getAsJsonObject().get("id").getAsInt();
+                        genralEquipment.add(new list(eqName, eqId));
+                        equipmentSpinner.setAdapter(equipmentAdapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+                Toast.makeText(FaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 
     private void callGenLoaction(int buildId) {
 
-        Call<JsonArray> call = APIClient.getUserServices().getGenLocation(token,buildId);
+        Call<JsonArray> call = APIClient.getUserServices().getGenLocation(token, buildId);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -244,6 +395,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
                         genralLoaction.add(new list(name, id));
                         locationSpinner.setAdapter(locationAdapter);
                     }
+                    // callSpinnerEquipment(buildId);
+
 
                 } else
                     progressDialog.dismiss();
@@ -260,7 +413,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
     private void callSpinnerMaintGrp() {
 
-        Call<JsonArray> call = APIClient.getUserServices().getGenMaintGrp(token);
+        Call<JsonArray> call = APIClient.getUserServices().getGenMaintGrp(token, workSpaceid);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -288,7 +441,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
     }
 
     private void callSpinnerFaultCat() {
-        Call<JsonArray> call = APIClient.getUserServices().getGenFaultCat(token);
+        Call<JsonArray> call = APIClient.getUserServices().getGenFaultCat(token, workSpaceid);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -317,7 +470,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
     }
 
     private void callSpinnerBuilding() {
-        Call<JsonArray> call = APIClient.getUserServices().getGenBuildings(token);
+        Call<JsonArray> call = APIClient.getUserServices().getGenBuildings(token, workSpaceid);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -337,7 +490,6 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             }
 
 
-
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
                 progressDialog.dismiss();
@@ -348,8 +500,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
     }
 
     private void callSpinnerGenDivision() {
-        //http://192.168.1.106:8080/lsme/api/divisions/1
-        Call<JsonArray> call = APIClient.getUserServices().getGenDivisions(token);
+
+        Call<JsonArray> call = APIClient.getUserServices().getGenDivisions(token, workSpaceid);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -379,7 +531,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
     private void callspinnerGenPriority() {
 
-        Call<JsonArray> call = APIClient.getUserServices().getGenproirity(token);
+        Call<JsonArray> call = APIClient.getUserServices().getGenproirity(token, workSpaceid);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -412,7 +564,7 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
 
     private void callSpinerGenDep() {
         progressDialog.show();
-        Call<JsonArray> call = APIClient.getUserServices().getGenDep(workSpaceid,token);
+        Call<JsonArray> call = APIClient.getUserServices().getGenDep(workSpaceid, token, workSpaceid);
         call.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
@@ -443,6 +595,8 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
     }
 
     private void initViews() {
+        selectTech = findViewById(R.id.selecttech);
+        techTv = findViewById(R.id.techtv);
 
         requestorNameEditText = findViewById(R.id.requestorNameEditText);
         contactNumberEditText = findViewById(R.id.contactNumber_fault);
@@ -450,61 +604,34 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         faultDescriptionEditText = findViewById(R.id.FaultDescriptionEditText);
         departmentSpinner = findViewById(R.id.departmentSpinner);
         buildingSpinner = findViewById(R.id.buildingSpinner);
+        //  spinnerTechnician = findViewById(R.id.techSpinner);
         locationSpinner = findViewById(R.id.locationSpinner);
         prioritySpinner = findViewById(R.id.prioritySpinner);
         divisionSpinner = findViewById(R.id.divisionSpinner);
         faultCategorySpinner = findViewById(R.id.faultCategorySpinner);
         selectMaintenanceSpinner = findViewById(R.id.selectMaintenanceSpinner);
-        datePickerEdit = findViewById(R.id.datePickerFault);
-        timePickerEdit = findViewById(R.id.timePickerFault);
         buttonCreateFaultReport = findViewById(R.id.buttonCreateFaultReport);
+        equipmentSpinner = findViewById(R.id.equipmentSpinner);
 
         genralDepList.add(new list("Select dept", 0));
+        genralEquipment.add(new list("Select Equipment", 0));
         genralPriorityList.add(new list("Select Priority", 0));
         genralDivisionList.add(new list("Select Division", 0));
         genralBuildingList.add(new list("Select Building", 0));
         genralFaultCatList.add(new list("Select Fault Categories", 0));
         genralFaultMaintGrp.add(new list("Select Maintainence", 0));
         genralLoaction.add(new list("Select Location", 0));
-
-        datePickerEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDailog();
-
-            }
-        });
-
-
-        timePickerEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int i = 0, i1 = 0;
-                TimePickerDialog timePickerDialog = new TimePickerDialog(
-                        FaultReportActivity.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                                i = i;
-                                i1 = i1;
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(0, 0, 0, i, i1);
-                                timePickerEdit.setText(DateFormat.format("HH:mm", calendar));
-                            }
-                        }, 12, 0, true
-                );
-                timePickerDialog.updateTime(i, i1);
-                timePickerDialog.show();
-            }
-        });
-
+        genraltechlist.add(new list("Select Technician", 0));
         buttonCreateFaultReport.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
 
 
                 try {
+                    buttonCreateFaultReport.setEnabled(false);
                     createFaultReport();
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -513,33 +640,35 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void createFaultReport() throws ParseException {
-        timeStr = timePickerEdit.getText().toString();
-        dateinStr = datePickerEdit.getText().toString();
         requestorName = requestorNameEditText.getText().toString();
         faultDesc = faultDescriptionEditText.getText().toString();
         locDesc = locationDescriptionEditText.getText().toString();
         contactNo = contactNumberEditText.getText().toString();
-        long dateStr = 0;
-        SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
 
-        Date d = f.parse(dateinStr);
-        assert d != null;
-        dateStr = d.getTime();
+        String attendedbyString = techTv.getText().toString();
+        List<String> attendedbylist = Arrays.asList(attendedbyString.split(", "));
 
+        for (int j = 0; j < attendedbylist.size(); j++) {
+            String techincian = attendedbylist.get(j);
+            for (list list : genraltechlist) {
+                if (list.getName().equals(techincian)) {
+                    Integer idd = list.id;
+                    attendedByIdsList.add(idd);
+                }
+            }
+        }
         if (TextUtils.isEmpty(contactNumberEditText.getText())
                 || buildId == 0 || locId == 0 || maintId == 0 ||
                 priroityId == 0 || depId == 0 || faultId == 0 ||
+                equipId == 0 || attendedByIdsList.isEmpty() ||
                 TextUtils.isEmpty(locationDescriptionEditText.getText())
-                || TextUtils.isEmpty(timePickerEdit.getText()) ||
-                TextUtils.isEmpty(datePickerEdit.getText())
                 || TextUtils.isEmpty(requestorNameEditText.getText())) {
             Toast.makeText(this, "Please Select All Feilds", Toast.LENGTH_SHORT).show();
         } else if (contactNo.length() < 8) {
             Toast.makeText(this, "Contact Number not Valid", Toast.LENGTH_SHORT).show();
-        } else
-           // Log.d(TAG, "createFaultReport: " + timePickerEdit.getText().toString());
-        {
+        } else {
             Location location = new Location();
             location.setId(locId);
             Building building = new Building();
@@ -554,50 +683,83 @@ public class FaultReportActivity extends AppCompatActivity implements DatePicker
             department.setId(depId);
             Division division = new Division();
             division.setId(divisionid);
+            Equipment equipment = new Equipment();
+            equipment.setId(equipId);
+            Log.d(TAG, "createFaultReport: jk" + attendedByIdsList);
 
+            ArrayList<AttendedBy> attendedBy = new ArrayList<>();
 
-            CreateFaultRequestPojo createFaultRequestPojo = new CreateFaultRequestPojo(requestorName, timeStr,
-                    building, location, contactNo, dateStr, priority, maintGrp
-                    , faultCategory, department, faultDesc, locDesc, division);
+            for (int j = 0; j < attendedByIdsList.size(); j++) {
+                AttendedBy attendedbyObject = new AttendedBy();
+                attendedbyObject.setId((Integer) attendedByIdsList.get(j));
+                attendedBy.add(attendedbyObject);
 
-            Call<JsonObject> call = APIClient.getUserServices().createFault(createFaultRequestPojo, workSpaceid,token);
+            }
+
+            CreateFaultRequestPojo createFaultRequestPojo = new CreateFaultRequestPojo(requestorName,
+                    building, location, contactNo, priority, maintGrp
+                    , faultCategory, department, faultDesc, locDesc, division, equipment, attendedBy);
+            progressDialog.show();
+            Call<JsonObject> call = APIClient.getUserServices().createFault(createFaultRequestPojo, workSpaceid, token, role);
             call.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     if (response.code() == 200) {
-                        JsonObject jo=response.body();
-                        String frid=jo.get("frId").getAsString();
+                        progressDialog.dismiss();
+                        JsonObject jo = response.body();
+                        String frid = jo.get("frId").getAsString();
                         Intent intent = new Intent(FaultReportActivity.this, BeforeImage.class);
-                        intent.putExtra("frId",frid);
+                        intent.putExtra("frId", frid);
                         intent.putExtra("value", "Before");
-                        intent.putExtra("workspace",workSpaceid);
-                        intent.putExtra("token",token);
+                        intent.putExtra("workspace", workSpaceid);
+                        intent.putExtra("token", token);
                         startActivity(intent);
                         Toast.makeText(FaultReportActivity.this, "Fault Report Created Successfully",
                                 Toast.LENGTH_SHORT).show();
                         finish();
                     } else
-                        Toast.makeText(FaultReportActivity.this, "Error : " + response.code(), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onResponse: hi"+response.message());
+                    Log.d(TAG, "onResponse: hl"+response.raw());
+                        progressDialog.dismiss();
+                    Toast.makeText(FaultReportActivity.this, "Error : " + response.code(), Toast.LENGTH_LONG).show();
+                    //finish();
                 }
 
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
+                    progressDialog.dismiss();
 
                     Toast.makeText(FaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_LONG).show();
                     Log.d(TAG, "onFailure:  " + t.getCause());
                     Log.d(TAG, "onFailure: " + t.getMessage());
+                    //finish();
                 }
             });
         }
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Date date = new Date(year - 1900, month, dayOfMonth);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        String cdate = formatter.format(date);
-        datePickerEdit.setText(cdate);
-
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem item = menu.findItem(R.id.admin).setTitle(role);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.logoutmenu) {
+            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+            Intent intent = new Intent(this, MainActivityLogin.class);
+            startActivity(intent);
+            finishAffinity();
+        }
+        return true;
+    }
+
+
 }

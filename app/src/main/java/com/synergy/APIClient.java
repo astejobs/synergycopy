@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class APIClient {
 
@@ -22,13 +23,16 @@ public class APIClient {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                // .baseUrl("http://192.168.1.112:8080/lsme/api/")
+                 .baseUrl("http://192.168.1.115:8081/api/")
+                //  .baseUrl("http://192.168.1.114:8081/api/")
+                // .baseUrl("http://192.168.1.116:8081/api/")
+               // .baseUrl("http://ifarms.com.sg:8086/lsme/api/")
                 // .baseUrl("http://ifarms.com.sg:8086/lsme/api/")
-               // .baseUrl("http://192.168.1.117:8082/api/")
-               // .baseUrl("https://ifarms.com.sg:8085/lsme/api/")
-                .baseUrl("http://ifarms.com.sg:8086/lsme/api/")
-                // http://192.168.1.117:8082http://ifarms.com.sg:8086/lsme
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create()))
+                //http://192.168.1.117:8082http://ifarms.com.sg:8086/lsme
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory
+                        .create(new GsonBuilder().setLenient()
+                                .serializeNulls().create()))
                 .client(okHttpClient)
                 .build();
 

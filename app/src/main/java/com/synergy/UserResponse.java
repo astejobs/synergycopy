@@ -6,6 +6,15 @@ public class UserResponse {
 
     private String role;
     private String token;
+    private String user;
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
 
     public String getRole() {
         return role;
@@ -23,7 +32,8 @@ public class UserResponse {
         this.token = token;
     }
 
-    public UserResponse(String role, String token) {
+    public UserResponse(String role, String token,String user) {
+        this.user=user;
         this.role = role;
         this.token = token;
     }

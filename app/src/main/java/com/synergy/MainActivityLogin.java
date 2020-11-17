@@ -9,12 +9,19 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.synergy.Workspace.WorkspaceActivity;
 
 import androidx.annotation.NonNull;
@@ -24,6 +31,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,19 +47,32 @@ public class MainActivityLogin extends AppCompatActivity {
     public static final String TEXT1 = "text";
     public static final String PASSWORD1 = "password";
     private Button buttonLogin;
-    private String nameString, passwordString;
+    private String nameString, passwordString, deviceToken;
     private static final String TAG = "Tag";
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_login);
+        sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+       FirebaseInstallations.getInstance().getToken(true);
 
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful()){
+                    deviceToken = task.getResult();
+                }
+            }
+        });
         buttonLogin = findViewById(R.id.btn_login);
         editTextName = findViewById(R.id.editTextUsername);
         passwordEdit = findViewById(R.id.editTextPassword);
+     //   deviceToken = getToken(this);
 
-        String deviceGCM = getToken(this);
 
         if (!(ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -79,7 +100,7 @@ public class MainActivityLogin extends AppCompatActivity {
 
                 nameString = editTextName.getText().toString();
                 passwordString = passwordEdit.getText().toString();
-                UserRequest userRequest = new UserRequest(nameString, passwordString);
+                UserRequest userRequest = new UserRequest(nameString, passwordString, deviceToken);
                 loginUser(userRequest);
             }
         });
@@ -91,7 +112,7 @@ public class MainActivityLogin extends AppCompatActivity {
         nameString = sharedPreferences.getString(TEXT1, "");
         passwordString = sharedPreferences.getString(PASSWORD1, "");
         String userToken = sharedPreferences.getString("token", "");
-        UserRequest request = new UserRequest(nameString, passwordString);
+        UserRequest request = new UserRequest(nameString, passwordString, deviceToken);
         if (!nameString.equals("")) {
             loginUser(request);
         }
@@ -151,13 +172,14 @@ public class MainActivityLogin extends AppCompatActivity {
                     UserResponse userResponse = response.body();
                     String token = userResponse.getToken();
                     String role = userResponse.getRole();
-
-                    SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    String user = userResponse.getUser();
                     editor.putString("token", token);
+                    editor.putString("role", role);
+                    editor.putString("devicetoken",deviceToken);
                     editor.apply();
 
                     Intent intent = new Intent(getApplicationContext(), WorkspaceActivity.class);
+                    intent.putExtra("devicetoken",deviceToken);
                     startActivity(intent);
                     finish();
                 } else if (response.code() == 202) {
@@ -175,4 +197,6 @@ public class MainActivityLogin extends AppCompatActivity {
             }
         });
     }
+
+
 }

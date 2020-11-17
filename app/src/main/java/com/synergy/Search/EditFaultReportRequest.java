@@ -1,103 +1,54 @@
 package com.synergy.Search;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditFaultReportRequest {
-    @SerializedName("frId")
-    @Expose
+
     private String frId;
-    @SerializedName("building")
-    @Expose
+
     private Building building;
-    @SerializedName("location")
-    @Expose
+
     private Location location;
-    @SerializedName("requestorName")
-    @Expose
+
     private String requestorName;
-    @SerializedName("department")
-    @Expose
+
     private Department department;
-    @SerializedName("reqtorContactNo")
-    @Expose
-    private String reqtorContactNo;
-    @SerializedName("reportedDate")
-    @Expose
-    private long reportedDate;
-    @SerializedName("reportedTime")
-    @Expose
-    private long reportedTime;
-    @SerializedName("responseDate")
-    @Expose
-    private long responseDate;
-    @SerializedName("responseTime")
-    @Expose
-    private long responseTime;
-    @SerializedName("startDate")
-    @Expose
-    private long startDate;
-    @SerializedName("startTime")
-    @Expose
-    private long startTime;
-    @SerializedName("endDate")
-    @Expose
-    private long endDate;
-    @SerializedName("endTime")
-    @Expose
-    private long endTime;
-    @SerializedName("locationDesc")
-    @Expose
+
+    private String requestorContactNo;
+
     private String locationDesc;
-    @SerializedName("faultCategory")
-    @Expose
+
     private FaultCategory faultCategory;
-    @SerializedName("faultCategoryName")
-    @Expose
-    private String faultCategoryName;
-    @SerializedName("priority")
-    @Expose
+
+    private String faultCategoryDesc;
+
     private Priority priority;
-    @SerializedName("maintGrp")
-    @Expose
+
     private MaintGrp maintGrp;
-    @SerializedName("division")
-    @Expose
+
     private Division division;
-    @SerializedName("observation")
-    @Expose
+
     private String observation;
-    @SerializedName("diagnosis")
-    @Expose
+
     private String diagnosis;
-    @SerializedName("actionTaken")
-    @Expose
+
     private String actionTaken;
-    @SerializedName("costCenter")
-    @Expose
-    private CostCenter costCenter;
-    @SerializedName("status")
-    @Expose
+
+    private CostCenter costCenter =null;
+
     private String status;
-    @SerializedName("equipment")
-    @Expose
+
     private Equipment equipment;
-    @SerializedName("remarks")
-    @Expose
+
     private List<String> remarks = null;
-    @SerializedName("attendedBy")
-    @Expose
+
     private ArrayList<AttendedBy> attendedBy;
 
     public EditFaultReportRequest(String frId, Building building, Location location, String reqtorName,
-                                  Department department, String reqtorContactNo, long reportedDate,
-                                  long reportedTime, long responseDate, long responseTime, long startDate,
-                                  long startTime, long endDate, long endTime, String locOtherDesc,
-                                  FaultCategory faultCategory, String faultDtl, Priority priority,
+                                  Department department, String reqtorContactNo, String locOtherDesc,
+                                  FaultCategory faultCategory, String faultCategoryDesc, Priority priority,
                                   MaintGrp maintGrp, Division division, String observe, String diagnosis, String actionTaken,
                                   CostCenter costCenter, String status, Equipment equipment,
                                   List<String> remarks, ArrayList<AttendedBy> attendedBy) {
@@ -106,18 +57,10 @@ public class EditFaultReportRequest {
         this.location = location;
         this.requestorName = reqtorName;
         this.department = department;
-        this.reqtorContactNo = reqtorContactNo;
-        this.reportedDate = reportedDate;
-        this.reportedTime = reportedTime;
-        this.responseDate = responseDate;
-        this.responseTime = responseTime;
-        this.startDate = startDate;
-        this.startTime = startTime;
-        this.endDate = endDate;
-        this.endTime = endTime;
+        this.requestorContactNo = reqtorContactNo;
         this.locationDesc = locOtherDesc;
         this.faultCategory = faultCategory;
-        this.faultCategoryName = faultDtl;
+        this.faultCategoryDesc = faultCategoryDesc;
         this.priority = priority;
         this.maintGrp = maintGrp;
         this.division = division;
@@ -152,41 +95,10 @@ public class EditFaultReportRequest {
         this.department = department;
     }
 
-    public void setReqtorContactNo(String reqtorContactNo) {
-        this.reqtorContactNo = reqtorContactNo;
+    public void setRequestorContactNo(String requestorContactNo) {
+        this.requestorContactNo = requestorContactNo;
     }
 
-    public void setReportedDate(long reportedDate) {
-        this.reportedDate = reportedDate;
-    }
-
-    public void setReportedTime(long reportedTime) {
-        this.reportedTime = reportedTime;
-    }
-
-    public void setResponseDate(long responseDate) {
-        this.responseDate = responseDate;
-    }
-
-    public void setResponseTime(long responseTime) {
-        this.responseTime = responseTime;
-    }
-
-    public void setStartDate(long startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setEndDate(long endDate) {
-        this.endDate = endDate;
-    }
-
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
-    }
 
     public void setLocationDesc(String locationDesc) {
         this.locationDesc = locationDesc;
@@ -197,7 +109,7 @@ public class EditFaultReportRequest {
     }
 
     public void setFaultCategoryName(String faultCategoryName) {
-        this.faultCategoryName = faultCategoryName;
+        this.faultCategoryDesc = faultCategoryName;
     }
 
     public void setPriority(Priority priority) {
@@ -264,40 +176,8 @@ public class EditFaultReportRequest {
         return department;
     }
 
-    public String getReqtorContactNo() {
-        return reqtorContactNo;
-    }
-
-    public long getReportedDate() {
-        return reportedDate;
-    }
-
-    public long getReportedTime() {
-        return reportedTime;
-    }
-
-    public long getResponseDate() {
-        return responseDate;
-    }
-
-    public long getResponseTime() {
-        return responseTime;
-    }
-
-    public long getStartDate() {
-        return startDate;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public long getEndDate() {
-        return endDate;
-    }
-
-    public long getEndTime() {
-        return endTime;
+    public String getRequestorContactNo() {
+        return requestorContactNo;
     }
 
     public String getLocationDesc() {
@@ -309,7 +189,7 @@ public class EditFaultReportRequest {
     }
 
     public String getFaultCategoryName() {
-        return faultCategoryName;
+        return faultCategoryDesc;
     }
 
     public Priority getPriority() {
@@ -620,186 +500,160 @@ public class EditFaultReportRequest {
 */
 }
 
- class FaultCategory
-{
+class FaultCategory {
     private int id;
 
 
-
-    public int getId ()
-    {
-        return id;
-    }
-
-    public void setId (int id)
-    {
-        this.id = id;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [id = "+id+"]";
-    }
-}
-class CostCenter{
-
-    public CostCenter(int id) {
-        this.id = id;
-    }
-    private int id;
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     @Override
-    public String toString()
-    {
-        return "ClassPojo [ id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [id = " + id + "]";
     }
 }
- class Location
-{
-    private int id;
-    public int getId ()
-    {
+
+class CostCenter {
+
+
+    private Integer id=null;
+    public CostCenter(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [ id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [ id = " + id + "]";
     }
 }
 
-
-
-class Building
-{
+class Location {
     private int id;
 
-    public int getId ()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [ id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [ id = " + id + "]";
     }
 }
 
 
-class Division
-{
+class Building {
     private int id;
-    public int getId ()
-    {
+
+    public int getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [ id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [ id = " + id + "]";
     }
 }
 
 
-
-class Priority
-{
+class Division {
     private int id;
 
-
-    public int getId ()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [  id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [ id = " + id + "]";
     }
 }
 
 
-class Department
-{
-
-
-    private int id;
-    public int getId ()
-    {
-        return id;
-    }
-
-    public void setId (int id)
-    {
-        this.id = id;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [  id = "+id+"]";
-    }
-}
-
-
-class MaintGrp
-{
+class Priority {
     private int id;
 
 
-
-    public int getId ()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId (int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [ id = "+id+"]";
+    public String toString() {
+        return "ClassPojo [  id = " + id + "]";
     }
 }
-class  AttendedBy{
-   int  id;
 
-    public AttendedBy(int id) {
+
+class Department {
+
+
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "ClassPojo [  id = " + id + "]";
+    }
+}
+
+
+class MaintGrp {
+    private int id;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "ClassPojo [ id = " + id + "]";
+    }
+}
+
+class AttendedBy {
+    int id;
+
 
     public int getId() {
         return id;
@@ -809,7 +663,8 @@ class  AttendedBy{
         this.id = id;
     }
 }
-class Equipment{
+
+class Equipment {
     int id;
 
     public Equipment(int id) {
