@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.LoginActivity" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#ED2038</item>
-        <item name="colorPrimaryVariant">#D80D3D</item>
+        <item name="colorPrimary">#314EDF</item>
+        <item name="colorPrimaryVariant">#2E6BAA</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

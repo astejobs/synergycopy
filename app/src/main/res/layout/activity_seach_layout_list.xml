@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Search.EquipmentSearchActivityforEdit"
-    android:background="@drawable/tryme">
+    android:background="@color/colorCodeSchemeApp">
 
     <SearchView
         android:id="@+id/search_equip_bar"

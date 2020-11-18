@@ -11,7 +11,7 @@
         android:id="@+id/toolbar_QRDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EA3D51"
+        android:background="@color/colorCodeSchemeApp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="Scanned Equipment Details"
         app:titleMargin="8dp"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="10dp"
-        android:background="@drawable/mybutton">
+        android:background="@color/colorCodeSchemeApp">
 
         <TextView
             android:id="@+id/eq_code"

@@ -21,10 +21,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity">
-        <activity android:name=".Search.UploadFile"/>
+        <activity android:name=".Otp.OtpActivity"/>
+        <activity android:name=".Search.UploadFile" />
         <activity android:name=".Search.PreviousImagesActivity" />
         <activity android:name=".Setting.SettingActivity" />
-
         <activity android:name=".EquipmentSearch.CheckListActivity" />
         <activity android:name=".Search.EditFaultReportActivity" />
         <activity android:name=".EquipmentSearch.PmTaskActivity" />
@@ -43,6 +43,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".Services.MyFirebaseInstanceService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

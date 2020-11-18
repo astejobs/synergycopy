@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/tryme"
+    android:background="@color/colorCodeSchemeApp"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_edit_fault"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#DA1228"
+        android:background="@color/colorCodeSchemeApp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

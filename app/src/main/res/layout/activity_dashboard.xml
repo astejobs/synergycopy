@@ -14,7 +14,7 @@
         android:id="@+id/toolbar_dashboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EA3D51"
+        android:background="@color/colorCodeSchemeApp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:menu="@menu/menu"
         app:title="Dashboard"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Create Fault Report"
-                android:textColor="#F30C0C"
+                android:textColor="@color/textColorApp"
                 android:textSize="26dp" />
         </LinearLayout>
 
@@ -67,7 +67,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/searchs" />
+                android:src="@drawable/search" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                 android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:text="Search"
-                android:textColor="#F30C0C"
+                android:textColor="@color/textColorApp"
                 android:textSize="26dp" />
         </LinearLayout>
 
@@ -103,7 +103,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/equipment" />
+                android:src="@drawable/eqfault" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -111,7 +111,7 @@
                 android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:text="Faults On Equipment"
-                android:textColor="#F30C0C"
+                android:textColor="@color/textColorApp"
                 android:textSize="26dp" />
         </LinearLayout>
 
@@ -128,7 +128,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/equipment" />
+                android:src="@drawable/taskeq" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -136,7 +136,7 @@
                 android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:text="Task On Equipment"
-                android:textColor="#F30C0C"
+                android:textColor="@color/textColorApp"
                 android:textSize="26dp" />
         </LinearLayout>
 
@@ -164,14 +164,14 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/tasksearchs" />
+                android:src="@drawable/tasksearch" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Task Search"
-                android:textColor="#F30C0C"
+                android:textColor="@color/textColorApp"
                 android:textSize="26dp" />
         </LinearLayout>
 
@@ -188,14 +188,14 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/settingss"/>
+                android:src="@drawable/set"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Setting"
-                android:textColor="#F30C0C"
+                android:textColor="@color/textColorApp"
                 android:textSize="26dp" />
         </LinearLayout>
 
