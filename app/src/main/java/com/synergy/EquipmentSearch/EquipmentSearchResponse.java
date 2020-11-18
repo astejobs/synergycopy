@@ -3,21 +3,155 @@ package com.synergy.EquipmentSearch;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class EquipmentSearchResponse {
-    String equipmentCode;
-    String equipmentType;
-    String name;
-    Location location;
-    Building building;
-    String assetNo;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-    public EquipmentSearchResponse(String equipmentCode, String equipmentType, String name, Location location, Building building, String assetNo) {
+public class EquipmentSearchResponse {
+
+    @SerializedName("taskId")
+    @Expose
+    private Long taskId;
+    @SerializedName("task_number")
+    @Expose
+    private String taskNumber;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("scheduleNumber")
+    @Expose
+    private String scheduleNumber;
+    @SerializedName("briefDescription")
+    @Expose
+    private String briefDescription;
+    @SerializedName("locationId")
+    @Expose
+    private Long locationId;
+    @SerializedName("locationName")
+    @Expose
+    private String locationName;
+    @SerializedName("buildingId")
+    @Expose
+    private Long buildingId;
+    @SerializedName("buildingName")
+    @Expose
+    private String buildingName;
+    @SerializedName("equipmentCode")
+    @Expose
+    private String equipmentCode;
+    @SerializedName("scheduleDate")
+    @Expose
+    private Long scheduleDate;
+    @SerializedName("completedBy")
+    @Expose
+    private String completedBy;
+    @SerializedName("completedDate")
+    @Expose
+    private Long completedDate;
+    @SerializedName("completedTime")
+    @Expose
+    private String completedTime;
+    @SerializedName("remarks")
+    @Expose
+    private String remarks;
+    @SerializedName("endDate")
+    @Expose
+    private Long endDate;
+    @SerializedName("dueDate")
+    @Expose
+    private Long dueDate;
+
+
+    public EquipmentSearchResponse(Long taskId, String taskNumber, String status, String scheduleNumber, String briefDescription, Long locationId, String locationName, Long buildingId, String buildingName, String equipmentCode, Long scheduleDate, String completedBy, Long completedDate, String completedTime, String remarks, Long endDate, Long dueDate) {
+        super();
+        this.taskId = taskId;
+        this.taskNumber = taskNumber;
+        this.status = status;
+        this.scheduleNumber = scheduleNumber;
+        this.briefDescription = briefDescription;
+        this.locationId = locationId;
+        this.locationName = locationName;
+        this.buildingId = buildingId;
+        this.buildingName = buildingName;
         this.equipmentCode = equipmentCode;
-        this.equipmentType = equipmentType;
-        this.name = name;
-        this.location = location;
-        this.building = building;
-        this.assetNo = assetNo;
+        this.scheduleDate = scheduleDate;
+        this.completedBy = completedBy;
+        this.completedDate = completedDate;
+        this.completedTime = completedTime;
+        this.remarks = remarks;
+        this.endDate = endDate;
+        this.dueDate = dueDate;
+    }
+
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getTaskNumber() {
+        return taskNumber;
+    }
+
+    public void setTaskNumber(String taskNumber) {
+        this.taskNumber = taskNumber;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getScheduleNumber() {
+        return scheduleNumber;
+    }
+
+    public void setScheduleNumber(String scheduleNumber) {
+        this.scheduleNumber = scheduleNumber;
+    }
+
+    public String getBriefDescription() {
+        return briefDescription;
+    }
+
+    public void setBriefDescription(String briefDescription) {
+        this.briefDescription = briefDescription;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public Long getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(Long buildingId) {
+        this.buildingId = buildingId;
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
     }
 
     public String getEquipmentCode() {
@@ -28,194 +162,60 @@ public class EquipmentSearchResponse {
         this.equipmentCode = equipmentCode;
     }
 
-    public String getEquipmentType() {
-        return equipmentType;
+    public Long getScheduleDate() {
+        return scheduleDate;
     }
 
-    public void setEquipmentType(String equipmentType) {
-        this.equipmentType = equipmentType;
+    public void setScheduleDate(Long scheduleDate) {
+        this.scheduleDate = scheduleDate;
     }
 
-    public String getName() {
-        return name;
+    public String getCompletedBy() {
+        return completedBy;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCompletedBy(String completedBy) {
+        this.completedBy = completedBy;
     }
 
-    public Location getLocation() {
-        return location;
+    public Long getCompletedDate() {
+        return completedDate;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setCompletedDate(Long completedDate) {
+        this.completedDate = completedDate;
     }
 
-    public Building getBuilding() {
-        return building;
+    public String getCompletedTime() {
+        return completedTime;
     }
 
-    public void setBuilding(Building building) {
-        this.building = building;
+    public void setCompletedTime(String completedTime) {
+        this.completedTime = completedTime;
     }
 
-    public String getAssetNo() {
-        return assetNo;
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setAssetNo(String assetNo) {
-        this.assetNo = assetNo;
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
-    static class Building {
-        int id;
-        String name;
-        Workspace workspace;
-        String description;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Workspace getWorkspace() {
-            return workspace;
-        }
-
-        public void setWorkspace(Workspace workspace) {
-            this.workspace = workspace;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public Building(int id, String name, Workspace workspace, String description) {
-            this.id = id;
-            this.name = name;
-            this.workspace = workspace;
-            this.description = description;
-        }
+    public Long getEndDate() {
+        return endDate;
     }
 
-    static class Workspace {
-        int id;
-        String workspaceId;
-        String description;
-        String buildingDescription;
-        String owner;
-        String contractor;
-        String bldngOwnerPayAmt;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getWorkspaceId() {
-            return workspaceId;
-        }
-
-        public void setWorkspaceId(String workspaceId) {
-            this.workspaceId = workspaceId;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String getBuildingDescription() {
-            return buildingDescription;
-        }
-
-        public void setBuildingDescription(String buildingDescription) {
-            this.buildingDescription = buildingDescription;
-        }
-
-        public String getOwner() {
-            return owner;
-        }
-
-        public void setOwner(String owner) {
-            this.owner = owner;
-        }
-
-        public String getContractor() {
-            return contractor;
-        }
-
-        public void setContractor(String contractor) {
-            this.contractor = contractor;
-        }
-
-        public String getBldngOwnerPayAmt() {
-            return bldngOwnerPayAmt;
-        }
-
-        public void setBldngOwnerPayAmt(String bldngOwnerPayAmt) {
-            this.bldngOwnerPayAmt = bldngOwnerPayAmt;
-        }
-
-        public Workspace(int id, String workspaceId, String description,
-                         String buildingDescription, String owner,
-                         String contractor, String bldngOwnerPayAmt) {
-            this.id = id;
-            this.workspaceId = workspaceId;
-            this.description = description;
-            this.buildingDescription = buildingDescription;
-            this.owner = owner;
-            this.contractor = contractor;
-            this.bldngOwnerPayAmt = bldngOwnerPayAmt;
-        }
+    public void setEndDate(Long endDate) {
+        this.endDate = endDate;
     }
 
-    static class Location {
-        String name;
-        int id;
+    public Long getDueDate() {
+        return dueDate;
+    }
 
-        public Location(String name, int id) {
-            this.name = name;
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
+    public void setDueDate(Long dueDate) {
+        this.dueDate = dueDate;
     }
 }
 

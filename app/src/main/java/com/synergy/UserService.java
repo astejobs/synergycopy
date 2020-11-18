@@ -145,7 +145,7 @@ public interface UserService {
     //equipment search
     @GET("task/{equipmentCode}/{status}")
     @Headers("Content-Type: application/json")
-    Call<EquipmentSearchResponse> getEquipmentTask(@Path("equipmentCode") String path,
+    Call<List<EquipmentSearchResponse>> getEquipmentTask(@Path("equipmentCode") String path,
                                       @Path("status") String status,
                                       @Header("Authorization") String token,
                                       @Header("workspace") String workspace);
@@ -169,7 +169,8 @@ public interface UserService {
     @PUT("task/updateTask")
     @Headers("Content-Type: application/json")
     Call<GetUpdatePmTaskResponse> postPmTaskUpdate(@Body GetUpdatePmTaskRequest getUpdatePmTaskRequest,
-                                                   @Header("Authorization") String token);
+                                                   @Header("Authorization") String token,
+                                                   @Header("workspace") String workspace);
 
     //checklistActivityView
     @GET("task/{path}/checklist")

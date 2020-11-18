@@ -22,6 +22,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.synergy.Dashboard.Dashboard;
 import com.synergy.Otp.OtpActivity;
 import com.synergy.Workspace.WorkspaceActivity;
 
@@ -193,6 +194,8 @@ public class MainActivityLogin extends AppCompatActivity {
                     }*/
                     Intent intent = new Intent(getApplicationContext(), WorkspaceActivity.class);
                     intent.putExtra("devicetoken", deviceToken);
+
+
                     startActivity(intent);
                     finish();
 

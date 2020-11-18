@@ -44,8 +44,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.SimpleTimeZone;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
@@ -124,6 +126,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         Intent intent = getIntent();
         taskNumberString = intent.getStringExtra("taskNumber");
         int taskId = intent.getIntExtra("taskId", 0);
+        String workspace = intent.getStringExtra("workspace");
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
@@ -135,7 +138,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    updateTaskMethod(taskId, token);
+                    updateTaskMethod(taskId, token, workspace);
                 }
             }
         });
@@ -152,7 +155,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void updateTaskMethod(int taskId, String token) {
+    private void updateTaskMethod(int taskId, String token, String workspace) {
         String timeString = timePickerEdit.getText().toString();
         String dateString = datePickerEdit.getText().toString();
         String completedByString = nameTextView.getText().toString();
@@ -174,7 +177,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         if (!nameTextView.getText().toString().isEmpty() && !remarksTextView.getText().toString().isEmpty()) {
             /*LocalDate now = Instant.ofEpochMilli((long) scheduleDate).atZone(ZoneId.systemDefault()).toLocalDate();
             if (!now.isBefore(LocalDate.now())) {*/
-            updatePmTaskService(getUpdatePmTaskRequest, token);
+            updatePmTaskService(getUpdatePmTaskRequest, token, workspace);
             /*} else
                 Toast.makeText(PmTaskActivity.this, "Overdue tasks cannot be updated.", Toast.LENGTH_SHORT).show();
         */
@@ -235,17 +238,18 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                         timePickerEdit.setText(dateString);
                     }
                     if (getPmTaskItemsResponse.getStatus() != null) {
-                        statusList.add(getPmTaskItemsResponse.getStatus());
-                        if (getPmTaskItemsResponse.getStatus().equals("OPEN")) {
-                            statusList.add("CLOSED");
-                        } else statusList.add("OPEN");
-                        statusSpinner.setAdapter(statusSpinnerAdapter);
-                    } else {
-                        statusList.add("OPEN");
-                        statusList.add("CLOSED");
-                        statusSpinner.setAdapter(statusSpinnerAdapter);
-                    }
 
+                        statusList.add(getPmTaskItemsResponse.getStatus());
+                        statusList.add("OPEN");
+                        statusList.add("COMPLETED");
+                        statusList.add("CLOSED");
+
+                        Set<String> carSet = new HashSet<String>(statusList);
+                        statusList.clear();
+                        //Adding set to List to get a new list
+                        statusList.addAll(carSet);
+                    }
+                    statusSpinner.setAdapter(statusSpinnerAdapter);
                     if (getPmTaskItemsResponse.getRemarks() != null) {
                         remarksTextView.setText(getPmTaskItemsResponse.getRemarks());
                     }
@@ -319,10 +323,10 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
 
     }
 
-    private void updatePmTaskService(GetUpdatePmTaskRequest getUpdatePmTaskRequest, String token) {
+    private void updatePmTaskService(GetUpdatePmTaskRequest getUpdatePmTaskRequest, String token, String workspace) {
         updateProgress.show();
 
-        Call<GetUpdatePmTaskResponse> callTaskUpdate = APIClient.getUserServices().postPmTaskUpdate(getUpdatePmTaskRequest, token);
+        Call<GetUpdatePmTaskResponse> callTaskUpdate = APIClient.getUserServices().postPmTaskUpdate(getUpdatePmTaskRequest, token, workspace);
         callTaskUpdate.enqueue(new Callback<GetUpdatePmTaskResponse>() {
             @Override
             public void onResponse(Call<GetUpdatePmTaskResponse> call, Response<GetUpdatePmTaskResponse> response) {

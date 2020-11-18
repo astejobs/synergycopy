@@ -65,6 +65,8 @@ public class WorkspaceActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_workspace);
         progressDialog = new ProgressDialog(WorkspaceActivity.this);
         progressDialog.setTitle("Loading");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
 
         callForWorkspace(token);
 

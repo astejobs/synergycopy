@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +37,11 @@ import com.synergy.APIClient;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
 import com.synergy.Search.EditFaultReportActivity;
+import com.synergy.Workspace.CardAdapter;
+import com.synergy.Workspace.WorkspaceActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
@@ -99,51 +106,46 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                     });
                 }
             });
-
         }
     }
 
     private void callQrCodeSearch(String result, String status) {
         mProgress.show();
 
-        Call<EquipmentSearchResponse> callEquipment = APIClient.getUserServices().getEquipmentTask(result, status, token, workspace);
-        callEquipment.enqueue(new Callback<EquipmentSearchResponse>() {
+        Call<List<EquipmentSearchResponse>> callEquipment = APIClient.getUserServices().getEquipmentTask(result, status, token, workspace);
+        callEquipment.enqueue(new Callback<List<EquipmentSearchResponse>>() {
             @Override
-            public void onResponse(Call<EquipmentSearchResponse> call, Response<EquipmentSearchResponse> response) {
+            public void onResponse(Call<List<EquipmentSearchResponse>> call, Response<List<EquipmentSearchResponse>> response) {
                 if (response.code() == 200) {
 
-                    scanTextView.setText(result);
-                    EquipmentSearchResponse equipmentSearchResponse = response.body();
+                    //scanTextView.setText(result);
+                    scanTextView.setVisibility(View.GONE);
+                    List<EquipmentSearchResponse> equipmentSearchResponse = response.body();
 
-                    Intent intent = new Intent(getApplicationContext(), QrDetails.class);
-                    String name = equipmentSearchResponse.name;
-                    String eqCode = equipmentSearchResponse.equipmentCode;
-                    String eqType = equipmentSearchResponse.equipmentType;
-                    String buildingName = equipmentSearchResponse.building.name;
-                    int buildingId = equipmentSearchResponse.building.id;
-                    int locationId = equipmentSearchResponse.location.id;
-                    String locationName = equipmentSearchResponse.location.name;
-                    String assetNumber = equipmentSearchResponse.assetNo;
+                    RecyclerView recyclerView = findViewById(R.id.recycler_view_equip);
 
-                    intent.putExtra("name", name);
-                    intent.putExtra("code", eqCode);
-                    intent.putExtra("type", eqType);
-                    intent.putExtra("building", buildingName);
-                    intent.putExtra("bId", buildingId);
-                    intent.putExtra("locationId", locationId);
-                    intent.putExtra("locationName", locationName);
-                    intent.putExtra("asset", assetNumber);
-                    startActivity(intent);
-                    finish();
+                    ArrayList<EquipmentSearchCard> equipmentSearchCardArrayList = new ArrayList<>();
 
+                   for (int i =0; i<equipmentSearchResponse.size();i++) {
+                       String taskNumber = equipmentSearchResponse.get(i).getTaskNumber();
+                       int taskId = equipmentSearchResponse.get(i).getTaskId().intValue();
+                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace));
+                    }
+                    recyclerView.setHasFixedSize(true);
+                    EquipmentSearchAdapter mAdapter = new EquipmentSearchAdapter(equipmentSearchCardArrayList);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(EquipmentSearchActivity.this));
+                    recyclerView.setAdapter(mAdapter);
+
+//                    Intent intent = new Intent(getApplicationContext(), PmTaskActivity.class);
+//                    startActivity(intent);
                 } else
                     Toast.makeText(EquipmentSearchActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
                 mProgress.dismiss();
-                finish();
+                //finish();
             }
 
             @Override
-            public void onFailure(Call<EquipmentSearchResponse> call, Throwable t) {
+            public void onFailure(Call<List<EquipmentSearchResponse>> call, Throwable t) {
                 Toast.makeText(EquipmentSearchActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
                 mProgress.dismiss();
                 finish();
