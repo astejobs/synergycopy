@@ -23,10 +23,11 @@ public class APIClient {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-              //   .baseUrl("http://192.168.1.115:8081/api/")
+
+                .baseUrl("http://192.168.1.116:8081/api/")
                 //  .baseUrl("http://192.168.1.114:8081/api/")
                 // .baseUrl("http://192.168.1.116:8081/api/")
-                .baseUrl("http://ifarms.com.sg:8086/lsme/api/")
+                // .baseUrl("http://ifarms.com.sg:8086/lsme/api/")
                 // .baseUrl("http://ifarms.com.sg:8086/lsme/api/")
                 //http://192.168.1.117:8082http://ifarms.com.sg:8086/lsme
                 .addConverterFactory(ScalarsConverterFactory.create())

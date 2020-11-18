@@ -130,6 +130,14 @@ public interface UserService {
                                       @Header("role") String role,
                                       @Header("workspace") String workspace);
 
+    //equipment search
+    @GET("task/{equipmentCode}/{status}")
+    @Headers("Content-Type: application/json")
+    Call<EquipmentSearchResponse> getEquipmentTask(@Path("equipmentCode") String path,
+                                      @Path("status") String status,
+                                      @Header("Authorization") String token,
+                                      @Header("workspace") String workspace);
+
 
     //getEquipment Scan code
     @GET("task/{equipmentCode}/{status}")

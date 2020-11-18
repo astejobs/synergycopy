@@ -96,16 +96,23 @@ public class Dashboard extends AppCompatActivity {
             linearSearchOnFrid.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    intentMethod(Search.class);
+                    intentMethod(Search.class, "");
                 }
             });
             linearEquipmentFaultSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    intentMethod(EquipmentSearchActivity.class);
+                    intentMethod(EquipmentSearchActivity.class,"Fault");
                 }
             });
 
+
+            linearEquipmentTaskSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    intentMethod(EquipmentSearchActivity.class, "Task");
+                }
+            });
 
         } else {
 
@@ -113,7 +120,7 @@ public class Dashboard extends AppCompatActivity {
             lineraSetting.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    intentMethod(SettingActivity.class);
+                    intentMethod(SettingActivity.class,"");
                 }
             });
 
@@ -121,20 +128,26 @@ public class Dashboard extends AppCompatActivity {
             linearCreateFaultReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    intentMethod(FaultReportActivity.class);
+                    intentMethod(FaultReportActivity.class, "");
                 }
             });
             linearSearchOnFrid.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    intentMethod(Search.class);
+                    intentMethod(Search.class, "");
                 }
             });
 
             linearEquipmentFaultSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    intentMethod(EquipmentSearchActivity.class);
+                    intentMethod(EquipmentSearchActivity.class, "Fault");
+                }
+            });
+            linearEquipmentTaskSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    intentMethod(EquipmentSearchActivity.class, "Task");
                 }
             });
         }
@@ -164,10 +177,11 @@ public class Dashboard extends AppCompatActivity {
         return true;
     }
 
-    private void intentMethod(Class cla) {
+    private void intentMethod(Class cla, String value) {
 
         Intent intent = new Intent(getApplicationContext(), cla);
         intent.putExtra("workspaceId", workspaceId);
+        intent.putExtra("value", value);
         startActivity(intent);
 
     }

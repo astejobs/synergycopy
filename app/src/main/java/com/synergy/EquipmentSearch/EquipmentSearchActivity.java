@@ -1,6 +1,7 @@
 package com.synergy.EquipmentSearch;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -9,25 +10,26 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
-import com.google.gson.JsonObject;
 import com.google.zxing.Result;
 import com.synergy.APIClient;
 import com.synergy.MainActivityLogin;
@@ -38,25 +40,23 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class EquipmentSearchActivity extends AppCompatActivity {
 
-    private CodeScanner codeScanner;
     private CodeScannerView codeScannerView;
     private TextView scanTextView;
-    private Button btn;
     private ProgressDialog mProgress;
-    private Toolbar toolbar;
-    String workpace, role, token;
+    private String workspace, role, token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equipment_search);
 
-        SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        role = preferences.getString("role", "Role");
-        btn = findViewById(R.id.qr_btn_click);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        token = sharedPreferences.getString("token", "");
+        role = sharedPreferences.getString("role", "");
+
         scanTextView = findViewById(R.id.scan_tv);
         codeScannerView = findViewById(R.id.qr_btn);
-        toolbar = findViewById(R.id.toolbar_equipmentSearch);
+        Toolbar toolbar = findViewById(R.id.toolbar_equipmentSearch);
         setSupportActionBar(toolbar);
 
         mProgress = new ProgressDialog(EquipmentSearchActivity.this);
@@ -65,57 +65,54 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        token = sharedPreferences.getString("token", "");
-        role = sharedPreferences.getString("role", "");
-
         Intent intent = getIntent();
-        workpace = intent.getStringExtra("workspaceId");
+        workspace = intent.getStringExtra("workspaceId");
+        String value = intent.getStringExtra("value");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
             }
-            btn.setOnClickListener(new View.OnClickListener() {
+
+
+            codeScannerView.setVisibility(View.VISIBLE);
+            CodeScanner codeScanner = new CodeScanner(EquipmentSearchActivity.this, codeScannerView);
+            codeScanner.startPreview();
+            codeScanner.setDecodeCallback(new DecodeCallback() {
                 @Override
-                public void onClick(View view) {
-                    btn.setVisibility(View.INVISIBLE);
-                    codeScannerView.setVisibility(View.VISIBLE);
-                    codeScanner = new CodeScanner(EquipmentSearchActivity.this, codeScannerView);
-                    codeScanner.startPreview();
-                    codeScanner.setDecodeCallback(new DecodeCallback() {
+                public void onDecoded(@NonNull Result result) {
+                    runOnUiThread(new Runnable() {
                         @Override
-                        public void onDecoded(@NonNull Result result) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    codeScannerView.setVisibility(View.INVISIBLE);
-                                    scanTextView.setVisibility(View.VISIBLE);
-                                    scanTextView.setText(result.getText());
-                                    Intent intent1 = new Intent(EquipmentSearchActivity
-                                            .this, EditFaultReportActivity.class);
-                                    intent1.putExtra("equipcode", result.getText());
-                                    intent1.putExtra("workspaceId",workpace);
-                                    startActivity(intent1);
-                                    // callQrCodeSearch(result.getText(), token);
-                                }
-                            });
+                        public void run() {
+                            codeScannerView.setVisibility(View.INVISIBLE);
+                            scanTextView.setVisibility(View.VISIBLE);
+                            scanTextView.setText(result.getText());
+                            if (value.equals("Fault")) {
+                                Intent intent1 = new Intent(EquipmentSearchActivity.this, EditFaultReportActivity.class);
+                                intent1.putExtra("equipcode", result.getText());
+                                intent1.putExtra("workspaceId", workspace);
+                                startActivity(intent1);
+                            } else {
+                                dialog();
+                            }
                         }
                     });
                 }
             });
+
         }
     }
 
-    private void callQrCodeSearch(String result, String token) {
+    private void callQrCodeSearch(String result, String status) {
         mProgress.show();
 
-        Call<JsonObject> callEquipment = APIClient.getUserServices().getCallEquipment(result, token, role, workpace);
-        callEquipment.enqueue(new Callback<JsonObject>() {
+        Call<EquipmentSearchResponse> callEquipment = APIClient.getUserServices().getEquipmentTask(result, status, token, workspace);
+        callEquipment.enqueue(new Callback<EquipmentSearchResponse>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<EquipmentSearchResponse> call, Response<EquipmentSearchResponse> response) {
                 if (response.code() == 200) {
-                /*    scanTextView.setText(result);
+
+                    scanTextView.setText(result);
                     EquipmentSearchResponse equipmentSearchResponse = response.body();
 
                     Intent intent = new Intent(getApplicationContext(), QrDetails.class);
@@ -137,7 +134,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                     intent.putExtra("locationName", locationName);
                     intent.putExtra("asset", assetNumber);
                     startActivity(intent);
-                    finish();*/
+                    finish();
 
                 } else
                     Toast.makeText(EquipmentSearchActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
@@ -146,7 +143,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<EquipmentSearchResponse> call, Throwable t) {
                 Toast.makeText(EquipmentSearchActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
                 mProgress.dismiss();
                 finish();
@@ -181,4 +178,33 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    private void dialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(EquipmentSearchActivity.this).create(); //Read Update
+        LayoutInflater layoutInflater = this.getLayoutInflater();
+        View radioLayoutView = layoutInflater.inflate(R.layout.custom_dialog_radio_layout_qr, null);
+        RadioGroup radioGroup = radioLayoutView.findViewById(R.id.radio_grp_id);
+
+        alertDialog.setView(radioLayoutView);
+        alertDialog.setTitle("Select Type of Tasks");
+
+        alertDialog.setButton(Dialog.BUTTON_POSITIVE, "ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                RadioButton radioSelectedButton = radioGroup.findViewById(selectedId);
+
+                String status = radioSelectedButton.getText().toString();
+                status = status.substring(0, status.length() - 6);
+                callQrCodeSearch(String.valueOf(scanTextView.getText()), status);
+            }
+        });
+        alertDialog.setButton(Dialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
 }
