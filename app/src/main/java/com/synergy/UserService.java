@@ -9,6 +9,8 @@ import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
 import com.synergy.FaultReport.CreateFaultRequestPojo;
 import com.synergy.FaultReport.UploadPictureRequest;
+import com.synergy.Otp.OtpRequest;
+import com.synergy.Otp.ResendOtpRequest;
 import com.synergy.Search.EditFaultReportRequest;
 import com.synergy.Search.EquipmentSearchResponseforEdit;
 import com.synergy.Search.SearchResponse;
@@ -39,6 +41,16 @@ public interface UserService {
     @POST("authenticate")
     @Headers("Content-Type: application/json")
     Call<UserResponse> saveUser(@Body UserRequest userRequest);
+    //otp call
+    @POST("verify2fa")
+    @Headers("Content-Type: application/json")
+    Call<UserResponse> callOtp(@Body OtpRequest otpRequest);
+
+    //resend otp call
+    @POST("resendCode")
+    @Headers("Content-Type: application/json")
+    Call<Void> callResendOtp(@Body ResendOtpRequest resendOtpRequest);
+
 
     //generate workspace
     @GET("workspaces")

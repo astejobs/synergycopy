@@ -59,12 +59,12 @@ public class MainActivityLogin extends AppCompatActivity {
         setContentView(R.layout.activity_main_login);
         sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         editor = sharedPreferences.edit();
-       FirebaseInstallations.getInstance().getToken(true);
+        FirebaseInstallations.getInstance().getToken(true);
 
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     deviceToken = task.getResult();
                 }
             }
@@ -72,7 +72,7 @@ public class MainActivityLogin extends AppCompatActivity {
         buttonLogin = findViewById(R.id.btn_login);
         editTextName = findViewById(R.id.editTextUsername);
         passwordEdit = findViewById(R.id.editTextPassword);
-     //   deviceToken = getToken(this);
+        //   deviceToken = getToken(this);
 
 
         if (!(ContextCompat.checkSelfPermission(this,
@@ -170,23 +170,36 @@ public class MainActivityLogin extends AppCompatActivity {
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.code() == 200) {
 
+                    String username= editTextName.getText().toString();
                     UserResponse userResponse = response.body();
                     String token = userResponse.getToken();
                     String role = userResponse.getRole();
                     String user = userResponse.getUser();
-                    editor.putString("token", token);
+                   editor.putString("token", token);
                     editor.putString("role", role);
-                    editor.putString("devicetoken",deviceToken);
+                    editor.putString("devicetoken", deviceToken);
                     editor.apply();
+                  /*  if (token == null) {
+                        Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
+                        intent.putExtra("username", username);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), WorkspaceActivity.class);
+                        intent.putExtra("devicetoken", deviceToken);
+                        startActivity(intent);
+                        finish();
 
-                    Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
-                    intent.putExtra("devicetoken",deviceToken);
+                    }*/
+                    Intent intent = new Intent(getApplicationContext(), WorkspaceActivity.class);
+                    intent.putExtra("devicetoken", deviceToken);
                     startActivity(intent);
                     finish();
+
                 } else if (response.code() == 202) {
-                    Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_LONG).show();
                 } else
-                    Toast.makeText(MainActivityLogin.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivityLogin.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
 
                 mProgress.dismiss();
             }
@@ -194,7 +207,7 @@ public class MainActivityLogin extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 mProgress.dismiss();
-                Toast.makeText(MainActivityLogin.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivityLogin.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

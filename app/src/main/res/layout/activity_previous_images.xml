@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorCodeSchemeApp"
     android:orientation="vertical"
     tools:context=".Search.PreviousImagesActivity">
 
@@ -17,7 +16,7 @@
         app:menu="@menu/menu"
         app:title="Available Image"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff" />
 
     <LinearLayout
         android:id="@+id/image_layout_linear"

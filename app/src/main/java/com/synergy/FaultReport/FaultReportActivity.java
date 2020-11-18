@@ -117,7 +117,6 @@ public class FaultReportActivity extends AppCompatActivity {
         selectTech.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(FaultReportActivity.this, "dialog", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder mbuilder = new AlertDialog.Builder(FaultReportActivity.this);
                 mbuilder.setTitle("Select Technicians");
                 mbuilder.setMultiChoiceItems(listItems, checkedItems, (dialog, position, isChecked) -> {
@@ -140,6 +139,7 @@ public class FaultReportActivity extends AppCompatActivity {
                             if (i != mUserItems.size() - 1) {
                                 item = item + ", ";
                             }
+
                         }
                         techTv.setText(item);
                     }
@@ -157,27 +157,6 @@ public class FaultReportActivity extends AppCompatActivity {
 
         });
 
-/*
-
-        technicianAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genraltechlist);
-        technicianAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTechnician.setAdapter(technicianAdapter);
-        spinnerTechnician.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                spinnerTechnician.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                techId = p.id;
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-*/
 
 
         deptListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDepList);
@@ -621,7 +600,7 @@ public class FaultReportActivity extends AppCompatActivity {
         genralFaultCatList.add(new list("Select Fault Categories", 0));
         genralFaultMaintGrp.add(new list("Select Maintainence", 0));
         genralLoaction.add(new list("Select Location", 0));
-        genraltechlist.add(new list("Select Technician", 0));
+      //  genraltechlist.add(new list("Select Technician", 0));
         buttonCreateFaultReport.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -721,7 +700,6 @@ public class FaultReportActivity extends AppCompatActivity {
                         Log.d(TAG, "onResponse: hi"+response.message());
                     Log.d(TAG, "onResponse: hl"+response.raw());
                         progressDialog.dismiss();
-                    Toast.makeText(FaultReportActivity.this, "Error : " + response.code(), Toast.LENGTH_LONG).show();
                     //finish();
                 }
 

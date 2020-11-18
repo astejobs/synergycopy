@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorCodeSchemeApp"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -16,7 +15,7 @@
         app:menu="@menu/menu"
         app:title="QR Code Scanner"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff" />
 
 
     <com.budiyev.android.codescanner.CodeScannerView
@@ -38,7 +37,7 @@
         android:background="@drawable/mybutton"
         android:padding="10dp"
         android:shadowColor="#c4c9d6"
-        android:textColor="#504949"
+        android:textColor="@color/textColorbutton"
         android:text="Scan QR Code" />-->
 
 

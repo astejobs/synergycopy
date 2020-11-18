@@ -56,8 +56,10 @@ public class WorkspaceActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
-        user = sharedPreferences.getString("role", "Role");
-      //  String devicetoken=sharedPreferences.getString("devicetoken","");
+        Log.d(TAG, "onCreate: workspace mai token :" +token);
+        user = sharedPreferences.getString("role", "");
+        //  String devicetoken=sharedPreferences.getString("devicetoken","");
+
 
 
         recyclerView = findViewById(R.id.recycler_view_workspace);

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorCodeSchemeApp"
     android:orientation="vertical"
     tools:context=".Setting.SettingActivity">
 
@@ -18,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="Settings"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000"
+        app:titleTextColor="#ffffff"
         app:menu="@menu/menu"/>
 
 

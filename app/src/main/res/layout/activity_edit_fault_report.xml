@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorCodeSchemeApp"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -19,7 +18,7 @@
         app:menu="@menu/menu"
         app:title="Edit Fault Report"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -738,6 +737,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
+                            android:textColor="@color/textColorbutton"
                             android:background="@drawable/mybutton"
                             android:text="Select Equipment" />
 
@@ -849,6 +849,7 @@
                     android:id="@+id/selecttech"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/textColorbutton"
                     android:layout_margin="20dp"
                     android:background="@drawable/mybutton"
                     android:text="Select technician" />
@@ -859,6 +860,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
+                    android:textColor="@color/textColorbutton"
                     android:layout_marginBottom="40dp"
                     android:background="@drawable/mybutton"
                     android:padding="10dp"
@@ -882,14 +884,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/esc_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:src="@drawable/esdetail"
-                app:elevation="6dp"
-                app:fabSize="auto" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/before_id"

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorCodeSchemeApp"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
@@ -19,7 +18,7 @@
         app:menu="@menu/menu"
         app:title="Fault Report"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -364,6 +363,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
+                android:textColor="@color/textColorbutton"
                 android:background="@drawable/mybutton"
                 android:text="Select technician" />
 
@@ -372,6 +372,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
+                android:textColor="@color/textColorbutton"
                 android:background="@drawable/mybutton"
                 android:text="Create Fault Report" />
 

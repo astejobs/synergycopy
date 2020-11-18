@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="@color/colorCodeSchemeApp"
     android:orientation="vertical"
     tools:context=".EquipmentSearch.PmTaskActivity">
 
@@ -21,7 +20,7 @@
         app:menu="@menu/menu"
         app:title="PM Task"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff" />
 
 
     <ScrollView
@@ -299,7 +298,7 @@
                 android:padding="10dp"
                 android:shadowColor="#c4c9d6"
                 android:text="View Checklist"
-                android:textColor="#504949" />
+                android:textColor="@color/textColorbutton" />
 
             <Button
                 android:id="@+id/buttonUpdateTaskPm"
@@ -310,7 +309,7 @@
                 android:padding="10dp"
                 android:shadowColor="#c4c9d6"
                 android:text="Update Task"
-                android:textColor="#504949" />
+                android:textColor="@color/textColorbutton" />
 
         </LinearLayout>
     </ScrollView>

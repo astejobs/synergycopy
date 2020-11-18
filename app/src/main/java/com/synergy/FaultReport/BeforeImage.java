@@ -125,12 +125,12 @@ public class BeforeImage extends AppCompatActivity {
 
             StringBuilder encodedStringBuilder = new StringBuilder()
                     .append(Base64.encodeToString(b, Base64.DEFAULT));
-
+/*
             byte[] decodedString = Base64.decode(String.valueOf(encodedStringBuilder), Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             ImageView imageView = findViewById(R.id.decoded_img);
             imageView.setVisibility(View.VISIBLE);
-            imageView.setImageBitmap(decodedByte);
+            imageView.setImageBitmap(decodedByte);*/
 
             uploadPicture(encodedStringBuilder);
         } catch (Exception e) {

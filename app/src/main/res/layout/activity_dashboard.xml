@@ -19,7 +19,7 @@
         app:menu="@menu/menu"
         app:title="Dashboard"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff" />
 
 
     <LinearLayout
@@ -40,8 +40,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/create" />
 
@@ -51,7 +51,7 @@
                 android:gravity="center"
                 android:text="Create Fault Report"
                 android:textColor="@color/textColorApp"
-                android:textSize="26dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,8 +64,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/search" />
 
@@ -76,7 +76,7 @@
                 android:gravity="center"
                 android:text="Search"
                 android:textColor="@color/textColorApp"
-                android:textSize="26dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
 
@@ -100,10 +100,10 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/eqfault" />
+                android:src="@drawable/cre" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -112,7 +112,7 @@
                 android:gravity="center"
                 android:text="Faults On Equipment"
                 android:textColor="@color/textColorApp"
-                android:textSize="26dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -125,10 +125,10 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/taskeq" />
+                android:src="@drawable/eqtask" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -137,7 +137,7 @@
                 android:gravity="center"
                 android:text="Task On Equipment"
                 android:textColor="@color/textColorApp"
-                android:textSize="26dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
 
@@ -161,10 +161,10 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/tasksearch" />
+                android:src="@drawable/tasksearvh" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -172,7 +172,7 @@
                 android:gravity="center"
                 android:text="Task Search"
                 android:textColor="@color/textColorApp"
-                android:textSize="26dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -185,10 +185,10 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/set"/>
+                android:src="@drawable/setting"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                 android:gravity="center"
                 android:text="Setting"
                 android:textColor="@color/textColorApp"
-                android:textSize="26dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
 

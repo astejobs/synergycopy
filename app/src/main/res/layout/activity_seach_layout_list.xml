@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Search.EquipmentSearchActivityforEdit"
-    android:background="@color/colorCodeSchemeApp">
+    tools:context=".Search.EquipmentSearchActivityforEdit">
 
     <SearchView
         android:id="@+id/search_equip_bar"
@@ -14,9 +13,9 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8sp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/mysearcht"
+        android:background="@color/colorCodeSchemeApp"
         android:elevation="2dp"
-        android:textColorHint="#000000"
+        android:textColorHint="#ffffff"
         android:padding="4dp"
         android:queryHint="Search here"
         app:layout_constraintEnd_toEndOf="parent"

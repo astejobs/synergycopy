@@ -12,10 +12,6 @@ public class UserResponse {
         return user;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
     public String getRole() {
         return role;
     }

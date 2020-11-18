@@ -18,7 +18,7 @@
         app:menu="@menu/menu"
         app:title="Verification"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff" />
 
     <TextView
         android:layout_width="match_parent"
@@ -99,8 +99,21 @@
             android:background="@drawable/mybutton"
             android:text="Verify"
             android:layout_gravity="center"
-            android:textColor="#ffffff"
+            android:textColor="@color/textColorbutton"
             android:textSize="20sp" />
+
+
+
+    <Button
+        android:id="@+id/resendbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/mybutton"
+        android:text="Resend Code"
+        android:layout_gravity="center"
+        android:textColor="@color/textColorbutton"
+        android:textSize="20sp" />
 
 
 

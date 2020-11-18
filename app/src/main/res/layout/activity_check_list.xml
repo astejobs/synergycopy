@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="@color/colorCodeSchemeApp"
     android:orientation="vertical"
     tools:context=".EquipmentSearch.PmTaskActivity">
 
@@ -21,7 +20,8 @@
         app:menu="@menu/menu"
         app:title="CheckList"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff
+" />
 
 
     <ScrollView
@@ -49,6 +49,7 @@
                 android:background="@drawable/mybutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/textColorbutton"
                 android:id="@+id/saveButtonCheckList"
                 android:text="Save Checklist"/>
         </LinearLayout>

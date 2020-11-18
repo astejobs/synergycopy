@@ -15,7 +15,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="Scanned Equipment Details"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000"
+        app:titleTextColor="#ffffff"
         app:menu="@menu/menu"/>
 
 
@@ -26,6 +26,7 @@
         android:layout_margin="18dp"
         android:text="Fault Reports On Equipment"
         app:titleTextColor="#000000"
+        android:textColor="@color/textColorbutton"
         android:background="@drawable/mybutton"
         android:textAlignment="center" />
 

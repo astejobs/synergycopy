@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/colorCodeSchemeApp"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".FaultReport.BeforeImage">
@@ -21,7 +20,7 @@
         app:menu="@menu/menu"
         app:title="Before Image"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff" />
 
 
     <LinearLayout
@@ -37,7 +36,8 @@
             android:layout_margin="8dp"
             android:background="@drawable/mybutton"
             android:padding="4dp"
-            android:text="Previous Images"
+            android:textColor="@color/textColorbutton"
+            android:text="Images"
             android:textSize="22sp" />
 
 
@@ -48,6 +48,7 @@
             android:layout_margin="8dp"
             android:background="@drawable/mybutton"
             android:padding="4dp"
+            android:textColor="@color/textColorbutton"
             android:text="Take photo"
             android:textSize="22sp" />
 
@@ -67,6 +68,7 @@
             android:background="@drawable/mybutton"
             android:padding="4dp"
             android:text="Upload"
+            android:textColor="@color/textColorbutton"
             android:textSize="22sp" />
 
         <Button
@@ -76,14 +78,15 @@
             android:layout_margin="4dp"
             android:background="@drawable/mybutton"
             android:padding="4dp"
+            android:textColor="@color/textColorbutton"
             android:text="Done"
             android:textSize="22sp" />
-        <ImageView
+      <!--  <ImageView
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:visibility="gone"
             android:id="@+id/decoded_img"/>
-
+-->
 
 
     </LinearLayout>

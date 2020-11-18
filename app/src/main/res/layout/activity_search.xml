@@ -19,7 +19,7 @@
         app:menu="@menu/menu"
         app:title="Search Fault Reports"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff" />
 
     <ScrollView
         android:id="@+id/scrollViewSearch"
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="#F3DFDF"
+                android:background="#3A74AF"
                 android:layout_margin="6dp">
                 <SearchView
                     android:id="@+id/search_view"

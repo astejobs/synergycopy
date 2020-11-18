@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorCodeSchemeApp"
     android:orientation="vertical"
     tools:context=".Search.UploadFile">
 
@@ -19,7 +18,7 @@
         app:menu="@menu/menu"
         app:title="Upload File"
         app:titleMargin="8dp"
-        app:titleTextColor="#000000" />
+        app:titleTextColor="#ffffff" />
 
     <TextView
         android:id="@+id/upload_file"
@@ -35,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_margin="20dp"
+        android:textColor="@color/textColorbutton"
         android:background="@drawable/mybutton"
         android:text="UPLOAD" />
 

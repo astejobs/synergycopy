@@ -64,7 +64,7 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 public class EditFaultReportActivity extends AppCompatActivity {
     //test
 
-    private FloatingActionButton fab_main, fab_before, fab_after, fab_esc;
+    private FloatingActionButton fab_main, fab_before, fab_after;
     private Boolean isMenuOpen = false;
     private final OvershootInterpolator interpolator = new OvershootInterpolator();
     private Float translationY = 100f;
@@ -286,10 +286,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     for (int i = 0; i < jsonArrayofGenDep.size(); i++) {
                         String name = jsonArrayofGenDep.get(i).getAsJsonObject().get("name").getAsString();
                         int id = jsonArrayofGenDep.get(i).getAsJsonObject().get("id").getAsInt();
-                        list list=new list(name,id);
+                        list list = new list(name, id);
                         if (!(genralDepList.contains(list))) {
                             genralDepList.add(list);
-                           // deptSpinner.setAdapter(deptListAdapter);
+                            // deptSpinner.setAdapter(deptListAdapter);
                         }
                     }
 
@@ -721,7 +721,12 @@ public class EditFaultReportActivity extends AppCompatActivity {
         fab_main = findViewById(R.id.images_id);
         fab_before = findViewById(R.id.before_id);
         fab_after = findViewById(R.id.after_id);
-        fab_esc = findViewById(R.id.esc_id);
+        selectEquipmentButton.setEnabled(false);
+        selectTech.setEnabled(false);
+        locationSpinner.setEnabled(false);
+        buildingSpinner.setEnabled(false);
+
+
         selectTech.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -802,7 +807,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         genralDivisionList.add(new list("Select Division", 0));
         //genralTechnicalList.add(new list("Select Tech", 0));
         genralPriorityList.add(new list("Select Priority", 0));
-        //  genCostCebterList.add(new list("Select CostCenter", 0));
+        genCostCebterList.add(new list("Select CostCenter", 0));
         String tech = "Technician";
         if (role.equals(tech)) {
             genralStatusList.add("Select status");
@@ -911,10 +916,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
                     if (!(jsonObject.get("department").isJsonNull())) {
                         String deptname = jsonObject.get("department").getAsJsonObject().get("name").getAsString();
-                        int id=jsonObject.get("department").getAsJsonObject().get("id").getAsInt();
-                        list list=new list(deptname,id);
-                        if (!(genralDepList.contains(list))){
-                            genralDepList.add(new list(deptname,id));
+                        int id = jsonObject.get("department").getAsJsonObject().get("id").getAsInt();
+                        list list = new list(deptname, id);
+                        if (!(genralDepList.contains(list))) {
+                            genralDepList.add(new list(deptname, id));
                             deptSpinner.setAdapter(deptListAdapter);
                         }
                         OptionalInt index = IntStream.range(0, genralDepList.size())
@@ -961,15 +966,15 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     if (!(jsonObject.get("attendedBy").isJsonNull())) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                             JsonArray ja = jsonObject.get("attendedBy").getAsJsonArray();
-                            Log.d(TAG, "onResponse: jaray attendedby"+ja);
+                            Log.d(TAG, "onResponse: jaray attendedby" + ja);
                             for (int j = 0; j < ja.size(); j++) {
                                 JsonObject jsonObject1 = ja.get(j).getAsJsonObject();
                                 if (!(jsonObject1.isJsonNull())) {
-                                    String techname = ja.get(j).getAsJsonObject().get("firstName").getAsString()+" " +
-                                            ""+ja.get(j).getAsJsonObject().get("lastName").getAsString() ;
-                                    Log.d(TAG, "onResponse: hhhh"+techname);
+                                    String techname = ja.get(j).getAsJsonObject().get("firstName").getAsString() + " " +
+                                            "" + ja.get(j).getAsJsonObject().get("lastName").getAsString();
+                                    Log.d(TAG, "onResponse: hhhh" + techname);
                                     techTv.setText(techname);
-                                   OptionalInt index = IntStream.range(0, genralTechnicalList.size())
+                                    OptionalInt index = IntStream.range(0, genralTechnicalList.size())
                                             .filter(i -> genralTechnicalList.get(i).name.equals(techname))
                                             .findFirst();
                                     if (index.isPresent()) {
@@ -1008,6 +1013,17 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     if (!(jsonObject.get("observation").isJsonNull())) {
                         observationEditText.setText(jsonObject.get("observation").getAsString());
                     }
+                    if (jsonObject.get("remarks") != null) {
+                        for (int i = 0; i < jsonObject.get("remarks").getAsJsonArray().size(); i++) {
+                            if (!jsonObject.get("remarks").getAsJsonArray().get(i).isJsonNull()) {
+                                String remString = jsonObject.get("remarks").getAsJsonArray()
+                                        .get(i).getAsString();
+                                // int remId = jsonObject.get("remarks").getAsJsonArray().get(i).getAsInt();
+                                mlayout.addView(createNewEditText(remString, i));
+                            }
+                        }
+                    }
+
                     if (!(jsonObject.get("actionTaken").isJsonNull())) {
                         actionTakenEditText.setText(jsonObject.get("actionTaken").getAsString());
                     }
@@ -1155,16 +1171,19 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     if (!(jsonObject.get("attendedBy").isJsonNull())) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                             JsonArray ja = jsonObject.get("attendedBy").getAsJsonArray();
+                            Log.d(TAG, "onResponse: jaray attendedby" + ja);
                             for (int j = 0; j < ja.size(); j++) {
                                 JsonObject jsonObject1 = ja.get(j).getAsJsonObject();
-                                if ((jsonObject1.isJsonNull())) {
-                                    String techname = ja.get(j).getAsString();
+                                if (!(jsonObject1.isJsonNull())) {
+                                    String techname = ja.get(j).getAsJsonObject().get("name").getAsString();
+                                    Log.d(TAG, "onResponse: hhhh" + techname);
+                                    techTv.setText(techname);
                                     OptionalInt index = IntStream.range(0, genralTechnicalList.size())
                                             .filter(i -> genralTechnicalList.get(i).name.equals(techname))
                                             .findFirst();
                                     if (index.isPresent()) {
                                         int realid = index.getAsInt();
-                                        // technicianSpinner.setSelection(realid);
+                                        //  technicianSpinner.setSelection(realid);
                                     }
                                 }
                             }
@@ -1246,6 +1265,20 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         }
 
                     }
+
+
+                    if (jsonObject.get("remarks") != null) {
+                        for (int i = 0; i < jsonObject.get("remarks").getAsJsonArray().size(); i++) {
+                            if (!jsonObject.get("remarks").getAsJsonArray().get(i).isJsonNull()) {
+                                String remString = jsonObject.get("remarks").getAsJsonArray()
+                                        .get(i).getAsString();
+                                // int remId = jsonObject.get("remarks").getAsJsonArray().get(i).getAsInt();
+                                mlayout.addView(createNewEditText(remString, i));
+                            }
+                        }
+                    }
+
+
                 }
             }
 
@@ -1525,10 +1558,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
             attendedByIdsList = new ArrayList();
 
             String attendedbyString = techTv.getText().toString();
-            Log.d(TAG, "updateFaultReport: "+attendedbyString);
+            Log.d(TAG, "updateFaultReport: " + attendedbyString);
             List<String> attendedbylist = Arrays.asList(attendedbyString.split(", "));
-            Log.d(TAG, "updateFaultReport: splitted s"+attendedbylist);
-            Log.d(TAG, "updateFaultReport: gentech"+genralTechnicalList);
+            Log.d(TAG, "updateFaultReport: splitted s" + attendedbylist);
+            Log.d(TAG, "updateFaultReport: gentech" + genralTechnicalList);
             for (int j = 0; j < attendedbylist.size(); j++) {
                 String techincian = attendedbylist.get(j);
                 for (list list : genralTechnicalList) {
@@ -1641,11 +1674,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         fab_before.setAlpha(0f);
         fab_after.setAlpha(0f);
-        fab_esc.setAlpha(0f);
+
 
         fab_before.setTranslationY(translationY);
         fab_after.setTranslationY(translationY);
-        fab_esc.setTranslationY(translationY);
 
 
         fab_main.setOnClickListener(new View.OnClickListener() {
@@ -1685,19 +1717,12 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
             }
         });
-        fab_esc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeMenu();
-            }
-        });
 
     }
 
     private void openMenu() {
         isMenuOpen = !isMenuOpen;
         fab_main.animate().setInterpolator(interpolator).rotation(45f).setDuration(300).start();
-        fab_esc.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         fab_before.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
     }
@@ -1705,7 +1730,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private void closeMenu() {
         isMenuOpen = !isMenuOpen;
         fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
-        fab_esc.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
         fab_before.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
     }
