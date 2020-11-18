@@ -42,6 +42,7 @@ public class OtpActivity extends AppCompatActivity {
                 String text = otp_textbox_one.getText().toString() + otp_textbox_two.getText().toString() +
                         otp_textbox_three.getText().toString() + otp_textbox_four.getText().toString();
                 Toast.makeText(getApplicationContext(), "Login Successfull" + text, Toast.LENGTH_SHORT).show();
+                //
 
             }
         });
