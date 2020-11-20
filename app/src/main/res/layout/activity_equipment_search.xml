@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,6 +10,8 @@
         android:id="@+id/toolbar_equipmentSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:background="@color/colorCodeSchemeApp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:menu="@menu/menu"
@@ -28,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_equipmentSearch" />
    
 
     <TextView
@@ -40,6 +42,11 @@
         android:background="@drawable/mysearcht"
         android:textSize="26sp"
         android:visibility="invisible"
+        android:layout_marginTop="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="26sp"
         app:layout_constraintTop_toBottomOf="@id/qr_btn" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -48,5 +55,4 @@
         android:layout_height="match_parent"
         android:id="@+id/recycler_view_equip"/>
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

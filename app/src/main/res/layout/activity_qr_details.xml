@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
         android:text="Fault Reports On Equipment"
-        app:titleTextColor="#000000"
+        app:titleTextColor="@color/textColor"
         android:textColor="@color/textColorbutton"
         android:background="@drawable/mybutton"
         android:textAlignment="center" />
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
-        app:titleTextColor="#000000"
+        app:titleTextColor="@color/textColor"
         android:visibility="gone"
         android:background="@drawable/mybutton"
         android:text="Tasks on Equipment"
@@ -52,7 +52,7 @@
             android:id="@+id/eq_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="#000000"
+            app:titleTextColor="@color/textColor"
             android:layout_margin="5dp"
             android:textSize="12sp" />
 
@@ -60,7 +60,7 @@
             android:id="@+id/eq_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="#000000"
+            app:titleTextColor="@color/textColor"
             android:layout_margin="5dp"
             android:textSize="12sp" />
 
@@ -68,7 +68,7 @@
             android:id="@+id/eq_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="#000000"
+            app:titleTextColor="@color/textColor"
             android:layout_margin="5dp"
             android:textSize="12sp" />
 
@@ -76,7 +76,7 @@
             android:id="@+id/eq_building"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="#000000"
+            app:titleTextColor="@color/textColor"
             android:layout_margin="5dp"
             android:textSize="12sp" />
 
@@ -84,7 +84,7 @@
             android:id="@+id/eq_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="#000000"
+            app:titleTextColor="@color/textColor"
             android:layout_margin="5dp"
             android:textSize="12sp" />
 
@@ -92,7 +92,7 @@
             android:id="@+id/eq_assetn0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="#000000"
+            app:titleTextColor="@color/textColor"
             android:layout_margin="5dp"
             android:textSize="12sp" />
 

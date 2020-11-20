@@ -143,6 +143,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         frid = i.getStringExtra("frId");
+
         workSpaceid = i.getStringExtra("workspaceId");
         equipCode = i.getStringExtra("equipcode");
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
@@ -155,16 +156,17 @@ public class EditFaultReportActivity extends AppCompatActivity {
             initViews();
             callDisable();
             initializeFab();
-            calldept();
-            callpriroty();
-            callbuilding();
-            calldivision();
-            callfault();
-            callmaint();
+            //  calldept();
+            //callpriroty();
+            //callbuilding();
+            //calldivision();
+            //callfault();
+            //callmaint();
             calltech();
-            callCostCenter();
+            //callCostCenter();
 
             if (frid != null) {
+                updateFaultReportButton.setVisibility(View.INVISIBLE);
                 initviewsAndGetInitialData(frid);
             } else {
                 initviewsAndGetInitialDataOnEquip(equipCode);
@@ -177,16 +179,17 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
             initViews();
             initializeFab();
-            calldept();
-            callpriroty();
-            callbuilding();
-            calldivision();
-            callfault();
-            callmaint();
+            //  calldept();
+            // callpriroty();
+            //  callbuilding();
+            //  calldivision();
+            //   callfault();
+            //   callmaint();
             calltech();
-            callCostCenter();
+            //   callCostCenter();
 
             if (frid != null) {
+                updateFaultReportButton.setVisibility(View.INVISIBLE);
                 initviewsAndGetInitialData(frid);
             } else {
                 initviewsAndGetInitialDataOnEquip(equipCode);
@@ -198,7 +201,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     private void callDisable() {
         techTv.setEnabled(false);
-        selectTech.setEnabled(false);
+        //   selectTech.setEnabled(false);
         frIdEditText.setEnabled(false);
         deptSpinner.setEnabled(false);
         prioritySpinner.setEnabled(false);
@@ -215,7 +218,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         actionTakenEditText.setEnabled(false);
         costCenterSpinner.setEnabled(false);
         //  technicianSpinner.setEnabled(false);
-        selectEquipmentButton.setEnabled(false);
+        //  selectEquipmentButton.setEnabled(false);
         plusbtn.setEnabled(false);
         deletebtn.setEnabled(false);
 
@@ -618,6 +621,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 faultCategorySpinner.setSelection(position);
                 list p = (list) parent.getItemAtPosition(position);
                 faultId = p.id;
+                Log.d(TAG, "onItemSelected: hi faz" + faultId);
             }
 
             @Override
@@ -654,7 +658,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
             }
         });
 
-/*
         buildingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -668,7 +671,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
             }
         });
-*/
 
         deptSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -689,7 +691,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     private void initViews() {
         techTv = findViewById(R.id.techtv);
-        selectTech = findViewById(R.id.selecttech);
+        //  selectTech = findViewById(R.id.selecttech);
         equipmentIdTv = findViewById(R.id.eq_id_send);
         updateFaultReportButton = findViewById(R.id.updateFaultReportButton);
         diagnosisEditText = findViewById(R.id.diagnosis);
@@ -698,7 +700,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         //   technicianSpinner = findViewById(R.id.technicianSpinner);
         costCenterSpinner = findViewById(R.id.costCenter);
         mainGrpSpinner = findViewById(R.id.mainGrp);
-        selectEquipmentButton = findViewById(R.id.selectEquipmentButton);
+        //selectEquipmentButton = findViewById(R.id.selectEquipmentButton);
         faultCategorySpinner = findViewById(R.id.faultCategory);
         divisionSpinner = findViewById(R.id.divisionNumberSpinner);
         locationSpinner = findViewById(R.id.unitNumber);
@@ -721,12 +723,23 @@ public class EditFaultReportActivity extends AppCompatActivity {
         fab_main = findViewById(R.id.images_id);
         fab_before = findViewById(R.id.before_id);
         fab_after = findViewById(R.id.after_id);
-        selectEquipmentButton.setEnabled(false);
-        selectTech.setEnabled(false);
+        // selectTech.setVisibility(View.INVISIBLE);
+        //  selectEquipmentButton.setVisibility(View.INVISIBLE);
+        //  selectEquipmentButton.setEnabled(false);
+        //  selectTech.setEnabled(false);
         locationSpinner.setEnabled(false);
         buildingSpinner.setEnabled(false);
+        deptSpinner.setEnabled(false);
+        requestorNumberEditText.setEnabled(false);
+        prioritySpinner.setEnabled(false);
+        divisionSpinner.setEnabled(false);
+        locDescEditText.setEnabled(false);
+        faultCategorySpinner.setEnabled(false);
+        faultDetailsEditText.setEnabled(false);
+        mainGrpSpinner.setEnabled(false);
 
 
+/*
         selectTech.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -769,6 +782,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             }
 
         });
+*/
 
         textWatcher = new TextWatcher() {
             @Override
@@ -800,14 +814,15 @@ public class EditFaultReportActivity extends AppCompatActivity {
         });
 
 
-        genralFaultCatList.add(new list("Select Fault Category", 0));
+      /*  genralFaultCatList.add(new list("Select Fault Category", 0));
         genralMaintGrp.add(new list("Select Maintanence", 0));
         genralBuildingList.add(new list("Select Building", 0));
         genralDepList.add(new list("Select Department", 0));
         genralDivisionList.add(new list("Select Division", 0));
         //genralTechnicalList.add(new list("Select Tech", 0));
         genralPriorityList.add(new list("Select Priority", 0));
-        genCostCebterList.add(new list("Select CostCenter", 0));
+        genCostCebterList.add(new list("Select CostCenter", 0));*/
+
         String tech = "Technician";
         if (role.equals(tech)) {
             genralStatusList.add("Select status");
@@ -844,6 +859,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 deleteRemarks(view);
             }
         });
+/*
         selectEquipmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -856,6 +872,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
             }
         });
+*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -890,34 +907,49 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String buildingname = jsonObject.get("building").getAsJsonObject().get("name").getAsString();
-
-                        OptionalInt index = IntStream.range(0, genralBuildingList.size())
+                        int id = jsonObject.get("building").getAsJsonObject().get("id").getAsInt();
+                        genralBuildingList.add(new list(buildingname, id));
+                        buildingSpinner.setAdapter(buildingAdapter);
+                      /*  OptionalInt index = IntStream.range(0, genralBuildingList.size())
                                 .filter(i -> genralBuildingList.get(i).name.equals(buildingname))
                                 .findFirst();
                         if (index.isPresent()) {
                             int realid = index.getAsInt();
                             buildingSpinner.setSelection(realid);
-                        }
+                        }*/
                     }
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                        if (jsonObject.get("division").isJsonNull()) {
-                            divisionSpinner.setSelection(0);
 
-                        } else {
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        String buildingname = jsonObject.get("location").getAsJsonObject().get("name").getAsString();
+                        int id = jsonObject.get("location").getAsJsonObject().get("id").getAsInt();
+                        genralLoaction.add(new list(buildingname, id));
+                        locationSpinner.setAdapter(locationAdapter);
+                    }
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        if (!(jsonObject.get("division").isJsonNull())) {
+
                             String divisionname = jsonObject.get("division").getAsJsonObject().get("name").getAsString();
-                            OptionalInt index = IntStream.range(0, genralDivisionList.size())
+                            int id = jsonObject.get("division").getAsJsonObject().get("id").getAsInt();
+                            genralDivisionList.add(new list(divisionname, id));
+                            divisionSpinner.setAdapter(divisionAdapter);
+                          /*  OptionalInt index = IntStream.range(0, genralDivisionList.size())
                                     .filter(i -> genralDivisionList.get(i).name.equals(divisionname))
                                     .findFirst();
                             if (index.isPresent()) {
                                 int realid = index.getAsInt();
                                 divisionSpinner.setSelection(realid);
-                            }
+                            }*/
                         }
                     }
                     if (!(jsonObject.get("department").isJsonNull())) {
                         String deptname = jsonObject.get("department").getAsJsonObject().get("name").getAsString();
                         int id = jsonObject.get("department").getAsJsonObject().get("id").getAsInt();
-                        list list = new list(deptname, id);
+                        genralDepList.add(new list(deptname, id));
+                        deptSpinner.setAdapter(deptListAdapter);
+
+                    /*    list list = new list(deptname, id);
                         if (!(genralDepList.contains(list))) {
                             genralDepList.add(new list(deptname, id));
                             deptSpinner.setAdapter(deptListAdapter);
@@ -929,39 +961,48 @@ public class EditFaultReportActivity extends AppCompatActivity {
                             int realid = index.getAsInt();
                             Log.d(TAG, "onResponse: dep" + realid);
                             deptSpinner.setSelection(realid);
-                        }
+                        }*/
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String prirityname = jsonObject.get("priority").getAsJsonObject().get("name").getAsString();
-                        OptionalInt index = IntStream.range(0, genralPriorityList.size())
+                        int id = jsonObject.get("priority").getAsJsonObject().get("id").getAsInt();
+                        genralPriorityList.add(new list(prirityname, id));
+                        prioritySpinner.setAdapter(priAdapter);
+                      /*  OptionalInt index = IntStream.range(0, genralPriorityList.size())
                                 .filter(i -> genralPriorityList.get(i).name.equals(prirityname))
                                 .findFirst();
                         if (index.isPresent()) {
                             int realid = index.getAsInt();
                             prioritySpinner.setSelection(realid);
-                        }
+                        }*/
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String maintname = jsonObject.get("maintGrp").getAsJsonObject().get("name").getAsString();
-                        OptionalInt index = IntStream.range(0, genralMaintGrp.size())
+                        int id = jsonObject.get("maintGrp").getAsJsonObject().get("id").getAsInt();
+                        genralMaintGrp.add(new list(maintname, id));
+                        mainGrpSpinner.setAdapter(maintAdapter);
+                       /* OptionalInt index = IntStream.range(0, genralMaintGrp.size())
                                 .filter(i -> genralMaintGrp.get(i).name.equals(maintname))
                                 .findFirst();
                         if (index.isPresent()) {
                             int realid = index.getAsInt();
                             mainGrpSpinner.setSelection(realid);
-                        }
+                        }*/
                     }
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String faulname = jsonObject.get("faultCategory").getAsJsonObject().get("name").getAsString();
-                        OptionalInt index = IntStream.range(0, genralFaultCatList.size())
+                        int id = jsonObject.get("faultCategory").getAsJsonObject().get("id").getAsInt();
+                        genralFaultCatList.add(new list(faulname, id));
+                        faultCategorySpinner.setAdapter(faultCatAdapter);
+                        /*OptionalInt index = IntStream.range(0, genralFaultCatList.size())
                                 .filter(i -> genralFaultCatList.get(i).name.equals(faulname))
                                 .findFirst();
                         if (index.isPresent()) {
                             int realid = index.getAsInt();
                             Log.d(TAG, "onResponse: fff" + realid);
                             faultCategorySpinner.setSelection(realid);
-                        }
+                        }*/
                     }
                     if (!(jsonObject.get("attendedBy").isJsonNull())) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -970,8 +1011,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
                             for (int j = 0; j < ja.size(); j++) {
                                 JsonObject jsonObject1 = ja.get(j).getAsJsonObject();
                                 if (!(jsonObject1.isJsonNull())) {
-                                    String techname = ja.get(j).getAsJsonObject().get("firstName").getAsString() + " " +
-                                            "" + ja.get(j).getAsJsonObject().get("lastName").getAsString();
+                                    String techname = ja.get(j).getAsJsonObject().get("name").getAsString();
+
                                     Log.d(TAG, "onResponse: hhhh" + techname);
                                     techTv.setText(techname);
                                     OptionalInt index = IntStream.range(0, genralTechnicalList.size())
@@ -1001,11 +1042,11 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                     }
 
-                    if ((jsonObject.get("location").getAsJsonObject().get("description").getAsString()) != null) {
-                        locDescEditText.setText(jsonObject.get("location").getAsJsonObject().get("description").getAsString());
+                    if (!(jsonObject.get("locationDesc").isJsonNull())) {
+                        locDescEditText.setText(jsonObject.get("locationDesc").getAsString());
                     }
-                    if ((jsonObject.get("faultCategory").getAsJsonObject().get("description").getAsString()) != null) {
-                        faultDetailsEditText.setText(jsonObject.get("faultCategory").getAsJsonObject().get("description").getAsString());
+                    if (!(jsonObject.get("faultCategoryDesc").isJsonNull())) {
+                        faultDetailsEditText.setText(jsonObject.get("locationDesc").getAsString());
                     }
                   /*  if (!(jsonObject.get("labourHrs").isJsonNull())) {
                         labourHoursEditText.setText(jsonObject.get("labourHrs").getAsString());
@@ -1013,7 +1054,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     if (!(jsonObject.get("observation").isJsonNull())) {
                         observationEditText.setText(jsonObject.get("observation").getAsString());
                     }
-                    if (jsonObject.get("remarks") != null) {
+                    if (!(jsonObject.get("remarks").isJsonNull())) {
                         for (int i = 0; i < jsonObject.get("remarks").getAsJsonArray().size(); i++) {
                             if (!jsonObject.get("remarks").getAsJsonArray().get(i).isJsonNull()) {
                                 String remString = jsonObject.get("remarks").getAsJsonArray()
@@ -1064,7 +1105,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         activationTime.setText(date);
                     }
 
-                }
+                } else
+                    Toast.makeText(EditFaultReportActivity.this, "Error : " + response.code(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -1081,7 +1123,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     private void initviewsAndGetInitialData(String data) {
 
-        Call<JsonObject> call = APIClient.getUserServices().getEditfaultDetails(data, workSpaceid, token);
+        Call<JsonObject> call = APIClient.getUserServices().getEditfaultDetails(data, workSpaceid, token, role);
         call.enqueue(new Callback<JsonObject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -1101,72 +1143,100 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        String locationname = jsonObject.get("location").getAsJsonObject().get("name").getAsString();
+                        int id = jsonObject.get("location").getAsJsonObject().get("id").getAsInt();
+                        genralLoaction.add(new list(locationname, id));
+                        locationSpinner.setAdapter(locationAdapter);
+                    }
+
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String buildingname = jsonObject.get("building").getAsJsonObject().get("name").getAsString();
+                        int id = jsonObject.get("building").getAsJsonObject().get("id").getAsInt();
+                        genralBuildingList.add(new list(buildingname, id));
+                        buildingSpinner.setAdapter(buildingAdapter);
+
+/*
                         OptionalInt index = IntStream.range(0, genralBuildingList.size())
                                 .filter(i -> genralBuildingList.get(i).name.equals(buildingname))
                                 .findFirst();
                         if (index.isPresent()) {
                             int realid = index.getAsInt();
                             buildingSpinner.setSelection(realid);
-                        }
+                        }*/
                     }
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                        if (jsonObject.get("division").isJsonNull()) {
-                            divisionSpinner.setSelection(0);
 
-                        } else {
-                            String divisionname = jsonObject.get("division").getAsJsonObject().get("name").getAsString();
-                            OptionalInt index = IntStream.range(0, genralDivisionList.size())
+                    if (!(jsonObject.get("division").isJsonNull())) {
+
+                        String divisionname = jsonObject.get("division").getAsJsonObject().get("name").getAsString();
+                        int id = jsonObject.get("division").getAsJsonObject().get("id").getAsInt();
+                        genralDivisionList.add(new list(divisionname, id));
+                        divisionSpinner.setAdapter(divisionAdapter);
+
+                         /*   OptionalInt index = IntStream.range(0, genralDivisionList.size())
                                     .filter(i -> genralDivisionList.get(i).name.equals(divisionname))
                                     .findFirst();
                             if (index.isPresent()) {
                                 int realid = index.getAsInt();
                                 divisionSpinner.setSelection(realid);
-                            }
-                        }
+                            }*/
+
                     }
                     if (!(jsonObject.get("department").isJsonNull())) {
                         String deptname = jsonObject.get("department").getAsJsonObject().get("name").getAsString();
-                        OptionalInt index = IntStream.range(0, genralDepList.size())
+                        int id = jsonObject.get("department").getAsJsonObject().get("id").getAsInt();
+                        genralDepList.add(new list(deptname, id));
+                        deptSpinner.setAdapter(deptListAdapter);
+                        /*OptionalInt index = IntStream.range(0, genralDepList.size())
                                 .filter(i -> genralDepList.get(i).name.equals(deptname))
                                 .findFirst();
                         if (index.isPresent()) {
                             int realid = index.getAsInt();
                             Log.d(TAG, "onResponse: dep" + realid);
                             deptSpinner.setSelection(realid);
-                        }
+                        }*/
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String prirityname = jsonObject.get("priority").getAsJsonObject().get("name").getAsString();
-                        OptionalInt index = IntStream.range(0, genralPriorityList.size())
+                        int id = jsonObject.get("priority").getAsJsonObject().get("id").getAsInt();
+                        genralPriorityList.add(new list(prirityname, id));
+                        prioritySpinner.setAdapter(priAdapter);
+
+                        /*OptionalInt index = IntStream.range(0, genralPriorityList.size())
                                 .filter(i -> genralPriorityList.get(i).name.equals(prirityname))
                                 .findFirst();
                         if (index.isPresent()) {
                             int realid = index.getAsInt();
                             prioritySpinner.setSelection(realid);
-                        }
+                        }*/
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String maintname = jsonObject.get("maintGrp").getAsJsonObject().get("name").getAsString();
-                        OptionalInt index = IntStream.range(0, genralMaintGrp.size())
+                        int id = jsonObject.get("maintGrp").getAsJsonObject().get("id").getAsInt();
+                        genralMaintGrp.add(new list(maintname, id));
+                        mainGrpSpinner.setAdapter(maintAdapter);
+                       /* OptionalInt index = IntStream.range(0, genralMaintGrp.size())
                                 .filter(i -> genralMaintGrp.get(i).name.equals(maintname))
                                 .findFirst();
                         if (index.isPresent()) {
                             int realid = index.getAsInt();
                             mainGrpSpinner.setSelection(realid);
-                        }
+                        }*/
                     }
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String faulname = jsonObject.get("faultCategory").getAsJsonObject().get("name").getAsString();
-                        OptionalInt index = IntStream.range(0, genralFaultCatList.size())
+                        int id = jsonObject.get("faultCategory").getAsJsonObject().get("id").getAsInt();
+                        genralFaultCatList.add(new list(faulname, id));
+                        faultCategorySpinner.setAdapter(faultCatAdapter);
+                      /*  OptionalInt index = IntStream.range(0, genralFaultCatList.size())
                                 .filter(i -> genralFaultCatList.get(i).name.equals(faulname))
                                 .findFirst();
                         if (index.isPresent()) {
                             int realid = index.getAsInt();
                             Log.d(TAG, "onResponse: fff" + realid);
                             faultCategorySpinner.setSelection(realid);
-                        }
+                        }*/
                     }
                     if (!(jsonObject.get("attendedBy").isJsonNull())) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -1178,13 +1248,13 @@ public class EditFaultReportActivity extends AppCompatActivity {
                                     String techname = ja.get(j).getAsJsonObject().get("name").getAsString();
                                     Log.d(TAG, "onResponse: hhhh" + techname);
                                     techTv.setText(techname);
-                                    OptionalInt index = IntStream.range(0, genralTechnicalList.size())
+                                 /*   OptionalInt index = IntStream.range(0, genralTechnicalList.size())
                                             .filter(i -> genralTechnicalList.get(i).name.equals(techname))
                                             .findFirst();
                                     if (index.isPresent()) {
                                         int realid = index.getAsInt();
                                         //  technicianSpinner.setSelection(realid);
-                                    }
+                                    }*/
                                 }
                             }
                         }
@@ -1205,55 +1275,19 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                     }
 
-                    if ((jsonObject.get("location").getAsJsonObject().get("description").getAsString()) != null) {
-                        locDescEditText.setText(jsonObject.get("location").getAsJsonObject().get("description").getAsString());
+                    if ((jsonObject.get("locationDesc").getAsString()) != null) {
+                        locDescEditText.setText(jsonObject.get("locationDesc").getAsString());
                     }
-                    if ((jsonObject.get("faultCategory").getAsJsonObject().get("description").getAsString()) != null) {
-                        faultDetailsEditText.setText(jsonObject.get("faultCategory").getAsJsonObject().get("description").getAsString());
+                    if ((jsonObject.get("faultCategoryDesc").getAsString()) != null) {
+                        faultDetailsEditText.setText(jsonObject.get("faultCategoryDesc").getAsString());
                     }
-                    /*if (!(jsonObject.get("labourHrs").isJsonNull())) {
-                        labourHoursEditText.setText(jsonObject.get("labourHrs").getAsString());
-                    }*/
+
                     if (!(jsonObject.get("observation").isJsonNull())) {
                         observationEditText.setText(jsonObject.get("observation").getAsString());
                     }
                     if (!(jsonObject.get("actionTaken").isJsonNull())) {
                         actionTakenEditText.setText(jsonObject.get("actionTaken").getAsString());
                     }
-                  /*  if (!(jsonObject.get("reportedTime").isJsonNull())) {
-                        timeAddedTextView.setText(jsonObject.get("reportedTime").getAsString());
-                    }
-                    if (!(jsonObject.get("endTime").isJsonNull())) {
-                        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-                        String dateString = formatter.format(new Date(jsonObject.get("endTime").getAsLong()));
-                        timePickerEnd.setText(dateString);
-
-                    }
-                    if (!(jsonObject.get("startTime").isJsonNull())) {
-                        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-                        String dateString = formatter.format(new Date(jsonObject.get("startTime").getAsLong()));
-                        timePickerStart.setText(dateString);
-
-                    }
-                    if (!(jsonObject.get("reportedDate").isJsonNull())) {
-                        Date date = new Date(jsonObject.get("reportedDate").getAsLong());
-                        SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yy");
-                        String dateText = df2.format(date);
-                        dateAddedTextView.setText(dateText);
-                    }
-                    if (!(jsonObject.get("startDate").isJsonNull())) {
-                        Date date = new Date(jsonObject.get("startDate").getAsLong());
-                        SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yy");
-                        String dateText = df2.format(date);
-                        datePickerStart.setText(dateText);
-                    }
-                    if (!(jsonObject.get("endDate").isJsonNull())) {
-                        Date date = new Date(jsonObject.get("endDate").getAsLong());
-                        SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yy");
-                        String dateText = df2.format(date);
-                        datePickerEnd.setText(dateText);
-                    }
-*/
 
                     if (!(jsonObject.get("status").isJsonNull())) {
                         String statuscomming = jsonObject.get("status").getAsString();

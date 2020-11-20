@@ -48,15 +48,12 @@
                     android:id="@+id/search_view"
                     android:layout_width="match_parent"
                     android:layout_height="50sp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/colorCodeSchemeApp"
-                    android:elevation="2dp"
-                    android:padding="4dp"
+                   android:layout_margin="1dp"
+                    android:elevation="1dp"
+                    android:padding="1dp"
+                    android:background="#ffffff"
                     android:queryHint="Search here"
-                    android:textColorHint="#000000" />
+                    android:textColorHint="@color/textColor" />
 
 
             </LinearLayout>

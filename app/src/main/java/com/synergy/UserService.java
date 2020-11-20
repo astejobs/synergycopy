@@ -118,7 +118,7 @@ public interface UserService {
     Call<JsonObject> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo,
                                  @Header("workspace") String workspace,
                                  @Header("Authorization") String token
-            , @Header("role") String role);
+                                , @Header("role") String role);
 
     //get search
     @GET("faultreport/search/?")
@@ -189,7 +189,7 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<JsonObject> getEditfaultDetails(@Path("frid") String frid,
                                          @Header("WorkspaceId") String workspaceId,
-                                         @Header("Authorization") String token);
+                                         @Header("Authorization") String token,@Header("role")String role);
 
     //to get the technician list
     @GET("general/technicians")

@@ -103,14 +103,14 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight=".95"
                                 android:text="Department" />
 
                             <Spinner
                                 android:id="@+id/dept_number"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                android:layout_weight="1.05" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -249,7 +249,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Building/Zone" />
+                                android:text="Building" />
 
                             <Spinner
 
@@ -269,7 +269,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Location/Sub Zone" />
+                                android:text="Location" />
 
                             <Spinner
                                 android:id="@+id/unitNumber"
@@ -338,14 +338,14 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight=".95"
                                 android:text="Fault Category" />
 
                             <Spinner
                                 android:id="@+id/faultCategory"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                android:layout_weight="1.05" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -387,14 +387,14 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight=".95"
                                 android:text="Select Maintenance Group" />
 
                             <Spinner
                                 android:id="@+id/mainGrp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                android:layout_weight="1.05" />
                         </LinearLayout>
 
                         <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
@@ -523,14 +523,14 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight=".6"
                                 android:text="Select Cost Center" />
 
                             <Spinner
                                 android:id="@+id/costCenter"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                android:layout_weight="1.4" />
                         </LinearLayout>
 
                         <!--
@@ -732,14 +732,17 @@
 -->
 
 
+<!--
                         <Button
                             android:id="@+id/selectEquipmentButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
+                            android:visibility="invisible"
                             android:textColor="@color/textColorbutton"
                             android:background="@drawable/mybutton"
                             android:text="Select Equipment" />
+-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -825,6 +828,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_margin="20dp"
                     android:weightSum="2">
 
                     <TextView
@@ -845,14 +849,17 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp" />
 
+<!--
                 <Button
                     android:id="@+id/selecttech"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/textColorbutton"
                     android:layout_margin="20dp"
+                    android:visibility="invisible"
                     android:background="@drawable/mybutton"
                     android:text="Select technician" />
+-->
 
 
                 <Button

@@ -200,6 +200,7 @@ public class MainActivityLogin extends AppCompatActivity {
                     finish();
 
                 } else if (response.code() == 202) {
+                    mProgress.dismiss();
                     Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_LONG).show();
                 } else
                     Toast.makeText(MainActivityLogin.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();

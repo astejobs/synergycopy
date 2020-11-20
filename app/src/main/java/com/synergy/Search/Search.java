@@ -125,9 +125,8 @@ public class Search extends AppCompatActivity {
                             frId = searchResponse.getFrId();
                             long rtdate = searchResponse.getReportedDate();
                             String status = searchResponse.getStatus();
-                            String buildingg = searchResponse.getBuilding();
-                            String locationn = searchResponse.getLocation();
-                            Log.d(TAG, "onResponse: lov" + locationn + buildingg);
+                            String buildingg = searchResponse.getBuildingName();
+                            String locationn = searchResponse.getLocationName();
 
                             searchResp.setFrId(frId);
                             searchResp.setReportedDate(rtdate);

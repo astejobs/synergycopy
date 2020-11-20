@@ -11,55 +11,55 @@
         android:id="@+id/textView_frid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textView_reporteddatete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textView_createddate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textView_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textSize="14sp" />
 
     <TextView
         android:id="@+id/textView_building"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textView_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tokenGen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/workspace_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="@color/textColor"
         android:visibility="gone" />
 </LinearLayout>

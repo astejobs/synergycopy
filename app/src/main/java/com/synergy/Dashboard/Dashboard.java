@@ -66,6 +66,7 @@ public class Dashboard extends AppCompatActivity {
             linearLayoutDashboard.removeView(layout_m2);
             linearLayoutDashboard.removeView(layout_m3);
 
+
             LinearLayout a = new LinearLayout(this);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -82,7 +83,7 @@ public class Dashboard extends AppCompatActivity {
             LinearLayout b = new LinearLayout(this);
             LinearLayout.LayoutParams paramss = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            paramss.setMargins(16, 16, 16, 16);
+            paramss.setMargins(16, 200, 16, 16);
 
             paramss.gravity = Gravity.CENTER_HORIZONTAL;
             b.setLayoutParams(paramss);

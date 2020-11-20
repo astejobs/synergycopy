@@ -26,7 +26,7 @@
         android:layout_marginTop="50dp"
         android:layout_margin="16dp"
         android:text="@string/opt"
-        android:textSize="26sp"
+        android:textSize="16sp"
         android:textColor="@color/textColorApp"/>
 
     <LinearLayout
@@ -98,6 +98,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/mybutton"
             android:text="Verify"
+            android:padding="16dp"
             android:layout_gravity="center"
             android:textColor="@color/textColorbutton"
             android:textSize="20sp" />
@@ -111,6 +112,7 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/mybutton"
         android:text="Resend Code"
+        android:padding="16dp"
         android:layout_gravity="center"
         android:textColor="@color/textColorbutton"
         android:textSize="20sp" />

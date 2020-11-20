@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/create" />
+                android:src="@drawable/createfault" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -67,14 +67,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/search" />
+                android:src="@drawable/searchb" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoSizeTextType="uniform"
                 android:gravity="center"
-                android:text="Search"
+                android:text="Search Fault Report"
                 android:textColor="@color/textColorApp"
                 android:textSize="16dp" />
         </LinearLayout>
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/cre" />
+                android:src="@drawable/faultsoneq" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -118,7 +118,7 @@
         <LinearLayout
             android:id="@+id/linear_qr_taskseacr_qr"
             android:layout_width="0dp"
-            android:layout_height="160dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_margin="8dp"
             android:layout_weight="1"
@@ -128,12 +128,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/eqtask" />
+                android:src="@drawable/eqtaskk" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:text="Task On Equipment"
                 android:textColor="@color/textColorApp"
@@ -164,13 +163,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/tasksearvh" />
+                android:src="@drawable/taskkksearchh" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Task Search"
+                android:text="Search Task"
                 android:textColor="@color/textColorApp"
                 android:textSize="16dp" />
         </LinearLayout>
@@ -188,7 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/setting"/>
+                android:src="@drawable/settting"/>
 
             <TextView
                 android:layout_width="match_parent"
