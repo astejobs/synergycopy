@@ -1,13 +1,15 @@
 package com.synergy.Search;
 
 public class SearchResponse {
+
+    private ActivationTime activationTime;
     String frId, clientFrId, customerRefId, requestorName, requestorContactNo, location,
             building, division, locationDesc, faultCategory, faultCategoryName, priority,
             department, maintGrp, status, reportedTime, equipment, observation, actionTaken, remarks, startDate,
             endDate, startTime, endTime, costCenter, labourHrs;
     long reportedDate;
     String workspaceId;
-    String buildingName,locationName;
+    String buildingName, locationName;
 
     public String getBuildingName() {
         return buildingName;
@@ -36,16 +38,25 @@ public class SearchResponse {
     public SearchResponse() {
     }
 
-    public SearchResponse(String buildingName,String locationName,String frId, String clientFrId, String customerRefId, String requestorName,
+    public ActivationTime getActivationTime() {
+        return activationTime;
+    }
+
+    public void setActivationTime(ActivationTime activationTime) {
+        this.activationTime = activationTime;
+    }
+
+    public SearchResponse(ActivationTime activationTime, String buildingName, String locationName, String frId, String clientFrId, String customerRefId, String requestorName,
                           String requestorContactNo, String location, String building, String division,
                           String locationDesc, String faultCategory, String faultCategoryName, String priority,
                           String department, String maintGrp, String status, String reportedTime,
                           String equipment, String observation, String actionTaken, String remarks, String startDate,
-                          String endDate, String startTime, String endTime, String costCenter, String labourHrs, long reportedDate,String workspaceId) {
+                          String endDate, String startTime, String endTime, String costCenter, String labourHrs, long reportedDate, String workspaceId) {
         this.frId = frId;
-        this.buildingName=locationName;
-        this.buildingName=buildingName;
-        this.workspaceId=workspaceId;
+        this.activationTime=activationTime;
+        this.buildingName = locationName;
+        this.buildingName = buildingName;
+        this.workspaceId = workspaceId;
         this.clientFrId = clientFrId;
         this.customerRefId = customerRefId;
         this.requestorName = requestorName;
@@ -391,4 +402,108 @@ public class SearchResponse {
     public Charset toLowerCase() {
         return null;
     }*/
+}
+
+class ActivationTime {
+    private String dayOfWeek;
+
+    private String month;
+
+    private String hour;
+
+    private String year;
+
+    private String dayOfMonth;
+
+    private String dayOfYear;
+
+    private String monthValue;
+
+    private String nano;
+
+
+    private String minute;
+
+    private String second;
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getDayOfMonth() {
+        return dayOfMonth;
+    }
+
+    public void setDayOfMonth(String dayOfMonth) {
+        this.dayOfMonth = dayOfMonth;
+    }
+
+    public String getDayOfYear() {
+        return dayOfYear;
+    }
+
+    public void setDayOfYear(String dayOfYear) {
+        this.dayOfYear = dayOfYear;
+    }
+
+    public String getMonthValue() {
+        return monthValue;
+    }
+
+    public void setMonthValue(String monthValue) {
+        this.monthValue = monthValue;
+    }
+
+    public String getNano() {
+        return nano;
+    }
+
+    public void setNano(String nano) {
+        this.nano = nano;
+    }
+
+
+    public String getMinute() {
+        return minute;
+    }
+
+    public void setMinute(String minute) {
+        this.minute = minute;
+    }
+
+    public String getSecond() {
+        return second;
+    }
+
+    public void setSecond(String second) {
+        this.second = second;
+    }
 }

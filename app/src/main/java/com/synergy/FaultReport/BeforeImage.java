@@ -84,6 +84,7 @@ public class BeforeImage extends AppCompatActivity {
                 intent.putExtra("token", token);
                 intent.putExtra("workspace", workspace);
                 intent.putExtra("frid", frId);
+                intent.putExtra("role",user);
                 intent.putExtra("value", value);
                 startActivity(intent);
             }
@@ -223,7 +224,7 @@ public class BeforeImage extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(user);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle( user);
         return true;
     }
 

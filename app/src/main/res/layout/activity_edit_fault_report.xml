@@ -78,6 +78,7 @@
                             <EditText
                                 android:id="@+id/frIdEditText"
                                 android:layout_width="0dp"
+                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.5"
                                 android:inputType="text" />
@@ -132,6 +133,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
+                                android:textColor="@color/textblackcolor"
                                 android:layout_weight="1"
                                 android:textSize="18sp" />
 
@@ -166,6 +168,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
+                                android:textColor="@color/textblackcolor"
                                 android:layout_weight="1"
                                 android:hint="Activation Date" />
 
@@ -182,15 +185,16 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Activation Time" />
+                                android:text="Arrival Time" />
 
                             <TextView
                                 android:id="@+id/activation_time"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
+                                android:textColor="@color/textblackcolor"
                                 android:layout_weight="1"
-                                android:hint="Activation Time" />
+                                android:hint="Arrival Time" />
 
                         </LinearLayout>
 
@@ -212,9 +216,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:textColor="@color/textblackcolor"
                                 android:hint="Contact No: "
                                 android:inputType="phone"
-                                android:maxLength="12" />
+                                android:maxLength="10" />
 
                         </LinearLayout>
 
@@ -314,6 +319,7 @@
                             <EditText
                                 android:id="@+id/locationDescrip"
                                 android:layout_width="0dp"
+                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
                                 android:inputType="text" />
@@ -364,6 +370,7 @@
                             <EditText
                                 android:id="@+id/faultDetails"
                                 android:layout_width="0dp"
+                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
                                 android:inputType="text" />
@@ -419,6 +426,7 @@
                             <EditText
                                 android:id="@+id/observation"
                                 android:layout_width="0dp"
+                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
                                 android:inputType="text" />
@@ -448,6 +456,7 @@
                             <EditText
                                 android:id="@+id/diagnosis"
                                 android:layout_width="0dp"
+                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
                                 android:inputType="text" />
@@ -477,6 +486,7 @@
                             <EditText
                                 android:id="@+id/actionTaken"
                                 android:layout_width="0dp"
+                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
                                 android:inputType="text" />
@@ -764,6 +774,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
+                                android:textColor="@color/textblackcolor"
                                 android:layout_weight="1"
                                 android:hint="Equipment Code"
                                 android:textSize="18sp" />
@@ -793,7 +804,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="Remarks"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/textblackcolor"
                         android:textSize="18sp" />
 
                 </LinearLayout>
@@ -846,6 +857,7 @@
                 <TextView
                     android:id="@+id/techtv"
                     android:layout_width="match_parent"
+                    android:textColor="@color/textblackcolor"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp" />
 

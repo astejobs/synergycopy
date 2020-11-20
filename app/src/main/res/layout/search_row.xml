@@ -1,65 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/mybutton"
-    android:padding="4dp">
+    android:padding="4dp"
+    app:cardBackgroundColor="@color/colorCodeSchemeApp"
+    app:cardCornerRadius="8dp">
 
-    <TextView
-        android:id="@+id/textView_frid"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:textSize="12sp" />
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:background="@color/colorCodeSchemeApp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView_reporteddatete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/textView_frid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/textView_createddate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/textView_reporteddatete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/textView_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:textSize="14sp" />
+        <TextView
+            android:id="@+id/textView_createddate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/textView_building"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/textView_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/textView_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/textView_building"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/tokenGen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/textView_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/workspace_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:visibility="gone" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/tokenGen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/workspace_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -60,16 +60,20 @@ public class SearchResponseAdapter extends BaseAdapter {
         TextView to = convertView.findViewById(R.id.tokenGen);
         TextView workspaceSearchTextView = convertView.findViewById(R.id.workspace_search);
 
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-       // cal.setTimeInMillis(currentItem.getReportedDate());
-        String report = DateFormat.format("dd-MM-yyyy", cal).toString();
+        String activationDate = null;
+        String activationTime = null;
 
-        Calendar cal2 = Calendar.getInstance(Locale.ENGLISH);
-        String ctreate = DateFormat.format("dd-MM-yyyy", cal2).toString();
+        if (currentItem.getActivationTime()!=null){
+             activationDate=currentItem.getActivationTime().getDayOfMonth()+"-"+currentItem.
+                    getActivationTime().getMonthValue()+"-"+currentItem.getActivationTime().getYear();
+
+            activationTime=currentItem.getActivationTime().getHour()+"-"+currentItem.getActivationTime().getMinute();
+        }
+
 
         frIdTextView.setText(" FrId:" + currentItem.getFrId().trim());
-        re.setText(" Reported Date:" + report);
-        cr.setText(" Created Date:" + ctreate);
+        re.setText(" Activation Date:" + activationDate);
+        cr.setText(" Activation Time:" + activationTime);
         st.setText(" Status:" + currentItem.getStatus());
         bu.setText(" Building:" + currentItem.getBuilding());
         lo.setText(" Location:" + currentItem.getLocation());

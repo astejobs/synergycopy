@@ -53,6 +53,7 @@ public class Search extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
 
+
         ScrollView view = (ScrollView) findViewById(R.id.scrollViewSearch);
         view.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
         view.setFocusable(true);
@@ -85,7 +86,7 @@ public class Search extends AppCompatActivity {
                     //   searchResponseAdapter.notifyDataSetChanged();
                 } else {
                     contacts.clear();
-                    loadSearch(workspaceId, onTextChangeQueryCall);
+                    loadSearch(onTextChangeQueryCall);
                     listView.setFilterText(onTextChangeQueryCall);
                 }
 
@@ -95,15 +96,15 @@ public class Search extends AppCompatActivity {
 
     }
 
-    private void loadSearch(String worklistString, String callQueryDependent) {
+    private void loadSearch(String callQueryDependent) {
 
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
         progressDialog.show();
 
-        int workspace = 1;
-        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspace, callQueryDependent, token);
+        Log.d(TAG, "loadSearch: nmk"+workspaceId);
+        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspaceId, callQueryDependent, token);
         call.enqueue(new Callback<List<SearchResponse>>() {
             @Override
             public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {
@@ -123,12 +124,16 @@ public class Search extends AppCompatActivity {
                             String status = searchResponse.getStatus();
                             String buildingg = searchResponse.getBuildingName();
                             String locationn = searchResponse.getLocationName();
+                            ActivationTime activationDate=searchResponse.getActivationTime();
+                            /*.getDayOfMonth()+"-"+searchResponse.getActivationTime().getMonthValue()
+                                    +"-"+searchResponse.getActivationTime().getYear();*/
 
                             searchResp.setFrId(frId);
                             searchResp.setReportedDate(rtdate);
                             searchResp.setStatus(status);
                             searchResp.setBuilding(buildingg);
                             searchResp.setLocation(locationn);
+                            searchResp.setActivationTime(activationDate);
                             searchResp.setWorkspaceId(workspaceId);
                             //  frIdList.add(frId);
                             contacts.add(searchResp);

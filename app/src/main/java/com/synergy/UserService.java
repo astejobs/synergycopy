@@ -123,7 +123,7 @@ public interface UserService {
     //get search
     @GET("faultreport/search/?")
     @Headers("Content-Type: application/json")
-    Call<List<SearchResponse>> getSearchResult(@Header("workspace") int dynamicWorkSpace,
+    Call<List<SearchResponse>> getSearchResult(@Header("workspace") String dynamicWorkSpace,
                                                @Query("query") String param,
                                                @Header("Authorization") String token);
     //before image upload http://ifarms.com.sg:8086/lsme/api/faultreport/beforeimage

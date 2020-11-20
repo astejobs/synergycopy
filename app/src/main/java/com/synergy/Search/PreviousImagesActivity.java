@@ -5,11 +5,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.GridLayout;
@@ -21,6 +24,8 @@ import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
+import com.synergy.FaultReport.BeforeImage;
+import com.synergy.MainActivityLogin;
 import com.synergy.R;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
@@ -33,10 +38,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.synergy.MainActivityLogin.SHARED_PREFS;
+
 public class PreviousImagesActivity extends AppCompatActivity {
     private static final String TAG = "";
     private List<String> urlList = new ArrayList<>();
-    private String frid, token, value, workspace;
+    private String frid, token, value, workspace,user;
     private Toolbar toolbar;
     private DotsIndicator dotsIndicator;
     List<InputStream> list = new ArrayList<InputStream>();
@@ -112,6 +119,7 @@ public class PreviousImagesActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar_images);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
+        user=intent.getStringExtra("role");
         value = intent.getStringExtra("value");
         frid = intent.getStringExtra("frid");
         token = intent.getStringExtra("token");
@@ -138,5 +146,29 @@ public class PreviousImagesActivity extends AppCompatActivity {
             layout.addView(image);
             image.setImageBitmap(bmp);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle( user);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.logoutmenu) {
+
+            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+            Intent in = new Intent(PreviousImagesActivity.this, MainActivityLogin.class);
+            startActivity(in);
+            finishAffinity();
+        }
+        return true;
     }
 }

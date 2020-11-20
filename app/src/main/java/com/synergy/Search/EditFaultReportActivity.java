@@ -166,7 +166,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
             //callCostCenter();
 
             if (frid != null) {
-                updateFaultReportButton.setVisibility(View.INVISIBLE);
                 initviewsAndGetInitialData(frid);
             } else {
                 initviewsAndGetInitialDataOnEquip(equipCode);
@@ -1048,9 +1047,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     if (!(jsonObject.get("faultCategoryDesc").isJsonNull())) {
                         faultDetailsEditText.setText(jsonObject.get("locationDesc").getAsString());
                     }
-                  /*  if (!(jsonObject.get("labourHrs").isJsonNull())) {
-                        labourHoursEditText.setText(jsonObject.get("labourHrs").getAsString());
-                    }*/
+
                     if (!(jsonObject.get("observation").isJsonNull())) {
                         observationEditText.setText(jsonObject.get("observation").getAsString());
                     }
@@ -1068,6 +1065,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     if (!(jsonObject.get("actionTaken").isJsonNull())) {
                         actionTakenEditText.setText(jsonObject.get("actionTaken").getAsString());
                     }
+
                     if (!(jsonObject.get("status").isJsonNull())) {
                         String statuscomming = jsonObject.get("status").getAsString();
                         int indeex = 0;
@@ -1086,10 +1084,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                         String time = hour + ":" + minute;
                         String date = dayOfMonth + "-" + monthValue + "-" + year + "  " + time;
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm aa ");
-                        //    String sedate=sdf.format(date);
                         activationDate.setText(date);
-                        //   activationTime.setText(time);
                     }
                     if (!(jsonObject.get("arrivalTime").isJsonNull())) {
                         String hour = jsonObject.get("arrivalTime").getAsJsonObject().get("hour").getAsString();
@@ -1100,8 +1095,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                         String time = hour + ":" + minute;
                         String date = dayOfMonth + "-" + monthValue + "-" + year + "   " + time;
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm aa ");
-                        //   String sedate=sdf.format(date);
                         activationTime.setText(date);
                     }
 
@@ -1301,6 +1294,36 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
 
 
+
+                    if (!(jsonObject.get("activationTime").isJsonNull())) {
+                        String hour = jsonObject.get("activationTime").getAsJsonObject().get("hour").getAsString();
+                        String minute = jsonObject.get("activationTime").getAsJsonObject().get("minute").getAsString();
+                        String year = jsonObject.get("activationTime").getAsJsonObject().get("year").getAsString();
+                        String monthValue = jsonObject.get("activationTime").getAsJsonObject().get("monthValue").getAsString();
+                        String dayOfMonth = jsonObject.get("activationTime").getAsJsonObject().get("dayOfMonth").getAsString();
+
+                        String time = hour + ":" + minute;
+                        String date = dayOfMonth + "-" + monthValue + "-" + year + "  " + time;
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm aa ");
+                        //    String sedate=sdf.format(date);
+                        activationDate.setText(date);
+                        //   activationTime.setText(time);
+                    }
+                    if (!(jsonObject.get("arrivalTime").isJsonNull())) {
+                        String hour = jsonObject.get("arrivalTime").getAsJsonObject().get("hour").getAsString();
+                        String minute = jsonObject.get("arrivalTime").getAsJsonObject().get("minute").getAsString();
+                        String year = jsonObject.get("arrivalTime").getAsJsonObject().get("year").getAsString();
+                        String monthValue = jsonObject.get("arrivalTime").getAsJsonObject().get("monthValue").getAsString();
+                        String dayOfMonth = jsonObject.get("arrivalTime").getAsJsonObject().get("dayOfMonth").getAsString();
+
+                        String time = hour + ":" + minute;
+                        String date = dayOfMonth + "-" + monthValue + "-" + year + "   " + time;
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm aa ");
+                        //   String sedate=sdf.format(date);
+                        activationTime.setText(date);
+                    }
+
+
                     if (jsonObject.get("remarks") != null) {
                         for (int i = 0; i < jsonObject.get("remarks").getAsJsonArray().size(); i++) {
                             if (!jsonObject.get("remarks").getAsJsonArray().get(i).isJsonNull()) {
@@ -1408,92 +1431,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     }
 
 
-/*
-    private void datePicker() {
 
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-
-        View.OnClickListener showDatePicker = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(EditFaultReportActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-                        Date date = new Date(year - 1900, monthOfYear, dayOfMonth);
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                        String cdate = formatter.format(date);
-
-                        if (v.getId() == R.id.dateStart) //id of your StartDate button
-                        {
-                            datePickerStart.setText(cdate);
-                        }
-                        if (v.getId() == R.id.dateEnd) {
-                            datePickerEnd.setText(cdate);
-                        }
-                        if (v.getId() == R.id.dateResponse) {
-                            datePickerResponse.setText(cdate);
-                        }
-
-                    }
-                }, year, month, day);
-                datePickerDialog.show();
-            }
-        };
-
-        datePickerStart.setOnClickListener(showDatePicker);
-        datePickerResponse.setOnClickListener(showDatePicker);
-        datePickerEnd.setOnClickListener(showDatePicker);
-    }
-*/
-
-/*
-    public void timePickerMethod() {
-
-        View.OnClickListener showTimePicker = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(
-                        EditFaultReportActivity.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                                tHour = i;
-                                tMinute = i1;
-
-
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(0, 0, 0, tHour, tMinute);
-                                timeS = String.valueOf(DateFormat.format("HH:mm", calendar));
-
-                                if (view.getId() == R.id.timeStart) {
-                                    timePickerStart.setText(timeS);
-                                }
-                                if (view.getId() == R.id.timeEnd) {
-                                    timePickerEnd.setText(timeS);
-                                }
-                                if (view.getId() == R.id.timeResponse) {
-                                    timePickerResponse.setText(timeS);
-                                }
-
-
-                            }
-                        }, 12, 0, true
-                );
-                timePickerDialog.updateTime(tHour, tMinute);
-                timePickerDialog.show();
-
-            }
-        };
-        timePickerEnd.setOnClickListener(showTimePicker);
-        timePickerStart.setOnClickListener(showTimePicker);
-        timePickerResponse.setOnClickListener(showTimePicker);
-    }
-*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -1503,7 +1441,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 assert data != null;
                 String eqip = data.getStringExtra("equipment_code");
                 int equipId = data.getIntExtra("equipmentId", 0);
-                Log.d(TAG, "onActivityResult: " + equipId);
                 equipmentTextView.setText(eqip);
             }
         } else if (requestCode == 10) {
@@ -1538,16 +1475,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     updateFaultReport();
-/*
-                    if (statusSpinner.getSelectedItem().toString().equals("Pause")){
-                        Intent intent = new Intent(EditFaultReportActivity.this,UploadFile.class);
-                        intent.putExtra("frid",frId);
-                        intent.putExtra("workspace",workSpaceid);
-                        intent.putExtra("token",token);
-                        startActivity(intent);
-
-                    }
-*/
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1559,7 +1486,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         String contactNumber = requestorNumberEditText.getText().toString();
 
-        if ((TextUtils.isEmpty(requestorNumberEditText.getText())) || ((contactNumber.length() < 8))) {
+        if ( (TextUtils.isEmpty(requestorNumberEditText.getText())) || ((contactNumber.length() < 8))) {
             Toast.makeText(this, "Contact not valid", Toast.LENGTH_SHORT).show();
 
         } else {
@@ -1592,10 +1519,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             attendedByIdsList = new ArrayList();
 
             String attendedbyString = techTv.getText().toString();
-            Log.d(TAG, "updateFaultReport: " + attendedbyString);
             List<String> attendedbylist = Arrays.asList(attendedbyString.split(", "));
-            Log.d(TAG, "updateFaultReport: splitted s" + attendedbylist);
-            Log.d(TAG, "updateFaultReport: gentech" + genralTechnicalList);
             for (int j = 0; j < attendedbylist.size(); j++) {
                 String techincian = attendedbylist.get(j);
                 for (list list : genralTechnicalList) {
