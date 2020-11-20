@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_margin="10dp"
-    android:background="#F3DFDF"
+    android:background="@drawable/mybutton"
     app:cardCornerRadius="8dp">
 
         <LinearLayout
