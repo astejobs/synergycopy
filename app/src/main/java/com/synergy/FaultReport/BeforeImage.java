@@ -43,7 +43,7 @@ public class BeforeImage extends AppCompatActivity {
     private static final String TAG = "before";
     Button takeBtn, uploadBtn, doneBtn, previousImagesbtn;
     ImageView beforeImgPre;
-    static final int REQUEST_IMAGE_CAPTURE = 0;
+    public static final int REQUEST_IMAGE_CAPTURE = 0;
     private Intent takePictureIntent;
     private String token;
     private String workspace;
@@ -223,7 +223,7 @@ public class BeforeImage extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello: " + user);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(user);
         return true;
     }
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#2E6BAA"
+    android:background="@drawable/mybutton"
     android:padding="4dp">
 
     <TextView

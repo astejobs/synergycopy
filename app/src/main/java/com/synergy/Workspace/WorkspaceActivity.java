@@ -40,7 +40,6 @@ public class WorkspaceActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressDialog progressDialog;
-    private Toolbar toolbar;
     private LinearLayout linearLayout;
     private String user;
 
@@ -49,7 +48,7 @@ public class WorkspaceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
-        toolbar = findViewById(R.id.toolbar_workspace);
+        Toolbar toolbar = findViewById(R.id.toolbar_workspace);
         setSupportActionBar(toolbar);
         linearLayout = findViewById(R.id.workLinear);
         linearLayout.setVisibility(View.GONE);
@@ -58,9 +57,6 @@ public class WorkspaceActivity extends AppCompatActivity {
         String token = sharedPreferences.getString("token", "");
         Log.d(TAG, "onCreate: workspace mai token :" +token);
         user = sharedPreferences.getString("role", "");
-        //  String devicetoken=sharedPreferences.getString("devicetoken","");
-
-
 
         recyclerView = findViewById(R.id.recycler_view_workspace);
         progressDialog = new ProgressDialog(WorkspaceActivity.this);

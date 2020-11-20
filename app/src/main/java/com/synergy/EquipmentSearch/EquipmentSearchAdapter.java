@@ -34,6 +34,10 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
 
         EquipmentSearchCard currentPosition = equipmentSearchCards.get(position);
         holder.taskIdTV.setText(String.valueOf(currentPosition.getTaskId()));
+        holder.statusTV.setText(String.valueOf(currentPosition.getStatus()));
+        holder.buildingTV.setText(String.valueOf(currentPosition.getBuildingName()));
+        holder.locationTV.setText(String.valueOf(currentPosition.getLocationName()));
+        holder.scheduleTV.setText(String.valueOf(currentPosition.getScheduleDate()));
         holder.taskNumberTV.setText(currentPosition.getTask_number());
         String workspace = currentPosition.getWorkspace();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -55,12 +59,16 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView taskNumberTV, taskIdTV;
+        TextView taskNumberTV, taskIdTV, statusTV, buildingTV, locationTV, scheduleTV;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             taskNumberTV = itemView.findViewById(R.id.taskNumberRV);
             taskIdTV = itemView.findViewById(R.id.taskIdRV);
+            statusTV = itemView.findViewById(R.id.statusRV);
+            buildingTV = itemView.findViewById(R.id.buildingRV);
+            locationTV = itemView.findViewById(R.id.locationRV);
+            scheduleTV = itemView.findViewById(R.id.schduleDateRV);
         }
     }
 }

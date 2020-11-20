@@ -91,7 +91,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            codeScannerView.setVisibility(View.INVISIBLE);
+                            codeScannerView.setVisibility(View.GONE);
                             scanTextView.setVisibility(View.VISIBLE);
                             scanTextView.setText(result.getText());
                             if (value.equals("Fault")) {
@@ -100,7 +100,8 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                                 intent1.putExtra("workspaceId", workspace);
                                 startActivity(intent1);
                             } else {
-                                dialog();
+                                //dialog();
+                                callQrCodeSearch(String.valueOf(scanTextView.getText()), "Open");
                             }
                         }
                     });
@@ -118,7 +119,6 @@ public class EquipmentSearchActivity extends AppCompatActivity {
             public void onResponse(Call<List<EquipmentSearchResponse>> call, Response<List<EquipmentSearchResponse>> response) {
                 if (response.code() == 200) {
 
-                    //scanTextView.setText(result);
                     scanTextView.setVisibility(View.GONE);
                     List<EquipmentSearchResponse> equipmentSearchResponse = response.body();
 
@@ -129,19 +129,20 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                    for (int i =0; i<equipmentSearchResponse.size();i++) {
                        String taskNumber = equipmentSearchResponse.get(i).getTaskNumber();
                        int taskId = equipmentSearchResponse.get(i).getTaskId().intValue();
-                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace));
+                       String buildingName = equipmentSearchResponse.get(i).getBuildingName();
+                       String locationName = equipmentSearchResponse.get(i).getLocationName();
+                       long scheduleDate = equipmentSearchResponse.get(i).getScheduleDate();
+                       String status = equipmentSearchResponse.get(i).getStatus();
+                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace, status, buildingName,locationName, scheduleDate));
                     }
                     recyclerView.setHasFixedSize(true);
                     EquipmentSearchAdapter mAdapter = new EquipmentSearchAdapter(equipmentSearchCardArrayList);
                     recyclerView.setLayoutManager(new LinearLayoutManager(EquipmentSearchActivity.this));
                     recyclerView.setAdapter(mAdapter);
 
-//                    Intent intent = new Intent(getApplicationContext(), PmTaskActivity.class);
-//                    startActivity(intent);
                 } else
                     Toast.makeText(EquipmentSearchActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
                 mProgress.dismiss();
-                //finish();
             }
 
             @Override
@@ -190,7 +191,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         alertDialog.setView(radioLayoutView);
         alertDialog.setTitle("Select Type of Tasks");
 
-        alertDialog.setButton(Dialog.BUTTON_POSITIVE, "ok", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
@@ -198,7 +199,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
 
                 String status = radioSelectedButton.getText().toString();
                 status = status.substring(0, status.length() - 6);
-                callQrCodeSearch(String.valueOf(scanTextView.getText()), status);
+                //callQrCodeSearch(String.valueOf(scanTextView.getText()), status);
             }
         });
         alertDialog.setButton(Dialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {

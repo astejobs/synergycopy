@@ -38,8 +38,6 @@ public class Search extends AppCompatActivity {
     private String frId = "";
     private String workspaceId, token;
     private List<String> frIdList = new ArrayList<>();
-
-
     private ListView listView;
     private ArrayList<SearchResponse> contacts = new ArrayList<>();
     private SearchResponseAdapter searchResponseAdapter;
@@ -116,8 +114,6 @@ public class Search extends AppCompatActivity {
                     if (list.isEmpty()) {
                         Toast.makeText(Search.this, "Nothing Here", Toast.LENGTH_SHORT).show();
                     } else {
-
-                        Toast.makeText(Search.this, "sucessfullsearch", Toast.LENGTH_SHORT).show();
 
                         for (SearchResponse searchResponse : list) {
 

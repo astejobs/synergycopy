@@ -40,19 +40,19 @@ public class GetPmTaskItemsResponse {
     private String equipmentBuilding;
     @SerializedName("scheduleDate")
     @Expose
-    private double scheduleDate;
+    private Long scheduleDate;
     @SerializedName("compDate")
     @Expose
-    private double compDate;
+    private Long compDate;
     @SerializedName("compTime")
     @Expose
-    private double compTime;
+    private Long compTime;
     @SerializedName("dueDate")
     @Expose
-    private double dueDate;
+    private Long dueDate;
     @SerializedName("endDate")
     @Expose
-    private double endDate;
+    private Long endDate;
     @SerializedName("completedBy")
     @Expose
     private String completedBy;
@@ -61,8 +61,8 @@ public class GetPmTaskItemsResponse {
     private String status;
 
     public GetPmTaskItemsResponse(String taskNumber, String remarks, String pmTaskNo, String pmScheduleNo, String briefDescription,
-                                  String equipmentCode, String equipmentLocation, String equipmentBuilding, double scheduleDate,
-                                  double compDate, double compTime, double dueDate, double endDate, String completedBy, String status, int taskId) {
+                                  String equipmentCode, String equipmentLocation, String equipmentBuilding, Long scheduleDate,
+                                  Long compDate, Long compTime, Long dueDate, Long endDate, String completedBy, String status, int taskId) {
         this.taskNumber = taskNumber;
         this.remarks = remarks;
         this.pmTaskNo = pmTaskNo;
@@ -145,44 +145,24 @@ public class GetPmTaskItemsResponse {
         this.equipmentBuilding = equipmentBuilding;
     }
 
-    public double getScheduleDate() {
+    public Long getScheduleDate() {
         return scheduleDate;
     }
 
-    public void setScheduleDate(double scheduleDate) {
-        this.scheduleDate = scheduleDate;
-    }
-
-    public double getCompDate() {
+    public Long getCompDate() {
         return compDate;
     }
 
-    public void setCompDate(double compDate) {
-        this.compDate = compDate;
-    }
-
-    public double getCompTime() {
+    public Long getCompTime() {
         return compTime;
     }
 
-    public void setCompTime(double compTime) {
-        this.compTime = compTime;
-    }
-
-    public double getDueDate() {
+    public Long getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(double dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public double getEndDate() {
+    public Long getEndDate() {
         return endDate;
-    }
-
-    public void setEndDate(double endDate) {
-        this.endDate = endDate;
     }
 
     public String getCompletedBy() {

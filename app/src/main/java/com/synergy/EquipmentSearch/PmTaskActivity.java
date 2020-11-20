@@ -3,6 +3,7 @@ package com.synergy.EquipmentSearch;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,11 +33,9 @@ import com.synergy.APIClient;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -48,7 +46,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.SimpleTimeZone;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
@@ -70,22 +67,24 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private ProgressDialog mProgress;
     private ArrayAdapter<String> statusSpinnerAdapter;
     private final List<String> statusList = new ArrayList<>();
-    private String taskNumberString;
     private ProgressDialog updateProgress;
     private Button checkListButton;
     private long scheduleDate;
-    private Toolbar toolbar;
+    private String roleTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pm_task);
 
+        SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        roleTask = preferences.getString("role", "");
+
         taskNumberTextView = findViewById(R.id.textViewTaskNumberPm);
         scheduleNumberTextView = findViewById(R.id.textViewScheduleNumberPm);
         scheduleNumberTextView.setMovementMethod(new ScrollingMovementMethod());
         nameTextView = findViewById(R.id.namePmTasks);
-        toolbar = findViewById(R.id.pmtool);
+        Toolbar toolbar = findViewById(R.id.pmtool);
         setSupportActionBar(toolbar);
         remarksTextView = findViewById(R.id.remarks_pmTasks);
         buildingNameTextView = findViewById(R.id.textViewBuildingNumberPm);
@@ -112,19 +111,11 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         updateProgress.setCancelable(false);
         updateProgress.setIndeterminate(true);
 
-        Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        String currentDateTimeString = sdf.format(d);
-        timePickerEdit.setText(currentDateTimeString);
-
-        SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
-        datePickerEdit.setText(sdf1.format(new Date()));
-
         statusSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, statusList);
         statusSpinner.setAdapter(statusSpinnerAdapter);
 
         Intent intent = getIntent();
-        taskNumberString = intent.getStringExtra("taskNumber");
+        String taskNumberString = intent.getStringExtra("taskNumber");
         int taskId = intent.getIntExtra("taskId", 0);
         String workspace = intent.getStringExtra("workspace");
 
@@ -172,7 +163,11 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
             e.printStackTrace();
         }
 
-        GetUpdatePmTaskRequest getUpdatePmTaskRequest = new GetUpdatePmTaskRequest(status, remarksString, date.getTime(), date.getTime(), taskId);
+        long completedDateTime = date.getTime();
+        if (!statusSpinner.getSelectedItem().equals("Completed")){
+            completedDateTime = Long.parseLong(null);
+        }
+        GetUpdatePmTaskRequest getUpdatePmTaskRequest = new GetUpdatePmTaskRequest(status, remarksString, completedDateTime, completedDateTime, taskId);
 
         if (!nameTextView.getText().toString().isEmpty() && !remarksTextView.getText().toString().isEmpty()) {
             /*LocalDate now = Instant.ofEpochMilli((long) scheduleDate).atZone(ZoneId.systemDefault()).toLocalDate();
@@ -222,31 +217,45 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                             date = Instant.ofEpochMilli((long) getPmTaskItemsResponse.getScheduleDate()).atZone(ZoneId.systemDefault()).toLocalDateTime();
                             dateStr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                        } else {
+                            Calendar cl = Calendar.getInstance();
+                            cl.setTimeInMillis(scheduleDate);
+                            dateStr = "" + (cl.get(Calendar.DAY_OF_MONTH) - 1) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.YEAR);
                         }
                         scheduleDateTextView.setText(dateStr);
                     }
                     Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-                    if (getPmTaskItemsResponse.getCompDate() != 0) {
-                        long compDate = (long) getPmTaskItemsResponse.getCompDate();
+                    if (getPmTaskItemsResponse.getCompDate() != null && getPmTaskItemsResponse.getCompTime() != null) {
+                        long compDate = getPmTaskItemsResponse.getCompDate();
                         cal.setTimeInMillis(compDate);
                         String date = String.valueOf(DateFormat.format("dd-MM-yyyy", cal));
                         datePickerEdit.setText(date);
-                    }
-                    if (getPmTaskItemsResponse.getCompTime() != 0) {
+
                         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
                         String dateString = formatter.format(getPmTaskItemsResponse.getCompTime());
                         timePickerEdit.setText(dateString);
+
+                    } else {
+                        Date d = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                        String currentDateTimeString = sdf.format(d);
+                        timePickerEdit.setText(currentDateTimeString);
+                        SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+                        datePickerEdit.setText(sdf1.format(new Date()));
                     }
+
                     if (getPmTaskItemsResponse.getStatus() != null) {
 
                         statusList.add(getPmTaskItemsResponse.getStatus());
+                        if (roleTask.equals("Technician")) {
+                            statusList.add("Completed");
+                        } else {
+                            statusList.add("CLOSED");
+                        }
                         statusList.add("OPEN");
-                        statusList.add("COMPLETED");
-                        statusList.add("CLOSED");
 
                         Set<String> carSet = new HashSet<String>(statusList);
                         statusList.clear();
-                        //Adding set to List to get a new list
                         statusList.addAll(carSet);
                     }
                     statusSpinner.setAdapter(statusSpinnerAdapter);
@@ -326,7 +335,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private void updatePmTaskService(GetUpdatePmTaskRequest getUpdatePmTaskRequest, String token, String workspace) {
         updateProgress.show();
 
-        Call<GetUpdatePmTaskResponse> callTaskUpdate = APIClient.getUserServices().postPmTaskUpdate(getUpdatePmTaskRequest, token, workspace);
+        Call<GetUpdatePmTaskResponse> callTaskUpdate = APIClient.getUserServices().postPmTaskUpdate(getUpdatePmTaskRequest, token, roleTask, workspace);
         callTaskUpdate.enqueue(new Callback<GetUpdatePmTaskResponse>() {
             @Override
             public void onResponse(Call<GetUpdatePmTaskResponse> call, Response<GetUpdatePmTaskResponse> response) {
@@ -349,7 +358,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello");
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(roleTask);
         return true;
     }
 

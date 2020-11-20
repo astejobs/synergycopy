@@ -142,7 +142,7 @@ public interface UserService {
                                       @Header("role") String role,
                                       @Header("workspace") String workspace);
 
-    //equipment search
+    //equipment search tasks
     @GET("task/{equipmentCode}/{status}")
     @Headers("Content-Type: application/json")
     Call<List<EquipmentSearchResponse>> getEquipmentTask(@Path("equipmentCode") String path,
@@ -170,6 +170,7 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<GetUpdatePmTaskResponse> postPmTaskUpdate(@Body GetUpdatePmTaskRequest getUpdatePmTaskRequest,
                                                    @Header("Authorization") String token,
+                                                   @Header("role") String role,
                                                    @Header("workspace") String workspace);
 
     //checklistActivityView

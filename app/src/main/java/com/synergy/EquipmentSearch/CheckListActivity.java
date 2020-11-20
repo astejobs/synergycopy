@@ -49,6 +49,7 @@ public class CheckListActivity extends AppCompatActivity {
     private final List<String> descTypeList = new ArrayList<>();
     private final List<Integer> idList = new ArrayList<>();
     private Toolbar toolbar;
+    private String role;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class CheckListActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
+        role = sharedPreferences.getString("role", "");
 
         Intent intent = getIntent();
         int taskId = intent.getIntExtra("taskId", 0);
@@ -223,7 +225,7 @@ public class CheckListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello");
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(role);
         return true;
     }
 
