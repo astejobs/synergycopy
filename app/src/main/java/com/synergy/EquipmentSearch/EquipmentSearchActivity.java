@@ -113,7 +113,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     private void callQrCodeSearch(String result, String status) {
         mProgress.show();
 
-        Call<List<EquipmentSearchResponse>> callEquipment = APIClient.getUserServices().getEquipmentTask(result, status, token, workspace);
+        Call<List<EquipmentSearchResponse>> callEquipment = APIClient.getUserServices().getEquipmentTask(result, role, token, workspace);
         callEquipment.enqueue(new Callback<List<EquipmentSearchResponse>>() {
             @Override
             public void onResponse(Call<List<EquipmentSearchResponse>> call, Response<List<EquipmentSearchResponse>> response) {
@@ -143,6 +143,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                 } else
                     Toast.makeText(EquipmentSearchActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
                 mProgress.dismiss();
+
             }
 
             @Override

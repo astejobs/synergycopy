@@ -1,5 +1,6 @@
 package com.synergy.Services;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
@@ -11,6 +12,7 @@ import com.synergy.R;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,14 +37,23 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
             String click_action=remoteMessage.getNotification().getClickAction();
 
 
-            NotificationCompat.Builder notificationBuilder=new NotificationCompat.Builder(this);
-            notificationBuilder.setContentTitle(title);
-            notificationBuilder.setContentText(message);
-            notificationBuilder.setAutoCancel(true);
-            notificationBuilder.setSmallIcon(R.drawable.notification_icon);
+            /*NotificationCompat.Builder notificationBuilder=new NotificationCompat.Builder(this)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setAutoCancel(true)
+            .setSmallIcon(R.drawable.notification_icon);
             //notificationBuilder.setContentIntent(pendingIntent);
             NotificationManager notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(0,notificationBuilder.build());
+            notificationManager.notify(0,notificationBuilder.build());*/
+
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setSmallIcon(R.drawable.notification_icon)
+                    .build();
+
+            NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
+            manager.notify(0, notification);
         }
 
 

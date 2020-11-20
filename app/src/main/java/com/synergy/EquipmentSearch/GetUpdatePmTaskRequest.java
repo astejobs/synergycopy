@@ -6,11 +6,11 @@ import com.google.gson.annotations.SerializedName;
 public class GetUpdatePmTaskRequest {
     String status;
     String remarks;
-    long completedTime;
-    long completedDate;
+    Long completedTime;
+    Long completedDate;
     int taskId;
 
-    public GetUpdatePmTaskRequest(String status, String remarks, long completedTime, long completedDate, int taskId) {
+    public GetUpdatePmTaskRequest(String status, String remarks, Long completedTime, Long completedDate, int taskId) {
         this.status = status;
         this.remarks = remarks;
         this.completedTime = completedTime;
@@ -38,7 +38,7 @@ public class GetUpdatePmTaskRequest {
         return completedTime;
     }
 
-    public void setCompletedTime(long completedTime) {
+    public void setCompletedTime(Long completedTime) {
         this.completedTime = completedTime;
     }
 
@@ -46,7 +46,7 @@ public class GetUpdatePmTaskRequest {
         return completedDate;
     }
 
-    public void setCompletedDate(long completedDate) {
+    public void setCompletedDate(Long completedDate) {
         this.completedDate = completedDate;
     }
 

@@ -27,8 +27,11 @@ public class APIClient {
               //  .baseUrl("http://103.53.172.75:8080/indeco/api/")
                //   .baseUrl("http://ifarms.com.sg:8086/indeco/api/")
                  .baseUrl("http://192.168.2.19:8080/indeco/api/")
+               // .baseUrl("http:192.168.2.16:8081/api/")
+                //.baseUrl("http://103.53.172.75:8080/indeco/api/")
+                //.baseUrl("http://ifarms.com.sg:8086/indeco/api/")
+                //.baseUrl("http://192.168.2.18:8081/api/")
                 //.baseUrl("http://ifarms.com.sg:8086/lsme/api/")
-                //http://192.168.1.117:8082http://ifarms.com.sg:8086/lsme
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory
                         .create(new GsonBuilder().setLenient()

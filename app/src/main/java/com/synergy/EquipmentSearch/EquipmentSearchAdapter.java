@@ -1,5 +1,6 @@
 package com.synergy.EquipmentSearch;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.synergy.R;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearchAdapter.MyViewHolder> {
 
     public ArrayList<EquipmentSearchCard> equipmentSearchCards;
+    Context context;
 
     public EquipmentSearchAdapter(ArrayList<EquipmentSearchCard> equipmentSearchCards){
         this.equipmentSearchCards = equipmentSearchCards;

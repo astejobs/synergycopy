@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,7 +59,8 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private TextView equipmentNameTextView;
     private TextView briefDescTextView;
     private TextView scheduleDateTextView;
-    private EditText remarksTextView, nameTextView;
+    private EditText remarksTextView;
+    private TextView nameTextView;
     private Spinner statusSpinner;
     private Button buttonUpdate;
     private TextView datePickerEdit;
@@ -71,6 +73,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private Button checkListButton;
     private long scheduleDate;
     private String roleTask;
+    private int taskId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +119,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
 
         Intent intent = getIntent();
         String taskNumberString = intent.getStringExtra("taskNumber");
-        int taskId = intent.getIntExtra("taskId", 0);
+        taskId = intent.getIntExtra("taskId", 0);
         String workspace = intent.getStringExtra("workspace");
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
@@ -128,9 +131,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     updateTaskMethod(taskId, token, workspace);
-                }
             }
         });
 
@@ -145,7 +146,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     private void updateTaskMethod(int taskId, String token, String workspace) {
         String timeString = timePickerEdit.getText().toString();
         String dateString = datePickerEdit.getText().toString();
@@ -163,19 +164,20 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
             e.printStackTrace();
         }
 
-        long completedDateTime = date.getTime();
-        if (!statusSpinner.getSelectedItem().equals("Completed")){
-            completedDateTime = Long.parseLong(null);
+        Long completedDateTime = null;
+        if (statusSpinner.getSelectedItem().equals("Completed")){
+           completedDateTime = date.getTime();
         }
         GetUpdatePmTaskRequest getUpdatePmTaskRequest = new GetUpdatePmTaskRequest(status, remarksString, completedDateTime, completedDateTime, taskId);
 
-        if (!nameTextView.getText().toString().isEmpty() && !remarksTextView.getText().toString().isEmpty()) {
+        if (!remarksTextView.getText().toString().isEmpty()) {
             /*LocalDate now = Instant.ofEpochMilli((long) scheduleDate).atZone(ZoneId.systemDefault()).toLocalDate();
             if (!now.isBefore(LocalDate.now())) {*/
             updatePmTaskService(getUpdatePmTaskRequest, token, workspace);
             /*} else
                 Toast.makeText(PmTaskActivity.this, "Overdue tasks cannot be updated.", Toast.LENGTH_SHORT).show();
         */
+
         } else
             Toast.makeText(PmTaskActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
     }
@@ -220,7 +222,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                         } else {
                             Calendar cl = Calendar.getInstance();
                             cl.setTimeInMillis(scheduleDate);
-                            dateStr = "" + (cl.get(Calendar.DAY_OF_MONTH) - 1) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.YEAR);
+                            dateStr = "" + (cl.get(Calendar.DAY_OF_MONTH) ) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.YEAR);
                         }
                         scheduleDateTextView.setText(dateStr);
                     }
@@ -246,19 +248,21 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
 
                     if (getPmTaskItemsResponse.getStatus() != null) {
 
-                        statusList.add(getPmTaskItemsResponse.getStatus());
                         if (roleTask.equals("Technician")) {
                             statusList.add("Completed");
                         } else {
-                            statusList.add("CLOSED");
+                            statusList.add("Closed");
                         }
-                        statusList.add("OPEN");
+                        statusList.add("Open");
+                        statusList.add(getPmTaskItemsResponse.getStatus());
 
                         Set<String> carSet = new HashSet<String>(statusList);
                         statusList.clear();
                         statusList.addAll(carSet);
+
                     }
                     statusSpinner.setAdapter(statusSpinnerAdapter);
+                    statusSpinner.setSelection(statusList.indexOf(getPmTaskItemsResponse.getStatus()), true);
                     if (getPmTaskItemsResponse.getRemarks() != null) {
                         remarksTextView.setText(getPmTaskItemsResponse.getRemarks());
                     }
@@ -342,6 +346,13 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                 updateProgress.dismiss();
                 if (response.code() == 200) {
                     Toast.makeText(PmTaskActivity.this, "Task Updated", Toast.LENGTH_LONG).show();
+                    if (roleTask.equals("Technician") && statusSpinner.getSelectedItem().equals("Completed")){
+                        Intent intent = new Intent(getApplicationContext(), UploadTaskImageActivity.class);
+                        intent.putExtra("workspace", workspace);
+                        intent.putExtra("taskNumber", taskNumberTextView.getText().toString());
+                        intent.putExtra("taskId", taskId);
+                        startActivity(intent);
+                    }
                     finish();
                 } else
                     Toast.makeText(PmTaskActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
