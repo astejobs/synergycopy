@@ -68,7 +68,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="100dp"
-                    android:background="@drawable/loginback"
                     android:inputType="text"
                     android:padding="4dp"
                     android:textColorHint="#000000"
@@ -86,8 +85,11 @@
                         android:hint="Username"
                         android:inputType="text"
                         android:textColor="#000000"
-                        android:textAlignment="center"
-                        android:textColorHint="#000000" />
+                        android:textColorHint="#000000"
+                        app:layout_constraintBottom_toBottomOf="@id/linear_lay_login"
+                        app:layout_constraintLeft_toLeftOf="@id/linear_lay_login"
+                        app:layout_constraintTop_toTopOf="@id/linear_lay_login"
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -97,9 +99,9 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/loginback"
                     android:padding="4dp"
                     android:textStyle="bold"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:textColorHint="#000000"
                     app:hintTextColor="#000000"
                     app:layout_constraintTop_toBottomOf="@id/login_username"
@@ -110,7 +112,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="Password"
-                        android:textAlignment="center"
                         android:inputType="textPassword"
                         android:textColor="#000000"
                         android:textColorHint="#000000" />

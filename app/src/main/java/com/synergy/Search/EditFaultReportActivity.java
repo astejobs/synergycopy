@@ -213,9 +213,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
         faultDetailsEditText.setEnabled(false);
         mainGrpSpinner.setEnabled(false);
         observationEditText.setEnabled(false);
-        diagnosisEditText.setEnabled(false);
+       // diagnosisEditText.setEnabled(false);
         actionTakenEditText.setEnabled(false);
-        costCenterSpinner.setEnabled(false);
+      //costCenterSpinner.setEnabled(false);
         //  technicianSpinner.setEnabled(false);
         //  selectEquipmentButton.setEnabled(false);
         plusbtn.setEnabled(false);
@@ -693,11 +693,11 @@ public class EditFaultReportActivity extends AppCompatActivity {
         //  selectTech = findViewById(R.id.selecttech);
         equipmentIdTv = findViewById(R.id.eq_id_send);
         updateFaultReportButton = findViewById(R.id.updateFaultReportButton);
-        diagnosisEditText = findViewById(R.id.diagnosis);
+      //  diagnosisEditText = findViewById(R.id.diagnosis);
         actionTakenEditText = findViewById(R.id.actionTaken);
         statusSpinner = findViewById(R.id.statusSpinner);
         //   technicianSpinner = findViewById(R.id.technicianSpinner);
-        costCenterSpinner = findViewById(R.id.costCenter);
+      //  costCenterSpinner = findViewById(R.id.costCenter);
         mainGrpSpinner = findViewById(R.id.mainGrp);
         //selectEquipmentButton = findViewById(R.id.selectEquipmentButton);
         faultCategorySpinner = findViewById(R.id.faultCategory);
@@ -1025,6 +1025,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                             }
                         }
                     }
+/*
                     if (!(jsonObject.get("costCenter").isJsonNull())) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                             JsonObject jsonObject1 = jsonObject.get("costCenter").getAsJsonObject();
@@ -1040,6 +1041,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         }
 
                     }
+*/
 
                     if (!(jsonObject.get("locationDesc").isJsonNull())) {
                         locDescEditText.setText(jsonObject.get("locationDesc").getAsString());
@@ -1140,6 +1142,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         int id = jsonObject.get("location").getAsJsonObject().get("id").getAsInt();
                         genralLoaction.add(new list(locationname, id));
                         locationSpinner.setAdapter(locationAdapter);
+
                     }
 
 
@@ -1252,6 +1255,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                             }
                         }
                     }
+/*
                     if (!(jsonObject.get("costCenter").isJsonNull())) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                             JsonObject jsonObject1 = jsonObject.get("costCenter").getAsJsonObject();
@@ -1267,6 +1271,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         }
 
                     }
+*/
 
                     if ((jsonObject.get("locationDesc").getAsString()) != null) {
                         locDescEditText.setText(jsonObject.get("locationDesc").getAsString());
@@ -1406,9 +1411,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
         statusListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(statusListAdapter);
 
-        costCenterListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genCostCebterList);
+      /*  costCenterListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genCostCebterList);
         costCenterListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        costCenterSpinner.setAdapter(costCenterListAdapter);
+        costCenterSpinner.setAdapter(costCenterListAdapter);*/
 
 
     }
@@ -1501,10 +1506,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
             String locationDesc = locDescEditText.getText().toString();
             faultDetailString = faultDetailsEditText.getText().toString();
             String observerString = observationEditText.getText().toString();
-            String diagnosesString = diagnosisEditText.getText().toString();
+//            String diagnosesString = diagnosisEditText.getText().toString();
             String actionTakenString = actionTakenEditText.getText().toString();
             String statusString = statusSpinner.getSelectedItem().toString();
-
+            String diagnosesString = null;
             if (!editTextList.isEmpty()) {
                 for (int iRem = 0; iRem < editTextList.size(); iRem++) {
                     String remarks1String = editTextList.get(iRem).getText().toString();
@@ -1671,7 +1676,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 intent.putExtra("token", token);
                 intent.putExtra("value", "After");
                 intent.putExtra("checkForFrid",frid);
-
                 intent.putExtra("workspace", workSpaceid);
                 intent.putExtra("frId", frIdEditText.getText().toString());
                 startActivity(intent);

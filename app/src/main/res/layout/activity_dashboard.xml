@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background=" #e2e2e2"
     android:weightSum="3"
     tools:context=".Dashboard.Dashboard">
 
@@ -36,6 +37,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
+            android:elevation="8dp"
             android:layout_weight="1"
             app:cardCornerRadius="14dp"
             tools:ignore="NestedWeights">
@@ -59,7 +61,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Create Fault Report"
+                    android:text="Create Fault"
+                    android:textColor="@color/textColorApp"
+                    android:textSize="16dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Report"
                     android:textColor="@color/textColorApp"
                     android:textSize="16dp" />
             </LinearLayout>
@@ -71,6 +80,7 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
+            android:elevation="8dp"
             app:cardCornerRadius="14dp"
             tools:ignore="NestedWeights">
 
@@ -94,7 +104,14 @@
                     android:layout_height="wrap_content"
                     android:autoSizeTextType="uniform"
                     android:gravity="center"
-                    android:text="Search Fault Report"
+                    android:text="Search Fault"
+                    android:textColor="@color/textColorApp"
+                    android:textSize="16dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Report"
                     android:textColor="@color/textColorApp"
                     android:textSize="16dp" />
             </LinearLayout>
@@ -117,6 +134,7 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
+            android:elevation="8dp"
             app:cardCornerRadius="14dp"
             tools:ignore="NestedWeights">
 
@@ -153,6 +171,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             app:cardCornerRadius="14dp"
+            android:elevation="8dp"
             tools:ignore="NestedWeights">
 
             <LinearLayout
@@ -198,6 +217,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             app:cardCornerRadius="14dp"
+            android:elevation="8dp"
             tools:ignore="NestedWeights">
 
             <LinearLayout
@@ -236,6 +256,7 @@
 
             <LinearLayout
                 android:id="@+id/setting"
+                android:elevation="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

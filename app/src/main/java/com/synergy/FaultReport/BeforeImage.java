@@ -81,9 +81,9 @@ public class BeforeImage extends AppCompatActivity {
             previousImagesbtn = findViewById(R.id.previous_images);
             beforeImgPre = findViewById(R.id.before_image_preview);
             progressDialog = new ProgressDialog(BeforeImage.this);
-
-            toolbar.setTitle(value + " Image");
             setSupportActionBar(toolbar);
+            toolbar.setTitle(value + " Image");
+
             previousImagesbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -126,6 +126,9 @@ public class BeforeImage extends AppCompatActivity {
             takeBtn.setVisibility(View.INVISIBLE);
             uploadBtn.setVisibility(View.INVISIBLE);
             doneBtn.setVisibility(View.INVISIBLE);
+            toolbar = findViewById(R.id.toolbar_globe);
+            setSupportActionBar(toolbar);
+            toolbar.setTitle(value + " Image");
 
             previousImagesbtn.setOnClickListener(new View.OnClickListener() {
                 @Override

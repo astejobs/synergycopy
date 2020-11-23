@@ -13,7 +13,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8sp"
         android:layout_marginRight="8dp"
-        android:background="@color/colorCodeSchemeApp"
         android:elevation="2dp"
         android:textColorHint="#ffffff"
         android:padding="4dp"

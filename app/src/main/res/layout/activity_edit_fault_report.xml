@@ -48,6 +48,7 @@
                 android:orientation="vertical"
                 android:paddingBottom="20dp"
                 android:showDividers="middle">
+
                 <LinearLayout
                     android:id="@+id/layout_disable"
                     android:layout_width="match_parent"
@@ -78,10 +79,10 @@
                             <EditText
                                 android:id="@+id/frIdEditText"
                                 android:layout_width="0dp"
-                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.5"
-                                android:inputType="text" />
+                                android:inputType="text"
+                                android:textColor="@color/textblackcolor" />
 
                         </LinearLayout>
 
@@ -133,8 +134,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:textColor="@color/textblackcolor"
                                 android:layout_weight="1"
+                                android:textColor="@color/textblackcolor"
                                 android:textSize="18sp" />
 
 
@@ -168,9 +169,9 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:textColor="@color/textblackcolor"
                                 android:layout_weight="1"
-                                android:hint="Activation Date" />
+                                android:hint="Activation Date"
+                                android:textColor="@color/textblackcolor" />
 
                         </LinearLayout>
 
@@ -192,9 +193,9 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:textColor="@color/textblackcolor"
                                 android:layout_weight="1"
-                                android:hint="Arrival Time" />
+                                android:hint="Arrival Time"
+                                android:textColor="@color/textblackcolor" />
 
                         </LinearLayout>
 
@@ -216,10 +217,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textColor="@color/textblackcolor"
                                 android:hint="Contact No: "
                                 android:inputType="phone"
-                                android:maxLength="10" />
+                                android:maxLength="10"
+                                android:textColor="@color/textblackcolor" />
 
                         </LinearLayout>
 
@@ -319,10 +320,10 @@
                             <EditText
                                 android:id="@+id/locationDescrip"
                                 android:layout_width="0dp"
-                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
-                                android:inputType="text" />
+                                android:inputType="text"
+                                android:textColor="@color/textblackcolor" />
 
                         </LinearLayout>
 
@@ -370,10 +371,10 @@
                             <EditText
                                 android:id="@+id/faultDetails"
                                 android:layout_width="0dp"
-                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
-                                android:inputType="text" />
+                                android:inputType="text"
+                                android:textColor="@color/textblackcolor" />
 
                         </LinearLayout>
                         <!-- <com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
@@ -426,10 +427,10 @@
                             <EditText
                                 android:id="@+id/observation"
                                 android:layout_width="0dp"
-                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
-                                android:inputType="text" />
+                                android:inputType="text"
+                                android:textColor="@color/textblackcolor" />
 
                         </LinearLayout>
 
@@ -440,6 +441,7 @@
                         android:inputType="text"
                         app:prefix="Diagnosis: " />-->
 
+<!--
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -456,12 +458,13 @@
                             <EditText
                                 android:id="@+id/diagnosis"
                                 android:layout_width="0dp"
-                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
-                                android:inputType="text" />
+                                android:inputType="text"
+                                android:textColor="@color/textblackcolor" />
 
                         </LinearLayout>
+-->
 
                         <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
                         android:id="@+id/actionTaken"
@@ -486,10 +489,10 @@
                             <EditText
                                 android:id="@+id/actionTaken"
                                 android:layout_width="0dp"
-                                android:textColor="@color/textblackcolor"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
-                                android:inputType="text" />
+                                android:inputType="text"
+                                android:textColor="@color/textblackcolor" />
 
                         </LinearLayout>
 
@@ -524,6 +527,7 @@
                                         </LinearLayout>
                     -->
 
+<!--
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -542,6 +546,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.4" />
                         </LinearLayout>
+-->
 
                         <!--
                                         <TextView
@@ -719,40 +724,40 @@
                                         </LinearLayout>
                     -->
 
-<!--
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
+                        <!--
+                                                <LinearLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal"
+                                                    android:weightSum="2">
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Technician" />
+                                                    <TextView
+                                                        android:layout_width="0dp"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_weight="1"
+                                                        android:text="Technician" />
 
-                            <Spinner
-                                android:id="@+id/technicianSpinner"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                                    <Spinner
+                                                        android:id="@+id/technicianSpinner"
+                                                        android:layout_width="0dp"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_weight="1" />
 
-                        </LinearLayout>
--->
+                                                </LinearLayout>
+                        -->
 
 
-<!--
-                        <Button
-                            android:id="@+id/selectEquipmentButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:visibility="invisible"
-                            android:textColor="@color/textColorbutton"
-                            android:background="@drawable/mybutton"
-                            android:text="Select Equipment" />
--->
+                        <!--
+                                                <Button
+                                                    android:id="@+id/selectEquipmentButton"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_margin="10dp"
+                                                    android:visibility="invisible"
+                                                    android:textColor="@color/textColorbutton"
+                                                    android:background="@drawable/mybutton"
+                                                    android:text="Select Equipment" />
+                        -->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -774,9 +779,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:textColor="@color/textblackcolor"
                                 android:layout_weight="1"
                                 android:hint="Equipment Code"
+                                android:textColor="@color/textblackcolor"
                                 android:textSize="18sp" />
 
                             <TextView
@@ -789,57 +794,57 @@
                     </LinearLayout>
 
 
-                <LinearLayout
-                    android:id="@+id/layout_remarks"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="?dividerHorizontal"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    android:showDividers="middle">
-
-                    <TextView
-                        android:id="@+id/remarksTextView"
+                    <LinearLayout
+                        android:id="@+id/layout_remarks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Remarks"
-                        android:textColor="@color/textblackcolor"
-                        android:textSize="18sp" />
+                        android:divider="?dividerHorizontal"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:showDividers="middle">
+
+                        <TextView
+                            android:id="@+id/remarksTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="Remarks"
+                            android:textColor="@color/textblackcolor"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <Button
+                            android:id="@+id/plusButton"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/add" />
+
+                        <Button
+                            android:id="@+id/deleteButton"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_margin="10dp"
+                            android:layout_marginStart="20dp"
+                            android:background="@drawable/delete" />
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <Button
-                        android:id="@+id/plusButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/add" />
-
-                    <Button
-                        android:id="@+id/deleteButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        android:layout_marginStart="20dp"
-                        android:background="@drawable/delete" />
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_margin="20dp"
+                    android:orientation="horizontal"
                     android:weightSum="2">
 
                     <TextView
@@ -854,24 +859,25 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/techtv"
                     android:layout_width="match_parent"
-                    android:textColor="@color/textblackcolor"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp" />
-
-<!--
-                <Button
-                    android:id="@+id/selecttech"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/textColorbutton"
                     android:layout_margin="20dp"
-                    android:visibility="invisible"
-                    android:background="@drawable/mybutton"
-                    android:text="Select technician" />
--->
+                    android:textColor="@color/textblackcolor" />
+
+                <!--
+                                <Button
+                                    android:id="@+id/selecttech"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/textColorbutton"
+                                    android:layout_margin="20dp"
+                                    android:visibility="invisible"
+                                    android:background="@drawable/mybutton"
+                                    android:text="Select technician" />
+                -->
 
 
                 <Button
@@ -879,11 +885,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:textColor="@color/textColorbutton"
                     android:layout_marginBottom="40dp"
                     android:background="@drawable/mybutton"
                     android:padding="10dp"
-                    android:text="Update Fault Report" />
+                    android:text="Update Fault Report"
+                    android:textColor="@color/textColorbutton" />
 
 
             </LinearLayout>
@@ -909,7 +915,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:src="@drawable/before"
                 app:backgroundTint="@color/colorCodeSchemeApp"
                 app:elevation="6dp"
                 app:fabSize="auto" />
@@ -920,7 +925,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:elevation="6dp"
-                android:src="@drawable/after"
                 android:text="After"
                 app:backgroundTint="@color/colorCodeSchemeApp"
                 app:borderWidth="0dp"
@@ -933,7 +937,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:backgroundTint="@color/colorCodeSchemeApp"
-                android:src="@drawable/images"
                 android:text="images"
                 app:borderWidth="0dp"
                 app:elevation="6dp"
