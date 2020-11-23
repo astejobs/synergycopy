@@ -22,8 +22,10 @@ import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
+import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
+import com.synergy.Services.MyFirebaseInstanceService;
 
 import java.util.ArrayList;
 
@@ -134,8 +136,6 @@ public class WorkspaceActivity extends AppCompatActivity {
                 Toast.makeText(WorkspaceActivity.this, "Failed: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
-
     }
 
     @Override
@@ -150,13 +150,8 @@ public class WorkspaceActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent intent = new Intent(this, MainActivityLogin.class);
-            startActivity(intent);
-            finishAffinity();
+            LogoutClass logoutClass = new LogoutClass();
+            logoutClass.logout(this);
         }
         return true;
     }

@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
 import com.synergy.Dashboard.Dashboard;
@@ -269,14 +270,16 @@ public class BeforeImage extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-
+/*
             SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
             editor.apply();
             Intent in = new Intent(BeforeImage.this, MainActivityLogin.class);
             startActivity(in);
-            finishAffinity();
+            finishAffinity();*/
+            LogoutClass logoutClass = new LogoutClass();
+            logoutClass.logout(this);
         }
         return true;
     }

@@ -31,6 +31,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
@@ -378,13 +379,8 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent intent = new Intent(this, MainActivityLogin.class);
-            startActivity(intent);
-            finishAffinity();
+            LogoutClass logoutClass = new LogoutClass();
+            logoutClass.logout(this);
         }
         return true;
     }

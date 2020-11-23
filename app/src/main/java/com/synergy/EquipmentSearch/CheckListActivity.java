@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
 import com.synergy.GetCheckListResponse;
+import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
@@ -234,13 +235,15 @@ public class CheckListActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            /*SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
             editor.apply();
             Intent intent = new Intent(this, MainActivityLogin.class);
             startActivity(intent);
-            finishAffinity();
+            finishAffinity();*/
+            LogoutClass logoutClass = new LogoutClass();
+            logoutClass.logout(this);
         }
         return true;
     }

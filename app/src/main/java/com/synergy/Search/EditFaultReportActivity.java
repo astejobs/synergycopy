@@ -40,6 +40,7 @@ import com.synergy.APIClient;
 import com.synergy.Dashboard.Dashboard;
 import com.synergy.FaultReport.BeforeImage;
 import com.synergy.FaultReport.FaultReportActivity;
+import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
 import com.synergy.FaultReport.list;
@@ -1713,13 +1714,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent intent = new Intent(this, MainActivityLogin.class);
-            startActivity(intent);
-            finishAffinity();
+            LogoutClass logoutClass = new LogoutClass();
+            logoutClass.logout(this);
         }
         return true;
     }

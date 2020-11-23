@@ -70,6 +70,8 @@ public class MainActivityLogin extends AppCompatActivity {
                 }
             }
         });
+
+
         buttonLogin = findViewById(R.id.btn_login);
         editTextName = findViewById(R.id.editTextUsername);
         passwordEdit = findViewById(R.id.editTextPassword);

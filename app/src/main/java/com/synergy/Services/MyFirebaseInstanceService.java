@@ -1,13 +1,22 @@
 package com.synergy.Services;
 
+import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.synergy.APIClient;
+import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
 import androidx.annotation.RequiresApi;
@@ -16,36 +25,58 @@ import androidx.core.app.NotificationManagerCompat;
 
 import org.jetbrains.annotations.NotNull;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.synergy.MainActivityLogin.SHARED_PREFS;
+
 public class MyFirebaseInstanceService extends FirebaseMessagingService {
 
-        @Override
-        public void onNewToken(@NotNull String token) {
-            super.onNewToken(token);
-            Log.e("newToken", token);
-            Log.d("tag", "onNewToken: "+token);
-            getSharedPreferences("_", MODE_PRIVATE).edit().putString("fcm_token", token).apply();
+    static final String TAG = "";
+
+    @Override
+    public void onNewToken(@NotNull String token) {
+        super.onNewToken(token);
+        getSharedPreferences("_", MODE_PRIVATE).edit().putString("fcm_token", token).apply();
+    }
+
+    @Override
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        super.onMessageReceived(remoteMessage);
+
+        String title = remoteMessage.getData().get("title");
+        String body = remoteMessage.getData().get("message");
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        String channelId = "my_channel_id";
+        CharSequence channelName = "My Channel";
+        int importance = 0;
+        NotificationChannel notificationChannel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            importance = NotificationManager.IMPORTANCE_HIGH;
+            notificationChannel = new NotificationChannel(channelId, channelName, importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationManager.createNotificationChannel(notificationChannel);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        public void onMessageReceived(RemoteMessage remoteMessage) {
-            super.onMessageReceived(remoteMessage);
+        Log.d(TAG, "onMessageReceived: " + remoteMessage.getData());
 
-            String title=remoteMessage.getNotification().getTitle();
-            String message=remoteMessage.getNotification().getBody();
-            String click_action=remoteMessage.getNotification().getClickAction();
+        Notification notification = new NotificationCompat.Builder(this)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setSmallIcon(R.drawable.iclogo)
+                .setChannelId(channelId)
+                .build();
 
-
-            Notification notification = new NotificationCompat.Builder(this)
-                    .setContentTitle(title)
-                    .setContentText(message)
-                    .setSmallIcon(R.drawable.notification_icon)
-                    .build();
-
-            NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
-            manager.notify(0, notification);
-        }
-
-
+        notificationManager.notify(0, notification);
 
     }
+
+    @Override
+    public void onDeletedMessages() {
+        super.onDeletedMessages();
+    }
+}

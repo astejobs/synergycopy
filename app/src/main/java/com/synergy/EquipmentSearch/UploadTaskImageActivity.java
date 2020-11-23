@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
@@ -97,7 +98,7 @@ public class UploadTaskImageActivity extends AppCompatActivity {
                     photo.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
                     byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-                     encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
                     uploadPicture(encodedStringBuilder, photo, beforeImage, imageViewValue);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -105,24 +106,22 @@ public class UploadTaskImageActivity extends AppCompatActivity {
             } else {
                 Uri selectedImage = data.getData();
 
-                    Bitmap photo1 = null;
-                    try {
-                        photo1 = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImage);
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        photo1.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                Bitmap photo1 = null;
+                try {
+                    photo1 = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImage);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    photo1.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-                        encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        uploadPicture(encodedStringBuilder, photo1, beforeImage, imageViewValue);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
+                    encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    uploadPicture(encodedStringBuilder, photo1, beforeImage, imageViewValue);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-        } else if (requestCode == Integer.valueOf(String.valueOf(0) + String.valueOf(REQUEST_IMAGEAFTER_CAPTURE)) ||
-                requestCode == Integer.valueOf(String.valueOf(1) + String.valueOf(REQUEST_IMAGEAFTER_CAPTURE)) &&
-                        resultCode == Activity.RESULT_OK) {
+            }
+
+        } else {
             assert data != null;
             String encodedStringBuilder = null;
             imageViewValue = "after";
@@ -142,20 +141,18 @@ public class UploadTaskImageActivity extends AppCompatActivity {
                 Uri selectedImage = data.getData();
 
                 Bitmap photoBmp = null;
-                    try {
-                        photoBmp = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImage);
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        photoBmp.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                try {
+                    photoBmp = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImage);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    photoBmp.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-                        encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        uploadPicture(encodedStringBuilder, photoBmp, afterImage, imageViewValue);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    //cursor.close();
+                    encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    uploadPicture(encodedStringBuilder, photoBmp, afterImage, imageViewValue);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            }
         }
 
     }
@@ -201,14 +198,9 @@ public class UploadTaskImageActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
+            LogoutClass logoutClass = new LogoutClass();
+            logoutClass.logout(this);
 
-            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent in = new Intent(this, MainActivityLogin.class);
-            startActivity(in);
-            finishAffinity();
         }
         return true;
     }
@@ -240,49 +232,49 @@ public class UploadTaskImageActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public void startActivityforResult2nd( Intent data, int requestCode, String imageViewValue, int galleryOrCamera, int CONSTANTVALUES){
-        {
-            assert data != null;
-            String encodedStringBuilder = null;
-            if (requestCode == Integer.valueOf(String.valueOf(galleryOrCamera) + String.valueOf(CONSTANTVALUES))) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
+    public void startActivityForSecondResult(Intent data, int requestCode, String imageViewValue, int galleryOrCamera, int CONSTANTVALUES) {
+
+        assert data != null;
+        String encodedStringBuilder = null;
+        if (requestCode == Integer.valueOf(String.valueOf(galleryOrCamera) + String.valueOf(CONSTANTVALUES))) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            try {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+                encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                uploadPicture(encodedStringBuilder, photo, beforeImage, imageViewValue);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                Bitmap photo1 = (BitmapFactory.decodeFile(picturePath));
                 try {
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    photo.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+                    photo1.compress(Bitmap.CompressFormat.PNG, 30, byteArrayOutputStream);
                     byte[] byteArray = byteArrayOutputStream.toByteArray();
 
                     encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    uploadPicture(encodedStringBuilder, photo, beforeImage, imageViewValue);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else {
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                if (cursor != null) {
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    Bitmap photo1 = (BitmapFactory.decodeFile(picturePath));
-                    try {
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        photo1.compress(Bitmap.CompressFormat.PNG, 30, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream.toByteArray();
-
-                        encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    uploadPicture(encodedStringBuilder, photo1, beforeImage, imageViewValue);
-                    cursor.close();
-                }
-
+                uploadPicture(encodedStringBuilder, photo1, beforeImage, imageViewValue);
+                cursor.close();
             }
+
         }
     }
+
 
 }

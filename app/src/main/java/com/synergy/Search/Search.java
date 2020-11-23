@@ -20,6 +20,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
@@ -212,13 +213,16 @@ public class Search extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            /*SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
             editor.apply();
             Intent intent = new Intent(this, MainActivityLogin.class);
             startActivity(intent);
-            finishAffinity();
+            finishAffinity();*/
+
+            LogoutClass logoutClass = new LogoutClass();
+            logoutClass.logout(this);
         }
         return true;
     }

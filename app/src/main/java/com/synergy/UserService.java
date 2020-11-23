@@ -258,7 +258,7 @@ public interface UserService {
     //Logout user
     @GET("logout")
     @Headers("Content-Type: application/json")
-    Call<Void> logoutUser(@Header("token") String token);
+    Call<Void> logoutUser(@Header("Authorization") String token);
 
     //imageUploadTask
     @POST("task/{afterimage}image")
@@ -267,5 +267,11 @@ public interface UserService {
                                @Header("Authorization") String token,
                                @Path("afterimage") String imageValue,
                                @Body UploadImageRequest uploadImageRequest);
+
+    //test notification
+    @GET("test/{devtoken}")
+    @Headers("Content-Type: application/json")
+    Call<Void> testNotification(@Path("devtoken") String deviceToken);
+
 
 }
