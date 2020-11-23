@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -40,6 +41,7 @@ public class UploadFile extends AppCompatActivity {
     Button uplaodButton;
     Intent uploadFileIntent;
     String frid, token, workspace, role;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +49,16 @@ public class UploadFile extends AppCompatActivity {
         setContentView(R.layout.activity_upload_file);
         uploadFileTv = findViewById(R.id.upload_file);
         uplaodButton = findViewById(R.id.upload_file_btn);
+        progressDialog = new ProgressDialog(UploadFile.this);
+        progressDialog.setTitle("Uploading File...");
+        progressDialog.setCancelable(false);
         Intent intent = getIntent();
         frid = intent.getStringExtra("frid");
-      //  frid = "FR-DEMO-112020-00003";
+        //  frid = "FR-DEMO-112020-00003";
         token = intent.getStringExtra("token");
-      //  token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWNobmljaWFuNiIsImV4cCI6MTYwNTE5MTY2MSwiaWF0IjoxNjA1MDgzNjYxfQ.-gqwRXi6tocxQo8UXsNLDrF2kD1cVPZ3gAOQoq8GKCDb0icPMUjJajEHg2HUvxLWY7r-d4JD2-ZRdsgOA6x0JA";
+        //  token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWNobmljaWFuNiIsImV4cCI6MTYwNTE5MTY2MSwiaWF0IjoxNjA1MDgzNjYxfQ.-gqwRXi6tocxQo8UXsNLDrF2kD1cVPZ3gAOQoq8GKCDb0icPMUjJajEHg2HUvxLWY7r-d4JD2-ZRdsgOA6x0JA";
         workspace = intent.getStringExtra("workspace");
-     //   workspace = "lsme-DEMO-112016-001";
+        //   workspace = "lsme-DEMO-112016-001";
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
 
@@ -112,26 +117,32 @@ public class UploadFile extends AppCompatActivity {
     }*/
 
     private void uploadFileMethod(String encodedString, String frid) {
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(encodedString, frid);
 
+
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(encodedString, frid);
+        progressDialog.show();
         Call<ResponseBody> call = APIClient.getUserServices().uploadFilePdf(uploadFileRequest, token, workspace, role);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
                 if (response.code() == 200) {
+                    progressDialog.dismiss();
                     Toast.makeText(UploadFile.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(UploadFile.this, Dashboard.class);
-                    intent.putExtra("workspaceId",workspace);
+                    Intent intent = new Intent(UploadFile.this, Dashboard.class);
+                    intent.putExtra("workspaceId", workspace);
                     startActivity(intent);
                     finish();
                     Toast.makeText(UploadFile.this, "Successfully Uploaded File", Toast.LENGTH_SHORT).show();
-                }else Toast.makeText(UploadFile.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(UploadFile.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(UploadFile.this, "Fialed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
-
+                progressDialog.dismiss();
             }
         });
 

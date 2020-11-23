@@ -1590,6 +1590,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                             intent.putExtra("workspace", workSpaceid);
                             intent.putExtra("token", token);
                             startActivity(intent);
+                            finish();
 
                         } else {
                             Intent intent1 = new Intent(EditFaultReportActivity.this, Dashboard.class);
@@ -1656,6 +1657,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 Intent intent = new Intent(EditFaultReportActivity.this, BeforeImage.class);
                 intent.putExtra("token", token);
                 intent.putExtra("value", "Before");
+                intent.putExtra("checkForFrid",frid);
                 intent.putExtra("workspace", workSpaceid);
                 intent.putExtra("frId", frIdEditText.getText().toString());
                 startActivity(intent);
@@ -1668,6 +1670,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 Intent intent = new Intent(EditFaultReportActivity.this, BeforeImage.class);
                 intent.putExtra("token", token);
                 intent.putExtra("value", "After");
+                intent.putExtra("checkForFrid",frid);
+
                 intent.putExtra("workspace", workSpaceid);
                 intent.putExtra("frId", frIdEditText.getText().toString());
                 startActivity(intent);

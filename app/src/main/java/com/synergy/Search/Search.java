@@ -42,6 +42,7 @@ public class Search extends AppCompatActivity {
     private ArrayList<SearchResponse> contacts = new ArrayList<>();
     private SearchResponseAdapter searchResponseAdapter;
     Toolbar toolbar;
+    String role;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -52,7 +53,7 @@ public class Search extends AppCompatActivity {
         setSupportActionBar(toolbar);
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
-
+        role = sharedPreferences.getString("role", "");
 
         ScrollView view = (ScrollView) findViewById(R.id.scrollViewSearch);
         view.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -104,7 +105,7 @@ public class Search extends AppCompatActivity {
         progressDialog.show();
 
         Log.d(TAG, "loadSearch: nmk"+workspaceId);
-        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspaceId, callQueryDependent, token);
+        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspaceId, callQueryDependent, token,role);
         call.enqueue(new Callback<List<SearchResponse>>() {
             @Override
             public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {
@@ -201,8 +202,7 @@ public class Search extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        String role = preferences.getString("role", "Role");
+
         MenuItem item = menu.findItem(R.id.admin).setTitle(role);
         return true;
     }

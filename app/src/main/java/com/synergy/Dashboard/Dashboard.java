@@ -3,6 +3,7 @@ package com.synergy.Dashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,6 +51,14 @@ public class Dashboard extends AppCompatActivity {
         layout_m1 = findViewById(R.id.linear_lay_1_m);
         layout_m2 = findViewById(R.id.linear_lay_2_m);
         layout_m3 = findViewById(R.id.linear_lay_3_m);
+        CardView cardViewCreate=findViewById(R.id.card_view_create);
+        CardView cardViewSearch=findViewById(R.id.card_view_search);
+        CardView cardViewEqFault=findViewById(R.id.card_view_eq_qr_fault);
+        CardView cardViewEqTask=findViewById(R.id.id_card_view_eq_task);
+        CardView cardViewTaskSearch=findViewById(R.id.card_view_tsaksearch);
+        CardView cardViewSetting=findViewById(R.id.card_view_setting);
+
+
 
         toolbar = findViewById(R.id.toolbar_dashboard);
         setSupportActionBar(toolbar);
@@ -65,6 +74,12 @@ public class Dashboard extends AppCompatActivity {
             linearLayoutDashboard.removeView(layout_m1);
             linearLayoutDashboard.removeView(layout_m2);
             linearLayoutDashboard.removeView(layout_m3);
+            linearLayoutDashboard.removeView(cardViewCreate);
+            linearLayoutDashboard.removeView(cardViewSearch);
+            linearLayoutDashboard.removeView(cardViewEqFault);
+            linearLayoutDashboard.removeView(cardViewSetting);
+            linearLayoutDashboard.removeView(cardViewTaskSearch);
+            linearLayoutDashboard.removeView(cardViewEqTask);
 
 
             LinearLayout a = new LinearLayout(this);
@@ -76,8 +91,12 @@ public class Dashboard extends AppCompatActivity {
             a.setLayoutParams(params);
             a.setOrientation(LinearLayout.HORIZONTAL);
 
-            a.addView(linearSearchOnFrid);
-            a.addView(linearEquipmentFaultSearch);
+
+
+
+
+            a.addView(cardViewSearch);
+            a.addView(cardViewEqFault);
 
 
             LinearLayout b = new LinearLayout(this);
@@ -89,8 +108,7 @@ public class Dashboard extends AppCompatActivity {
             b.setLayoutParams(paramss);
             b.setWeightSum(2);
             b.setOrientation(LinearLayout.HORIZONTAL);
-            b.addView(linearEquipmentTaskSearch);
-
+            b.addView(cardViewEqTask);
 
             linearLayoutDashboard.addView(a);
             linearLayoutDashboard.addView(b);

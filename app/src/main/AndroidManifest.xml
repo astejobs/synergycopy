@@ -17,12 +17,11 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/iclogo"
-        android:label="@string/app_name"
         android:networkSecurityConfig="@xml/security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity">
-        <activity android:name=".EquipmentSearch.UploadTaskImageActivity"/>
+       <!-- <activity android:name=".EquipmentSearch.UploadTaskImageActivity"/>
         <activity android:name=".Otp.OtpActivity" />
         <activity android:name=".Search.UploadFile" />
         <activity android:name=".Search.PreviousImagesActivity" />
@@ -38,7 +37,59 @@
         <activity android:name=".Dashboard.Dashboard" />
         <activity android:name=".EquipmentSearch.QrDetails" />
         <activity android:name=".FaultReport.FaultReportActivity" />
-        <activity android:name=".Workspace.WorkspaceActivity">
+        <activity android:name=".Workspace.WorkspaceActivity">-->
+
+        <activity
+            android:name=".EquipmentSearch.UploadTaskImageActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Otp.OtpActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Search.UploadFile"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Search.PreviousImagesActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Setting.SettingActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".EquipmentSearch.CheckListActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Search.EditFaultReportActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".EquipmentSearch.PmTaskActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Search.EquipmentSearchActivityforEdit"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".MainActivityLogin"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".EquipmentSearch.EquipmentSearchActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Search.Search"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".FaultReport.BeforeImage"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Dashboard.Dashboard"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".EquipmentSearch.QrDetails"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".FaultReport.FaultReportActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".Workspace.WorkspaceActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

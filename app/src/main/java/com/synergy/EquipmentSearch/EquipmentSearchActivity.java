@@ -99,6 +99,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                                 intent1.putExtra("equipcode", result.getText());
                                 intent1.putExtra("workspaceId", workspace);
                                 startActivity(intent1);
+                                finish();
                             } else {
                                 //dialog();
                                 callQrCodeSearch(String.valueOf(scanTextView.getText()), "Open");

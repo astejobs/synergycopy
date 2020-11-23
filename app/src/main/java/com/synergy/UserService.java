@@ -120,7 +120,7 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<List<SearchResponse>> getSearchResult(@Header("workspace") String dynamicWorkSpace,
                                                @Query("query") String param,
-                                               @Header("Authorization") String token);
+                                               @Header("Authorization") String token,@Header("role")String role);
     //before image upload http://ifarms.com.sg:8086/lsme/api/faultreport/beforeimage
    /* @POST("ws/upload{before}image")
     @Headers("Content-Type: application/json")

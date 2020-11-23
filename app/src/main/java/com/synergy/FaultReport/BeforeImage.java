@@ -54,6 +54,7 @@ public class BeforeImage extends AppCompatActivity {
     private String value;
     private Toolbar toolbar;
     private String user;
+    String checkForFrid;
 
 
     @Override
@@ -67,53 +68,80 @@ public class BeforeImage extends AppCompatActivity {
         frId = intent.getStringExtra("frId");
         value = intent.getStringExtra("value");
         user = intent.getStringExtra("user");
+        checkForFrid = intent.getStringExtra("checkForFrid");
 
-        takeBtn = findViewById(R.id.take_photo_btn);
-        uploadBtn = findViewById(R.id.upload_btn);
-        uploadBtn.setEnabled(false);
-        toolbar = findViewById(R.id.toolbar_globe);
-        doneBtn = findViewById(R.id.done_btn);
-        previousImagesbtn = findViewById(R.id.previous_images);
-        beforeImgPre = findViewById(R.id.before_image_preview);
-        progressDialog = new ProgressDialog(BeforeImage.this);
 
-        toolbar.setTitle(value + " Image");
-        setSupportActionBar(toolbar);
-        previousImagesbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(BeforeImage.this, PreviousImagesActivity.class);
-                intent.putExtra("token", token);
-                intent.putExtra("workspace", workspace);
-                intent.putExtra("frid", frId);
-                intent.putExtra("role",user);
-                intent.putExtra("value", value);
-                startActivity(intent);
-            }
-        });
+        if (checkForFrid==null) {
 
-        takeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            takeBtn = findViewById(R.id.take_photo_btn);
+            uploadBtn = findViewById(R.id.upload_btn);
+            uploadBtn.setEnabled(false);
+            toolbar = findViewById(R.id.toolbar_globe);
+            doneBtn = findViewById(R.id.done_btn);
+            previousImagesbtn = findViewById(R.id.previous_images);
+            beforeImgPre = findViewById(R.id.before_image_preview);
+            progressDialog = new ProgressDialog(BeforeImage.this);
 
-                takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            toolbar.setTitle(value + " Image");
+            setSupportActionBar(toolbar);
+            previousImagesbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(BeforeImage.this, PreviousImagesActivity.class);
+                    intent.putExtra("token", token);
+                    intent.putExtra("workspace", workspace);
+                    intent.putExtra("frid", frId);
+                    intent.putExtra("role", user);
+                    intent.putExtra("value", value);
+                    startActivity(intent);
                 }
-            }
-        });
-        doneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(BeforeImage.this, Dashboard.class);
-                intent.putExtra("token", token);
-                intent.putExtra("variable", workspace);
-                intent.putExtra("username", user);
-                startActivity(intent);
-                finish();
-            }
-        });
+            });
 
+            takeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
+                }
+            });
+            doneBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(BeforeImage.this, Dashboard.class);
+                    intent.putExtra("token", token);
+                    intent.putExtra("variable", workspace);
+                    intent.putExtra("username", user);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }else {
+            previousImagesbtn = findViewById(R.id.previous_images);
+            takeBtn = findViewById(R.id.take_photo_btn);
+            uploadBtn = findViewById(R.id.upload_btn);
+            doneBtn = findViewById(R.id.done_btn);
+            takeBtn.setVisibility(View.INVISIBLE);
+            uploadBtn.setVisibility(View.INVISIBLE);
+            doneBtn.setVisibility(View.INVISIBLE);
+
+            previousImagesbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(BeforeImage.this, PreviousImagesActivity.class);
+                    intent.putExtra("token", token);
+                    intent.putExtra("workspace", workspace);
+                    intent.putExtra("frid", frId);
+                    intent.putExtra("role", user);
+                    intent.putExtra("value", value);
+                    startActivity(intent);
+                }
+            });
+
+
+        }
     }
 
 
@@ -140,6 +168,7 @@ public class BeforeImage extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     private void uploadPicture(StringBuilder encodedStringBuilder) {
 
         progressDialog.setCancelable(false);
@@ -165,6 +194,8 @@ public class BeforeImage extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
+
+
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
@@ -226,7 +257,7 @@ public class BeforeImage extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle( user);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(user);
         return true;
     }
 

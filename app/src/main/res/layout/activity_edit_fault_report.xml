@@ -910,7 +910,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:src="@drawable/before"
-                app:backgroundTint="#E11A1A"
+                app:backgroundTint="@color/colorCodeSchemeApp"
                 app:elevation="6dp"
                 app:fabSize="auto" />
 
@@ -922,7 +922,7 @@
                 android:elevation="6dp"
                 android:src="@drawable/after"
                 android:text="After"
-                app:backgroundTint="#85E614"
+                app:backgroundTint="@color/colorCodeSchemeApp"
                 app:borderWidth="0dp"
                 app:elevation="6dp"
                 app:fabSize="auto" />
@@ -932,7 +932,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:backgroundTint="#ECA040"
+                android:backgroundTint="@color/colorCodeSchemeApp"
                 android:src="@drawable/images"
                 android:text="images"
                 app:borderWidth="0dp"

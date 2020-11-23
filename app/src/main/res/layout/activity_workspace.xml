@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/workLinear"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/workLinear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Workspace.WorkspaceActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_workspace"
         android:layout_width="match_parent"
@@ -16,7 +17,8 @@
         app:menu="@menu/menu"
         app:title="Workspaces"
         app:titleMargin="8dp"
-        app:titleTextColor="#ffffff" />
+        app:titleTextColor="#e2e2e2" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_workspace"
         android:layout_width="match_parent"

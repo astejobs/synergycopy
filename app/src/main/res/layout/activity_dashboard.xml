@@ -26,58 +26,79 @@
         android:id="@+id/linear_lay_1_m"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <LinearLayout
-            android:id="@+id/linear_create_fault"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_create"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            app:cardCornerRadius="14dp"
+            tools:ignore="NestedWeights">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/createfault" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/linear_create_fault"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Create Fault Report"
-                android:textColor="@color/textColorApp"
-                android:textSize="16dp" />
-        </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/linear_search"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/createfault" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Create Fault Report"
+                    android:textColor="@color/textColorApp"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_search"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            app:cardCornerRadius="14dp"
+            tools:ignore="NestedWeights">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/searchb" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/linear_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeTextType="uniform"
-                android:gravity="center"
-                android:text="Search Fault Report"
-                android:textColor="@color/textColorApp"
-                android:textSize="16dp" />
-        </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/searchb" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center"
+                    android:text="Search Fault Report"
+                    android:textColor="@color/textColorApp"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
 
     </LinearLayout>
@@ -90,55 +111,74 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <LinearLayout
-            android:id="@+id/linear_qr_create"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/card_view_eq_qr_fault"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            app:cardCornerRadius="14dp"
+            tools:ignore="NestedWeights">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/faultsoneq" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/linear_qr_create"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeTextType="uniform"
-                android:gravity="center"
-                android:text="Faults On Equipment"
-                android:textColor="@color/textColorApp"
-                android:textSize="16dp" />
-        </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/linear_qr_taskseacr_qr"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/faultsoneq" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center"
+                    android:text="Faults On Equipment"
+                    android:textColor="@color/textColorApp"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/id_card_view_eq_task"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            app:cardCornerRadius="14dp"
+            tools:ignore="NestedWeights">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/eqtaskk" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/linear_qr_taskseacr_qr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Task On Equipment"
-                android:textColor="@color/textColorApp"
-                android:textSize="16dp" />
-        </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/eqtaskk" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Task On Equipment"
+                    android:textColor="@color/textColorApp"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
@@ -146,58 +186,79 @@
         android:id="@+id/linear_lay_3_m"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="1"
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <LinearLayout
-            android:id="@+id/linear_task_search"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/card_view_tsaksearch"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            app:cardCornerRadius="14dp"
+            tools:ignore="NestedWeights">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/taskkksearchh" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/linear_task_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Search Task"
-                android:textColor="@color/textColorApp"
-                android:textSize="16dp" />
-        </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/setting"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/taskkksearchh" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Search Task"
+                    android:textColor="@color/textColorApp"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/card_view_setting"
+            android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            app:cardCornerRadius="14dp"
+            tools:ignore="NestedWeights">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/settting"/>
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Setting"
-                android:textColor="@color/textColorApp"
-                android:textSize="16dp" />
-        </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/settting" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Setting"
+                    android:textColor="@color/textColorApp"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
