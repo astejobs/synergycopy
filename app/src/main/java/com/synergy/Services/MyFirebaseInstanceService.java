@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class MyFirebaseInstanceService extends FirebaseMessagingService {
 
-
         @Override
         public void onNewToken(@NotNull String token) {
             super.onNewToken(token);
@@ -37,15 +36,6 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
             String click_action=remoteMessage.getNotification().getClickAction();
 
 
-            /*NotificationCompat.Builder notificationBuilder=new NotificationCompat.Builder(this)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setAutoCancel(true)
-            .setSmallIcon(R.drawable.notification_icon);
-            //notificationBuilder.setContentIntent(pendingIntent);
-            NotificationManager notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(0,notificationBuilder.build());*/
-
             Notification notification = new NotificationCompat.Builder(this)
                     .setContentTitle(title)
                     .setContentText(message)
@@ -55,6 +45,7 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
             NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
             manager.notify(0, notification);
         }
+
 
 
     }

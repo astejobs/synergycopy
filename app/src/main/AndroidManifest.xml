@@ -21,7 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity">
-        <activity android:name=".EquipmentSearch.UploadTaskImageActivity"></activity>
+        <activity android:name=".EquipmentSearch.UploadTaskImageActivity"/>
         <activity android:name=".Otp.OtpActivity" />
         <activity android:name=".Search.UploadFile" />
         <activity android:name=".Search.PreviousImagesActivity" />

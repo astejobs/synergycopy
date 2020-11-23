@@ -44,6 +44,8 @@ public class BeforeImage extends AppCompatActivity {
     Button takeBtn, uploadBtn, doneBtn, previousImagesbtn;
     ImageView beforeImgPre;
     public static final int REQUEST_IMAGE_CAPTURE = 0;
+    public static final int REQUEST_IMAGEBEFORE_CAPTURE = 3;
+    public static final int REQUEST_IMAGEAFTER_CAPTURE = 4;
     private Intent takePictureIntent;
     private String token;
     private String workspace;

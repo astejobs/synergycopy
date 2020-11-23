@@ -7,6 +7,7 @@ import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
+import com.synergy.EquipmentSearch.UploadImageRequest;
 import com.synergy.FaultReport.CreateFaultRequestPojo;
 import com.synergy.FaultReport.UploadPictureRequest;
 import com.synergy.Otp.OtpRequest;
@@ -14,23 +15,17 @@ import com.synergy.Otp.ResendOtpRequest;
 import com.synergy.Search.EditFaultReportRequest;
 import com.synergy.Search.EquipmentSearchResponseforEdit;
 import com.synergy.Search.SearchResponse;
-import com.synergy.Search.UploadFile;
 import com.synergy.Search.UploadFileRequest;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.PUT;
@@ -258,5 +253,19 @@ public interface UserService {
                                @Path("path") String devicetoken,
                                @Header("Authentication") String token,
                                @Header("workspace") String workspace);
+
+
+    //Logout user
+    @GET("logout")
+    @Headers("Content-Type: application/json")
+    Call<Void> logoutUser(@Header("token") String token);
+
+    //imageUploadTask
+    @POST("task/{afterimage}image")
+    @Headers("Content-Type: application/json")
+    Call<Void> taskImageUpload(@Header("role") String role,
+                               @Header("Authorization") String token,
+                               @Path("afterimage") String imageValue,
+                               @Body UploadImageRequest uploadImageRequest);
 
 }

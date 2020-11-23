@@ -55,7 +55,7 @@ public class WorkspaceActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
-        Log.d(TAG, "onCreate: workspace mai token :" +token);
+        Log.d(TAG, "onCreate: workspace mai token :" + token);
         user = sharedPreferences.getString("role", "");
 
         recyclerView = findViewById(R.id.recycler_view_workspace);
@@ -91,13 +91,15 @@ public class WorkspaceActivity extends AppCompatActivity {
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
-                } else if (response.code() == 401) {
+                } else {
+                    SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.clear();
+                    editor.apply();
                     Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
                     startActivity(intent);
                     finish();
-                } else
-                    Toast.makeText(WorkspaceActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
-
+                }
                 progressDialog.dismiss();
 
             }
@@ -105,8 +107,7 @@ public class WorkspaceActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
                 progressDialog.dismiss();
-
-                if (t.getMessage().substring(0, 5).equals("Faile")) {
+/*                if (t.getMessage().substring(0, 5).equals("Faile")) {
                     new AlertDialog.Builder(WorkspaceActivity.this)
                             .setTitle("Failed to connect to internet.")
                             .setMessage("Please check the connection")
@@ -122,8 +123,15 @@ public class WorkspaceActivity extends AppCompatActivity {
                                     System.exit(0);
                                 }
                             }).show();
-                } else
-                    Toast.makeText(WorkspaceActivity.this, "Failed: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                } else*/
+                SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.apply();
+                Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
+                startActivity(intent);
+                finish();
+                Toast.makeText(WorkspaceActivity.this, "Failed: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 

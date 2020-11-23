@@ -350,7 +350,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                         Intent intent = new Intent(getApplicationContext(), UploadTaskImageActivity.class);
                         intent.putExtra("workspace", workspace);
                         intent.putExtra("taskNumber", taskNumberTextView.getText().toString());
-                        intent.putExtra("taskId", taskId);
+                        intent.putExtra("taskId", String.valueOf(taskId));
                         startActivity(intent);
                     }
                     finish();
