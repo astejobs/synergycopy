@@ -21,6 +21,7 @@ import com.synergy.MainActivityLogin;
 import com.synergy.R;
 import com.synergy.FaultReport.FaultReportActivity;
 import com.synergy.Search.Search;
+import com.synergy.SearchTasks.SearchTaskActivity;
 import com.synergy.Setting.SettingActivity;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
@@ -64,10 +65,6 @@ public class Dashboard extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar_dashboard);
         setSupportActionBar(toolbar);
         if (user.equals("ManagingAgent") || user.equals("Technician")) {
-            /*lineraSetting.setVisibility(View.INVISIBLE);
-            linearCreateFaultReport.setVisibility(View.INVISIBLE);
-            linearTaskSearch.setVisibility(View.INVISIBLE);*/
-
 
             layout_m1.removeAllViews();
             layout_m2.removeAllViews();
@@ -92,13 +89,8 @@ public class Dashboard extends AppCompatActivity {
             a.setLayoutParams(params);
             a.setOrientation(LinearLayout.HORIZONTAL);
 
-
-
-
-
             a.addView(cardViewSearch);
             a.addView(cardViewEqFault);
-
 
             LinearLayout b = new LinearLayout(this);
             LinearLayout.LayoutParams paramss = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -110,67 +102,56 @@ public class Dashboard extends AppCompatActivity {
             b.setWeightSum(2);
             b.setOrientation(LinearLayout.HORIZONTAL);
             b.addView(cardViewEqTask);
+            b.addView(cardViewTaskSearch);
 
             linearLayoutDashboard.addView(a);
             linearLayoutDashboard.addView(b);
-            linearSearchOnFrid.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    intentMethod(Search.class, "");
-                }
-            });
-            linearEquipmentFaultSearch.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    intentMethod(EquipmentSearchActivity.class,"Fault");
-                }
-            });
-
-
-            linearEquipmentTaskSearch.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    intentMethod(EquipmentSearchActivity.class, "Task");
-                }
-            });
-
-        } else {
-
-
-            lineraSetting.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    intentMethod(SettingActivity.class,"");
-                }
-            });
-
-
-            linearCreateFaultReport.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    intentMethod(FaultReportActivity.class, "");
-                }
-            });
-            linearSearchOnFrid.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    intentMethod(Search.class, "");
-                }
-            });
-
-            linearEquipmentFaultSearch.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    intentMethod(EquipmentSearchActivity.class, "Fault");
-                }
-            });
-            linearEquipmentTaskSearch.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    intentMethod(EquipmentSearchActivity.class, "Task");
-                }
-            });
         }
+
+        linearTaskSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentMethod(SearchTaskActivity.class, "");
+            }
+        });
+        linearSearchOnFrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentMethod(Search.class, "");
+            }
+        });
+        linearEquipmentFaultSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intentMethod(EquipmentSearchActivity.class,"Fault");
+            }
+        });
+
+
+        linearEquipmentTaskSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentMethod(EquipmentSearchActivity.class, "Task");
+            }
+        });
+
+
+
+        lineraSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentMethod(SettingActivity.class,"");
+            }
+        });
+
+
+        linearCreateFaultReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intentMethod(FaultReportActivity.class, "");
+            }
+        });
+
     }
 
 

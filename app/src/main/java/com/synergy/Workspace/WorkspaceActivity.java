@@ -44,6 +44,7 @@ public class WorkspaceActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private LinearLayout linearLayout;
     private String user;
+    private LogoutClass logoutClass = new LogoutClass();
 
 
     @Override
@@ -57,7 +58,6 @@ public class WorkspaceActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
-        Log.d(TAG, "onCreate: workspace mai token :" + token);
         user = sharedPreferences.getString("role", "");
 
         recyclerView = findViewById(R.id.recycler_view_workspace);
@@ -109,23 +109,6 @@ public class WorkspaceActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
                 progressDialog.dismiss();
-/*                if (t.getMessage().substring(0, 5).equals("Faile")) {
-                    new AlertDialog.Builder(WorkspaceActivity.this)
-                            .setTitle("Failed to connect to internet.")
-                            .setMessage("Please check the connection")
-                            .setCancelable(false)
-                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                                    intent.addCategory(Intent.CATEGORY_HOME);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    finish();
-                                    System.exit(0);
-                                }
-                            }).show();
-                } else*/
                 SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
@@ -133,7 +116,8 @@ public class WorkspaceActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
                 startActivity(intent);
                 finish();
-                Toast.makeText(WorkspaceActivity.this, "Failed: " + t.getMessage(), Toast.LENGTH_LONG).show();
+
+                logoutClass.alertDialog("Failed: "+ t.getLocalizedMessage(),WorkspaceActivity.this);
             }
         });
     }

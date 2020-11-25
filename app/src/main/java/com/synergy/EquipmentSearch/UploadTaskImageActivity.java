@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.Dashboard.Dashboard;
+import com.synergy.FaultReport.BeforeImage;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
@@ -38,6 +41,7 @@ import retrofit2.Response;
 
 import static com.synergy.FaultReport.BeforeImage.REQUEST_IMAGEAFTER_CAPTURE;
 import static com.synergy.FaultReport.BeforeImage.REQUEST_IMAGEBEFORE_CAPTURE;
+import static com.synergy.FaultReport.BeforeImage.REQUEST_IMAGE_CAPTURE;
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class UploadTaskImageActivity extends AppCompatActivity {
@@ -47,6 +51,7 @@ public class UploadTaskImageActivity extends AppCompatActivity {
     private String token;
     private ImageView beforeImage, afterImage;
     public static final int TAKE_PHOTO_GALLERY = 5;
+    private String workspace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +65,25 @@ public class UploadTaskImageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");
+        workspace = intent.getStringExtra("workspace");
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
         token = sharedPreferences.getString("token", "");
+        String afterImageV = intent.getStringExtra("afterImage");
+        String beforeImageV = intent.getStringExtra("beforeImage");
+
+        retrieveImage(afterImageV, role, token, workspace, afterImage);
+        retrieveImage(beforeImageV, role, token, workspace, beforeImage);
 
         beforeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImage(UploadTaskImageActivity.this, REQUEST_IMAGEBEFORE_CAPTURE);
+                //selectImage(UploadTaskImageActivity.this, REQUEST_IMAGEBEFORE_CAPTURE);
+                Intent takePictureIntent = new Intent();
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
             }
         });
 
@@ -78,6 +93,25 @@ public class UploadTaskImageActivity extends AppCompatActivity {
                 selectImage(UploadTaskImageActivity.this, REQUEST_IMAGEAFTER_CAPTURE);
             }
         });
+    }
+
+    private void retrieveImage(String imageName, String role, String token, String workspace, ImageView imageView) {
+
+    Call<TaskImageResponse> callTaskImage = APIClient.getUserServices().getTaskImage(imageName, role, token, workspace);
+    callTaskImage.enqueue(new Callback<TaskImageResponse>() {
+        @Override
+        public void onResponse(Call<TaskImageResponse> call, Response<TaskImageResponse> response) {
+            if (response.code()==200){
+
+            }
+        }
+
+        @Override
+        public void onFailure(Call<TaskImageResponse> call, Throwable t) {
+
+        }
+    });
+
     }
 
     @Override
@@ -172,6 +206,28 @@ public class UploadTaskImageActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     imageView.setBackground(null);
                     imageView.setImageBitmap(photo);
+                    if (imageViewValue.equals("after")) {
+                        new android.app.AlertDialog.Builder(UploadTaskImageActivity.this)
+                                .setTitle("Image saved successfully")
+                                .setMessage("Wish to change the uploaded images?")
+                                .setIcon(R.drawable.ic_error)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                /*Intent intent = new Intent(UploadTaskImageActivity.this, Dashboard.class);
+                                intent.putExtra("workspaceId", workspace);
+                                startActivity(intent);*/
+                                finish();
+                            }
+                        })
+                                .show();
+
+                    }
                 } else
                     Toast.makeText(UploadTaskImageActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
 

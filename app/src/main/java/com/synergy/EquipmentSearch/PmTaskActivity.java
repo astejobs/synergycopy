@@ -48,6 +48,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
@@ -75,14 +76,13 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private long scheduleDate;
     private String roleTask;
     private int taskId;
+    private String afterImage, beforeImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pm_task);
 
-        SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        roleTask = preferences.getString("role", "");
 
         taskNumberTextView = findViewById(R.id.textViewTaskNumberPm);
         scheduleNumberTextView = findViewById(R.id.textViewScheduleNumberPm);
@@ -105,7 +105,6 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         checkListButton.setEnabled(false);
 
         mProgress = new ProgressDialog(PmTaskActivity.this);
-        mProgress.setTitle("Retrieving data...");
         mProgress.setMessage("Please wait...");
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
@@ -122,9 +121,12 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         String taskNumberString = intent.getStringExtra("taskNumber");
         taskId = intent.getIntExtra("taskId", 0);
         String workspace = intent.getStringExtra("workspace");
+        afterImage = intent.getStringExtra("afterImage");
+        beforeImage = intent.getStringExtra("beforeImage");
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
+        roleTask = sharedPreferences.getString("role", "");
 
         getPmTask(taskNumberString, taskId, token);
 
@@ -132,7 +134,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    updateTaskMethod(taskId, token, workspace);
+                updateTaskMethod(taskId, token, workspace);
             }
         });
 
@@ -151,7 +153,6 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private void updateTaskMethod(int taskId, String token, String workspace) {
         String timeString = timePickerEdit.getText().toString();
         String dateString = datePickerEdit.getText().toString();
-        String completedByString = nameTextView.getText().toString();
         String status = statusSpinner.getSelectedItem().toString();
         String remarksString = remarksTextView.getText().toString();
 
@@ -166,8 +167,8 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         }
 
         Long completedDateTime = null;
-        if (statusSpinner.getSelectedItem().equals("Completed")){
-           completedDateTime = date.getTime();
+        if (statusSpinner.getSelectedItem().equals("Completed")) {
+            completedDateTime = date.getTime();
         }
         GetUpdatePmTaskRequest getUpdatePmTaskRequest = new GetUpdatePmTaskRequest(status, remarksString, completedDateTime, completedDateTime, taskId);
 
@@ -223,7 +224,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                         } else {
                             Calendar cl = Calendar.getInstance();
                             cl.setTimeInMillis(scheduleDate);
-                            dateStr = "" + (cl.get(Calendar.DAY_OF_MONTH) ) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.YEAR);
+                            dateStr = "" + (cl.get(Calendar.DAY_OF_MONTH)) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.YEAR);
                         }
                         scheduleDateTextView.setText(dateStr);
                     }
@@ -257,9 +258,10 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                         statusList.add("Open");
                         statusList.add(getPmTaskItemsResponse.getStatus());
 
-                        Set<String> carSet = new HashSet<String>(statusList);
+                        TreeSet<String> ts1 = new TreeSet<String>();
+                        ts1.addAll(statusList);
                         statusList.clear();
-                        statusList.addAll(carSet);
+                        statusList.addAll(ts1);
 
                     }
                     statusSpinner.setAdapter(statusSpinnerAdapter);
@@ -347,11 +349,13 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                 updateProgress.dismiss();
                 if (response.code() == 200) {
                     Toast.makeText(PmTaskActivity.this, "Task Updated", Toast.LENGTH_LONG).show();
-                    if (roleTask.equals("Technician") && statusSpinner.getSelectedItem().equals("Completed")){
+                    if (roleTask.equals("Technician") && statusSpinner.getSelectedItem().equals("Completed")) {
                         Intent intent = new Intent(getApplicationContext(), UploadTaskImageActivity.class);
                         intent.putExtra("workspace", workspace);
                         intent.putExtra("taskNumber", taskNumberTextView.getText().toString());
                         intent.putExtra("taskId", String.valueOf(taskId));
+                        intent.putExtra("afterImage", afterImage);
+                        intent.putExtra("beforeImage", beforeImage);
                         startActivity(intent);
                     }
                     finish();

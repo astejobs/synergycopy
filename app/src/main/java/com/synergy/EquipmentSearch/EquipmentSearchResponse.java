@@ -60,9 +60,14 @@ public class EquipmentSearchResponse {
     @Expose
     private Long dueDate;
 
+    String beforeImage;
+    String afterImage;
 
-    public EquipmentSearchResponse(Long taskId, String taskNumber, String status, String scheduleNumber, String briefDescription, Long locationId, String locationName, Long buildingId, String buildingName, String equipmentCode, Long scheduleDate, String completedBy, Long completedDate, String completedTime, String remarks, Long endDate, Long dueDate) {
-        super();
+
+    public EquipmentSearchResponse(Long taskId, String taskNumber, String status, String scheduleNumber, String briefDescription,
+                                   Long locationId, String locationName, Long buildingId, String buildingName, String equipmentCode, Long scheduleDate,
+                                   String completedBy, Long completedDate, String completedTime, String remarks, Long endDate,
+                                   Long dueDate, String beforeImage, String afterImage) {
         this.taskId = taskId;
         this.taskNumber = taskNumber;
         this.status = status;
@@ -80,6 +85,8 @@ public class EquipmentSearchResponse {
         this.remarks = remarks;
         this.endDate = endDate;
         this.dueDate = dueDate;
+        this.beforeImage = beforeImage;
+        this.afterImage = afterImage;
     }
 
     public Long getTaskId() {
@@ -216,6 +223,15 @@ public class EquipmentSearchResponse {
 
     public void setDueDate(Long dueDate) {
         this.dueDate = dueDate;
+    }
+
+
+    public String getBeforeImage() {
+        return beforeImage;
+    }
+
+    public String getAfterImage() {
+        return afterImage;
     }
 }
 

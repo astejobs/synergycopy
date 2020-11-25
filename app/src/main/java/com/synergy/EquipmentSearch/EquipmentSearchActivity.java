@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,6 +53,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     private TextView scanTextView;
     private ProgressDialog mProgress;
     private String workspace, role, token;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,25 +125,41 @@ public class EquipmentSearchActivity extends AppCompatActivity {
 
                     scanTextView.setVisibility(View.GONE);
                     List<EquipmentSearchResponse> equipmentSearchResponse = response.body();
-
+                    if (equipmentSearchResponse.isEmpty()) {
+                        Toast.makeText(EquipmentSearchActivity.this, "No tasks available!", Toast.LENGTH_SHORT).show();
+                    }
+                    //if (role.equals("ManagingAgent")) {
                     RecyclerView recyclerView = findViewById(R.id.recycler_view_equip);
 
                     ArrayList<EquipmentSearchCard> equipmentSearchCardArrayList = new ArrayList<>();
 
-                   for (int i =0; i<equipmentSearchResponse.size();i++) {
-                       String taskNumber = equipmentSearchResponse.get(i).getTaskNumber();
-                       int taskId = equipmentSearchResponse.get(i).getTaskId().intValue();
-                       String buildingName = equipmentSearchResponse.get(i).getBuildingName();
-                       String locationName = equipmentSearchResponse.get(i).getLocationName();
-                       long scheduleDate = equipmentSearchResponse.get(i).getScheduleDate();
-                       String status = equipmentSearchResponse.get(i).getStatus();
-                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace, status, buildingName,locationName, scheduleDate));
+                    for (int i = 0; i < equipmentSearchResponse.size(); i++) {
+                        String taskNumber = equipmentSearchResponse.get(i).getTaskNumber();
+                        int taskId = equipmentSearchResponse.get(i).getTaskId().intValue();
+                        String buildingName = equipmentSearchResponse.get(i).getBuildingName();
+                        String locationName = equipmentSearchResponse.get(i).getLocationName();
+                        long scheduleDate = equipmentSearchResponse.get(i).getScheduleDate();
+                        String status = equipmentSearchResponse.get(i).getStatus();
+                        String afterImage = equipmentSearchResponse.get(i).getAfterImage();
+                        String beforeImage = equipmentSearchResponse.get(i).getBeforeImage();
+
+
+                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace, status, buildingName, locationName, scheduleDate, afterImage, beforeImage));
                     }
                     recyclerView.setHasFixedSize(true);
                     EquipmentSearchAdapter mAdapter = new EquipmentSearchAdapter(equipmentSearchCardArrayList);
                     recyclerView.setLayoutManager(new LinearLayoutManager(EquipmentSearchActivity.this));
                     recyclerView.setAdapter(mAdapter);
-
+                    /*} else if (role.equals("Technician")){
+                        for (int i = 0; i < equipmentSearchResponse.size(); i++) {
+                            Intent intent = new Intent(getApplicationContext(), PmTaskActivity.class);
+                            intent.putExtra("taskNumber", equipmentSearchResponse.get(i).getTaskNumber());
+                            intent.putExtra("taskId", equipmentSearchResponse.get(i).getTaskId().toString());
+                            intent.putExtra("workspace", workspace);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }*/
                 } else
                     Toast.makeText(EquipmentSearchActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
                 mProgress.dismiss();
@@ -174,13 +192,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-            /*SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent intent = new Intent(this, MainActivityLogin.class);
-            startActivity(intent);
-            finishAffinity();*/
+
             LogoutClass logoutClass = new LogoutClass();
             logoutClass.logout(this);
         }

@@ -1,12 +1,15 @@
 package com.synergy.EquipmentSearch;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +46,10 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
         holder.scheduleTV.setText(String.valueOf(currentPosition.getScheduleDate()));
         holder.taskNumberTV.setText(currentPosition.getTask_number());
         String workspace = currentPosition.getWorkspace();
+        String afterImage = currentPosition.getAfterImage();
+        String beforeImage = currentPosition.getBeforeImage();
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +57,10 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
                 intent.putExtra("taskNumber", currentPosition.getTask_number());
                 intent.putExtra("taskId", currentPosition.getTaskId());
                 intent.putExtra("workspace", workspace);
+                intent.putExtra("afterImage", afterImage);
+                intent.putExtra("beforeImage", beforeImage);
                 v.getContext().startActivity(intent);
+
             }
         });
     }

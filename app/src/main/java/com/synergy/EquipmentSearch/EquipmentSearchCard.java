@@ -6,8 +6,11 @@ public class EquipmentSearchCard {
     String workspace;
     String status, buildingName, locationName;
     long scheduleDate;
+    String afterImage;
+    String beforeImage;
 
-    public EquipmentSearchCard(int taskId, String task_number, String workspace, String status, String buildingName, String locationName, long scheduleDate) {
+    public EquipmentSearchCard(int taskId, String task_number, String workspace, String status,
+                               String buildingName, String locationName, long scheduleDate, String afterImage, String beforeImage) {
         this.taskId = taskId;
         this.task_number = task_number;
         this.workspace = workspace;
@@ -15,6 +18,8 @@ public class EquipmentSearchCard {
         this.buildingName = buildingName;
         this.locationName = locationName;
         this.scheduleDate = scheduleDate;
+        this.afterImage = afterImage;
+        this.beforeImage = beforeImage;
     }
 
     public String getStatus() {
@@ -51,5 +56,13 @@ public class EquipmentSearchCard {
 
     public void setTask_number(String task_number) {
         this.task_number = task_number;
+    }
+
+    public String getAfterImage() {
+        return afterImage;
+    }
+
+    public String getBeforeImage() {
+        return beforeImage;
     }
 }

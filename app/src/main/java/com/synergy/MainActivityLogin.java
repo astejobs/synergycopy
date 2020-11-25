@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.installations.FirebaseInstallations;
@@ -44,6 +47,7 @@ public class MainActivityLogin extends AppCompatActivity {
     private ProgressDialog mProgress;
     private final int STORAGE_PERMISSION_CODE = 1;
     private TextInputEditText editTextName;
+    private TextInputLayout passwordTextName, usernameTextName;
     private EditText passwordEdit;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String TEXT1 = "text";
@@ -51,14 +55,14 @@ public class MainActivityLogin extends AppCompatActivity {
     private Button buttonLogin;
     private String nameString, passwordString, deviceToken;
     private static final String TAG = "Tag";
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    private SharedPreferences.Editor editor;
+    private LogoutClass logoutClass = new LogoutClass();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_login);
-        sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         editor = sharedPreferences.edit();
         FirebaseInstallations.getInstance().getToken(true);
 
@@ -75,8 +79,42 @@ public class MainActivityLogin extends AppCompatActivity {
         buttonLogin = findViewById(R.id.btn_login);
         editTextName = findViewById(R.id.editTextUsername);
         passwordEdit = findViewById(R.id.editTextPassword);
-        //   deviceToken = getToken(this);
+        passwordTextName = findViewById(R.id.login_password);
+        usernameTextName = findViewById(R.id.login_username);
 
+        editTextName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                usernameTextName.setErrorEnabled(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        passwordEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                passwordTextName.setErrorEnabled(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         if (!(ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -90,36 +128,25 @@ public class MainActivityLogin extends AppCompatActivity {
             buttonLogin.setEnabled(false);
         } else {
             buttonLogin.setEnabled(true);
-            //loadData();
         }
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                mProgress = new ProgressDialog(MainActivityLogin.this);
-                mProgress.setTitle("Authenticating...");
-                mProgress.setCancelable(false);
-                mProgress.setIndeterminate(true);
-                mProgress.show();
-
                 nameString = editTextName.getText().toString();
                 passwordString = passwordEdit.getText().toString();
                 UserRequest userRequest = new UserRequest(nameString, passwordString, deviceToken);
-                loginUser(userRequest);
+                if (!editTextName.getText().toString().isEmpty() || !passwordEdit.getText().toString().isEmpty()) {
+                    usernameTextName.setErrorEnabled(false);
+                    passwordTextName.setErrorEnabled(false);
+                    loginUser(userRequest);
+                } else {
+                    Toast.makeText(MainActivityLogin.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    usernameTextName.setError("Required");
+                    passwordTextName.setError("Required");
+                }
             }
         });
-    }
-
-    public void loadData() {
-
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        nameString = sharedPreferences.getString(TEXT1, "");
-        passwordString = sharedPreferences.getString(PASSWORD1, "");
-        String userToken = sharedPreferences.getString("token", "");
-        UserRequest request = new UserRequest(nameString, passwordString, deviceToken);
-        if (!nameString.equals("")) {
-            loginUser(request);
-        }
     }
 
     private void requestStoragePermission() {
@@ -166,6 +193,12 @@ public class MainActivityLogin extends AppCompatActivity {
 
     public void loginUser(UserRequest userRequest) {
 
+        mProgress = new ProgressDialog(MainActivityLogin.this);
+        mProgress.setTitle("Authenticating...");
+        mProgress.setCancelable(false);
+        mProgress.setIndeterminate(true);
+        mProgress.show();
+
         Call<UserResponse> call = APIClient.getUserServices().saveUser(userRequest);
 
         call.enqueue(new Callback<UserResponse>() {
@@ -173,47 +206,36 @@ public class MainActivityLogin extends AppCompatActivity {
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.code() == 200) {
 
-                    String username= editTextName.getText().toString();
+                    String username = editTextName.getText().toString();
                     UserResponse userResponse = response.body();
                     String token = userResponse.getToken();
                     String role = userResponse.getRole();
                     String user = userResponse.getUser();
-                   editor.putString("token", token);
+                    editor.clear();
+                    editor.putString("token", token);
                     editor.putString("role", role);
                     editor.putString("devicetoken", deviceToken);
                     editor.apply();
-                  /*  if (token == null) {
-                        Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
-                        intent.putExtra("username", username);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Intent intent = new Intent(getApplicationContext(), WorkspaceActivity.class);
-                        intent.putExtra("devicetoken", deviceToken);
-                        startActivity(intent);
-                        finish();
 
-                    }*/
                     Intent intent = new Intent(getApplicationContext(), WorkspaceActivity.class);
                     intent.putExtra("devicetoken", deviceToken);
-
 
                     startActivity(intent);
                     finish();
 
                 } else if (response.code() == 202) {
-                    mProgress.dismiss();
-                    Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 401) {
+                    Toast.makeText(MainActivityLogin.this, "Please enter a valid username/password!", Toast.LENGTH_SHORT).show();
                 } else
-                    Toast.makeText(MainActivityLogin.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(MainActivityLogin.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
                 mProgress.dismiss();
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 mProgress.dismiss();
-                Toast.makeText(MainActivityLogin.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivityLogin.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

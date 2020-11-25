@@ -37,7 +37,7 @@ public class LogoutClass {
                     Intent intent = new Intent(activity, MainActivityLogin.class);
                     activity.startActivity(intent);
                     activity.finishAffinity();
-                } else //Toast.makeText(activity, "Error: " + response.code() + " Please try again", Toast.LENGTH_LONG).show();
+                } else
                     alertDialog("Error: " + response.code() + " Please try again", activity);
                 progressDialog.dismiss();
             }

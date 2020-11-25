@@ -1595,6 +1595,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                             intent.putExtra("frid", frId);
                             intent.putExtra("workspace", workSpaceid);
                             intent.putExtra("token", token);
+                            intent.putExtra("user", role);
                             startActivity(intent);
                             finish();
 

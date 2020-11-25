@@ -7,6 +7,8 @@ import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
+import com.synergy.EquipmentSearch.TaskImageResponse;
+import com.synergy.SearchTasks.TaskSearchResponse;
 import com.synergy.EquipmentSearch.UploadImageRequest;
 import com.synergy.FaultReport.CreateFaultRequestPojo;
 import com.synergy.FaultReport.UploadPictureRequest;
@@ -36,6 +38,7 @@ public interface UserService {
     @POST("authenticate")
     @Headers("Content-Type: application/json")
     Call<UserResponse> saveUser(@Body UserRequest userRequest);
+
     //otp call
     @POST("verify2fa")
     @Headers("Content-Type: application/json")
@@ -113,14 +116,14 @@ public interface UserService {
     Call<JsonObject> createFault(@Body CreateFaultRequestPojo createFaultRequestPojo,
                                  @Header("workspace") String workspace,
                                  @Header("Authorization") String token
-                                , @Header("role") String role);
+            , @Header("role") String role);
 
     //get search
     @GET("faultreport/search/?")
     @Headers("Content-Type: application/json")
     Call<List<SearchResponse>> getSearchResult(@Header("workspace") String dynamicWorkSpace,
                                                @Query("query") String param,
-                                               @Header("Authorization") String token,@Header("role")String role);
+                                               @Header("Authorization") String token, @Header("role") String role);
     //before image upload http://ifarms.com.sg:8086/lsme/api/faultreport/beforeimage
    /* @POST("ws/upload{before}image")
     @Headers("Content-Type: application/json")
@@ -141,9 +144,9 @@ public interface UserService {
     @GET("task/equipment/{equipmentCode}")
     @Headers("Content-Type: application/json")
     Call<List<EquipmentSearchResponse>> getEquipmentTask(@Path("equipmentCode") String path,
-                                      @Header("role") String role,
-                                      @Header("Authorization") String token,
-                                      @Header("workspace") String workspace);
+                                                         @Header("role") String role,
+                                                         @Header("Authorization") String token,
+                                                         @Header("workspace") String workspace);
 
 
     //getEquipment Scan code
@@ -185,7 +188,7 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<JsonObject> getEditfaultDetails(@Path("frid") String frid,
                                          @Header("WorkspaceId") String workspaceId,
-                                         @Header("Authorization") String token,@Header("role")String role);
+                                         @Header("Authorization") String token, @Header("role") String role);
 
     //to get the technician list
     @GET("general/technicians")
@@ -274,4 +277,19 @@ public interface UserService {
     Call<Void> testNotification(@Path("devtoken") String deviceToken);
 
 
+    //search tasks
+    @GET("task/search")
+    @Headers("Content-Type: application/json")
+    Call<List<TaskSearchResponse>> taskSearch(@Query("query") String query,
+                                              @Header("Authorization") String token,
+                                              @Header("role") String role,
+                                              @Header("workspace") String workspace);
+
+    //Task image
+    @GET("")
+    @Headers("Content-Type: application/json")
+    Call<TaskImageResponse> getTaskImage(String imageName,
+                                         @Header("role") String role,
+                                         @Header("Authorization") String token,
+                                         @Header("workspace") String workspace);
 }

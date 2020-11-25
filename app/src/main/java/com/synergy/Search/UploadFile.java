@@ -12,6 +12,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.synergy.APIClient;
 import com.synergy.Dashboard.Dashboard;
+import com.synergy.LogoutClass;
 import com.synergy.R;
 
 import java.io.File;
@@ -42,6 +45,7 @@ public class UploadFile extends AppCompatActivity {
     Intent uploadFileIntent;
     String frid, token, workspace, role;
     ProgressDialog progressDialog;
+    private String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class UploadFile extends AppCompatActivity {
         token = intent.getStringExtra("token");
         //  token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWNobmljaWFuNiIsImV4cCI6MTYwNTE5MTY2MSwiaWF0IjoxNjA1MDgzNjYxfQ.-gqwRXi6tocxQo8UXsNLDrF2kD1cVPZ3gAOQoq8GKCDb0icPMUjJajEHg2HUvxLWY7r-d4JD2-ZRdsgOA6x0JA";
         workspace = intent.getStringExtra("workspace");
+        user = intent.getStringExtra("role");
         //   workspace = "lsme-DEMO-112016-001";
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
@@ -146,5 +151,23 @@ public class UploadFile extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(role);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.logoutmenu) {
+            LogoutClass logoutClass = new LogoutClass();
+            logoutClass.logout(this);
+        }
+        return true;
     }
 }
