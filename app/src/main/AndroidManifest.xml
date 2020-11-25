@@ -23,9 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity">
-        <activity android:name=".SearchTasks.SearchTaskActivity"></activity>
-        <!--
-         <activity android:name=".EquipmentSearch.UploadTaskImageActivity"/>
+        <activity android:name=".SearchTasks.SearchTaskActivity" />
+        <activity android:name=".EquipmentSearch.UploadTaskImageActivity" />
         <activity android:name=".Otp.OtpActivity" />
         <activity android:name=".Search.UploadFile" />
         <activity android:name=".Search.PreviousImagesActivity" />
@@ -42,8 +41,14 @@
         <activity android:name=".EquipmentSearch.QrDetails" />
         <activity android:name=".FaultReport.FaultReportActivity" />
         <activity android:name=".Workspace.WorkspaceActivity">
-        -->
-        <activity
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--
+<activity
             android:name=".EquipmentSearch.UploadTaskImageActivity"
             android:launchMode="singleInstance" />
         <activity
@@ -103,13 +108,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        -->
         <service android:name=".Services.MyFirebaseInstanceService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <!--<receiver android:name=".CheckInternet">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>-->
     </application>
 
 </manifest>

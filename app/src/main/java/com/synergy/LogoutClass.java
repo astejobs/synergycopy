@@ -44,7 +44,6 @@ public class LogoutClass {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                //Toast.makeText(activity, t.getMessage() + " Please try again", Toast.LENGTH_LONG).show();
                 alertDialog(t.getMessage() + " Please try again", activity);
                 progressDialog.dismiss();
             }

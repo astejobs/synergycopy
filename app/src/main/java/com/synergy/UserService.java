@@ -7,7 +7,6 @@ import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
-import com.synergy.EquipmentSearch.TaskImageResponse;
 import com.synergy.SearchTasks.TaskSearchResponse;
 import com.synergy.EquipmentSearch.UploadImageRequest;
 import com.synergy.FaultReport.CreateFaultRequestPojo;
@@ -289,12 +288,12 @@ public interface UserService {
                                               @Header("workspace") String workspace);
 
     //Task image
-    @GET("")
+    @GET("task/getimage/{imageName}")
     @Headers("Content-Type: application/json")
-    Call<TaskImageResponse> getTaskImage(String imageName,
-                                         @Header("role") String role,
-                                         @Header("Authorization") String token,
-                                         @Header("workspace") String workspace);
+    Call<ResponseBody> getTaskImage(@Path("imageName") String imageName,
+                                    @Header("role") String role,
+                                    @Header("Authorization") String token,
+                                    @Header("workspace") String workspace);
 
 
     //select technician

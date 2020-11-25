@@ -35,6 +35,7 @@ import com.synergy.R;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,9 +74,12 @@ public class UploadTaskImageActivity extends AppCompatActivity {
         String afterImageV = intent.getStringExtra("afterImage");
         String beforeImageV = intent.getStringExtra("beforeImage");
 
-        retrieveImage(afterImageV, role, token, workspace, afterImage);
-        retrieveImage(beforeImageV, role, token, workspace, beforeImage);
-
+        if (afterImageV != null) {
+            retrieveImage(afterImageV, role, token, workspace, afterImage);
+        }
+        if (beforeImageV != null) {
+            retrieveImage(beforeImageV, role, token, workspace, beforeImage);
+        }
         beforeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,20 +101,32 @@ public class UploadTaskImageActivity extends AppCompatActivity {
 
     private void retrieveImage(String imageName, String role, String token, String workspace, ImageView imageView) {
 
-    Call<TaskImageResponse> callTaskImage = APIClient.getUserServices().getTaskImage(imageName, role, token, workspace);
-    callTaskImage.enqueue(new Callback<TaskImageResponse>() {
-        @Override
-        public void onResponse(Call<TaskImageResponse> call, Response<TaskImageResponse> response) {
-            if (response.code()==200){
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please Wait....");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
+        Call<ResponseBody> callTaskImage = APIClient.getUserServices().getTaskImage(imageName, role, token, workspace);
+        callTaskImage.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if (response.code() == 200) {
+                    Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                    imageView.setBackground(null);
+                    imageView.setImageBitmap(bmp);
+                } else
+                    Toast.makeText(UploadTaskImageActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
-        }
 
-        @Override
-        public void onFailure(Call<TaskImageResponse> call, Throwable t) {
-
-        }
-    });
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(UploadTaskImageActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
 
     }
 

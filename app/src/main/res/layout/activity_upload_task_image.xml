@@ -19,11 +19,13 @@
         app:titleTextColor="#ffffff" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="340dp"
+        android:layout_height="652dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/layout_bg"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:gravity="center">
+        android:padding="10dp">
 
 
         <ImageView
@@ -31,18 +33,25 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_margin="10dp"
-            android:elevation="30dp"
-            android:background="@drawable/before_image" />
+            android:background="@drawable/imgbefore"
+            android:elevation="30dp" />
 
         <ImageView
             android:id="@+id/afterImageTask"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_margin="10dp"
-            android:elevation="30dp"
-            android:background="@drawable/after_image" />
+            android:background="@drawable/imgafter"
+            android:elevation="30dp" />
 
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout_dummy"
+        android:orientation="vertical"
+        android:visibility="gone"/>
 
 </LinearLayout>

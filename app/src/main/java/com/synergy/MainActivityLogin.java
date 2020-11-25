@@ -5,8 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -57,6 +59,21 @@ public class MainActivityLogin extends AppCompatActivity {
     private static final String TAG = "Tag";
     private SharedPreferences.Editor editor;
     private LogoutClass logoutClass = new LogoutClass();
+
+    private final CheckInternet checkInternet = new CheckInternet();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -226,9 +243,12 @@ public class MainActivityLogin extends AppCompatActivity {
                 } else if (response.code() == 202) {
                     Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 401) {
-                    Toast.makeText(MainActivityLogin.this, "Please enter a valid username/password!", Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(MainActivityLogin.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivityLogin.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 500) {
+                    Toast.makeText(MainActivityLogin.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(MainActivityLogin.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
+                }
                 mProgress.dismiss();
             }
 

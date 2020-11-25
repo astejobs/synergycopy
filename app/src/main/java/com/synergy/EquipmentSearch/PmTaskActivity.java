@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.CollectionUtils;
 import com.synergy.APIClient;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
@@ -49,6 +50,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
@@ -70,7 +72,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private int tHour, tMinute;
     private ProgressDialog mProgress;
     private ArrayAdapter<String> statusSpinnerAdapter;
-    private final List<String> statusList = new ArrayList<>();
+    private List<String> statusList = new ArrayList<>();
     private ProgressDialog updateProgress;
     private Button checkListButton;
     private long scheduleDate;
@@ -218,7 +220,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                         scheduleDate = (long) getPmTaskItemsResponse.getScheduleDate();
                         LocalDateTime date = null;
                         String dateStr = null;
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             date = Instant.ofEpochMilli((long) getPmTaskItemsResponse.getScheduleDate()).atZone(ZoneId.systemDefault()).toLocalDateTime();
                             dateStr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                         } else {
@@ -256,16 +258,29 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                             statusList.add("Closed");
                         }
                         statusList.add("Open");
-                        statusList.add(getPmTaskItemsResponse.getStatus());
+                        if (!getPmTaskItemsResponse.getStatus().equals("OPEN")) {
+                            statusList.add(getPmTaskItemsResponse.getStatus());
+                        }
+                        /*Set<String> set1 = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+                        set1.addAll(statusList);
+                        statusList.retainAll(set1);*/
 
                         TreeSet<String> ts1 = new TreeSet<String>();
                         ts1.addAll(statusList);
+
                         statusList.clear();
                         statusList.addAll(ts1);
 
+//                        for (int i = 0; i<statusList.size();i++){
+
+                       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            statusList = statusList.stream().collect(Collectors.toList());
+                        }*/
                     }
                     statusSpinner.setAdapter(statusSpinnerAdapter);
-                    statusSpinner.setSelection(statusList.indexOf(getPmTaskItemsResponse.getStatus()), true);
+                    if (!getPmTaskItemsResponse.getStatus().equals("OPEN")) {
+                        statusSpinner.setSelection(statusList.indexOf(getPmTaskItemsResponse.getStatus()), true);
+                    }else statusSpinner.setSelection(statusList.indexOf("Open"));
                     if (getPmTaskItemsResponse.getRemarks() != null) {
                         remarksTextView.setText(getPmTaskItemsResponse.getRemarks());
                     }

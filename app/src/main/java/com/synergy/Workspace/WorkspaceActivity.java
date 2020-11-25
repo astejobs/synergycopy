@@ -11,7 +11,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
+import com.synergy.CheckInternet;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
@@ -45,9 +48,21 @@ public class WorkspaceActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private LinearLayout linearLayout;
     private String user;
-    private LogoutClass logoutClass = new LogoutClass();
+    private final CheckInternet checkInternet = new CheckInternet();
 
 Context context;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +72,7 @@ Context context;
         setSupportActionBar(toolbar);
         linearLayout = findViewById(R.id.workLinear);
         linearLayout.setVisibility(View.GONE);
+
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
@@ -118,8 +134,6 @@ Context context;
                 Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
                 startActivity(intent);
                 finish();
-
-                logoutClass.alertDialog("Failed: "+ t.getLocalizedMessage(),WorkspaceActivity.this);
             }
         });
     }
