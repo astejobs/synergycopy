@@ -3,59 +3,91 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#fff"
+    android:elevation="8dp"
     android:orientation="vertical"
-    android:padding="4dp"
-    app:cardBackgroundColor="@color/colorCodeSchemeApp"
-    app:cardCornerRadius="8dp">
+    android:padding="12dp"
+    app:cardCornerRadius="15dp">
 
     <LinearLayout
+        android:id="@+id/constrain_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:background="@color/colorCodeSchemeApp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:divider="?android:dividerHorizontal"
+        android:padding="14dp"
+        android:showDividers="middle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/textView_reporteddatete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="viewStart"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView_createddate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textView_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView_frid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:textAlignment="center"
             android:textColor="@color/textColor"
             android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/textView_reporteddatete"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textSize="12sp" />
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:weightSum="2">
 
-        <TextView
-            android:id="@+id/textView_createddate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/textView_building"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="viewStart"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/textView_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView_building"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/textView_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/textView_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tokenGen"

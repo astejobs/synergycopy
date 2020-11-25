@@ -1,40 +1,36 @@
 package com.synergy.Search;
 
 public class EquipmentSearchResponseforEdit {
-    int id;
-    String name;
-    String equipmentCode;
+    public EquipmentSearchResponseforEdit(String equipmentCode,
+                                          String name, int id,
+                                          String equipmentType) {
 
-    public EquipmentSearchResponseforEdit() {
-    }
-
-    public EquipmentSearchResponseforEdit(int id, String name, String equipmentCode) {
-        this.id = id;
+        this.equipmentCode=equipmentCode;
         this.name = name;
-        this.equipmentCode = equipmentCode;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
         this.id = id;
+        this.equipmentType = equipmentType;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String equipmentCode;
+    private String name;
+    private int id;
+    private String equipmentType;
+
 
     public String getEquipmentCode() {
         return equipmentCode;
     }
-
-    public void setEquipmentCode(String equipmentCode) {
-        this.equipmentCode = equipmentCode;
+    public String getName() {
+        return name;
     }
+    public int getId() {
+        return id;
+    }
+    public String getEquipmentType() {
+        return equipmentType;
+    }
+
+
+
 }

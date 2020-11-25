@@ -1,4 +1,4 @@
-package com.synergy.Search;
+package com.synergy.FaultReport;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,21 +10,21 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.R;
+import com.synergy.Search.EquipmentSearchResponseforEdit;
 
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
-public class EquipmentSearchAdapterforEdit extends BaseAdapter {
+public class SelectTechnicianAdapter extends BaseAdapter {
 
     private Context context; //context
-    private ArrayList<EquipmentSearchResponseforEdit> contacts; //data source of the list adapter
+    private ArrayList<SelectTechnicianResponse> contacts; //data source of the list adapter
     private static final String TAG = "SearchResponseAdapter";
 
     //public constructor
-    public EquipmentSearchAdapterforEdit(Context context, ArrayList<EquipmentSearchResponseforEdit> items) {
+    public SelectTechnicianAdapter(Context context, ArrayList<SelectTechnicianResponse> items) {
         this.context = context;
         this.contacts = items;
     }
@@ -52,9 +52,8 @@ public class EquipmentSearchAdapterforEdit extends BaseAdapter {
                     inflate(R.layout.equipment_search_row, parent, false);
         }
         // get current item to be displayed
-        EquipmentSearchResponseforEdit currentItem = (EquipmentSearchResponseforEdit) getItem(position);
+        SelectTechnicianResponse currentItem = (SelectTechnicianResponse) getItem(position);
         // get the TextView for item name and item description
-        TextView equipType=(TextView) convertView.findViewById(R.id.textview_eq_type);
         TextView qw_id = (TextView) convertView.findViewById(R.id.textview_eq_id);
         TextView eq_name = (TextView) convertView.findViewById(R.id.textview_eq_name);
         TextView eq_code = (TextView) convertView.findViewById(R.id.textview_eq_eqcode);
@@ -63,18 +62,18 @@ public class EquipmentSearchAdapterforEdit extends BaseAdapter {
 
        qw_id.setText(String.valueOf(currentItem.getId()));
         eq_name.setText(currentItem.getName());
-        eq_code.setText(currentItem.getEquipmentCode());
-        equipType.setText(currentItem.getEquipmentType());
+        eq_code.setText(currentItem.getUsername());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String selectedname = ((TextView) view.findViewById(R.id.textview_eq_name)).getText().toString();
+                String selectedcode = ((TextView) view.findViewById(R.id.textview_eq_eqcode)).getText().toString();
                 String selectedId = ((TextView) view.findViewById(R.id.textview_eq_id)).getText().toString();
 
                 Intent intent1 = new Intent();
-                intent1.putExtra("equipment_name", selectedname);
+                intent1.putExtra("equipment_code", selectedcode);
+                Log.d(TAG, "onClick: equipmemnt code"+selectedcode);
                 intent1.putExtra("equipmentId", Integer.parseInt(selectedId));
                 ((Activity) context).setResult(RESULT_OK, intent1);
                 ((Activity) context).finish();

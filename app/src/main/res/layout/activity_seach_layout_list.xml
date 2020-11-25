@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e2e2e2"
+    android:orientation="vertical"
     tools:context=".Search.EquipmentSearchActivityforEdit">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_workspace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorCodeSchemeApp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:menu="@menu/menu"
+        app:title="Equipment Search"
+        app:titleMargin="8dp"
+        app:titleTextColor="#e2e2e2" />
 
     <SearchView
         android:id="@+id/search_equip_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8sp"
-        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+
+        android:background="#fff"
         android:elevation="2dp"
-        android:textColorHint="#ffffff"
-        android:padding="4dp"
         android:queryHint="Search here"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColorHint="#ffffff" />
 
     <ListView
         android:id="@+id/listview_equip_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="5sp"
-        android:elevation="2dp"
-        android:padding="4dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_equip_bar" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

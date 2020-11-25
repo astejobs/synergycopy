@@ -8,18 +8,14 @@ import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.R;
 
 import java.util.ArrayList;
+
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.synergy.APIClient;
-import com.synergy.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,7 +28,7 @@ public class EquipmentSearchActivityforEdit extends AppCompatActivity {
     SearchView searchView;
     ArrayList<EquipmentSearchResponseforEdit> equipDetails = new ArrayList<EquipmentSearchResponseforEdit>();
     EquipmentSearchAdapterforEdit equipmentSearchAdapterforEdit;
-    String token;
+    String token, role;
     String workspace;
 
     @Override
@@ -44,6 +40,7 @@ public class EquipmentSearchActivityforEdit extends AppCompatActivity {
         searchView = findViewById(R.id.search_equip_bar);
         Intent intent = getIntent();
         token = intent.getStringExtra("token");
+        role = intent.getStringExtra("role");
         workspace = intent.getStringExtra("workspace");
         searchView.setIconifiedByDefault(false);
 
@@ -58,7 +55,7 @@ public class EquipmentSearchActivityforEdit extends AppCompatActivity {
             public boolean onQueryTextChange(String queryParam) {
                 if (queryParam.isEmpty()) {
                     equipDetails.clear();
-                  //  equipmentSearchAdapterforEdit.notifyDataSetInvalidated();
+                    //  equipmentSearchAdapterforEdit.notifyDataSetInvalidated();
                 } else {
                     equipDetails.clear();
                     getEquipment(queryParam, token);
@@ -72,45 +69,36 @@ public class EquipmentSearchActivityforEdit extends AppCompatActivity {
     private void getEquipment(String queryParam, String token) {
         equipDetails.clear();
 
-        Call<EquipmentSearchResponseforEdit> call = APIClient.getUserServices().getSearchEquipment(queryParam, token);
+        Call<List<EquipmentSearchResponseforEdit>> call = APIClient.getUserServices().
+                getSearchEquipment(queryParam, token, workspace, role);
 
-        call.enqueue(new Callback<EquipmentSearchResponseforEdit>() {
+        call.enqueue(new Callback<List<EquipmentSearchResponseforEdit>>() {
             @Override
-            public void onResponse(Call<EquipmentSearchResponseforEdit> call, Response<EquipmentSearchResponseforEdit> response) {
+            public void onResponse(Call<List<EquipmentSearchResponseforEdit>> call,
+                                   Response<List<EquipmentSearchResponseforEdit>> response) {
                 if (response.code() == 200) {
                     Toast.makeText(EquipmentSearchActivityforEdit.this, "Here are Details of Equipment", Toast.LENGTH_SHORT).show();
-                    EquipmentSearchResponseforEdit equipmentSearchResponse = response.body();
-/*
-                    for (EquipmentSearchResponseforEdit equipment : equipmentSearchResponse) {
-                        // contacts.clear();
-                        EquipmentSearchResponseforEdit n = new EquipmentSearchResponseforEdit();
-                        int id = equipment.getId();
-                        String name = equipment.getName();
-                        String eq_code = equipment.getEquipmentCode();
+                    List<EquipmentSearchResponseforEdit> equipmentSearchResponse = response.body();
+                    for (int i = 0; i < equipmentSearchResponse.size(); i++) {
+                        int id = equipmentSearchResponse.get(i).getId();
+                        String name = equipmentSearchResponse.get(i).getName();
+                        String equipcode = equipmentSearchResponse.get(i).getEquipmentCode();
+                        String equipmentType = equipmentSearchResponse.get(i).getEquipmentType();
+                        EquipmentSearchResponseforEdit ob = new EquipmentSearchResponseforEdit(equipcode,name,id,equipmentType);
 
-                        n.setId(id);
-                        n.setName(name);
-                        n.setEquipmentCode(eq_code);
-
-                        equipDetails.add(n);
+                        equipDetails.add(ob);
                     }
-*/
-                    int id=equipmentSearchResponse.getId();
-                    String name=equipmentSearchResponse.getName();
-                    String equipcode=equipmentSearchResponse.getEquipmentCode();
-                    EquipmentSearchResponseforEdit ob=new EquipmentSearchResponseforEdit(id,name,equipcode);
-                    equipDetails.add(ob);
                     equipmentSearchAdapterforEdit = new
                             EquipmentSearchAdapterforEdit(EquipmentSearchActivityforEdit.this, equipDetails);
                     listView.setAdapter(equipmentSearchAdapterforEdit);
                     equipmentSearchAdapterforEdit.notifyDataSetChanged();
 
-                }else
-                    Toast.makeText(EquipmentSearchActivityforEdit.this, "Error : "+response.message(), Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(EquipmentSearchActivityforEdit.this, "Error : " + response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<EquipmentSearchResponseforEdit> call, Throwable t) {
+            public void onFailure(Call<List<EquipmentSearchResponseforEdit>> call, Throwable t) {
                 Toast.makeText(EquipmentSearchActivityforEdit.this, "Failed to SearchActivity Equipment", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onFailure get message of fail:  " + t.getMessage());
                 Log.d(TAG, "onFailure: cause" + t.getCause());

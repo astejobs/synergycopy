@@ -1,5 +1,7 @@
 package com.synergy.Workspace;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +18,14 @@ import java.util.ArrayList;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public CardAdapter(ArrayList<CardDetails> mCardDetails) {
+
         this.mCardDetails = mCardDetails;
     }
 
     private String variable;
     private ArrayList<CardDetails> mCardDetails;
     private static final String TAG = "CardAdapter";
+    Context context;
 
     @NonNull
     @Override

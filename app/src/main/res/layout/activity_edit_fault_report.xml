@@ -2,7 +2,6 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -86,14 +85,6 @@
 
                         </LinearLayout>
 
-                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
-                        android:id="@+id/frIdEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        app:prefix="FR ID: " />-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -141,15 +132,6 @@
 
                         </LinearLayout>
 
-                        <!--<TextView
-                        android:id="@+id/mobileNumberTextView"
-                        android:layout_width="match_parent"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:text="Requestor Mobile Number"
-                        android:textAlignment="center"
-                        android:padding="18sp"
-                        android:textSize="14sp" />-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -327,14 +309,6 @@
 
                         </LinearLayout>
 
-                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
-                        android:id="@+id/locationDescrip"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textSize="18sp"
-                        android:inputType="text"
-                        app:prefix="Location Description: " />-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -377,14 +351,6 @@
                                 android:textColor="@color/textblackcolor" />
 
                         </LinearLayout>
-                        <!-- <com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
-                         android:id="@+id/faultDetails"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:textSize="18sp"
-                         android:textAlignment="center"
-                         android:inputType="text"
-                         app:prefix="Fault Details: " />-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -405,11 +371,6 @@
                                 android:layout_weight="1.05" />
                         </LinearLayout>
 
-                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
-                        android:id="@+id/observation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:prefix="Observation: " />-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -434,44 +395,6 @@
 
                         </LinearLayout>
 
-                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
-                        android:id="@+id/diagnosis"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        app:prefix="Diagnosis: " />-->
-
-<!--
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:text="Diagnosis" />
-
-                            <EditText
-                                android:id="@+id/diagnosis"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:inputType="text"
-                                android:textColor="@color/textblackcolor" />
-
-                        </LinearLayout>
--->
-
-                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
-                        android:id="@+id/actionTaken"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        app:prefix="Action Taken: " />-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -496,268 +419,6 @@
 
                         </LinearLayout>
 
-                        <!--<com.tobiasschuerg.prefixsuffix.PrefixSuffixEditText
-                        android:id="@+id/labourHours"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        app:prefix="Labour Hours: " />-->
-
-                        <!--
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:orientation="horizontal"
-                                            android:weightSum="1">
-
-                                            <TextView
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight=".5"
-                                                android:text="Labour Hours" />
-
-                                            <EditText
-                                                android:id="@+id/labourHours"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight=".5"
-                                                android:inputType="text" />
-
-                                        </LinearLayout>
-                    -->
-
-<!--
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".6"
-                                android:text="Select Cost Center" />
-
-                            <Spinner
-                                android:id="@+id/costCenter"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.4" />
-                        </LinearLayout>
--->
-
-                        <!--
-                                        <TextView
-                                            android:id="@+id/timeJob"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="5dp"
-                                            android:layout_marginBottom="5dp"
-                                            android:hint="Job Time"
-                                            android:textColor="#000000"
-                                            android:textSize="18sp" />
-                    -->
-
-                        <!--
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:orientation="horizontal"
-                                            android:weightSum="2">
-
-                                            <TextView
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:text="Response Date" />
-
-                                            <TextView
-                                                android:id="@+id/dateResponse"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_margin="20dp"
-                                                android:layout_weight="1"
-                                                android:datePickerMode="spinner"
-                                                android:hint="dd-mm-yyyy"
-                                                android:textColor="@android:color/black"
-                                                android:textSize="18sp" />
-                                        </LinearLayout>
-                    -->
-
-                        <!--
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:orientation="horizontal"
-                                            android:weightSum="2">
-
-                                            <TextView
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:text="Response Time" />
-
-                                            <TextView
-                                                android:id="@+id/timeResponse"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_margin="20dp"
-                                                android:layout_weight="1"
-                                                android:hint="hh:mm"
-                                                android:textColor="@android:color/black"
-                                                android:textSize="18sp"
-                                                android:timePickerMode="spinner" />
-                                        </LinearLayout>
-                    -->
-
-                        <!--
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:orientation="horizontal"
-                                            android:weightSum="2">
-
-                                            <TextView
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:text="Start Date" />
-
-                                            <TextView
-                                                android:id="@+id/dateStart"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_margin="20dp"
-                                                android:layout_weight="1"
-                                                android:datePickerMode="spinner"
-                                                android:hint="dd-mm-yyyy"
-                                                android:textColor="@android:color/black"
-                                                android:textSize="18sp" />
-                                        </LinearLayout>
-                    -->
-
-
-                        <!--
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:orientation="horizontal"
-                                            android:weightSum="2">
-
-                                            <TextView
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:text="Start Time" />
-
-                                            <TextView
-                                                android:id="@+id/timeStart"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_margin="20dp"
-                                                android:layout_weight="1"
-                                                android:hint="hh:mm"
-                                                android:textColor="@android:color/black"
-                                                android:textSize="18sp"
-                                                android:timePickerMode="spinner" />
-                                        </LinearLayout>
-                    -->
-
-                        <!--
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:orientation="horizontal"
-                                            android:weightSum="2">
-
-                                            <TextView
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:text="End Date" />
-
-                                            <TextView
-                                                android:id="@+id/dateEnd"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_margin="20dp"
-                                                android:layout_weight="1"
-                                                android:datePickerMode="spinner"
-                                                android:hint="dd-mm-yyyy"
-                                                android:textColor="@android:color/black"
-                                                android:textSize="18sp" />
-                                        </LinearLayout>
-                    -->
-
-
-                        <!--
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:orientation="horizontal"
-                                            android:weightSum="2">
-
-                                            <TextView
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:text="End Time" />
-
-                                            <TextView
-                                                android:id="@+id/timeEnd"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_margin="20dp"
-                                                android:layout_weight="1"
-                                                android:hint="hh:mm"
-                                                android:textColor="@android:color/black"
-                                                android:textSize="18sp"
-                                                android:timePickerMode="spinner" />
-                                        </LinearLayout>
-                    -->
-
-                        <!--
-                                                <LinearLayout
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:orientation="horizontal"
-                                                    android:weightSum="2">
-
-                                                    <TextView
-                                                        android:layout_width="0dp"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_weight="1"
-                                                        android:text="Technician" />
-
-                                                    <Spinner
-                                                        android:id="@+id/technicianSpinner"
-                                                        android:layout_width="0dp"
-                                                        android:layout_height="wrap_content"
-                                                        android:layout_weight="1" />
-
-                                                </LinearLayout>
-                        -->
-
-
-                        <!--
-                                                <Button
-                                                    android:id="@+id/selectEquipmentButton"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_margin="10dp"
-                                                    android:visibility="invisible"
-                                                    android:textColor="@color/textColorbutton"
-                                                    android:background="@drawable/mybutton"
-                                                    android:text="Select Equipment" />
-                        -->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -867,17 +528,6 @@
                     android:layout_margin="20dp"
                     android:textColor="@color/textblackcolor" />
 
-                <!--
-                                <Button
-                                    android:id="@+id/selecttech"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/textColorbutton"
-                                    android:layout_margin="20dp"
-                                    android:visibility="invisible"
-                                    android:background="@drawable/mybutton"
-                                    android:text="Select technician" />
-                -->
 
 
                 <Button

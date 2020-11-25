@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e2e2e2"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
@@ -18,368 +19,306 @@
         app:menu="@menu/menu"
         app:title="Fault Report"
         app:titleMargin="8dp"
-        app:titleTextColor="#ffffff" />
+        app:titleTextColor="#fff" />
 
-    <ScrollView
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:verticalScrollbarPosition="right">
+        android:layout_margin="8dp"
+        android:background="#fff"
+        android:elevation="8dp"
+        app:cardCornerRadius="15dp">
 
-        <LinearLayout
-            android:id="@+id/line_layout"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="?dividerHorizontal"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:showDividers="middle"
-            tools:ignore="MissingClass">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Requestor Name" />
-
-                <EditText
-                    android:id="@+id/requestorNameEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1.2" />
-
-            </LinearLayout>
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical"
+            android:verticalScrollbarPosition="right">
 
 
             <LinearLayout
+                android:id="@+id/line_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:orientation="vertical"
+                tools:ignore="MissingClass">
 
-                <TextView
-                    android:layout_width="0dp"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Department" />
+                    android:layout_margin="8dp"
+                    android:hint="Requestor Name">
 
-                <Spinner
-                    android:id="@+id/departmentSpinner"
-                    android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/requestorNameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1.2" />
-            </LinearLayout>
+                    android:layout_margin="8dp"
+                    android:hint="Select Department">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                    <AutoCompleteTextView
+                        android:id="@+id/departmentSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
 
-                <TextView
-                    android:layout_width="0dp"
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Building" />
+                    android:layout_margin="8dp"
+                    android:hint="Select building">
 
-                <Spinner
-                    android:id="@+id/buildingSpinner"
-                    android:layout_width="0dp"
+                    <AutoCompleteTextView
+                        android:id="@+id/buildingSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1.2" />
+                    android:layout_margin="8dp"
+                    android:hint="Select location">
 
-            </LinearLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/locationSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:layout_width="0dp"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.65"
+                        android:layout_height="wrap_content"
+                        android:hint="Equipment Name">
 
-                    android:text="Location" />
-
-                <Spinner
-                    android:id="@+id/locationSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1.2" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Equipment" />
-
-                <Spinner
-                    android:id="@+id/equipmentSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1.2" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Contact No" />
-
-                <EditText
-                    android:id="@+id/contactNumber_fault"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1.2"
-                    android:hint="Contact No"
-                    android:inputType="phone"
-                    android:maxLength="12" />
-
-            </LinearLayout>
-
-
-            <!--
-                        <LinearLayout
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/equipment_textview"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
+                            android:editable="false"
+                            android:layout_height="wrap_content" />
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_weight=".8"
-                                android:text="Reported Time" />
-
-                            <TextView
-                                android:id="@+id/timePickerFault"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="20dp"
-                                android:layout_weight="1.2"
-                                android:background="@drawable/textview_shape"
-                                android:hint="hh:mm"
-                                android:textColor="@android:color/black"
-                                android:textSize="18sp"
-                                android:timePickerMode="spinner" />
-
-                        </LinearLayout>
-            -->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Priority" />
-
-                <Spinner
-                    android:id="@+id/prioritySpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1.2" />
-
-
-            </LinearLayout>
-
-
-            <EditText
-                android:id="@+id/LocationDescriptionEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="Location Description: "
-                android:inputType="text"
-                android:textSize="18sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Fault Category" />
-
-                <Spinner
-                    android:id="@+id/faultCategorySpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1.2" />
-            </LinearLayout>
-
-
-            <EditText
-                android:id="@+id/FaultDescriptionEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="Fault Description: "
-                android:inputType="text" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Maintenance Group" />
-
-                <Spinner
-                    android:id="@+id/selectMaintenanceSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1.2" />
-
-            </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 <!--
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.65"
+                        android:hint="Select Equipment">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Technician" />
+                        <AutoCompleteTextView
+                            android:id="@+id/equipmentSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
 
-                <Spinner
-                    android:id="@+id/techSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1.2" />
-
-            </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 -->
 
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="0dp"
+                        android:id="@+id/select_equip_btn"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight=".35"
+                        android:padding="10dp"
+                        app:cornerRadius="4dp"
+                        app:icon="@drawable/searchicon"
+                        app:iconSize="32dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2">
 
-                <TextView
-                    android:layout_width="0dp"
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Division" />
+                    android:layout_margin="8dp"
+                    android:hint="Contact No">
 
-                <Spinner
-                    android:id="@+id/divisionSpinner"
-                    android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/contactNumber_fault"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:maxLength="10" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_weight="1.2" />
+                    android:layout_margin="8dp"
+                    android:hint="Select Priority">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/prioritySpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:hint="location description">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/LocationDescriptionEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:hint="Select Fault Category">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/faultCategorySpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:hint="Fault description">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/FaultDescriptionEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:hint="Select Maintenance Group">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/selectMaintenanceSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:hint="Select Division">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/divisionSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.65"
+                        android:hint="Technicians">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/techtv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:editable="false" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/selecttech"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight=".35"
+                        android:padding="10dp"
+                        app:cornerRadius="4dp"
+                        app:icon="@drawable/searchicon"
+                        app:iconSize="32dp" />
+
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonCreateFaultReport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/mybutton"
+                    android:text="Create Fault Report"
+                    android:textColor="@color/textColorbutton" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/techtv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" />
+        </ScrollView>
 
-            <Button
-                android:id="@+id/selecttech"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:textColor="@color/textColorbutton"
-                android:background="@drawable/mybutton"
-                android:text="Select technician" />
-
-            <Button
-                android:id="@+id/buttonCreateFaultReport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:textColor="@color/textColorbutton"
-                android:background="@drawable/mybutton"
-                android:text="Create Fault Report" />
-
-
-        </LinearLayout>
-
-    </ScrollView>
-
-
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

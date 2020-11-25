@@ -1,5 +1,6 @@
 package com.synergy.FaultReport;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,18 +19,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
+import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
+import com.synergy.Search.EquipmentSearchActivityforEdit;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -57,19 +63,20 @@ public class FaultReportActivity extends AppCompatActivity {
     private List<list> genraltechlist = new ArrayList<list>();
 
     private ProgressDialog progressDialog;
+    private AutoCompleteTextView departmentSpinner, buildingSpinner, equipmentSpinner, locationSpinner,
+            prioritySpinner, faultCategorySpinner, divisionSpinner, selectMaintenanceSpinner;
+
+    private TextInputEditText requestorNameEditText, locationDescriptionEditText,
+            faultDescriptionEditText, contactNumberEditText, techTv,eqwuipmentTextView;
+
+    private MaterialButton selectTech, selectEquipBtn;
 
 
-    private EditText requestorNameEditText, remarksEt, contactNumberEditText, locationDescriptionEditText, faultDescriptionEditText;
-    private Spinner departmentSpinner, buildingSpinner, equipmentSpinner, locationSpinner, prioritySpinner,
-            divisionSpinner, faultCategorySpinner,
-            selectMaintenanceSpinner; //spinnerTechnician;
-
-    private Button buttonCreateFaultReport, selectTech;
-    private TextView datePickerEdit, timePickerEdit, techTv;
+    private Button buttonCreateFaultReport;
 
     private String requestorName, locDesc, faultDesc, token;
     private String contactNo;
-    private int depId, locId, buildId, maintId, priroityId, faultId, divisionid, equipId, techId;
+    private int depId, locId, buildId, maintId, priroityId, faultId, divisionid, equipId, techId,equipmentId;
 
     private ArrayAdapter<list> deptListAdapter;
     private ArrayAdapter<list> priAdapter;
@@ -79,7 +86,6 @@ public class FaultReportActivity extends AppCompatActivity {
     private ArrayAdapter<list> maintAdapter;
     private ArrayAdapter<list> locationAdapter;
     private ArrayAdapter<list> equipmentAdapter;
-    //  private ArrayAdapter<list> technicianAdapter;
     Toolbar toolbar;
 
 
@@ -94,9 +100,10 @@ public class FaultReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fault_report);
         toolbar = findViewById(R.id.toolbar_fault);
-        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.backarrow);
         attendedByIdsList = new ArrayList();
 
+        setSupportActionBar(toolbar);
 
         progressDialog = new ProgressDialog(FaultReportActivity.this);
         progressDialog.setTitle("Loading");
@@ -118,6 +125,15 @@ public class FaultReportActivity extends AppCompatActivity {
         selectTech.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+             /*   Intent intent1=new Intent(FaultReportActivity.this,SelectTechnicianActivity.class);
+                intent1.putExtra("token",token);
+                intent1.putExtra("workspace",workSpaceid);
+                intent1.putExtra("role",role);
+                startActivityForResult(intent1, 2);
+
+*/
+
                 AlertDialog.Builder mbuilder = new AlertDialog.Builder(FaultReportActivity.this);
                 mbuilder.setTitle("Select Technicians");
                 mbuilder.setMultiChoiceItems(listItems, checkedItems, (dialog, position, isChecked) -> {
@@ -159,147 +175,92 @@ public class FaultReportActivity extends AppCompatActivity {
         });
 
 
-
         deptListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDepList);
         deptListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         departmentSpinner.setAdapter(deptListAdapter);
-        departmentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        departmentSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                departmentSpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                depId = p.id;
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                list item = (list) parent.getItemAtPosition(position);
+                depId = item.id;
             }
         });
+
 
         priAdapter = new ArrayAdapter<list>(this, android.R.layout.simple_spinner_dropdown_item, genralPriorityList);
         priAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         prioritySpinner.setAdapter(priAdapter);
-        prioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        prioritySpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                prioritySpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                priroityId = p.id;
-                Log.d(TAG, "onItemSelected: prity id " + priroityId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                list item = (list) parent.getItemAtPosition(position);
+                priroityId = item.id;
             }
         });
-        equipmentAdapter = new ArrayAdapter<list>(this, android.R.layout.simple_spinner_dropdown_item, genralEquipment);
+
+      /*  equipmentAdapter = new ArrayAdapter<list>(this, android.R.layout.simple_spinner_dropdown_item, genralEquipment);
         equipmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         equipmentSpinner.setAdapter(equipmentAdapter);
-        equipmentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        equipmentSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                list p = (list) parent.getItemAtPosition(position);
-                equipId = p.id;
-                Log.d(TAG, "onItemSelected: equpid" + equipId);
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                list item = (list) parent.getItemAtPosition(position);
+                equipId = item.id;
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        });*/
         divisionAdapter = new ArrayAdapter<list>(this, android.R.layout.simple_spinner_dropdown_item, genralDivisionList);
         divisionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         divisionSpinner.setAdapter(divisionAdapter);
-        divisionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        divisionSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                list p = (list) parent.getItemAtPosition(position);
-                divisionid = p.id;
-                Log.d(TAG, "onItemSelected: division  id " + divisionid);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                list item = (list) parent.getItemAtPosition(position);
+                divisionid = item.id;
             }
         });
-
         buildingAdapter = new ArrayAdapter<list>(this, android.R.layout.simple_spinner_dropdown_item, genralBuildingList);
         buildingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         buildingSpinner.setAdapter(buildingAdapter);
-        buildingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        buildingSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                list p = (list) parent.getItemAtPosition(position);
-                buildId = p.id;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                list item = (list) parent.getItemAtPosition(position);
+                buildId = item.id;
                 callGenLoaction(buildId);
-                Log.d(TAG, "onItemSelected: building id " + buildId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
 
         faultCatAdapter = new ArrayAdapter<list>(this, android.R.layout.simple_spinner_dropdown_item, genralFaultCatList);
         faultCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         faultCategorySpinner.setAdapter(faultCatAdapter);
-        faultCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        faultCategorySpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                list p = (list) parent.getItemAtPosition(position);
-                faultId = p.id;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                list item = (list) parent.getItemAtPosition(position);
+                faultId = item.id;
             }
         });
-
         maintAdapter = new ArrayAdapter<list>(this, android.R.layout.simple_spinner_dropdown_item, genralFaultMaintGrp);
         maintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectMaintenanceSpinner.setAdapter(maintAdapter);
-        selectMaintenanceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        selectMaintenanceSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                list p = (list) parent.getItemAtPosition(position);
-                maintId = p.id;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                list item = (list) parent.getItemAtPosition(position);
+                maintId = item.id;
             }
         });
-
         locationAdapter = new ArrayAdapter<list>(this, android.R.layout.simple_spinner_dropdown_item, genralLoaction);
         locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(locationAdapter);
-        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        locationSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                list p = (list) parent.getItemAtPosition(position);
-                locId = p.id;
-                callSpinnerEquipment(locId);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                list item = (list) parent.getItemAtPosition(position);
+                locId = item.id;
+                callSpinnerEquipment(buildId);
             }
         });
-
     }
 
     private void callTechSpinner() {
@@ -345,7 +306,7 @@ public class FaultReportActivity extends AppCompatActivity {
                         String eqName = jsonArray.get(i).getAsJsonObject().get("name").getAsString();
                         int eqId = jsonArray.get(i).getAsJsonObject().get("id").getAsInt();
                         genralEquipment.add(new list(eqName, eqId));
-                        equipmentSpinner.setAdapter(equipmentAdapter);
+                      //equipmentSpinner.setAdapter(equipmentAdapter);
                     }
                 }
             }
@@ -577,7 +538,8 @@ public class FaultReportActivity extends AppCompatActivity {
     private void initViews() {
         selectTech = findViewById(R.id.selecttech);
         techTv = findViewById(R.id.techtv);
-
+        eqwuipmentTextView=findViewById(R.id.equipment_textview);
+        selectEquipBtn = findViewById(R.id.select_equip_btn);
         requestorNameEditText = findViewById(R.id.requestorNameEditText);
         contactNumberEditText = findViewById(R.id.contactNumber_fault);
         locationDescriptionEditText = findViewById(R.id.LocationDescriptionEditText);
@@ -591,7 +553,7 @@ public class FaultReportActivity extends AppCompatActivity {
         faultCategorySpinner = findViewById(R.id.faultCategorySpinner);
         selectMaintenanceSpinner = findViewById(R.id.selectMaintenanceSpinner);
         buttonCreateFaultReport = findViewById(R.id.buttonCreateFaultReport);
-        equipmentSpinner = findViewById(R.id.equipmentSpinner);
+      //  equipmentSpinner = findViewById(R.id.equipmentSpinner);
 
         genralDepList.add(new list("Select dept", 0));
         genralEquipment.add(new list("Select Equipment", 0));
@@ -601,27 +563,34 @@ public class FaultReportActivity extends AppCompatActivity {
         genralFaultCatList.add(new list("Select Fault Categories", 0));
         genralFaultMaintGrp.add(new list("Select Maintainence", 0));
         genralLoaction.add(new list("Select Location", 0));
-      //  genraltechlist.add(new list("Select Technician", 0));
         buttonCreateFaultReport.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
+                // buttonCreateFaultReport.setEnabled(false);
+                createFaultReport();
 
 
-                try {
-                    buttonCreateFaultReport.setEnabled(false);
-                    createFaultReport();
+            }
+        });
 
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
 
+        selectEquipBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FaultReportActivity.this, EquipmentSearchActivityforEdit.class);
+                intent.putExtra("token", token);
+                intent.putExtra("role", role);
+                intent.putExtra("workspace", workSpaceid);
+                startActivityForResult(intent, 1);
             }
         });
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void createFaultReport() throws ParseException {
+    private void createFaultReport() {
         requestorName = requestorNameEditText.getText().toString();
         faultDesc = faultDescriptionEditText.getText().toString();
         locDesc = locationDescriptionEditText.getText().toString();
@@ -642,13 +611,16 @@ public class FaultReportActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(contactNumberEditText.getText())
                 || buildId == 0 || locId == 0 || maintId == 0 ||
                 priroityId == 0 || depId == 0 || faultId == 0 ||
-                equipId == 0 || attendedByIdsList.isEmpty() ||
+                equipmentId == 0 || attendedByIdsList.isEmpty() ||
                 TextUtils.isEmpty(locationDescriptionEditText.getText())
                 || TextUtils.isEmpty(requestorNameEditText.getText())) {
+
             Toast.makeText(this, "Please Select All Feilds", Toast.LENGTH_SHORT).show();
         } else if (contactNo.length() < 8) {
+
             Toast.makeText(this, "Contact Number not Valid", Toast.LENGTH_SHORT).show();
         } else {
+
             Location location = new Location();
             location.setId(locId);
             Building building = new Building();
@@ -664,7 +636,7 @@ public class FaultReportActivity extends AppCompatActivity {
             Division division = new Division();
             division.setId(divisionid);
             Equipment equipment = new Equipment();
-            equipment.setId(equipId);
+            equipment.setId(equipmentId);
             Log.d(TAG, "createFaultReport: jk" + attendedByIdsList);
 
             ArrayList<AttendedBy> attendedBy = new ArrayList<>();
@@ -698,10 +670,9 @@ public class FaultReportActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                         finish();
                     } else
-                        Log.d(TAG, "onResponse: hi"+response.message());
-                    Log.d(TAG, "onResponse: hl"+response.raw());
-                        progressDialog.dismiss();
-                    //finish();
+                        Log.d(TAG, "onResponse: hi" + response.message());
+                    Log.d(TAG, "onResponse: hl" + response.raw());
+                    progressDialog.dismiss();
                 }
 
                 @Override
@@ -711,7 +682,6 @@ public class FaultReportActivity extends AppCompatActivity {
                     Toast.makeText(FaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_LONG).show();
                     Log.d(TAG, "onFailure:  " + t.getCause());
                     Log.d(TAG, "onFailure: " + t.getMessage());
-                    //finish();
                 }
             });
         }
@@ -741,6 +711,33 @@ public class FaultReportActivity extends AppCompatActivity {
             logoutClass.logout(this);
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                assert data != null;
+                String eqip = data.getStringExtra("equipment_name");
+                equipmentId = data.getIntExtra("equipmentId", 0);
+
+                eqwuipmentTextView.setText(eqip);
+            }
+        }
+/*
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                assert data != null;
+                String eqipName = data.getStringExtra("equipment_name");
+                equipmentId = data.getIntExtra("equipmentId", 0);
+                Log.d(TAG, "onActivityResult: " + equipmentId);
+
+                eqwuipmentTextView.setText(eqipName);
+            }
+        }
+*/
+
     }
 
 

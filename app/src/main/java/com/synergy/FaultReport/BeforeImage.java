@@ -215,7 +215,7 @@ public class BeforeImage extends AppCompatActivity {
                             .setMessage("Cannot add more than 5 pictures")
                             .setTitle("Alert")
                             .setIcon(R.drawable.ic_error)
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     uploadBtn.setEnabled(false);

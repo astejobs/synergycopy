@@ -53,6 +53,7 @@ public class UploadFile extends AppCompatActivity {
         setContentView(R.layout.activity_upload_file);
         uploadFileTv = findViewById(R.id.upload_file);
         uplaodButton = findViewById(R.id.upload_file_btn);
+        uplaodButton.setEnabled(false);
         progressDialog = new ProgressDialog(UploadFile.this);
         progressDialog.setTitle("Uploading File...");
         progressDialog.setCancelable(false);
@@ -88,6 +89,7 @@ public class UploadFile extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 10 && resultCode == RESULT_OK && data != null) {
             assert data != null;
+            uplaodButton.setEnabled(true);
             uploadFileTv.setText(data.getData().toString());
             Uri uri = data.getData();
 

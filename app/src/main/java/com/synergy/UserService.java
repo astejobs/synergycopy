@@ -11,6 +11,7 @@ import com.synergy.EquipmentSearch.TaskImageResponse;
 import com.synergy.SearchTasks.TaskSearchResponse;
 import com.synergy.EquipmentSearch.UploadImageRequest;
 import com.synergy.FaultReport.CreateFaultRequestPojo;
+import com.synergy.FaultReport.SelectTechnicianResponse;
 import com.synergy.FaultReport.UploadPictureRequest;
 import com.synergy.Otp.OtpRequest;
 import com.synergy.Otp.ResendOtpRequest;
@@ -210,11 +211,13 @@ public interface UserService {
                                   @Header("workspace") String workspace,
                                   @Body UploadPictureRequest uploadPictureRequest);
 
-    // eq search http://192.168.1.117:8082/api/equip/acmv8310
-    @GET("equip/{equipmentCode}")
+    // http://192.168.2.18:8081/api/equip/search?query=e
+    @GET("equip/search?")
     @Headers("Content-Type: application/json")
-    Call<EquipmentSearchResponseforEdit> getSearchEquipment(@Path("equipmentCode") String path,
-                                                            @Header("Authorization") String token);
+    Call<List<EquipmentSearchResponseforEdit>> getSearchEquipment(@Query("query") String query,
+                                                            @Header("Authorization") String token,
+                                                            @Header("workspace")String workspace,
+                                                            @Header("role")String role);
 
     //update
     @PUT("faultreport")
@@ -292,4 +295,15 @@ public interface UserService {
                                          @Header("role") String role,
                                          @Header("Authorization") String token,
                                          @Header("workspace") String workspace);
+
+
+    //select technician
+    @GET("general/techniciansearch/?")
+    @Headers("Content-Type: application/json")
+    Call<SelectTechnicianResponse> getTechnicianList(@Query("query") String query,
+                                                     @Header("Authorization") String token,
+                                                     @Header("workspace")String workspace,
+                                                     @Header("role")String role);
+
+
 }

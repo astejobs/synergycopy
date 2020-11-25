@@ -64,7 +64,8 @@ public class Dashboard extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar_dashboard);
         setSupportActionBar(toolbar);
-        if (user.equals("ManagingAgent") || user.equals("Technician")) {
+
+        if(user.equals("ManagingAgent") || user.equals("Technician")) {
 
             layout_m1.removeAllViews();
             layout_m2.removeAllViews();
@@ -78,7 +79,6 @@ public class Dashboard extends AppCompatActivity {
             linearLayoutDashboard.removeView(cardViewSetting);
             linearLayoutDashboard.removeView(cardViewTaskSearch);
             linearLayoutDashboard.removeView(cardViewEqTask);
-
 
             LinearLayout a = new LinearLayout(this);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,

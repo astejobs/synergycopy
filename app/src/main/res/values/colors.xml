@@ -9,6 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="textColorApp">#0754a4</color>
     <color name="textColorbutton">#ffffff</color>
-    <color name="textColor">#ffffff</color>
+    <color name="textColor">#000000</color>
 
 </resources>

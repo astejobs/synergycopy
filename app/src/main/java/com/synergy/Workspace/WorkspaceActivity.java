@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,6 +47,7 @@ public class WorkspaceActivity extends AppCompatActivity {
     private String user;
     private LogoutClass logoutClass = new LogoutClass();
 
+Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

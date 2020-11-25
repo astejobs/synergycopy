@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Search.Search"
     android:background=" #e2e2e2"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Search.Search">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_search"
@@ -40,37 +40,32 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-                <SearchView
-                    android:id="@+id/search_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="60sp"
-                   android:layout_margin="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:alpha=".7"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/mysearcht"
-                    android:elevation="2dp"
-                    android:padding="4dp"
-                    android:queryHint="Search here"
-                    android:textColorHint="@color/textColor" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="6dp">
-
-            <ListView
-                android:id="@+id/list_view"
+            <SearchView
+                android:id="@+id/search_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="5sp"
+                android:layout_height="60sp"
+                android:layout_margin="8dp"
+                android:background="@drawable/mysearcht"
                 android:elevation="2dp"
-                android:padding="4dp" />
-        </LinearLayout>
+                android:padding="2dp"
+                android:queryHint="Search here"
+                android:textColorHint="@color/textColor" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="5sp"
+                    android:elevation="2dp"
+                    android:padding="4dp" />
+            </LinearLayout>
 
 
         </LinearLayout>

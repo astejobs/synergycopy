@@ -139,6 +139,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_fault_report);
         progressDialog = new ProgressDialog(EditFaultReportActivity.this);
+        progressDialog.setTitle("Loading...");
+
         toolbar = findViewById(R.id.toolbar_edit_fault);
         setSupportActionBar(toolbar);
 
@@ -214,9 +216,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
         faultDetailsEditText.setEnabled(false);
         mainGrpSpinner.setEnabled(false);
         observationEditText.setEnabled(false);
-       // diagnosisEditText.setEnabled(false);
+        // diagnosisEditText.setEnabled(false);
         actionTakenEditText.setEnabled(false);
-      //costCenterSpinner.setEnabled(false);
+        //costCenterSpinner.setEnabled(false);
         //  technicianSpinner.setEnabled(false);
         //  selectEquipmentButton.setEnabled(false);
         plusbtn.setEnabled(false);
@@ -377,7 +379,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 list p = (list) parent.getItemAtPosition(position);
                 buildId = p.id;
-                progressDialog.setTitle("Loading...");
                 Call<JsonArray> call = APIClient.getUserServices().getGenLocation(token, buildId);
                 call.enqueue(new Callback<JsonArray>() {
                     @Override
@@ -694,11 +695,11 @@ public class EditFaultReportActivity extends AppCompatActivity {
         //  selectTech = findViewById(R.id.selecttech);
         equipmentIdTv = findViewById(R.id.eq_id_send);
         updateFaultReportButton = findViewById(R.id.updateFaultReportButton);
-      //  diagnosisEditText = findViewById(R.id.diagnosis);
+        //  diagnosisEditText = findViewById(R.id.diagnosis);
         actionTakenEditText = findViewById(R.id.actionTaken);
         statusSpinner = findViewById(R.id.statusSpinner);
         //   technicianSpinner = findViewById(R.id.technicianSpinner);
-      //  costCenterSpinner = findViewById(R.id.costCenter);
+        //  costCenterSpinner = findViewById(R.id.costCenter);
         mainGrpSpinner = findViewById(R.id.mainGrp);
         //selectEquipmentButton = findViewById(R.id.selectEquipmentButton);
         faultCategorySpinner = findViewById(R.id.faultCategory);
@@ -885,7 +886,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     }
 
     private void initviewsAndGetInitialDataOnEquip(String data) {
-
+        progressDialog.show();
         Call<JsonObject> call = APIClient.getUserServices().getCallEquipment(data, token, role, workSpaceid);
         call.enqueue(new Callback<JsonObject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -1102,7 +1103,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
 
                 } else
-                    Toast.makeText(EditFaultReportActivity.this, "Error : " + response.code(), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
             }
 
             @Override
@@ -1118,7 +1119,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
     private void initviewsAndGetInitialData(String data) {
-
+        progressDialog.show();
         Call<JsonObject> call = APIClient.getUserServices().getEditfaultDetails(data, workSpaceid, token, role);
         call.enqueue(new Callback<JsonObject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -1300,7 +1301,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
 
 
-
                     if (!(jsonObject.get("activationTime").isJsonNull())) {
                         String hour = jsonObject.get("activationTime").getAsJsonObject().get("hour").getAsString();
                         String minute = jsonObject.get("activationTime").getAsJsonObject().get("minute").getAsString();
@@ -1342,6 +1342,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
 
 
+                } else {
+                    progressDialog.dismiss();
                 }
             }
 
@@ -1437,8 +1439,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
     }
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1492,7 +1492,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         String contactNumber = requestorNumberEditText.getText().toString();
 
-        if ( (TextUtils.isEmpty(requestorNumberEditText.getText())) || ((contactNumber.length() < 8))) {
+        if ((TextUtils.isEmpty(requestorNumberEditText.getText())) || ((contactNumber.length() < 8))) {
             Toast.makeText(this, "Contact not valid", Toast.LENGTH_SHORT).show();
 
         } else {
@@ -1664,7 +1664,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 Intent intent = new Intent(EditFaultReportActivity.this, BeforeImage.class);
                 intent.putExtra("token", token);
                 intent.putExtra("value", "Before");
-                intent.putExtra("checkForFrid",frid);
+                intent.putExtra("checkForFrid", frid);
                 intent.putExtra("workspace", workSpaceid);
                 intent.putExtra("frId", frIdEditText.getText().toString());
                 startActivity(intent);
@@ -1677,7 +1677,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 Intent intent = new Intent(EditFaultReportActivity.this, BeforeImage.class);
                 intent.putExtra("token", token);
                 intent.putExtra("value", "After");
-                intent.putExtra("checkForFrid",frid);
+                intent.putExtra("checkForFrid", frid);
                 intent.putExtra("workspace", workSpaceid);
                 intent.putExtra("frId", frIdEditText.getText().toString());
                 startActivity(intent);
