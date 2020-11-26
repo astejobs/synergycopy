@@ -79,6 +79,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private String roleTask;
     private int taskId;
     private String afterImage, beforeImage;
+    private String source;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +126,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         String workspace = intent.getStringExtra("workspace");
         afterImage = intent.getStringExtra("afterImage");
         beforeImage = intent.getStringExtra("beforeImage");
+        source = intent.getStringExtra("source");
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
@@ -280,7 +282,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                     statusSpinner.setAdapter(statusSpinnerAdapter);
                     if (!getPmTaskItemsResponse.getStatus().equals("OPEN")) {
                         statusSpinner.setSelection(statusList.indexOf(getPmTaskItemsResponse.getStatus()), true);
-                    }else statusSpinner.setSelection(statusList.indexOf("Open"));
+                    } else statusSpinner.setSelection(statusList.indexOf("Open"));
                     if (getPmTaskItemsResponse.getRemarks() != null) {
                         remarksTextView.setText(getPmTaskItemsResponse.getRemarks());
                     }
@@ -288,8 +290,10 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                     if (getPmTaskItemsResponse.getCompletedBy() != null) {
                         nameTextView.setText(getPmTaskItemsResponse.getCompletedBy());
                     }
+                    if (!source.equals("search")) {
+                        buttonUpdate.setEnabled(true);
+                    }
 
-                    buttonUpdate.setEnabled(true);
                     checkListButton.setEnabled(true);
                 } else
                     Toast.makeText(PmTaskActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();

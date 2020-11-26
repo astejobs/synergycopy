@@ -19,34 +19,22 @@ import java.net.UnknownHostException;
 
 public class CheckInternet extends BroadcastReceiver {
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        View view = null;
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
             boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
             if (noConnectivity) {
-                Toast.makeText(context, "Disconnected!", Toast.LENGTH_SHORT).show();
-                Snackbar snackbar = Snackbar.make(view.findViewById(R.id.layout_dummy), "Message is deleted", Snackbar.LENGTH_LONG)
+                Toast.makeText(context, "Disconnected!", Toast.LENGTH_LONG).show();
+                /*Snackbar snackbar = Snackbar.make(, "Message is deleted", Snackbar.LENGTH_LONG)
                         .setAction("UNDO", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Toast.makeText(context,"Undo Clicked",Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                snackbar.show();
-            } else Toast.makeText(context, "Connected!", Toast.LENGTH_SHORT).show();
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(context, "Undo Clicked", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                snackbar.show();*/
+            } else Toast.makeText(context, "Connected!", Toast.LENGTH_LONG).show();
         }
-    }
-
-    private String isNetworkAvailable(Context context) {
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null) {
-            return "Connected";
-        } else return "Check your internet connection";
     }
 }

@@ -48,6 +48,7 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
         String workspace = currentPosition.getWorkspace();
         String afterImage = currentPosition.getAfterImage();
         String beforeImage = currentPosition.getBeforeImage();
+        String source = currentPosition.getSource();
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +59,7 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
                 intent.putExtra("taskId", currentPosition.getTaskId());
                 intent.putExtra("workspace", workspace);
                 intent.putExtra("afterImage", afterImage);
+                intent.putExtra("source", source);
                 intent.putExtra("beforeImage", beforeImage);
                 v.getContext().startActivity(intent);
 

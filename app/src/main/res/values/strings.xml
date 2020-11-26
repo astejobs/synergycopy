@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">Synergy</string>
+    <string name="app_name">App Name</string>
     <string name="opt">Code has been sent to Your E-mail
 Please enter the code</string>
 
-</resources>
+    <string name="fab1">Camera</string>
+    <string name="extended_fab_label">Cam</string>
 
+</resources>

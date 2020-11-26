@@ -554,42 +554,41 @@
             android:layout_margin="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/before_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
+                android:text="Before"
+                android:layout_marginBottom="10dp"
+                android:textColor="#ffffff"
                 app:backgroundTint="@color/colorCodeSchemeApp"
-                app:elevation="6dp"
-                app:fabSize="auto" />
+                app:fabSize="normal" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/after_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:elevation="6dp"
+                android:layout_marginBottom="10dp"
                 android:text="After"
+                android:textColor="#ffffff"
                 app:backgroundTint="@color/colorCodeSchemeApp"
                 app:borderWidth="0dp"
-                app:elevation="6dp"
-                app:fabSize="auto" />
+                app:fabSize="normal" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/images_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:backgroundTint="@color/colorCodeSchemeApp"
-                android:text="images"
+                android:layout_marginBottom="10dp"
+                android:text="Images"
+                app:backgroundTint="@color/colorCodeSchemeApp"
+                android:textColor="#ffffff"
                 app:borderWidth="0dp"
-                app:elevation="6dp"
                 app:fabSize="normal" />
 
         </LinearLayout>

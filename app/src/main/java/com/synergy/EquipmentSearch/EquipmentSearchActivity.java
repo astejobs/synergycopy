@@ -132,7 +132,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                     RecyclerView recyclerView = findViewById(R.id.recycler_view_equip);
 
                     ArrayList<EquipmentSearchCard> equipmentSearchCardArrayList = new ArrayList<>();
-
+                    String source = "scan";
                     for (int i = 0; i < equipmentSearchResponse.size(); i++) {
                         String taskNumber = equipmentSearchResponse.get(i).getTaskNumber();
                         int taskId = equipmentSearchResponse.get(i).getTaskId().intValue();
@@ -144,7 +144,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                         String beforeImage = equipmentSearchResponse.get(i).getBeforeImage();
 
 
-                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace, status, buildingName, locationName, scheduleDate, afterImage, beforeImage));
+                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace, status, buildingName, locationName, scheduleDate, afterImage, beforeImage, source));
                     }
                     recyclerView.setHasFixedSize(true);
                     EquipmentSearchAdapter mAdapter = new EquipmentSearchAdapter(equipmentSearchCardArrayList);

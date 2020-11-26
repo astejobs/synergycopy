@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.synergy"
-    >
+    package="com.synergy">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -18,7 +17,6 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/iclogo"
-
         android:networkSecurityConfig="@xml/security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -30,7 +28,12 @@
         <activity android:name=".Search.PreviousImagesActivity" />
         <activity android:name=".Setting.SettingActivity" />
         <activity android:name=".EquipmentSearch.CheckListActivity" />
-        <activity android:name=".Search.EditFaultReportActivity" />
+        <activity android:name=".Search.EditFaultReportActivity" >
+            <intent-filter >
+                <action android:name="EditFaultReportActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".EquipmentSearch.PmTaskActivity" />
         <activity android:name=".Search.EquipmentSearchActivityforEdit" />
         <activity android:name=".MainActivityLogin" />
@@ -116,12 +119,6 @@
             </intent-filter>
         </service>
 
-        <!--<receiver android:name=".CheckInternet">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-            </intent-filter>
-        </receiver>-->
     </application>
 
 </manifest>

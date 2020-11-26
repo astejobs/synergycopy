@@ -84,10 +84,13 @@ public class UploadTaskImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //selectImage(UploadTaskImageActivity.this, REQUEST_IMAGEBEFORE_CAPTURE);
-                Intent takePictureIntent = new Intent();
+                /*Intent takePictureIntent = new Intent();
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
+                }*/
+
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto, 13);
             }
         });
 
@@ -134,7 +137,7 @@ public class UploadTaskImageActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         String imageViewValue;
-
+    if (data != null) {
         if (requestCode == Integer.valueOf(String.valueOf(0) + String.valueOf(REQUEST_IMAGEBEFORE_CAPTURE)) ||
                 requestCode == Integer.valueOf(String.valueOf(1) + String.valueOf(REQUEST_IMAGEBEFORE_CAPTURE)) &&
                         resultCode == Activity.RESULT_OK) {
@@ -204,7 +207,7 @@ public class UploadTaskImageActivity extends AppCompatActivity {
                 }
             }
         }
-
+    }
     }
 
     private void uploadPicture(String encodedStringBuilder, Bitmap photo, ImageView imageView, String imageViewValue) {

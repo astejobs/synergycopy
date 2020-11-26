@@ -109,6 +109,8 @@ public class SearchTaskActivity extends AppCompatActivity {
             public void onResponse(Call<List<TaskSearchResponse>> call, Response<List<TaskSearchResponse>> response) {
                 if (response.code() == 200) {
 
+                    String source = "search";
+
                     List<TaskSearchResponse> equipmentSearchResponse = response.body();
                     RecyclerView recyclerView = findViewById(R.id.recycler_view_Task);
                     for (int i = 0; i < equipmentSearchResponse.size(); i++) {
@@ -121,7 +123,7 @@ public class SearchTaskActivity extends AppCompatActivity {
                         String afterImage = equipmentSearchResponse.get(i).getAfterImage();
                         String beforeImage = equipmentSearchResponse.get(i).getBeforeImage();
                       
-                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace, status, buildingName, locationName, scheduleDate, afterImage, beforeImage));
+                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace, status, buildingName, locationName, scheduleDate, afterImage, beforeImage, source));
                     }
 
                     recyclerView.setHasFixedSize(true);

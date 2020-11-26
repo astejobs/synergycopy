@@ -33,6 +33,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -65,7 +66,8 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 public class EditFaultReportActivity extends AppCompatActivity {
     //test
 
-    private FloatingActionButton fab_main, fab_before, fab_after;
+    private ExtendedFloatingActionButton fab_before, fab_after;
+    private ExtendedFloatingActionButton fab_main;
     private Boolean isMenuOpen = false;
     private final OvershootInterpolator interpolator = new OvershootInterpolator();
     private Float translationY = 100f;
@@ -73,6 +75,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private String timeS, remarksString, techName;
     private String frId;
     TextView uploadFileTv;
+    private int idStatus;
+    private String statusNameCurrent;
     Button uploadFileBtn;
     Intent uploadFileIntent;
     private int tHour, tMinute;
@@ -825,19 +829,13 @@ public class EditFaultReportActivity extends AppCompatActivity {
         genCostCebterList.add(new list("Select CostCenter", 0));*/
 
         String tech = "Technician";
-        if (role.equals(tech)) {
+        if (!role.equals(tech)) {
             genralStatusList.add("Select status");
-            genralStatusList.add("Open");
-            genralStatusList.add("Pause");
-            genralStatusList.add("Completed");
-
-        } else {
-            genralStatusList.add("Select status");
-            genralStatusList.add("Open");
             genralStatusList.add("Closed");
-            genralStatusList.add("Pause");
-            genralStatusList.add("Completed");
         }
+        genralStatusList.add("Open");
+        genralStatusList.add("Pause");
+        genralStatusList.add("Completed");
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
@@ -1414,6 +1412,23 @@ public class EditFaultReportActivity extends AppCompatActivity {
         statusListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(statusListAdapter);
 
+
+        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (statusSpinner.getSelectedItem().equals("Pause")) {
+                    statusSpinner.setSelection(idStatus);
+                }else if (statusSpinner.getSelectedItem().equals("Completed")){
+                    statusSpinner.setSelection(idStatus);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
       /*  costCenterListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genCostCebterList);
         costCenterListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         costCenterSpinner.setAdapter(costCenterListAdapter);*/
@@ -1522,6 +1537,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 eqId = Integer.parseInt(equipmentIdTv.getText().toString());
             }
 
+            statusNameCurrent = statusSpinner.getSelectedItem().toString();
+            idStatus = genralStatusList.indexOf(statusNameCurrent);
             attendedByIdsList = new ArrayList();
 
             String attendedbyString = techTv.getText().toString();
@@ -1690,7 +1707,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     private void openMenu() {
         isMenuOpen = !isMenuOpen;
-        fab_main.animate().setInterpolator(interpolator).rotation(45f).setDuration(300).start();
+        fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
         fab_before.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
     }
