@@ -11,7 +11,9 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +44,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
+import com.synergy.CheckInternet;
 import com.synergy.Constants;
 import com.synergy.Dashboard.Dashboard;
 import com.synergy.FaultReport.BeforeImage;
@@ -142,6 +145,21 @@ public class EditFaultReportActivity extends AppCompatActivity {
             mainGrpSpinner, observationEditText,
             requestorNumberEditText, actionTakenEditText, equipmentTextView, editText;
 
+    private final CheckInternet checkInternet = new CheckInternet();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -235,6 +253,14 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     listItems = new String[stockList.size()];
                     listItems = stockList.toArray(listItems);
                     checkedItems = new boolean[listItems.length];
+                } else if (response.code() == 401) {
+                    Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(EditFaultReportActivity.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -388,22 +414,20 @@ public class EditFaultReportActivity extends AppCompatActivity {
         genCostCebterList.add(new list("Select CostCenter", 0));*/
 
         String tech = "Technician";
-        String managingAgent="ManagingAgent";
+        String managingAgent = "ManagingAgent";
         if (role.equals(tech)) {
             genralStatusList.add("Select status");
             genralStatusList.add("Open");
-           // genralStatusList.add("Pause");
+            // genralStatusList.add("Pause");
             genralStatusList.add("Completed");
 
-        }
-        else if (role.equals(managingAgent)){
+        } else if (role.equals(managingAgent)) {
             genralStatusList.add("Select status");
             genralStatusList.add("Open");
             genralStatusList.add("Closed");
             genralStatusList.add("Pause");
 
-        }
-            else {
+        } else {
             genralStatusList.add("Select status");
             genralStatusList.add("Open");
             genralStatusList.add("Closed");
@@ -689,8 +713,16 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         activationTime.setText(date);
                     }
 
-                } else
-                    progressDialog.dismiss();
+                } else if (response.code() == 401) {
+                    Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(EditFaultReportActivity.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
+                }
+                progressDialog.dismiss();
             }
 
             @Override
@@ -938,9 +970,17 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
 
 
-                } else {
-                    progressDialog.dismiss();
+                } else if (response.code() == 401) {
+                    Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(EditFaultReportActivity.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 }
+                progressDialog.dismiss();
+
             }
 
             @Override
@@ -1226,6 +1266,14 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         }
 
 
+                    } else if (response.code() == 401) {
+                        Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                        LogoutClass logoutClass = new LogoutClass();
+                        logoutClass.logout(EditFaultReportActivity.this);
+                    } else if (response.code() == 500) {
+                        Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                    } else if (response.code() == 404) {
+                        Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                     } else if (response.code() == 500) {
                         AlertDialog.Builder emptyDailog = new AlertDialog.Builder(EditFaultReportActivity.this);
                         emptyDailog.setTitle("Error: " + response.code() + ". Please fill all the required fields!");

@@ -6,7 +6,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +22,8 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.CheckInternet;
+import com.synergy.Constants;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
@@ -44,6 +48,20 @@ public class Search extends AppCompatActivity {
     private SearchResponseAdapter searchResponseAdapter;
     Toolbar toolbar;
     String role;
+
+    private final CheckInternet checkInternet = new CheckInternet();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -147,6 +165,14 @@ public class Search extends AppCompatActivity {
                     searchResponseAdapter.notifyDataSetChanged();
 
 
+                }else if (response.code() == 401) {
+                    Toast.makeText(Search.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(Search.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(Search.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(Search.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -213,13 +239,6 @@ public class Search extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-            /*SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent intent = new Intent(this, MainActivityLogin.class);
-            startActivity(intent);
-            finishAffinity();*/
 
             LogoutClass logoutClass = new LogoutClass();
             logoutClass.logout(this);

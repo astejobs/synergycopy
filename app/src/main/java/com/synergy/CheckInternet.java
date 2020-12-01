@@ -27,10 +27,18 @@ public class CheckInternet extends BroadcastReceiver {
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
             boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
             if (noConnectivity) {
-                Toast.makeText(context, "Check your internet connection!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "Check your internet connection!", Toast.LENGTH_LONG).show();
+                new AlertDialog.Builder(context)
+                        .setMessage("Check your internet connection")
+                        .setCancelable(false)
+                        .setIcon(R.drawable.ic_error)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
             }
-            //Snackbar.make(, "Check your connection!", Snackbar.LENGTH_LONG).show();
-            //else Toast.makeText(context, "Connected!", Toast.LENGTH_LONG).show();
         }
     }
 }

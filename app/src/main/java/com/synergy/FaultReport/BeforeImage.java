@@ -9,9 +9,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -24,6 +26,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.CheckInternet;
+import com.synergy.Constants;
+import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
@@ -55,7 +60,21 @@ public class BeforeImage extends AppCompatActivity {
     private String value;
     private Toolbar toolbar;
     private String user;
-    String checkForFrid;
+    private String checkForFrid;
+
+    private final CheckInternet checkInternet = new CheckInternet();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
 
 
     @Override
@@ -70,9 +89,9 @@ public class BeforeImage extends AppCompatActivity {
         value = intent.getStringExtra("value");
         user = intent.getStringExtra("role");
         checkForFrid = intent.getStringExtra("checkForFrid");
-        Log.d(TAG, "onCreate: hi"+user);
+        Log.d(TAG, "onCreate: hi" + user);
 
-        if (checkForFrid==null) {
+        if (checkForFrid == null) {
 
             takeBtn = findViewById(R.id.take_photo_btn);
             uploadBtn = findViewById(R.id.upload_btn);
@@ -119,7 +138,7 @@ public class BeforeImage extends AppCompatActivity {
                     finish();
                 }
             });
-        }else {
+        } else {
             previousImagesbtn = findViewById(R.id.previous_images);
             takeBtn = findViewById(R.id.take_photo_btn);
             uploadBtn = findViewById(R.id.upload_btn);
@@ -208,8 +227,15 @@ public class BeforeImage extends AppCompatActivity {
                         }
                     })
                             .show();
-                }
-                if (response.code() == 406) {
+                } else if (response.code() == 401) {
+                    Toast.makeText(BeforeImage.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(BeforeImage.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(BeforeImage.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(BeforeImage.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 406) {
                     Toast.makeText(BeforeImage.this, "Cannot add more than 5 pictures", Toast.LENGTH_SHORT).show();
                     new AlertDialog.Builder(BeforeImage.this)
                             .setMessage("Cannot add more than 5 pictures")
@@ -270,14 +296,7 @@ public class BeforeImage extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-/*
-            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent in = new Intent(BeforeImage.this, MainActivityLogin.class);
-            startActivity(in);
-            finishAffinity();*/
+
             LogoutClass logoutClass = new LogoutClass();
             logoutClass.logout(this);
         }

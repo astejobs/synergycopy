@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,11 +23,14 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.CheckInternet;
+import com.synergy.Constants;
 import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.EquipmentSearch.EquipmentSearchAdapter;
 import com.synergy.EquipmentSearch.EquipmentSearchCard;
 import com.synergy.LogoutClass;
 import com.synergy.R;
+import com.synergy.Search.EditFaultReportActivity;
 import com.synergy.Search.SearchResponse;
 import com.synergy.Search.SearchResponseAdapter;
 
@@ -47,6 +52,20 @@ public class SearchTaskActivity extends AppCompatActivity {
     private String role;
     private ArrayList<EquipmentSearchCard> equipmentSearchCardArrayList = new ArrayList<>();
     private EquipmentSearchAdapter mAdapter = new EquipmentSearchAdapter(equipmentSearchCardArrayList);
+
+    private final CheckInternet checkInternet = new CheckInternet();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +149,14 @@ public class SearchTaskActivity extends AppCompatActivity {
 
                     recyclerView.setLayoutManager(new LinearLayoutManager(SearchTaskActivity.this));
                     recyclerView.setAdapter(mAdapter);
+                }else if (response.code() == 401) {
+                    Toast.makeText(SearchTaskActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(SearchTaskActivity.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(SearchTaskActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(SearchTaskActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 }
                 progressDialog.dismiss();
             }

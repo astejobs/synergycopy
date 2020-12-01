@@ -9,7 +9,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,6 +33,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
+import com.synergy.CheckInternet;
+import com.synergy.Constants;
 import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
@@ -61,23 +65,16 @@ public class FaultReportActivity extends AppCompatActivity {
     private List<list> genralLoaction = new ArrayList<list>();
     private List<list> genralEquipment = new ArrayList<list>();
     private List<list> genraltechlist = new ArrayList<list>();
-
     private ProgressDialog progressDialog;
     private AutoCompleteTextView departmentSpinner, buildingSpinner, equipmentSpinner, locationSpinner,
             prioritySpinner, faultCategorySpinner, divisionSpinner, selectMaintenanceSpinner;
-
     private TextInputEditText requestorNameEditText, locationDescriptionEditText,
-            faultDescriptionEditText, contactNumberEditText, techTv,eqwuipmentTextView;
-
+            faultDescriptionEditText, contactNumberEditText, techTv, eqwuipmentTextView;
     private MaterialButton selectTech, selectEquipBtn;
-
-
     private Button buttonCreateFaultReport;
-
     private String requestorName, locDesc, faultDesc, token;
     private String contactNo;
-    private int depId, locId, buildId, maintId, priroityId, faultId, divisionid, equipId, techId,equipmentId;
-
+    private int depId, locId, buildId, maintId, priroityId, faultId, divisionid, equipId, techId, equipmentId;
     private ArrayAdapter<list> deptListAdapter;
     private ArrayAdapter<list> priAdapter;
     private ArrayAdapter<list> divisionAdapter;
@@ -86,14 +83,26 @@ public class FaultReportActivity extends AppCompatActivity {
     private ArrayAdapter<list> maintAdapter;
     private ArrayAdapter<list> locationAdapter;
     private ArrayAdapter<list> equipmentAdapter;
-    Toolbar toolbar;
-
-
+    private Toolbar toolbar;
     boolean[] checkedItems;
     ArrayList<Integer> mUserItems = new ArrayList<>();
     List<String> stockList = new ArrayList<>();
     String[] listItems;
     List attendedByIdsList;
+
+    private final CheckInternet checkInternet = new CheckInternet();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,6 +292,14 @@ public class FaultReportActivity extends AppCompatActivity {
                     listItems = new String[stockList.size()];
                     listItems = stockList.toArray(listItems);
                     checkedItems = new boolean[listItems.length];
+                } else if (response.code() == 401) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(FaultReportActivity.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -306,8 +323,16 @@ public class FaultReportActivity extends AppCompatActivity {
                         String eqName = jsonArray.get(i).getAsJsonObject().get("name").getAsString();
                         int eqId = jsonArray.get(i).getAsJsonObject().get("id").getAsInt();
                         genralEquipment.add(new list(eqName, eqId));
-                      //equipmentSpinner.setAdapter(equipmentAdapter);
+                        //equipmentSpinner.setAdapter(equipmentAdapter);
                     }
+                }else if (response.code() == 401) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(FaultReportActivity.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -339,6 +364,12 @@ public class FaultReportActivity extends AppCompatActivity {
                     // callSpinnerEquipment(buildId);
 
 
+                } else if (response.code() == 401) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 500) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     progressDialog.dismiss();
             }
@@ -368,6 +399,12 @@ public class FaultReportActivity extends AppCompatActivity {
                         selectMaintenanceSpinner.setAdapter(maintAdapter);
                     }
 
+                } else if (response.code() == 401) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 500) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     progressDialog.dismiss();
             }
@@ -397,6 +434,12 @@ public class FaultReportActivity extends AppCompatActivity {
                         faultCategorySpinner.setAdapter(faultCatAdapter);
                     }
 
+                } else if (response.code() == 401) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 500) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     progressDialog.dismiss();
             }
@@ -426,6 +469,12 @@ public class FaultReportActivity extends AppCompatActivity {
                         buildingSpinner.setAdapter(buildingAdapter);
                     }
 
+                } else if (response.code() == 401) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 500) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     progressDialog.dismiss();
             }
@@ -457,6 +506,12 @@ public class FaultReportActivity extends AppCompatActivity {
                         divisionSpinner.setAdapter(divisionAdapter);
                     }
 
+                } else if (response.code() == 401) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 500) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     progressDialog.dismiss();
             }
@@ -488,6 +543,12 @@ public class FaultReportActivity extends AppCompatActivity {
 
                     }
 
+                } else if (response.code() == 401) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 500) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     progressDialog.dismiss();
             }
@@ -521,6 +582,12 @@ public class FaultReportActivity extends AppCompatActivity {
 
                     }
 
+                } else if (response.code() == 401) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 500) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     progressDialog.dismiss();
             }
@@ -538,7 +605,7 @@ public class FaultReportActivity extends AppCompatActivity {
     private void initViews() {
         selectTech = findViewById(R.id.selecttech);
         techTv = findViewById(R.id.techtv);
-        eqwuipmentTextView=findViewById(R.id.equipment_textview);
+        eqwuipmentTextView = findViewById(R.id.equipment_textview);
         selectEquipBtn = findViewById(R.id.select_equip_btn);
         requestorNameEditText = findViewById(R.id.requestorNameEditText);
         contactNumberEditText = findViewById(R.id.contactNumber_fault);
@@ -553,7 +620,7 @@ public class FaultReportActivity extends AppCompatActivity {
         faultCategorySpinner = findViewById(R.id.faultCategorySpinner);
         selectMaintenanceSpinner = findViewById(R.id.selectMaintenanceSpinner);
         buttonCreateFaultReport = findViewById(R.id.buttonCreateFaultReport);
-      //  equipmentSpinner = findViewById(R.id.equipmentSpinner);
+        //  equipmentSpinner = findViewById(R.id.equipmentSpinner);
 
         genralDepList.add(new list("Select dept", 0));
         genralEquipment.add(new list("Select Equipment", 0));
@@ -669,6 +736,12 @@ public class FaultReportActivity extends AppCompatActivity {
                         Toast.makeText(FaultReportActivity.this, "Fault Report Created Successfully",
                                 Toast.LENGTH_SHORT).show();
                         finish();
+                    } else if (response.code() == 401) {
+                        Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    } else if (response.code() == 500) {
+                        Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                    } else if (response.code() == 404) {
+                        Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                     } else
                         Log.d(TAG, "onResponse: hi" + response.message());
                     Log.d(TAG, "onResponse: hl" + response.raw());
@@ -699,13 +772,6 @@ public class FaultReportActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-            /*SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent intent = new Intent(this, MainActivityLogin.class);
-            startActivity(intent);
-            finishAffinity();*/
 
             LogoutClass logoutClass = new LogoutClass();
             logoutClass.logout(this);
