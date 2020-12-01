@@ -1,15 +1,12 @@
 package com.synergy.Search;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -24,17 +21,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,9 +40,7 @@ import com.synergy.CheckInternet;
 import com.synergy.Constants;
 import com.synergy.Dashboard.Dashboard;
 import com.synergy.FaultReport.BeforeImage;
-import com.synergy.FaultReport.FaultReportActivity;
 import com.synergy.LogoutClass;
-import com.synergy.MainActivityLogin;
 import com.synergy.R;
 import com.synergy.FaultReport.list;
 
@@ -60,7 +50,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
@@ -100,7 +89,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     //  private EditText editText;
     private TextWatcher textWatcher;
     private List<String> remarksList = new ArrayList<>();
-    private List<EditText> editTextList = new ArrayList<>();
+    private List<TextInputEditText> editTextList = new ArrayList<TextInputEditText>();
 
     List<list> genralDepList = new ArrayList<list>();
     List<list> genralPriorityList = new ArrayList<list>();
@@ -136,17 +125,16 @@ public class EditFaultReportActivity extends AppCompatActivity {
     String[] listItems;
     List attendedByIdsList;
     private Button selectTech;
-    private TextView techTv;
     private AutoCompleteTextView statusSpinner;
 
     private TextInputEditText frIdEditText, deptSpinner, reqNameEditText, activationDate,
             activationTime, faultDetailsEditText, locDescEditText, faultCategorySpinner,
             divisionSpinner, locationSpinner, buildingSpinner, prioritySpinner,
             mainGrpSpinner, observationEditText,
-            requestorNumberEditText, actionTakenEditText, equipmentTextView, editText;
+            requestorNumberEditText, actionTakenEditText, equipmentTextView, editText, techTv;
+
     String tech = "Technician";
     String managingAgent = "ManagingAgent";
-
     private final CheckInternet checkInternet = new CheckInternet();
 
     @Override
@@ -190,18 +178,19 @@ public class EditFaultReportActivity extends AppCompatActivity {
             initializeFab();
             calltech();
             if (frid != null) {
-                updateFaultReportButton.setVisibility(View.INVISIBLE);
+                updateFaultReportButton.setVisibility(View.GONE);
                 requestPauseButton.setVisibility(View.GONE);
                 initviewsAndGetInitialData(frid);
             } else {
+                requestPauseButton.setVisibility(View.GONE);
                 initviewsAndGetInitialDataOnEquip(equipCode);
             }
 
         } else {
 
             initViews();
-            acceptButton.setVisibility(View.INVISIBLE);
-            rejectButton.setVisibility(View.INVISIBLE);
+            acceptButton.setVisibility(View.GONE);
+            rejectButton.setVisibility(View.GONE);
             initializeFab();
             calltech();
             if (frid != null) {
@@ -250,6 +239,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 if (response.code() == 200) {
 
                     JsonArray jsonarraytech = response.body();
+                    Log.d(TAG, "onResponse: hi my texh" + jsonarraytech);
                     for (int i = 0; i < jsonarraytech.size(); i++) {
                         String technicianName = jsonarraytech.get(i).getAsJsonObject().get("name").getAsString();
                         int id = jsonarraytech.get(i).getAsJsonObject().get("id").getAsInt();
@@ -321,13 +311,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
         fab_main = findViewById(R.id.images_id);
         fab_before = findViewById(R.id.before_id);
         fab_after = findViewById(R.id.after_id);
-        // selectTech.setVisibility(View.INVISIBLE);
-        //  selectEquipmentButton.setVisibility(View.INVISIBLE);
-        //  selectEquipmentButton.setEnabled(false);
-        //  selectTech.setEnabled(false);
+
         locationSpinner.setEnabled(false);
         buildingSpinner.setEnabled(false);
-        // deptSpinner.setEnabled(false);
         requestorNumberEditText.setEnabled(false);
         prioritySpinner.setEnabled(false);
         divisionSpinner.setEnabled(false);
@@ -401,52 +387,32 @@ public class EditFaultReportActivity extends AppCompatActivity {
         observationEditText.addTextChangedListener(textWatcher);
         actionTakenEditText.addTextChangedListener(textWatcher);
         statusSpinner.addTextChangedListener(textWatcher);
-/*
-        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                checkFieldsForEmptyValues();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-*/
 
 
-      /*  genralFaultCatList.add(new list("Select Fault Category", 0));
-        genralMaintGrp.add(new list("Select Maintanence", 0));
-        genralBuildingList.add(new list("Select Building", 0));
-        genralDepList.add(new list("Select Department", 0));
-        genralDivisionList.add(new list("Select Division", 0));
-        //genralTechnicalList.add(new list("Select Tech", 0));
-        genralPriorityList.add(new list("Select Priority", 0));
-        genCostCebterList.add(new list("Select CostCenter", 0));*/
-
-        String tech = "Technician";
-        String managingAgent = "ManagingAgent";
         if (role.equals(tech)) {
             genralStatusList.add("Select status");
             genralStatusList.add("Open");
-            // genralStatusList.add("Pause");
+            genralStatusList.add("Pause");
             genralStatusList.add("Completed");
 
         } else if (role.equals(managingAgent)) {
             genralStatusList.add("Select status");
             genralStatusList.add("Open");
-            genralStatusList.add("Closed");
             genralStatusList.add("Pause");
+            genralStatusList.add("Closed");
+            genralStatusList.add("Pause Requested");
 
         } else {
             genralStatusList.add("Select status");
             genralStatusList.add("Open");
-            genralStatusList.add("Closed");
             genralStatusList.add("Pause");
+            genralStatusList.add("Closed");
             genralStatusList.add("Completed");
         }
-
+       /* AutoCompleteAdapter adapter = new AutoCompleteAdapter(
+                this, android.R.layout.simple_dropdown_item_1line, android.R.id.text1, genralStatusList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(adapter);*/
 
         statusListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralStatusList);
         statusListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -459,6 +425,25 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     remarksId++;
                     mlayout.addView(createNewEditText(remarksString, remarksId));
                 }
+            }
+        });
+        requestPauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pauseMethodCall();
+            }
+        });
+
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptMethod();
+            }
+        });
+        rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rejectMethod();
             }
         });
 
@@ -482,6 +467,84 @@ public class EditFaultReportActivity extends AppCompatActivity {
             }
         });
 */
+    }
+
+    private void rejectMethod() {
+        progressDialog.show();
+        PauseRequestBody pauseRequestBody = new PauseRequestBody(frIdEditText.getText().toString());
+        Call<Void> call = APIClient.getUserServices().getReject(token, workSpaceid, pauseRequestBody);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if (response.code() == 200) {
+                    progressDialog.dismiss();
+                    Toast.makeText(EditFaultReportActivity.this, "Rejected ", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(EditFaultReportActivity.this, "Failed to Reject", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: " + t.getMessage() + t.getCause());
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void acceptMethod() {
+        progressDialog.show();
+        PauseRequestBody pauseRequestBody = new PauseRequestBody(frIdEditText.getText().toString());
+        Call<Void> call = APIClient.getUserServices().getAccept(token, workSpaceid, pauseRequestBody);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if (response.code() == 200) {
+                    progressDialog.dismiss();
+                    Toast.makeText(EditFaultReportActivity.this, "Accepted", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(EditFaultReportActivity.this, "Failed to Accepted", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: " + t.getMessage() + t.getCause());
+                progressDialog.dismiss();
+            }
+        });
+
+
+    }
+
+    private void pauseMethodCall() {
+        progressDialog.show();
+        PauseRequestBody pauseRequestBody = new PauseRequestBody(frIdEditText.getText().toString());
+        Call<Void> call = APIClient.getUserServices().getRequestPause(token, workSpaceid, pauseRequestBody);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if (response.code() == 200) {
+                    progressDialog.dismiss();
+                    Toast.makeText(EditFaultReportActivity.this, "Paused", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(EditFaultReportActivity.this, "Failed to Pause", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: " + t.getMessage() + t.getCause());
+                progressDialog.dismiss();
+            }
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -740,7 +803,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditFaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditFaultReportActivity.this, "No Data Available ", Toast.LENGTH_LONG).show();
                 Log.d("TAG", "onFailure:equip call " + t.getMessage());
                 Log.d(TAG, "onFailure: equip call" + t.getCause());
 
@@ -998,7 +1061,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditFaultReportActivity.this, "Failed :" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditFaultReportActivity.this, "No Data Available", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "onFailure: init frid " + t.getMessage());
                 Log.d(TAG, "onFailure: init frid" + t.getCause());
 
@@ -1024,71 +1087,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
         }
     }
 
-    /*private void spinnerSet() {
-
-        deptListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDepList);
-        deptListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        deptSpinner.setAdapter(deptListAdapter);
-
-        divisionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDivisionList);
-        divisionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        divisionSpinner.setAdapter(divisionAdapter);
-
-        buildingAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralBuildingList);
-        buildingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        buildingSpinner.setAdapter(buildingAdapter);
-
-        locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralLoaction);
-        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locationSpinner.setAdapter(locationAdapter);
-
-        maintAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralMaintGrp);
-        maintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mainGrpSpinner.setAdapter(maintAdapter);
-
-        priAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralPriorityList);
-        priAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        prioritySpinner.setAdapter(priAdapter);
-
-        faultCatAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralFaultCatList);
-        faultCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        faultCategorySpinner.setAdapter(faultCatAdapter);
-
-      technicalListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralTechnicalList);
-        technicalListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        technicianSpinner.setAdapter(technicalListAdapter);
-
-        statusListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralStatusList);
-        statusListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(statusListAdapter);
-
-
-
-
-        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (Constants.ROLE_MANAGINGAGENT.equals(role)) {
-                    if (statusSpinner.getSelectedItem().equals("Pause")) {
-                        statusSpinner.setSelection(idStatus);
-                    } else if (statusSpinner.getSelectedItem().equals("Completed")) {
-                        statusSpinner.setSelection(idStatus);
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-     costCenterListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genCostCebterList);
-        costCenterListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        costCenterSpinner.setAdapter(costCenterListAdapter);
-
-
-    }*/
 
     @NotNull
     private TextView createNewEditText(String remarksString, int remarksId) {
@@ -1139,24 +1137,37 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
         if (role.equals(tech)) {
+
             if (statusSpinner.getText().toString().equals("Completed")) {
                 requestPauseButton.setEnabled(false);
                 buttonEnableMethod();
             }
-            if (statusSpinner.getText().toString().equals("Open")){
+            if (statusSpinner.getText().toString().equals("Open")) {
                 requestPauseButton.setEnabled(true);
                 buttonEnableMethod();
             }
+            if (statusSpinner.getText().toString().equals("Pause")) {
+                updateFaultReportButton.setEnabled(false);
+                requestPauseButton.setEnabled(false);
+            }
         }
         if (role.equals(managingAgent)) {
-            if ((statusSpinner.getText().toString().equals("PauseRequest"))) {
+            if ((statusSpinner.getText().toString().equals("Pause Requested"))) {
+
                 acceptButton.setVisibility(View.VISIBLE);
                 rejectButton.setVisibility(View.VISIBLE);
+                updateFaultReportButton.setVisibility(View.GONE);
+                // buttonEnableMethod();
+            }
+            if (statusSpinner.getText().toString().equals("Open") || statusSpinner.getText().toString().equals("Closed")) {
+                acceptButton.setVisibility(View.GONE);
+                rejectButton.setVisibility(View.GONE);
                 buttonEnableMethod();
             }
             if (statusSpinner.getText().toString().equals("Pause")
-                    || statusSpinner.getText().toString().equals("Completed")){
+                    || statusSpinner.getText().toString().equals("Completed")) {
                 updateFaultReportButton.setEnabled(false);
+                //  buttonEnableMethod();
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
 
@@ -1228,10 +1239,13 @@ public class EditFaultReportActivity extends AppCompatActivity {
             List<String> attendedbylist = Arrays.asList(attendedbyString.split(", "));
             for (int j = 0; j < attendedbylist.size(); j++) {
                 String techincian = attendedbylist.get(j);
+                Log.d(TAG, "updateFaultReport: technician" + genralTechnicalList);
                 for (list list : genralTechnicalList) {
                     if (list.getName().equals(techincian)) {
                         Integer idd = list.getId();
                         attendedByIdsList.add(idd);
+                        Log.d(TAG, "updateFaultReport: gentech " + genralTechnicalList);
+                        Log.d(TAG, "updateFaultReport: attendedlist" + attendedbylist);
                     }
                 }
             }
@@ -1261,6 +1275,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 attendedBy.add(attendedbyObject);
 
             }
+            Log.d(TAG, "updateFaultReport: attendedby" + attendedBy);
             EditFaultReportRequest editFaultReportRequest = new EditFaultReportRequest(frId,
                     building,
                     location,

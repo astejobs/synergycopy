@@ -77,7 +77,8 @@
                                     android:id="@+id/frIdEditText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:editable="false" />
+                                    android:editable="false"
+                                    android:textColor="@color/textColor" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,7 +87,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:hint="Derpartment">
+                                android:hint="Department">
 
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -909,62 +910,54 @@
                                             android:layout_margin="20dp"
                                             android:textColor="@color/textblackcolor" />
                     -->
-                    <LinearLayout
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/requestPauseButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:padding="10dp"
+                        android:text="Request Pause"
+                        android:textColor="@color/textColorbutton"
+                        app:cornerRadius="15dp" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/requestPauseButton"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            android:padding="10dp"
-                            android:text="Request Pause"
-                            android:textColor="@color/textColorbutton"
-                            app:cornerRadius="25dp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/updateFaultReportButton"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            android:padding="10dp"
-                            android:text="Update Fault Report"
-                            android:textColor="@color/textColorbutton"
-                            app:cornerRadius="25dp" />
-                    </LinearLayout>
-                    <LinearLayout
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/updateFaultReportButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:padding="10dp"
+                        android:text="Update"
+                        android:textColor="@color/textColorbutton"
+                        app:cornerRadius="15dp" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/acceptbttn"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            android:padding="10dp"
-                            android:text="Accept"
-                            android:textColor="@color/textColorbutton"
-                            app:cornerRadius="25dp" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/acceptbttn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:padding="10dp"
+                        android:text="Accept"
+                        android:textColor="@color/textColorbutton"
+                        app:cornerRadius="15dp" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/rejectbtn"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            android:padding="10dp"
-                            android:text="Reject"
-                            android:textColor="@color/textColorbutton"
-                            app:cornerRadius="25dp" />
-                    </LinearLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/rejectbtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:padding="10dp"
+                        android:text="Reject"
+                        android:textColor="@color/textColorbutton"
+                        app:cornerRadius="15dp" />
 
 
                 </LinearLayout>

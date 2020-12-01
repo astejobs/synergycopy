@@ -7,6 +7,7 @@ import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
+import com.synergy.Search.PauseRequestBody;
 import com.synergy.SearchTasks.TaskSearchResponse;
 import com.synergy.EquipmentSearch.UploadImageRequest;
 import com.synergy.FaultReport.CreateFaultRequestPojo;
@@ -214,9 +215,9 @@ public interface UserService {
     @GET("equip/search?")
     @Headers("Content-Type: application/json")
     Call<List<EquipmentSearchResponseforEdit>> getSearchEquipment(@Query("query") String query,
-                                                            @Header("Authorization") String token,
-                                                            @Header("workspace")String workspace,
-                                                            @Header("role")String role);
+                                                                  @Header("Authorization") String token,
+                                                                  @Header("workspace") String workspace,
+                                                                  @Header("role") String role);
 
     //update
     @PUT("faultreport")
@@ -301,8 +302,31 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<SelectTechnicianResponse> getTechnicianList(@Query("query") String query,
                                                      @Header("Authorization") String token,
-                                                     @Header("workspace")String workspace,
-                                                     @Header("role")String role);
+                                                     @Header("workspace") String workspace,
+                                                     @Header("role") String role);
 
+
+    //pause requedst
+    @POST("faultreport/pauserequest")
+    @Headers("Content-Type: application/json")
+    Call<Void> getRequestPause(@Header("Authorization") String token,
+                               @Header("workspace") String workspace,
+                              @Body PauseRequestBody pauseRequestBody
+    );
+
+    //pause requedst
+    @POST("faultreport/pauserequest/accept")
+    @Headers("Content-Type: application/json")
+    Call<Void> getAccept(@Header("Authorization") String token,
+                               @Header("workspace") String workspace,
+                               @Body PauseRequestBody pauseRequestBody
+    );
+    //pause requedst
+    @POST("faultreport/pauserequest/reject")
+    @Headers("Content-Type: application/json")
+    Call<Void> getReject(@Header("Authorization") String token,
+                               @Header("workspace") String workspace,
+                               @Body PauseRequestBody pauseRequestBody
+    );
 
 }
