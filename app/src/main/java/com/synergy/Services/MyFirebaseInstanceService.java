@@ -19,8 +19,11 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.synergy.APIClient;
 import com.synergy.Constants;
+import com.synergy.EquipmentSearch.PmTaskActivity;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
+import com.synergy.Search.EditFaultReportActivity;
+import com.synergy.Workspace.WorkspaceActivity;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -62,23 +65,32 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
         String workspace = remoteMessage.getData().get("workspace");
         String id = remoteMessage.getData().get("id");
         String equipCode = "";
+        String taskNumber = "";
+        String afterImage = "";
+        String beforeImage = "";
+        String source = "";
 
         Log.d(TAG, "onMessageReceived Test1235: " + remoteMessage.getData());
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent intent = new Intent(click_action);
-        intent.putExtra("workspace", workspace);
+        Intent intent = null;
+
         if (click_action.equals(Constants.EDITFAULTREPORT_ACTIVITY_NOTIFICATION)) {
+            intent = new Intent(click_action);
             intent.putExtra("equipcode", equipCode);
             intent.putExtra("frId", id);
         } else if (click_action.equals(Constants.PMTASK_ACTIVITY_NOTIFICATION)) {
+            intent = new Intent(click_action);
             intent.putExtra("taskId", Integer.parseInt(id));
-            intent.putExtra("taskNumber", "");
-            intent.putExtra("afterImage", "");
-            intent.putExtra("beforeImage", "");
+            intent.putExtra("taskNumber", taskNumber);
+            intent.putExtra("afterImage", afterImage);
+            intent.putExtra("beforeImage", beforeImage);
+            intent.putExtra("source", source);
         }
+        intent.putExtra("workspace", workspace);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         String channelId = "my_channel_id";
         CharSequence channelName = "My Channel";
@@ -100,110 +112,13 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
                 .setChannelId(channelId)
                 .build();
 
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
         notificationManager.notify(0, notification);
     }
-}
 
-        /*Intent intent = new Intent(click_action);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
-        notificationBuilder.setSmallIcon(R.drawable.iclogo)
-                .setContentTitle(title)
-                .setContentText(body)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notificationBuilder.build());*/
-
-//sendNotification(body, click_action, workspace, equipCode, id);
-
-    /*}
-
-
-
-    private void sendNotification(String messageBody, String click_action, String workspace, String equipCode, String id) {
-
-        Intent intent = new Intent(click_action);
-        intent.putExtra("workspace", workspace);
-        if (click_action.equals(Constants.EDITFAULTREPORT_ACTIVITY_NOTIFICATION)) {
-            intent.putExtra("equipcode", equipCode);
-            intent.putExtra("frId", id);
-        } else if (click_action.equals(Constants.PMTASK_ACTIVITY_NOTIFICATION)){
-            intent.putExtra("taskId", Integer.parseInt(id));
-            intent.putExtra("taskNumber", "");
-            intent.putExtra("afterImage", "");
-            intent.putExtra("beforeImage", "");
-        }
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setContentTitle(messageBody)
-                .setSmallIcon(R.drawable.iclogo)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(0 , notificationBuilder.build());
+    @Override
+    public void handleIntent(Intent intent) {
+        super.handleIntent(intent);
     }
 }
-*/
-
-/*
-
-//Here notification is recieved from server
-        try {
-            sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"), click_action);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void sendNotification(String title, String messageBody, String click_action) {
-        Intent intent = new Intent(click_action);
-//you can use your launcher Activity insted of SplashActivity, But if the Activity you used here is not launcher Activty than its not work when App is in background.
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//Add Any key-value to pass extras to intent
-        intent.putExtra("pushnotification", "yes");
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//For Android Version Orio and greater than orio.
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel mChannel = new NotificationChannel("Sesame", "Sesame", importance);
-            mChannel.setDescription(messageBody);
-            mChannel.enableLights(true);
-            mChannel.setLightColor(Color.RED);
-
-            mNotifyManager.createNotificationChannel(mChannel);
-        }
-//For Android Version lower than oreo.
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "Seasame");
-        mBuilder.setContentTitle(title)
-                .setContentText(messageBody)
-                .setSmallIcon(R.drawable.iclogo)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setColor(Color.parseColor("#FFD600"))
-                .setContentIntent(pendingIntent)
-                .setChannelId("Sesame")
-                .setPriority(NotificationCompat.PRIORITY_LOW);
-
-        mNotifyManager.notify(count, mBuilder.build());
-        count++;
-    }
-*/

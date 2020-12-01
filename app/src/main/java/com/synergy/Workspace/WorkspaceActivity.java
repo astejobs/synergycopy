@@ -50,7 +50,8 @@ public class WorkspaceActivity extends AppCompatActivity {
     private String user;
     private final CheckInternet checkInternet = new CheckInternet();
 
-Context context;
+    Context context;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -73,6 +74,11 @@ Context context;
         linearLayout = findViewById(R.id.workLinear);
         linearLayout.setVisibility(View.GONE);
 
+        /*Bundle bundle = new Bundle();
+        bundle = getIntent().getExtras();
+        if (!bundle.equals(null)) {
+            Log.d(TAG, "onCreate: " + bundle.toString());
+        }*/
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");

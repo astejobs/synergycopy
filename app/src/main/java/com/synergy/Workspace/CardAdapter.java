@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public CardAdapter(ArrayList<CardDetails> mCardDetails) {
-
         this.mCardDetails = mCardDetails;
     }
 
