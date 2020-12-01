@@ -972,7 +972,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         }
     }
 
-    private void spinnerSet() {
+    /*private void spinnerSet() {
 
         deptListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDepList);
         deptListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -1002,9 +1002,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
         faultCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         faultCategorySpinner.setAdapter(faultCatAdapter);
 
-      /*  technicalListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralTechnicalList);
+      technicalListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralTechnicalList);
         technicalListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        technicianSpinner.setAdapter(technicalListAdapter);*/
+        technicianSpinner.setAdapter(technicalListAdapter);
 
         statusListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralStatusList);
         statusListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -1031,12 +1031,12 @@ public class EditFaultReportActivity extends AppCompatActivity {
             }
         });
 
-      /*  costCenterListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genCostCebterList);
+     costCenterListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genCostCebterList);
         costCenterListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        costCenterSpinner.setAdapter(costCenterListAdapter);*/
+        costCenterSpinner.setAdapter(costCenterListAdapter);
 
 
-    }
+    }*/
 
     @NotNull
     private TextView createNewEditText(String remarksString, int remarksId) {
