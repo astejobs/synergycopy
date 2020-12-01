@@ -93,7 +93,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private TextView equipmentIdTv;
 
     private Button selectEquipmentButton, plusbtn, deletebtn;
-    private MaterialButton updateFaultReportButton;
+    private MaterialButton updateFaultReportButton, requestPauseButton, acceptButton, rejectButton;
     private LinearLayout mlayout;
     String frid, workSpaceid, equipCode;
     private int remarksId;
@@ -144,6 +144,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
             divisionSpinner, locationSpinner, buildingSpinner, prioritySpinner,
             mainGrpSpinner, observationEditText,
             requestorNumberEditText, actionTakenEditText, equipmentTextView, editText;
+    String tech = "Technician";
+    String managingAgent = "ManagingAgent";
 
     private final CheckInternet checkInternet = new CheckInternet();
 
@@ -189,6 +191,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             calltech();
             if (frid != null) {
                 updateFaultReportButton.setVisibility(View.INVISIBLE);
+                requestPauseButton.setVisibility(View.GONE);
                 initviewsAndGetInitialData(frid);
             } else {
                 initviewsAndGetInitialDataOnEquip(equipCode);
@@ -197,10 +200,14 @@ public class EditFaultReportActivity extends AppCompatActivity {
         } else {
 
             initViews();
+            acceptButton.setVisibility(View.INVISIBLE);
+            rejectButton.setVisibility(View.INVISIBLE);
             initializeFab();
             calltech();
             if (frid != null) {
-                updateFaultReportButton.setVisibility(View.INVISIBLE);
+                updateFaultReportButton.setVisibility(View.GONE);
+                requestPauseButton.setVisibility(View.GONE);
+
                 initviewsAndGetInitialData(frid);
             } else {
                 initviewsAndGetInitialDataOnEquip(equipCode);
@@ -277,7 +284,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
     private void initViews() {
-
+        acceptButton = findViewById(R.id.acceptbttn);
+        rejectButton = findViewById(R.id.rejectbtn);
+        requestPauseButton = findViewById(R.id.requestPauseButton);
         techTv = findViewById(R.id.techtv);
         //  selectTech = findViewById(R.id.selecttech);
         equipmentIdTv = findViewById(R.id.eq_id_send);
@@ -285,6 +294,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         //  diagnosisEditText = findViewById(R.id.diagnosis);
         actionTakenEditText = findViewById(R.id.actionTaken);
         statusSpinner = findViewById(R.id.statusSpinner);
+
         //   technicianSpinner = findViewById(R.id.technicianSpinner);
         //  costCenterSpinner = findViewById(R.id.costCenter);
         mainGrpSpinner = findViewById(R.id.mainGrp);
@@ -385,10 +395,12 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                checkFieldsForEmptyValues();
             }
         };
         observationEditText.addTextChangedListener(textWatcher);
         actionTakenEditText.addTextChangedListener(textWatcher);
+        statusSpinner.addTextChangedListener(textWatcher);
 /*
         statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1124,7 +1136,35 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
     private void checkFieldsForEmptyValues() {
-        if (statusSpinner.getText().equals("Pause")) {
+
+
+        if (role.equals(tech)) {
+            if (statusSpinner.getText().toString().equals("Completed")) {
+                requestPauseButton.setEnabled(false);
+                buttonEnableMethod();
+            }
+            if (statusSpinner.getText().toString().equals("Open")){
+                requestPauseButton.setEnabled(true);
+                buttonEnableMethod();
+            }
+        }
+        if (role.equals(managingAgent)) {
+            if ((statusSpinner.getText().toString().equals("PauseRequest"))) {
+                acceptButton.setVisibility(View.VISIBLE);
+                rejectButton.setVisibility(View.VISIBLE);
+                buttonEnableMethod();
+            }
+            if (statusSpinner.getText().toString().equals("Pause")
+                    || statusSpinner.getText().toString().equals("Completed")){
+                updateFaultReportButton.setEnabled(false);
+                acceptButton.setVisibility(View.GONE);
+                rejectButton.setVisibility(View.GONE);
+
+            }
+        }
+
+
+       /* if (statusSpinner.getText().equals("Pause")) {
             buttonEnableMethod();
 
         } else {
@@ -1132,7 +1172,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
         }
-
+*/
     }
 
     private void buttonEnableMethod() {
