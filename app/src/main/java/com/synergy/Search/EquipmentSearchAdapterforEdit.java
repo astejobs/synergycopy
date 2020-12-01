@@ -3,14 +3,12 @@ package com.synergy.Search;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.R;
 
 import java.util.ArrayList;
@@ -58,13 +56,23 @@ public class EquipmentSearchAdapterforEdit extends BaseAdapter {
         TextView qw_id = (TextView) convertView.findViewById(R.id.textview_eq_id);
         TextView eq_name = (TextView) convertView.findViewById(R.id.textview_eq_name);
         TextView eq_code = (TextView) convertView.findViewById(R.id.textview_eq_eqcode);
+        TextView eq_location = (TextView) convertView.findViewById(R.id.textview_eq_sub_location);
+        TextView eq_building = (TextView) convertView.findViewById(R.id.textview_eq_building);
+        TextView eq_subType = (TextView) convertView.findViewById(R.id.textview_eq_sub_type);
+
+
+
+
         TextView to = convertView.findViewById(R.id.tokenGen);
         TextView workspaceSearchTextView = convertView.findViewById(R.id.workspace_search);
 
        qw_id.setText(String.valueOf(currentItem.getId()));
         eq_name.setText(currentItem.getName());
         eq_code.setText(currentItem.getEquipmentCode());
-        equipType.setText(currentItem.getEquipmentType());
+        equipType.setText(currentItem.getAssetType());
+        eq_subType.setText(currentItem.getAssetSubType());
+        eq_building.setText(currentItem.getBuildingName());
+        eq_location.setText(currentItem.getLocationName());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

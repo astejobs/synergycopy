@@ -67,23 +67,23 @@ public class SearchResponseAdapter extends BaseAdapter {
              activationDate=currentItem.getActivationTime().getDayOfMonth()+"-"+currentItem.
                     getActivationTime().getMonthValue()+"-"+currentItem.getActivationTime().getYear();
 
-            activationTime=currentItem.getActivationTime().getHour()+"-"+currentItem.getActivationTime().getMinute();
+            activationTime=currentItem.getActivationTime().getHour()+":"+currentItem.getActivationTime().getMinute();
         }
 
 
-        frIdTextView.setText(" FrId:" + currentItem.getFrId().trim());
-        re.setText(" Activation Date:" + activationDate);
-        cr.setText(" Activation Time:" + activationTime);
-        st.setText(" Status:" + currentItem.getStatus());
-        bu.setText(" Building:" + currentItem.getBuilding());
-        lo.setText(" Location:" + currentItem.getLocation());
+        frIdTextView.setText(currentItem.getFrId().trim());
+        re.setText( activationDate +" "+ activationTime);
+     //   cr.setText(" Activation Time:" + activationTime);
+        st.setText(currentItem.getStatus());
+        bu.setText(currentItem.getBuilding());
+        lo.setText(currentItem.getLocation());
         workspaceId = currentItem.getWorkspaceId();
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String frid = ((TextView) view.findViewById(R.id.textView_frid)).getText().toString().substring(6);
+                String frid = ((TextView) view.findViewById(R.id.textView_frid)).getText().toString();//.substring(6);
                 Intent intent = new Intent(context.getApplicationContext(), EditFaultReportActivity.class);
                 intent.putExtra("frId", frid);
                 intent.putExtra("workspaceId", workspaceId);

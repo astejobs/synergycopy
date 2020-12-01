@@ -12,4 +12,6 @@
     <color name="textColorbutton">#ffffff</color>
     <color name="textColor">#000000</color>
 
+    <color name="background">#e2e2e2</color>
+
 </resources>

@@ -3,6 +3,7 @@ package com.synergy.Workspace;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +40,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         final CardDetails currentItem = mCardDetails.get(position);
-        String workSpace = mCardDetails.get(position).getWorkspaceId();
-        String descId = mCardDetails.get(position).getBuildingDescription();
+
         holder.tvWorkID.setText(currentItem.getWorkspaceId());
-        holder.tvDesc.setText(currentItem.getBuildingDescription());
+        holder.tvDesc.setText(currentItem.getBuildingDescription().toString().toUpperCase());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

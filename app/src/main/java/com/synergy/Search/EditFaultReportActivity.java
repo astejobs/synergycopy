@@ -1,5 +1,6 @@
 package com.synergy.Search;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -18,6 +19,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -26,6 +28,7 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -33,8 +36,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
@@ -79,24 +83,18 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private String statusNameCurrent;
     Button uploadFileBtn;
     Intent uploadFileIntent;
-    private int tHour, tMinute;
-    private Spinner statusSpinner, costCenterSpinner, mainGrpSpinner,
-            faultCategorySpinner, divisionSpinner, locationSpinner, buildingSpinner, prioritySpinner, deptSpinner;
-    private TextView timePickerResponse, timePickerStart, timePickerEnd, datePickerResponse, datePickerStart, datePickerEnd;
+
     private String token, role;
     private String faultDetailString;
-    TextView reqNameEditText;
-    private EditText frIdEditText, observationEditText, faultDetailsEditText, locDescEditText,
-            requestorNumberEditText, actionTakenEditText, diagnosisEditText, labourHoursEditText;
-    private TextView equipmentTextView, equipmentIdTv;
-    private TextView activationDate;
-    private TextView activationTime;
+
+    private TextView equipmentIdTv;
+
     private Button selectEquipmentButton, plusbtn, deletebtn;
-    private Button updateFaultReportButton;
+    private MaterialButton updateFaultReportButton;
     private LinearLayout mlayout;
     String frid, workSpaceid, equipCode;
     private int remarksId;
-    private EditText editText;
+    //  private EditText editText;
     private TextWatcher textWatcher;
     private List<String> remarksList = new ArrayList<>();
     private List<EditText> editTextList = new ArrayList<>();
@@ -134,9 +132,15 @@ public class EditFaultReportActivity extends AppCompatActivity {
     List<String> stockList = new ArrayList<>();
     String[] listItems;
     List attendedByIdsList;
-
     private Button selectTech;
     private TextView techTv;
+    private AutoCompleteTextView statusSpinner;
+
+    private TextInputEditText frIdEditText, deptSpinner, reqNameEditText, activationDate,
+            activationTime, faultDetailsEditText, locDescEditText, faultCategorySpinner,
+            divisionSpinner, locationSpinner, buildingSpinner, prioritySpinner,
+            mainGrpSpinner, observationEditText,
+            requestorNumberEditText, actionTakenEditText, equipmentTextView, editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,11 +154,12 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         frid = i.getStringExtra("frId");
-
         workSpaceid = i.getStringExtra("workspaceId");
         equipCode = i.getStringExtra("equipcode");
+
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
+        token = sharedPreferences.getString("token", "");
 
 
         linearLayoutdisable = findViewById(R.id.layout_disable);
@@ -163,37 +168,19 @@ public class EditFaultReportActivity extends AppCompatActivity {
             initViews();
             callDisable();
             initializeFab();
-            //  calldept();
-            //callpriroty();
-            //callbuilding();
-            //calldivision();
-            //callfault();
-            //callmaint();
             calltech();
-            //callCostCenter();
-
             if (frid != null) {
+                updateFaultReportButton.setVisibility(View.INVISIBLE);
                 initviewsAndGetInitialData(frid);
             } else {
                 initviewsAndGetInitialDataOnEquip(equipCode);
-
             }
-            spinnerSelectionCalls();
-
 
         } else {
 
             initViews();
             initializeFab();
-            //  calldept();
-            // callpriroty();
-            //  callbuilding();
-            //  calldivision();
-            //   callfault();
-            //   callmaint();
             calltech();
-            //   callCostCenter();
-
             if (frid != null) {
                 updateFaultReportButton.setVisibility(View.INVISIBLE);
                 initviewsAndGetInitialData(frid);
@@ -201,15 +188,15 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 initviewsAndGetInitialDataOnEquip(equipCode);
 
             }
-            spinnerSelectionCalls();
         }
     }
+
 
     private void callDisable() {
         techTv.setEnabled(false);
         //   selectTech.setEnabled(false);
         frIdEditText.setEnabled(false);
-        deptSpinner.setEnabled(false);
+        //   deptSpinner.setEnabled(false);
         prioritySpinner.setEnabled(false);
         requestorNumberEditText.setEnabled(false);
         buildingSpinner.setEnabled(false);
@@ -220,306 +207,14 @@ public class EditFaultReportActivity extends AppCompatActivity {
         faultDetailsEditText.setEnabled(false);
         mainGrpSpinner.setEnabled(false);
         observationEditText.setEnabled(false);
-        // diagnosisEditText.setEnabled(false);
         actionTakenEditText.setEnabled(false);
         //costCenterSpinner.setEnabled(false);
         //  technicianSpinner.setEnabled(false);
         //  selectEquipmentButton.setEnabled(false);
         plusbtn.setEnabled(false);
         deletebtn.setEnabled(false);
-
-
-
-
-/*
-        public static void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
-            int childCount = viewGroup.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View view = viewGroup.getChildAt(i);
-                view.setEnabled(enabled);
-                if (view instanceof ViewGroup) {
-                    enableDisableViewGroup((ViewGroup) view, enabled);
-                }
-            }
-        }
-*/
-
-
     }
 
-    /*  @Override
-      public boolean dispatchTouchEvent(MotionEvent ev){
-
-          return true;//consume
-      }*/
-    private void callCostCenter() {
-        progressDialog.show();
-
-        Call<JsonArray> call = APIClient.getUserServices().getCostCenter(token, workSpaceid);
-        call.enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.code() == 200) {
-
-                    JsonArray jsonArrayofCostCenter = response.body();
-                    for (int i = 0; i < jsonArrayofCostCenter.size(); i++) {
-                        String costName = jsonArrayofCostCenter.get(i).getAsJsonObject().get("costCenterName").getAsString();
-                        int costid = jsonArrayofCostCenter.get(i).getAsJsonObject().get("id").getAsInt();
-                        genCostCebterList.add(new list(costName, costid));
-                        costCenterSpinner.setAdapter(costCenterListAdapter);
-
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                Toast.makeText(EditFaultReportActivity.this, "Failed" + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onFailure: costcenter" + t.getCause());
-                Log.d(TAG, "onFailure: costcenter" + t.getMessage());
-
-            }
-        });
-    }
-
-    private void calldept() {
-        Call<JsonArray> call7 = APIClient.getUserServices().getGenDep(workSpaceid, token, workSpaceid);
-        call7.enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.code() == 200) {
-
-                    progressDialog.dismiss();
-
-                    JsonArray jsonArrayofGenDep = response.body();
-                    for (int i = 0; i < jsonArrayofGenDep.size(); i++) {
-                        String name = jsonArrayofGenDep.get(i).getAsJsonObject().get("name").getAsString();
-                        int id = jsonArrayofGenDep.get(i).getAsJsonObject().get("id").getAsInt();
-                        list list = new list(name, id);
-                        if (!(genralDepList.contains(list))) {
-                            genralDepList.add(list);
-                            // deptSpinner.setAdapter(deptListAdapter);
-                        }
-                    }
-
-                } else
-                    progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(EditFaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onFailure: department" + t.getMessage());
-                Log.d(TAG, "onFailure:department " + t.getCause());
-            }
-        });
-    }
-
-    private void callpriroty() {
-        Call<JsonArray> call6 = APIClient.getUserServices().getGenproirity(token, workSpaceid);
-        call6.enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.code() == 200) {
-
-                    progressDialog.dismiss();
-
-                    JsonArray jsonArrayofGenPriorty = response.body();
-                    for (int i = 0; i < jsonArrayofGenPriorty.size(); i++) {
-                        String name = jsonArrayofGenPriorty.get(i).getAsJsonObject().get("name").getAsString();
-                        int id = jsonArrayofGenPriorty.get(i).getAsJsonObject().get("id").getAsInt();
-                        genralPriorityList.add(new list(name, id));
-                        prioritySpinner.setAdapter(priAdapter);
-
-                    }
-
-                } else
-                    progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(EditFaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onFailure: priority" + t.getMessage());
-                Log.d(TAG, "onFailure: priority" + t.getMessage());
-            }
-        });
-    }
-
-    private void callbuilding() {
-
-
-        Call<JsonArray> call4 = APIClient.getUserServices().getGenBuildings(token, workSpaceid);
-        call4.enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.code() == 200) {
-
-                    progressDialog.dismiss();
-                    JsonArray jsonArrayofGenBuilding = response.body();
-                    for (int i = 0; i < jsonArrayofGenBuilding.size(); i++) {
-                        String name = jsonArrayofGenBuilding.get(i).getAsJsonObject().get("name").getAsString();
-                        int id = jsonArrayofGenBuilding.get(i).getAsJsonObject().get("id").getAsInt();
-                        genralBuildingList.add(new list(name, id));
-                        buildingSpinner.setAdapter(buildingAdapter);
-                    }
-
-                } else
-                    progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(EditFaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onFailure:building " + t.getMessage());
-                Log.d(TAG, "onFailure: building" + t.getCause());
-            }
-        });
-        buildingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                list p = (list) parent.getItemAtPosition(position);
-                buildId = p.id;
-                Call<JsonArray> call = APIClient.getUserServices().getGenLocation(token, buildId);
-                call.enqueue(new Callback<JsonArray>() {
-                    @Override
-                    public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                        if (response.code() == 200) {
-
-                            genralLoaction.clear();
-                            progressDialog.dismiss();
-                            JsonArray jsonArrayofGenLocation = response.body();
-                            for (int i = 0; i < jsonArrayofGenLocation.size(); i++) {
-                                String name = jsonArrayofGenLocation.get(i).getAsJsonObject().get("name").getAsString();
-                                int id = jsonArrayofGenLocation.get(i).getAsJsonObject().get("id").getAsInt();
-                                genralLoaction.add(new list(name, id));
-                                locationSpinner.setAdapter(locationAdapter);
-                            }
-
-                        } else
-                            progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onFailure(Call<JsonArray> call, Throwable t) {
-                        progressDialog.dismiss();
-                        Toast.makeText(EditFaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "onFailure: location" + t.getMessage());
-                        Log.d(TAG, "onFailure:location " + t.getCause());
-                    }
-                });
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-    }
-
-    private void calldivision() {
-
-        Call<JsonArray> call5 = APIClient.getUserServices().getGenDivisions(token, workSpaceid);
-        call5.enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.code() == 200) {
-
-                    progressDialog.dismiss();
-
-                    JsonArray jsonArrayofGenDiv = response.body();
-                    for (int i = 0; i < jsonArrayofGenDiv.size(); i++) {
-                        String name = jsonArrayofGenDiv.get(i).getAsJsonObject().get("name").getAsString();
-                        int id = jsonArrayofGenDiv.get(i).getAsJsonObject().get("id").getAsInt();
-                        genralDivisionList.add(new list(name, id));
-
-                    }
-                    divisionSpinner.setAdapter(divisionAdapter);
-
-                } else
-                    progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(EditFaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onFailure: division " + t.getMessage());
-                Log.d(TAG, "onFailure: division" + t.getCause());
-            }
-        });
-
-
-    }
-
-    private void callfault() {
-
-
-        Call<JsonArray> call3 = APIClient.getUserServices().getGenFaultCat(token, workSpaceid);
-        call3.enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.code() == 200) {
-
-                    progressDialog.dismiss();
-
-                    JsonArray jsonArrayofGenFaultCat = response.body();
-                    for (int i = 0; i < jsonArrayofGenFaultCat.size(); i++) {
-                        String name = jsonArrayofGenFaultCat.get(i).getAsJsonObject().get("name").getAsString();
-                        int id = jsonArrayofGenFaultCat.get(i).getAsJsonObject().get("id").getAsInt();
-                        genralFaultCatList.add(new list(name, id));
-                        faultCategorySpinner.setAdapter(faultCatAdapter);
-                    }
-                } else
-                    progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(EditFaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onFailure: fault" + t.getMessage());
-                Log.d(TAG, "onFailure: fault" + t.getCause());
-            }
-        });
-    }
-
-    private void callmaint() {
-        Call<JsonArray> call2 = APIClient.getUserServices().getGenMaintGrp(token, workSpaceid);
-        call2.enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.code() == 200) {
-
-                    progressDialog.dismiss();
-                    JsonArray jsonArrayofGenFaultMaintGrp = response.body();
-                    for (int i = 0; i < jsonArrayofGenFaultMaintGrp.size(); i++) {
-                        String name = jsonArrayofGenFaultMaintGrp.get(i).getAsJsonObject().get("name").getAsString();
-                        int id = jsonArrayofGenFaultMaintGrp.get(i).getAsJsonObject().get("id").getAsInt();
-                        genralMaintGrp.add(new list(name, id));
-                        mainGrpSpinner.setAdapter(maintAdapter);
-
-                    }
-
-                } else
-                    progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(EditFaultReportActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onFailure: maintgrp" + t.getMessage());
-                Log.d(TAG, "onFailure: maintgrp" + t.getCause());
-            }
-        });
-    }
 
     private void calltech() {
 
@@ -534,15 +229,12 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         String technicianName = jsonarraytech.get(i).getAsJsonObject().get("name").getAsString();
                         int id = jsonarraytech.get(i).getAsJsonObject().get("id").getAsInt();
                         genralTechnicalList.add(new list(technicianName, id));
-                        //techTv.setText(technicianName);
                         stockList.add(technicianName);
 
-                        //   technicianSpinner.setAdapter(technicalListAdapter);
                     }
                     listItems = new String[stockList.size()];
                     listItems = stockList.toArray(listItems);
                     checkedItems = new boolean[listItems.length];
-                    //  technicianSpinner.setAdapter(technicalListAdapter);
                 }
             }
 
@@ -557,144 +249,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     }
 
-    private void spinnerSelectionCalls() {
-
-        prioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                prioritySpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                priId = p.id;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-/*
-        technicianSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                technicianSpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                techId = p.id;
-                techName = p.name;
-            }
-
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-*/
-
-/*
-        costCenterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                costCenterSpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                costId = p.id;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-*/
-
-        mainGrpSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mainGrpSpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                maintId = p.id;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        faultCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                faultCategorySpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                faultId = p.id;
-                Log.d(TAG, "onItemSelected: hi faz" + faultId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        divisionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                divisionSpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                divId = p.id;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationSpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                locId = p.id;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        buildingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                buildingSpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                buildId = p.id;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        deptSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                deptSpinner.setSelection(position);
-                list p = (list) parent.getItemAtPosition(position);
-                depId = p.id;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-    }
-
 
     private void initViews() {
+
         techTv = findViewById(R.id.techtv);
         //  selectTech = findViewById(R.id.selecttech);
         equipmentIdTv = findViewById(R.id.eq_id_send);
@@ -734,7 +291,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         //  selectTech.setEnabled(false);
         locationSpinner.setEnabled(false);
         buildingSpinner.setEnabled(false);
-        deptSpinner.setEnabled(false);
+        // deptSpinner.setEnabled(false);
         requestorNumberEditText.setEnabled(false);
         prioritySpinner.setEnabled(false);
         divisionSpinner.setEnabled(false);
@@ -806,6 +363,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         };
         observationEditText.addTextChangedListener(textWatcher);
         actionTakenEditText.addTextChangedListener(textWatcher);
+/*
         statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -817,6 +375,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
             }
         });
+*/
 
 
       /*  genralFaultCatList.add(new list("Select Fault Category", 0));
@@ -837,11 +396,11 @@ public class EditFaultReportActivity extends AppCompatActivity {
         genralStatusList.add("Pause");
         genralStatusList.add("Completed");
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        token = sharedPreferences.getString("token", "");
-        role = sharedPreferences.getString("role", "");
 
-        spinnerSet();
+        statusListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralStatusList);
+        statusListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(statusListAdapter);
+
         plusbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -906,9 +465,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String buildingname = jsonObject.get("building").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("building").getAsJsonObject().get("id").getAsInt();
-                        genralBuildingList.add(new list(buildingname, id));
-                        buildingSpinner.setAdapter(buildingAdapter);
+                        buildId = jsonObject.get("building").getAsJsonObject().get("id").getAsInt();
+                        // genralBuildingList.add(new list(buildingname, id));
+                        buildingSpinner.setText(buildingname);
+                        //buildingSpinner.setAdapter(buildingAdapter);
                       /*  OptionalInt index = IntStream.range(0, genralBuildingList.size())
                                 .filter(i -> genralBuildingList.get(i).name.equals(buildingname))
                                 .findFirst();
@@ -921,18 +481,20 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String buildingname = jsonObject.get("location").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("location").getAsJsonObject().get("id").getAsInt();
-                        genralLoaction.add(new list(buildingname, id));
-                        locationSpinner.setAdapter(locationAdapter);
+                        locId = jsonObject.get("location").getAsJsonObject().get("id").getAsInt();
+                        // genralLoaction.add(new list(buildingname, id));
+                        locationSpinner.setText(buildingname);
+                        //locationSpinner.setAdapter(locationAdapter);
                     }
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         if (!(jsonObject.get("division").isJsonNull())) {
 
                             String divisionname = jsonObject.get("division").getAsJsonObject().get("name").getAsString();
-                            int id = jsonObject.get("division").getAsJsonObject().get("id").getAsInt();
-                            genralDivisionList.add(new list(divisionname, id));
-                            divisionSpinner.setAdapter(divisionAdapter);
+                            divId = jsonObject.get("division").getAsJsonObject().get("id").getAsInt();
+                            //   genralDivisionList.add(new list(divisionname, id));
+                            divisionSpinner.setText(divisionname);
+                            // divisionSpinner.setAdapter(divisionAdapter);
                           /*  OptionalInt index = IntStream.range(0, genralDivisionList.size())
                                     .filter(i -> genralDivisionList.get(i).name.equals(divisionname))
                                     .findFirst();
@@ -944,9 +506,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
                     if (!(jsonObject.get("department").isJsonNull())) {
                         String deptname = jsonObject.get("department").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("department").getAsJsonObject().get("id").getAsInt();
-                        genralDepList.add(new list(deptname, id));
-                        deptSpinner.setAdapter(deptListAdapter);
+                        depId = jsonObject.get("department").getAsJsonObject().get("id").getAsInt();
+                        // genralDepList.add(new list(deptname, id));
+                        // deptSpinner.setAdapter(deptListAdapter);
+                        deptSpinner.setText(deptname);
 
                     /*    list list = new list(deptname, id);
                         if (!(genralDepList.contains(list))) {
@@ -964,9 +527,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String prirityname = jsonObject.get("priority").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("priority").getAsJsonObject().get("id").getAsInt();
-                        genralPriorityList.add(new list(prirityname, id));
-                        prioritySpinner.setAdapter(priAdapter);
+                        priId = jsonObject.get("priority").getAsJsonObject().get("id").getAsInt();
+                        //    genralPriorityList.add(new list(prirityname, id));
+                        prioritySpinner.setText(prirityname);
+                        //   prioritySpinner.setAdapter(priAdapter);
                       /*  OptionalInt index = IntStream.range(0, genralPriorityList.size())
                                 .filter(i -> genralPriorityList.get(i).name.equals(prirityname))
                                 .findFirst();
@@ -977,9 +541,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String maintname = jsonObject.get("maintGrp").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("maintGrp").getAsJsonObject().get("id").getAsInt();
-                        genralMaintGrp.add(new list(maintname, id));
-                        mainGrpSpinner.setAdapter(maintAdapter);
+                        maintId = jsonObject.get("maintGrp").getAsJsonObject().get("id").getAsInt();
+                        mainGrpSpinner.setText(maintname);
+                        //   genralMaintGrp.add(new list(maintname, id));
+                        // mainGrpSpinner.setAdapter(maintAdapter);
                        /* OptionalInt index = IntStream.range(0, genralMaintGrp.size())
                                 .filter(i -> genralMaintGrp.get(i).name.equals(maintname))
                                 .findFirst();
@@ -991,9 +556,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String faulname = jsonObject.get("faultCategory").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("faultCategory").getAsJsonObject().get("id").getAsInt();
-                        genralFaultCatList.add(new list(faulname, id));
-                        faultCategorySpinner.setAdapter(faultCatAdapter);
+                        faultId = jsonObject.get("faultCategory").getAsJsonObject().get("id").getAsInt();
+                        // genralFaultCatList.add(new list(faulname, id));
+                        faultCategorySpinner.setText(faulname);
+                        //  faultCategorySpinner.setAdapter(faultCatAdapter);
                         /*OptionalInt index = IntStream.range(0, genralFaultCatList.size())
                                 .filter(i -> genralFaultCatList.get(i).name.equals(faulname))
                                 .findFirst();
@@ -1070,12 +636,20 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                     if (!(jsonObject.get("status").isJsonNull())) {
                         String statuscomming = jsonObject.get("status").getAsString();
-                        int indeex = 0;
+                        if (genralStatusList.contains(statuscomming)) {
+                            statusSpinner.setText(statuscomming, false);
+                            //int index = genralStatusList.indexOf(statuscomming);
+                            //statusSpinner.setText(statuscomming);
+                            //  statusSpinner.setSelection(index);
+
+                        }
+                        //  statusSpinner.setText(statuscomming);
+                       /* int indeex = 0;
                         if (genralStatusList.contains(statuscomming)) {
                             indeex = statusListAdapter.getPosition(statuscomming);
                             statusSpinner.setSelection(indeex);
                             statusListAdapter.notifyDataSetChanged();
-                        }
+                        }*/
                     }
                     if (!(jsonObject.get("activationTime").isJsonNull())) {
                         String hour = jsonObject.get("activationTime").getAsJsonObject().get("hour").getAsString();
@@ -1139,19 +713,20 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String locationname = jsonObject.get("location").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("location").getAsJsonObject().get("id").getAsInt();
-                        genralLoaction.add(new list(locationname, id));
-                        locationSpinner.setAdapter(locationAdapter);
+                        locId = jsonObject.get("location").getAsJsonObject().get("id").getAsInt();
+                        //  genralLoaction.add(new list(locationname, id));
+                        locationSpinner.setText(locationname);
+                        // locationSpinner.setAdapter(locationAdapter);
 
                     }
 
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String buildingname = jsonObject.get("building").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("building").getAsJsonObject().get("id").getAsInt();
-                        genralBuildingList.add(new list(buildingname, id));
-                        buildingSpinner.setAdapter(buildingAdapter);
-
+                        buildId = jsonObject.get("building").getAsJsonObject().get("id").getAsInt();
+                        // genralBuildingList.add(new list(buildingname, id));
+                        //  buildingSpinner.setAdapter(buildingAdapter);
+                        buildingSpinner.setText(buildingname);
 /*
                         OptionalInt index = IntStream.range(0, genralBuildingList.size())
                                 .filter(i -> genralBuildingList.get(i).name.equals(buildingname))
@@ -1165,9 +740,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     if (!(jsonObject.get("division").isJsonNull())) {
 
                         String divisionname = jsonObject.get("division").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("division").getAsJsonObject().get("id").getAsInt();
-                        genralDivisionList.add(new list(divisionname, id));
-                        divisionSpinner.setAdapter(divisionAdapter);
+                        divId = jsonObject.get("division").getAsJsonObject().get("id").getAsInt();
+                        //   genralDivisionList.add(new list(divisionname, id));
+                        divisionSpinner.setText(divisionname);
+                        //  divisionSpinner.setAdapter(divisionAdapter);
 
                          /*   OptionalInt index = IntStream.range(0, genralDivisionList.size())
                                     .filter(i -> genralDivisionList.get(i).name.equals(divisionname))
@@ -1180,9 +756,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
                     if (!(jsonObject.get("department").isJsonNull())) {
                         String deptname = jsonObject.get("department").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("department").getAsJsonObject().get("id").getAsInt();
-                        genralDepList.add(new list(deptname, id));
-                        deptSpinner.setAdapter(deptListAdapter);
+                        depId = jsonObject.get("department").getAsJsonObject().get("id").getAsInt();
+                        //  genralDepList.add(new list(deptname, id));
+                        deptSpinner.setText(deptname);
+                        //  deptSpinner.setAdapter(deptListAdapter);
                         /*OptionalInt index = IntStream.range(0, genralDepList.size())
                                 .filter(i -> genralDepList.get(i).name.equals(deptname))
                                 .findFirst();
@@ -1194,10 +771,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String prirityname = jsonObject.get("priority").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("priority").getAsJsonObject().get("id").getAsInt();
-                        genralPriorityList.add(new list(prirityname, id));
-                        prioritySpinner.setAdapter(priAdapter);
-
+                        priId = jsonObject.get("priority").getAsJsonObject().get("id").getAsInt();
+                        //  genralPriorityList.add(new list(prirityname, id));
+                        //  prioritySpinner.setAdapter(priAdapter);
+                        prioritySpinner.setText(prirityname);
                         /*OptionalInt index = IntStream.range(0, genralPriorityList.size())
                                 .filter(i -> genralPriorityList.get(i).name.equals(prirityname))
                                 .findFirst();
@@ -1208,9 +785,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String maintname = jsonObject.get("maintGrp").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("maintGrp").getAsJsonObject().get("id").getAsInt();
-                        genralMaintGrp.add(new list(maintname, id));
-                        mainGrpSpinner.setAdapter(maintAdapter);
+                        maintId = jsonObject.get("maintGrp").getAsJsonObject().get("id").getAsInt();
+                        //  genralMaintGrp.add(new list(maintname, id));
+                        mainGrpSpinner.setText(maintname);
+                        //  mainGrpSpinner.setAdapter(maintAdapter);
                        /* OptionalInt index = IntStream.range(0, genralMaintGrp.size())
                                 .filter(i -> genralMaintGrp.get(i).name.equals(maintname))
                                 .findFirst();
@@ -1222,9 +800,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String faulname = jsonObject.get("faultCategory").getAsJsonObject().get("name").getAsString();
-                        int id = jsonObject.get("faultCategory").getAsJsonObject().get("id").getAsInt();
-                        genralFaultCatList.add(new list(faulname, id));
-                        faultCategorySpinner.setAdapter(faultCatAdapter);
+                        faultId = jsonObject.get("faultCategory").getAsJsonObject().get("id").getAsInt();
+                        //  genralFaultCatList.add(new list(faulname, id));
+                        faultCategorySpinner.setText(faulname);
+                        // faultCategorySpinner.setAdapter(faultCatAdapter);
                       /*  OptionalInt index = IntStream.range(0, genralFaultCatList.size())
                                 .filter(i -> genralFaultCatList.get(i).name.equals(faulname))
                                 .findFirst();
@@ -1289,12 +868,16 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                     if (!(jsonObject.get("status").isJsonNull())) {
                         String statuscomming = jsonObject.get("status").getAsString();
-                        int indeex = 0;
+                        if (genralStatusList.contains(statuscomming)) {
+                            statusSpinner.setText(statuscomming, false);
+                        }
+                        //   statusSpinner.setText(statuscomming);
+                      /*  int indeex = 0;
                         if (genralStatusList.contains(statuscomming)) {
                             indeex = statusListAdapter.getPosition(statuscomming);
                             statusSpinner.setSelection(indeex);
                             statusListAdapter.notifyDataSetChanged();
-                        }
+                        }*/
 
                     }
 
@@ -1359,7 +942,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private void deleteRemarks(View view) {
         if (!editTextList.isEmpty()) {
             if (mlayout.getChildCount() > 1) {
-                if (statusSpinner.getSelectedItem().toString().equals("Closed")) {
+                if (statusSpinner.getText().equals("Closed")) {
                     if (mlayout.getChildCount() > 2) {
                         mlayout.removeViewAt(mlayout.getChildCount() - 1);
                         int index = editTextList.size() - 1;
@@ -1374,78 +957,21 @@ public class EditFaultReportActivity extends AppCompatActivity {
         }
     }
 
-    private void spinnerSet() {
-
-        deptListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDepList);
-        deptListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        deptSpinner.setAdapter(deptListAdapter);
-
-        divisionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDivisionList);
-        divisionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        divisionSpinner.setAdapter(divisionAdapter);
-
-        buildingAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralBuildingList);
-        buildingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        buildingSpinner.setAdapter(buildingAdapter);
-
-        locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralLoaction);
-        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locationSpinner.setAdapter(locationAdapter);
-
-        maintAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralMaintGrp);
-        maintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mainGrpSpinner.setAdapter(maintAdapter);
-
-        priAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralPriorityList);
-        priAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        prioritySpinner.setAdapter(priAdapter);
-
-        faultCatAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralFaultCatList);
-        faultCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        faultCategorySpinner.setAdapter(faultCatAdapter);
-
-      /*  technicalListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralTechnicalList);
-        technicalListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        technicianSpinner.setAdapter(technicalListAdapter);*/
-
-        statusListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralStatusList);
-        statusListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(statusListAdapter);
-
-
-        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (statusSpinner.getSelectedItem().equals("Pause")) {
-                    statusSpinner.setSelection(idStatus);
-                }else if (statusSpinner.getSelectedItem().equals("Completed")){
-                    statusSpinner.setSelection(idStatus);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-      /*  costCenterListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genCostCebterList);
-        costCenterListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        costCenterSpinner.setAdapter(costCenterListAdapter);*/
-
-
-    }
 
     @NotNull
     private TextView createNewEditText(String remarksString, int remarksId) {
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout
+        LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout
                 .LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        editText = new EditText(this);
+        lparams.setMargins(10, 8, 10, 8);
+
+        editText = new TextInputEditText(this);
         editText.setId(remarksId);
+        editText.setGravity(Gravity.CENTER);
+        editText.setBackgroundResource(R.drawable.mybutton);
         editText.setText(remarksString);
         editText.setLayoutParams(lparams);
-        editText.setHint("add remarks");
-        editText.setMinHeight(50);
+        editText.setHint("   add remarks");
+        editText.setMinHeight(60);
         editText.setMaxWidth(mlayout.getWidth());
         editTextList.add(editText);
         String remarkSt = editText.getText().toString();
@@ -1478,7 +1004,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
     private void checkFieldsForEmptyValues() {
-        if (statusSpinner.getSelectedItem().toString().equals("Pause")) {
+        if (statusSpinner.getText().equals("Pause")) {
             buttonEnableMethod();
 
         } else {
@@ -1522,9 +1048,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
             String locationDesc = locDescEditText.getText().toString();
             faultDetailString = faultDetailsEditText.getText().toString();
             String observerString = observationEditText.getText().toString();
-//            String diagnosesString = diagnosisEditText.getText().toString();
             String actionTakenString = actionTakenEditText.getText().toString();
-            String statusString = statusSpinner.getSelectedItem().toString();
+            String statusString = statusSpinner.getText().toString();
             String diagnosesString = null;
             if (!editTextList.isEmpty()) {
                 for (int iRem = 0; iRem < editTextList.size(); iRem++) {
@@ -1578,9 +1103,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 attendedBy.add(attendedbyObject);
 
             }
-
-          /*  AttendedBy attendedBy = null;// = new AttendedBy(techId);
-            ArrayList<AttendedBy> attendedByArrayList = new ArrayList<AttendedBy>(Collections.singleton(attendedBy));*/
             EditFaultReportRequest editFaultReportRequest = new EditFaultReportRequest(frId,
                     building,
                     location,
@@ -1607,7 +1129,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.code() == 200) {
-                        if (statusSpinner.getSelectedItem().toString().equals("Pause")) {
+                        if (statusSpinner.getText().toString().equals("Pause")) {
                             Intent intent = new Intent(EditFaultReportActivity.this, UploadFile.class);
                             intent.putExtra("frid", frId);
                             intent.putExtra("workspace", workSpaceid);
@@ -1682,6 +1204,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 intent.putExtra("token", token);
                 intent.putExtra("value", "Before");
                 intent.putExtra("checkForFrid", frid);
+                intent.putExtra("role", role);
                 intent.putExtra("workspace", workSpaceid);
                 intent.putExtra("frId", frIdEditText.getText().toString());
                 startActivity(intent);
@@ -1696,6 +1219,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 intent.putExtra("value", "After");
                 intent.putExtra("checkForFrid", frid);
                 intent.putExtra("workspace", workSpaceid);
+                intent.putExtra("role", role);
                 intent.putExtra("frId", frIdEditText.getText().toString());
                 startActivity(intent);
 
@@ -1707,14 +1231,14 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     private void openMenu() {
         isMenuOpen = !isMenuOpen;
-        fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
+        // fab_main.animate().setInterpolator(interpolator).rotation(45f).setDuration(300).start();
         fab_before.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
     }
 
     private void closeMenu() {
         isMenuOpen = !isMenuOpen;
-        fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
+        //  fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
         fab_before.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
     }

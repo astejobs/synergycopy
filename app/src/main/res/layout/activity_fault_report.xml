@@ -150,6 +150,19 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="0dp"
+
+
+                        android:elevation="20dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+
+
+
                         android:id="@+id/select_equip_btn"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -300,7 +313,16 @@
                         android:padding="10dp"
                         app:cornerRadius="4dp"
                         app:icon="@drawable/searchicon"
-                        app:iconSize="32dp" />
+                        app:iconSize="32dp"
+                        android:elevation="20dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+
+                        />
 
 
                 </LinearLayout>

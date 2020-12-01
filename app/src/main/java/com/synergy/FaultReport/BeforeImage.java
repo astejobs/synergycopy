@@ -68,9 +68,9 @@ public class BeforeImage extends AppCompatActivity {
         workspace = intent.getStringExtra("workspace");
         frId = intent.getStringExtra("frId");
         value = intent.getStringExtra("value");
-        user = intent.getStringExtra("user");
+        user = intent.getStringExtra("role");
         checkForFrid = intent.getStringExtra("checkForFrid");
-
+        Log.d(TAG, "onCreate: hi"+user);
 
         if (checkForFrid==null) {
 
@@ -194,7 +194,7 @@ public class BeforeImage extends AppCompatActivity {
                             .setTitle("Image saved successfully")
                             .setMessage("Want to upload more pictures ?")
                             .setIcon(R.drawable.ic_error)
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
@@ -215,7 +215,7 @@ public class BeforeImage extends AppCompatActivity {
                             .setMessage("Cannot add more than 5 pictures")
                             .setTitle("Alert")
                             .setIcon(R.drawable.ic_error)
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     uploadBtn.setEnabled(false);

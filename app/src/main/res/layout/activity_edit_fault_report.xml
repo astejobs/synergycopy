@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e2e2e2"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -20,8 +21,11 @@
         app:titleTextColor="#ffffff" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="6dp"
+        android:elevation="4dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
@@ -30,520 +34,896 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/con"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@id/con">
 
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:divider="?dividerHorizontal"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingBottom="20dp"
-                android:showDividers="middle">
+                android:background="#fff"
+                android:elevation="8dp"
+                app:cardCornerRadius="15dp">
 
                 <LinearLayout
-                    android:id="@+id/layout_disable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/layout_disable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:divider="?dividerHorizontal"
-                        android:orientation="vertical"
-                        android:padding="20dp"
-                        android:showDividers="middle">
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:text="FR ID" />
 
-                            <EditText
-                                android:id="@+id/frIdEditText"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.5"
-                                android:inputType="text"
-                                android:textColor="@color/textblackcolor" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".95"
-                                android:text="Department" />
-
-                            <Spinner
-                                android:id="@+id/dept_number"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.05" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Requestor Name"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/reqNameEditTextEditFault"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:layout_weight="1"
-                                android:textColor="@color/textblackcolor"
-                                android:textSize="18sp" />
-
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Activation Date" />
-
-                            <TextView
-                                android:id="@+id/activation_date"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:layout_weight="1"
-                                android:hint="Activation Date"
-                                android:textColor="@color/textblackcolor" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Arrival Time" />
-
-                            <TextView
-                                android:id="@+id/activation_time"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:layout_weight="1"
-                                android:hint="Arrival Time"
-                                android:textColor="@color/textblackcolor" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Contact No" />
-
-                            <EditText
-                                android:id="@+id/contactNumber"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:hint="Contact No: "
-                                android:inputType="phone"
-                                android:maxLength="10"
-                                android:textColor="@color/textblackcolor" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Priority" />
-
-                            <Spinner
-                                android:id="@+id/priorityNumber"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Building" />
-
-                            <Spinner
-
-                                android:id="@+id/buildingNumber"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Location" />
-
-                            <Spinner
-                                android:id="@+id/unitNumber"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Division" />
-
-                            <Spinner
-                                android:id="@+id/divisionNumberSpinner"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:text="Location Description" />
-
-                            <EditText
-                                android:id="@+id/locationDescrip"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:inputType="text"
-                                android:textColor="@color/textblackcolor" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".95"
-                                android:text="Fault Category" />
-
-                            <Spinner
-                                android:id="@+id/faultCategory"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.05" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:text="Fault Details" />
-
-                            <EditText
-                                android:id="@+id/faultDetails"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:inputType="text"
-                                android:textColor="@color/textblackcolor" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".95"
-                                android:text="Select Maintenance Group" />
-
-                            <Spinner
-                                android:id="@+id/mainGrp"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.05" />
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:text="Observation" />
-
-                            <EditText
-                                android:id="@+id/observation"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:inputType="text"
-                                android:textColor="@color/textblackcolor" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:text="Action Taken" />
-
-                            <EditText
-                                android:id="@+id/actionTaken"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5"
-                                android:inputType="text"
-                                android:textColor="@color/textblackcolor" />
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Equipment  "
-                                android:textAlignment="viewStart"
-                                android:textSize="18sp" />
+                                android:layout_margin="8dp"
+                                android:hint="FR ID">
 
-                            <TextView
-                                android:id="@+id/equipmentTextViewEditFault"
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/frIdEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:layout_weight="1"
-                                android:hint="Equipment Code"
-                                android:textColor="@color/textblackcolor"
-                                android:textSize="18sp" />
+                                android:layout_margin="8dp"
+                                android:hint="Derpartment">
 
-                            <TextView
-                                android:id="@+id/eq_id_send"
-                                android:layout_width="wrap_content"
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/dept_number"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <!--
+                                                    <LinearLayout
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:gravity="center"
+                                                        android:orientation="horizontal"
+                                                        android:weightSum="2">
+
+                                                        <TextView
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight=".5"
+                                                            android:text="FR ID" />
+
+                                                        <EditText
+                                                            android:id="@+id/frIdEditText"
+                                                            android:layout_width="0dp"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_weight="1.5"
+                                                            android:inputType="text"
+                                                            android:textColor="@color/textblackcolor" />
+
+                                                    </LinearLayout>
+                            -->
+
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:gravity="center"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".95"
+                                                                android:text="Department" />
+
+                                                            <Spinner
+                                                                android:id="@+id/dept_number"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1.05" />
+                                                        </LinearLayout>
+                            -->
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:gravity="center"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1"
+                                                                android:text="Requestor Name"
+                                                                android:textSize="14sp" />
+
+                                                            <TextView
+                                                                android:id="@+id/reqNameEditTextEditFault"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_margin="10dp"
+                                                                android:layout_weight="1"
+                                                                android:textColor="@color/textblackcolor"
+                                                                android:textSize="18sp" />
+
+
+                                                        </LinearLayout>
+                            -->
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone" />
+                                android:layout_margin="8dp"
+                                android:hint="Requestor Name">
 
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/reqNameEditTextEditFault"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:gravity="center"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1"
+                                                                android:text="Activation Date" />
+
+                                                            <TextView
+                                                                android:id="@+id/activation_date"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_margin="10dp"
+                                                                android:layout_weight="1"
+                                                                android:hint="Activation Date"
+                                                                android:textColor="@color/textblackcolor" />
+
+                                                        </LinearLayout>
+                            -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Activation Date">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/activation_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:gravity="center"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1"
+                                                                android:text="Arrival Time" />
+
+                                                            <TextView
+                                                                android:id="@+id/activation_time"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_margin="10dp"
+                                                                android:layout_weight="1"
+                                                                android:hint="Arrival Time"
+                                                                android:textColor="@color/textblackcolor" />
+
+                                                        </LinearLayout>
+                            -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Arrival Date">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/activation_time"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:gravity="center"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1"
+                                                                android:text="Contact No" />
+
+                                                            <EditText
+                                                                android:id="@+id/contactNumber"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1"
+                                                                android:hint="Contact No: "
+                                                                android:inputType="phone"
+                                                                android:maxLength="10"
+                                                                android:textColor="@color/textblackcolor" />
+
+                                                        </LinearLayout>
+                            -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Contact No">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/contactNumber"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false"
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Priority">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/priorityNumber"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false"
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1"
+                                                                android:text="Priority" />
+
+                                                            <Spinner
+                                                                android:id="@+id/priorityNumber"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1" />
+
+                                                        </LinearLayout>
+                            -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Building">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/buildingNumber"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false"
+
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1"
+                                                                android:text="Building" />
+
+                                                            <Spinner
+
+                                                                android:id="@+id/buildingNumber"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1" />
+                                                        </LinearLayout>
+                            -->
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1"
+                                                                android:text="Location" />
+
+                                                            <Spinner
+                                                                android:id="@+id/unitNumber"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1" />
+                                                        </LinearLayout>
+                            -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Location">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/unitNumber"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:editable="false"
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Division">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/divisionNumberSpinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:editable="false"
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1"
+                                                                android:text="Division" />
+
+                                                            <Spinner
+                                                                android:id="@+id/divisionNumberSpinner"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1" />
+                                                        </LinearLayout>
+                            -->
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Location Description">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/locationDescrip"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:gravity="center"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="1">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".5"
+                                                                android:text="Location Description" />
+
+                                                            <EditText
+                                                                android:id="@+id/locationDescrip"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".5"
+                                                                android:inputType="text"
+                                                                android:textColor="@color/textblackcolor" />
+
+                                                        </LinearLayout>
+                            -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Fault Category">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/faultCategory"
+                                    android:layout_width="match_parent"
+
+                                    android:layout_height="wrap_content"
+                                    android:editable="false"
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".95"
+                                                                android:text="Fault Category" />
+
+                                                            <Spinner
+                                                                android:id="@+id/faultCategory"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1.05" />
+                                                        </LinearLayout>
+                            -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Fault Description">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/faultDetails"
+                                    android:layout_width="match_parent"
+
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:gravity="center"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="1">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".5"
+                                                                android:text="Fault Details" />
+
+                                                            <EditText
+                                                                android:id="@+id/faultDetails"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".5"
+                                                                android:inputType="text"
+                                                                android:textColor="@color/textblackcolor" />
+
+                                                        </LinearLayout>
+                            -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Select Maintenance Group">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/mainGrp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false"
+
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".95"
+                                                                android:text="Select Maintenance Group" />
+
+                                                            <Spinner
+                                                                android:id="@+id/mainGrp"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1.05" />
+                                                        </LinearLayout>
+                            -->
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Observation">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/observation"
+                                    android:layout_width="match_parent"
+
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:gravity="center"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="1">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".5"
+                                                                android:text="Observation" />
+
+                                                            <EditText
+                                                                android:id="@+id/observation"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".5"
+                                                                android:inputType="text"
+                                                                android:textColor="@color/textblackcolor" />
+
+                                                        </LinearLayout>
+                            -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Action Taken">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/actionTaken"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:gravity="center"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="1">
+
+                                                            <TextView
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".5"
+                                                                android:text="Action Taken" />
+
+                                                            <EditText
+                                                                android:id="@+id/actionTaken"
+                                                                android:layout_width="0dp"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight=".5"
+                                                                android:inputType="text"
+                                                                android:textColor="@color/textblackcolor" />
+
+                                                        </LinearLayout>
+                            -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:hint="Equipment">
+
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/equipmentTextViewEditFault"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false"
+
+                                    android:textColor="@color/textColor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <!--
+                                                        <LinearLayout
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:gravity="center"
+                                                            android:orientation="horizontal"
+                                                            android:weightSum="2">
+
+                                                            <TextView
+                                                                android:layout_width="match_parent"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_weight="1"
+                                                                android:text="Equipment  "
+                                                                android:textAlignment="viewStart"
+                                                                android:textSize="18sp" />
+
+                                                            <TextView
+                                                                android:id="@+id/equipmentTextViewEditFault"
+                                                                android:layout_width="match_parent"
+                                                                android:layout_height="wrap_content"
+                                                                android:layout_margin="10dp"
+                                                                android:layout_weight="1"
+                                                                android:hint="Equipment Code"
+                                                                android:textColor="@color/textblackcolor"
+                                                                android:textSize="18sp" />
+
+                                                            <TextView
+                                                                android:id="@+id/eq_id_send"
+                                                                android:layout_width="wrap_content"
+                                                                android:layout_height="wrap_content"
+                                                                android:visibility="gone" />
+
+                                                        </LinearLayout>
+                            -->
                         </LinearLayout>
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/layout_remarks"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:divider="?dividerHorizontal"
-                        android:orientation="vertical"
-                        android:padding="10dp"
-                        android:showDividers="middle">
 
                         <TextView
-                            android:id="@+id/remarksTextView"
+                            android:id="@+id/eq_id_send"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/layout_remarks"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="Remarks"
-                            android:textColor="@color/textblackcolor"
-                            android:textSize="18sp" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/remarksTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:text="Remarks"
+                                android:textColor="@color/textblackcolor"
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:layout_margin="8dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/plusButton"
+                                android:layout_width="0dp"
+                                android:layout_height="52dp"
+                                android:layout_marginEnd="30dp"
+                                android:layout_weight="1"
+                                android:elevation="8dp"
+                                android:insetLeft="0dp"
+                                android:insetTop="0dp"
+                                android:insetRight="0dp"
+                                android:insetBottom="0dp"
+                                android:stateListAnimator="@null"
+                                app:backgroundTint="#d9d9d9"
+                                app:iconTint="#999898"
+                                app:cornerRadius="4dp"
+                                app:icon="@drawable/add"
+                                app:iconGravity="textStart"
+                                app:iconPadding="0dp"
+                                app:iconSize="32dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/deleteButton"
+                                android:layout_width="0dp"
+                                android:layout_height="52dp"
+                                android:layout_marginStart="30dp"
+                                android:layout_weight="1"
+                                android:elevation="8dp"
+                                android:insetLeft="0dp"
+                                android:insetTop="0dp"
+                                android:insetRight="0dp"
+                                android:insetBottom="0dp"
+                                android:stateListAnimator="@null"
+                                app:backgroundTint="#d9d9d9"
+                                app:iconTint="#999898"
+                                app:cornerRadius="4dp"
+                                app:icon="@drawable/delta"
+                                app:iconGravity="textStart"
+                                app:iconPadding="0dp"
+                                app:iconSize="32dp" />
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
+                        android:layout_margin="8dp"
+                        android:hint="Select Status">
 
-                        <Button
-                            android:id="@+id/plusButton"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/add" />
+                        <AutoCompleteTextView
+                            android:id="@+id/statusSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
 
-                        <Button
-                            android:id="@+id/deleteButton"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_margin="10dp"
-                            android:layout_marginStart="20dp"
-                            android:background="@drawable/delete" />
-                    </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <!--
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="20dp"
+                                            android:orientation="horizontal"
+                                            android:weightSum="2">
+
+                                            <TextView
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Select status" />
+
+                                            <Spinner
+                                                android:id="@+id/statusSpinner"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1" />
+                                        </LinearLayout>
+                    -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:hint="Technicain">
+
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/techtv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:editable="false"
+                            android:textColor="@color/textColor" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!--
+                                        <TextView
+                                            android:id="@+id/techtv"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="20dp"
+                                            android:textColor="@color/textblackcolor" />
+                    -->
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/updateFaultReportButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:padding="10dp"
+                        android:text="Update Fault Report"
+                        android:textColor="@color/textColorbutton"
+                        app:cornerRadius="25dp" />
 
 
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Select status" />
-
-                    <Spinner
-                        android:id="@+id/statusSpinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/techtv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:textColor="@color/textblackcolor" />
-
-
-
-                <Button
-                    android:id="@+id/updateFaultReportButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:layout_marginBottom="40dp"
-                    android:background="@drawable/mybutton"
-                    android:padding="10dp"
-                    android:text="Update Fault Report"
-                    android:textColor="@color/textColorbutton" />
-
-
-            </LinearLayout>
-
+            </com.google.android.material.card.MaterialCardView>
         </ScrollView>
 
         <LinearLayout
@@ -554,6 +934,7 @@
             android:layout_margin="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -566,32 +947,41 @@
                 android:text="Before"
                 android:layout_marginBottom="10dp"
                 android:textColor="#ffffff"
-                app:backgroundTint="@color/colorCodeSchemeApp"
-                app:fabSize="normal" />
+                android:src="@drawable/beforeupload"
+                android:tooltipText="Before Image"
+                app:backgroundTint="#fff"
+                app:elevation="6dp"
+                app:fabSize="auto"
+                app:tint="#4F5FC5" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/after_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:src="@drawable/afterupload"
                 android:text="After"
-                android:textColor="#ffffff"
-                app:backgroundTint="@color/colorCodeSchemeApp"
+                android:tooltipText="After Image"
+                app:backgroundTint="#fff"
                 app:borderWidth="0dp"
-                app:fabSize="normal" />
+                app:elevation="6dp"
+                app:fabSize="auto"
+                app:tint="#4F5FC5" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/images_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Images"
-                app:backgroundTint="@color/colorCodeSchemeApp"
-                android:textColor="#ffffff"
+                android:layout_margin="3dp"
+                android:src="@drawable/fabback"
+                android:text="images"
+                app:backgroundTint="#fff"
                 app:borderWidth="0dp"
-                app:fabSize="normal" />
+                app:fabSize="normal"
+                app:tint="#4F5FC5" />
 
         </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

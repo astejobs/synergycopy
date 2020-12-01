@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e2e2e2"
     android:orientation="vertical"
     tools:context=".Otp.OtpActivity">
 
@@ -16,108 +17,129 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu"
-        app:title="Verification"
+        app:title="Verify OTP"
         app:titleMargin="8dp"
-        app:titleTextColor="#ffffff" />
+        app:titleTextColor="#fff" />
 
-    <TextView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_margin="16dp"
-        android:text="@string/opt"
-        android:textSize="16sp"
-        android:textColor="@color/textColorApp"/>
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="#fff"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp">
 
-    <LinearLayout
-        android:id="@+id/root_otp_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_margin="16dp"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:weightSum="4">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/otp_edit_box1"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/otp"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textSize="30sp" />
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter"
+                android:src="@drawable/otpbackgrd" />
 
-        <EditText
-            android:id="@+id/otp_edit_box2"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/otp"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textSize="30sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginTop="50dp"
+                android:text="@string/opt"
+                android:textAlignment="center"
+                android:textColor="@color/textColorApp"
+                android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/otp_edit_box3"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/otp"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textSize="30sp" />
+            <LinearLayout
+                android:id="@+id/root_otp_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="4">
 
-        <EditText
-            android:id="@+id/otp_edit_box4"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="@drawable/otp"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textSize="30sp" />
+                <EditText
+                    android:id="@+id/otp_edit_box1"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:drawableBottom="@drawable/otp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textSize="30sp" />
 
+                <EditText
+                    android:id="@+id/otp_edit_box2"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:drawableBottom="@drawable/otp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textSize="30sp" />
 
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/otp_edit_box3"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:drawableBottom="@drawable/otp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textSize="30sp" />
 
-
-
-        <Button
-            android:id="@+id/verify_otp_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/mybutton"
-            android:text="Verify"
-            android:padding="16dp"
-            android:layout_gravity="center"
-            android:textColor="@color/textColorbutton"
-            android:textSize="20sp" />
-
-
-
-    <Button
-        android:id="@+id/resendbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/mybutton"
-        android:text="Resend Code"
-        android:padding="16dp"
-        android:layout_gravity="center"
-        android:textColor="@color/textColorbutton"
-        android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/otp_edit_box4"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:drawableBottom="@drawable/otp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textSize="30sp" />
 
 
+            </LinearLayout>
 
 
+            <Button
+                android:id="@+id/verify_otp_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/mybutton"
+                android:padding="8dp"
+                android:text="Verify"
+                android:textColor="@color/textColorbutton"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/resendbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:text="Resend Code"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="#3A74AF"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
