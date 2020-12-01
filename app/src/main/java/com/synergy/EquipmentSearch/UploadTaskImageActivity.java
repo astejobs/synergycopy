@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.Constants;
 import com.synergy.Dashboard.Dashboard;
 import com.synergy.FaultReport.BeforeImage;
 import com.synergy.LogoutClass;
@@ -83,12 +84,6 @@ public class UploadTaskImageActivity extends AppCompatActivity {
         beforeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //selectImage(UploadTaskImageActivity.this, REQUEST_IMAGEBEFORE_CAPTURE);
-                /*Intent takePictureIntent = new Intent();
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }*/
-
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto, 13);
             }
@@ -119,6 +114,12 @@ public class UploadTaskImageActivity extends AppCompatActivity {
                     Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
                     imageView.setBackground(null);
                     imageView.setImageBitmap(bmp);
+                } else if (response.code() == 401) {
+                    Toast.makeText(UploadTaskImageActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 500) {
+                    Toast.makeText(UploadTaskImageActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(UploadTaskImageActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(UploadTaskImageActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
@@ -137,77 +138,77 @@ public class UploadTaskImageActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         String imageViewValue;
-    if (data != null) {
-        if (requestCode == Integer.valueOf(String.valueOf(0) + String.valueOf(REQUEST_IMAGEBEFORE_CAPTURE)) ||
-                requestCode == Integer.valueOf(String.valueOf(1) + String.valueOf(REQUEST_IMAGEBEFORE_CAPTURE)) &&
-                        resultCode == Activity.RESULT_OK) {
-            assert data != null;
-            String encodedStringBuilder = null;
-            imageViewValue = "before";
-            if (requestCode == Integer.valueOf(String.valueOf(0) + String.valueOf(REQUEST_IMAGEBEFORE_CAPTURE))) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                try {
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    photo.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+        if (data != null) {
+            if (requestCode == Integer.valueOf(String.valueOf(0) + String.valueOf(REQUEST_IMAGEBEFORE_CAPTURE)) ||
+                    requestCode == Integer.valueOf(String.valueOf(1) + String.valueOf(REQUEST_IMAGEBEFORE_CAPTURE)) &&
+                            resultCode == Activity.RESULT_OK) {
+                assert data != null;
+                String encodedStringBuilder = null;
+                imageViewValue = "before";
+                if (requestCode == Integer.valueOf(String.valueOf(0) + String.valueOf(REQUEST_IMAGEBEFORE_CAPTURE))) {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    try {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        photo.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-                    encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    uploadPicture(encodedStringBuilder, photo, beforeImage, imageViewValue);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        uploadPicture(encodedStringBuilder, photo, beforeImage, imageViewValue);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Uri selectedImage = data.getData();
+
+                    Bitmap photo1 = null;
+                    try {
+                        photo1 = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImage);
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        photo1.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+                        encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        uploadPicture(encodedStringBuilder, photo1, beforeImage, imageViewValue);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
+
             } else {
-                Uri selectedImage = data.getData();
+                assert data != null;
+                String encodedStringBuilder = null;
+                imageViewValue = "after";
+                if (requestCode == Integer.valueOf(String.valueOf(0) + String.valueOf(REQUEST_IMAGEAFTER_CAPTURE))) {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    try {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        photo.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-                Bitmap photo1 = null;
-                try {
-                    photo1 = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImage);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    photo1.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        uploadPicture(encodedStringBuilder, photo, afterImage, imageViewValue);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Uri selectedImage = data.getData();
 
-                    encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    uploadPicture(encodedStringBuilder, photo1, beforeImage, imageViewValue);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    Bitmap photoBmp = null;
+                    try {
+                        photoBmp = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImage);
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        photoBmp.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-            }
-
-        } else {
-            assert data != null;
-            String encodedStringBuilder = null;
-            imageViewValue = "after";
-            if (requestCode == Integer.valueOf(String.valueOf(0) + String.valueOf(REQUEST_IMAGEAFTER_CAPTURE))) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                try {
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    photo.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-
-                    encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    uploadPicture(encodedStringBuilder, photo, afterImage, imageViewValue);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Uri selectedImage = data.getData();
-
-                Bitmap photoBmp = null;
-                try {
-                    photoBmp = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), selectedImage);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    photoBmp.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-
-                    encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    uploadPicture(encodedStringBuilder, photoBmp, afterImage, imageViewValue);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        uploadPicture(encodedStringBuilder, photoBmp, afterImage, imageViewValue);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
-    }
     }
 
     private void uploadPicture(String encodedStringBuilder, Bitmap photo, ImageView imageView, String imageViewValue) {
@@ -247,6 +248,12 @@ public class UploadTaskImageActivity extends AppCompatActivity {
                                 .show();
 
                     }
+                } else if (response.code() == 401) {
+                    Toast.makeText(UploadTaskImageActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 500) {
+                    Toast.makeText(UploadTaskImageActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(UploadTaskImageActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(UploadTaskImageActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
 

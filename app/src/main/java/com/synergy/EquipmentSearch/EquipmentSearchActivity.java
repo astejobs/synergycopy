@@ -14,10 +14,13 @@ import retrofit2.Response;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +38,8 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 import com.synergy.APIClient;
+import com.synergy.CheckInternet;
+import com.synergy.Constants;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
@@ -53,6 +58,20 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     private TextView scanTextView;
     private ProgressDialog mProgress;
     private String workspace, role, token;
+    private final CheckInternet checkInternet = new CheckInternet();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
 
 
     @Override
@@ -128,7 +147,6 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                     if (equipmentSearchResponse.isEmpty()) {
                         Toast.makeText(EquipmentSearchActivity.this, "No tasks available!", Toast.LENGTH_SHORT).show();
                     }
-                    //if (role.equals("ManagingAgent")) {
                     RecyclerView recyclerView = findViewById(R.id.recycler_view_equip);
 
                     ArrayList<EquipmentSearchCard> equipmentSearchCardArrayList = new ArrayList<>();
@@ -150,16 +168,14 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                     EquipmentSearchAdapter mAdapter = new EquipmentSearchAdapter(equipmentSearchCardArrayList);
                     recyclerView.setLayoutManager(new LinearLayoutManager(EquipmentSearchActivity.this));
                     recyclerView.setAdapter(mAdapter);
-                    /*} else if (role.equals("Technician")){
-                        for (int i = 0; i < equipmentSearchResponse.size(); i++) {
-                            Intent intent = new Intent(getApplicationContext(), PmTaskActivity.class);
-                            intent.putExtra("taskNumber", equipmentSearchResponse.get(i).getTaskNumber());
-                            intent.putExtra("taskId", equipmentSearchResponse.get(i).getTaskId().toString());
-                            intent.putExtra("workspace", workspace);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }*/
+                } else if (response.code() == 401) {
+                    Toast.makeText(EquipmentSearchActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(EquipmentSearchActivity.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(EquipmentSearchActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(EquipmentSearchActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(EquipmentSearchActivity.this, "Error: " + response.code(), Toast.LENGTH_LONG).show();
                 mProgress.dismiss();

@@ -243,7 +243,7 @@ public class MainActivityLogin extends AppCompatActivity {
                 } else if (response.code() == 202) {
                     Toast.makeText(MainActivityLogin.this, "Please check the username and password", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 401) {
-                    Toast.makeText(MainActivityLogin.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivityLogin.this, Constants.ERROR_CODE_401_MESSAGE_LOGIN, Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 500) {
                     Toast.makeText(MainActivityLogin.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 404) {

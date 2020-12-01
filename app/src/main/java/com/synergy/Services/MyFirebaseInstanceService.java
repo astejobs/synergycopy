@@ -102,6 +102,7 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
 
         notificationManager.notify(0, notification);
     }
+}
 
         /*Intent intent = new Intent(click_action);
 
@@ -120,7 +121,7 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());*/
 
-        //sendNotification(body, click_action, workspace, equipCode, id);
+//sendNotification(body, click_action, workspace, equipCode, id);
 
     /*}
 
@@ -206,5 +207,3 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
         count++;
     }
 */
-
-}

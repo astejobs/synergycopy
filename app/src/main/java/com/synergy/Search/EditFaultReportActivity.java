@@ -42,6 +42,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
+import com.synergy.Constants;
 import com.synergy.Dashboard.Dashboard;
 import com.synergy.FaultReport.BeforeImage;
 import com.synergy.FaultReport.FaultReportActivity;
@@ -971,6 +972,71 @@ public class EditFaultReportActivity extends AppCompatActivity {
         }
     }
 
+    private void spinnerSet() {
+
+        deptListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDepList);
+        deptListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        deptSpinner.setAdapter(deptListAdapter);
+
+        divisionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralDivisionList);
+        divisionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        divisionSpinner.setAdapter(divisionAdapter);
+
+        buildingAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralBuildingList);
+        buildingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        buildingSpinner.setAdapter(buildingAdapter);
+
+        locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralLoaction);
+        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(locationAdapter);
+
+        maintAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralMaintGrp);
+        maintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mainGrpSpinner.setAdapter(maintAdapter);
+
+        priAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralPriorityList);
+        priAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        prioritySpinner.setAdapter(priAdapter);
+
+        faultCatAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralFaultCatList);
+        faultCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        faultCategorySpinner.setAdapter(faultCatAdapter);
+
+      /*  technicalListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralTechnicalList);
+        technicalListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        technicianSpinner.setAdapter(technicalListAdapter);*/
+
+        statusListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralStatusList);
+        statusListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(statusListAdapter);
+
+
+
+
+        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (Constants.ROLE_MANAGINGAGENT.equals(role)) {
+                    if (statusSpinner.getSelectedItem().equals("Pause")) {
+                        statusSpinner.setSelection(idStatus);
+                    } else if (statusSpinner.getSelectedItem().equals("Completed")) {
+                        statusSpinner.setSelection(idStatus);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+      /*  costCenterListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genCostCebterList);
+        costCenterListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        costCenterSpinner.setAdapter(costCenterListAdapter);*/
+
+
+    }
 
     @NotNull
     private TextView createNewEditText(String remarksString, int remarksId) {

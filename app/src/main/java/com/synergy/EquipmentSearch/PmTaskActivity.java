@@ -11,8 +11,11 @@ import retrofit2.Response;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -32,6 +35,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.util.CollectionUtils;
 import com.synergy.APIClient;
+import com.synergy.CheckInternet;
+import com.synergy.Constants;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
@@ -80,6 +85,22 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private int taskId;
     private String afterImage, beforeImage;
     private String source;
+
+    private final CheckInternet checkInternet = new CheckInternet();
+
+    Context context;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,15 +198,9 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         GetUpdatePmTaskRequest getUpdatePmTaskRequest = new GetUpdatePmTaskRequest(status, remarksString, completedDateTime, completedDateTime, taskId);
 
         if (!remarksTextView.getText().toString().isEmpty()) {
-            /*LocalDate now = Instant.ofEpochMilli((long) scheduleDate).atZone(ZoneId.systemDefault()).toLocalDate();
-            if (!now.isBefore(LocalDate.now())) {*/
             updatePmTaskService(getUpdatePmTaskRequest, token, workspace);
-            /*} else
-                Toast.makeText(PmTaskActivity.this, "Overdue tasks cannot be updated.", Toast.LENGTH_SHORT).show();
-        */
-
         } else
-            Toast.makeText(PmTaskActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PmTaskActivity.this, "Please add remarks!", Toast.LENGTH_SHORT).show();
     }
 
     private void getPmTask(String taskNumberString, int taskId, String token) {
@@ -273,11 +288,6 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                         statusList.clear();
                         statusList.addAll(ts1);
 
-//                        for (int i = 0; i<statusList.size();i++){
-
-                       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            statusList = statusList.stream().collect(Collectors.toList());
-                        }*/
                     }
                     statusSpinner.setAdapter(statusSpinnerAdapter);
                     if (!getPmTaskItemsResponse.getStatus().equals("OPEN")) {
@@ -295,6 +305,14 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                     }
 
                     checkListButton.setEnabled(true);
+                } else if (response.code() == 401) {
+                    Toast.makeText(PmTaskActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(PmTaskActivity.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(PmTaskActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(PmTaskActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(PmTaskActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
             }
@@ -378,6 +396,14 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                         startActivity(intent);
                     }
                     finish();
+                } else if (response.code() == 401) {
+                    Toast.makeText(PmTaskActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
+                    LogoutClass logoutClass = new LogoutClass();
+                    logoutClass.logout(PmTaskActivity.this);
+                } else if (response.code() == 500) {
+                    Toast.makeText(PmTaskActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(PmTaskActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(PmTaskActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
             }
