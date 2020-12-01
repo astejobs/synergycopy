@@ -816,12 +816,12 @@
                                 android:insetBottom="0dp"
                                 android:stateListAnimator="@null"
                                 app:backgroundTint="#d9d9d9"
-                                app:iconTint="#999898"
                                 app:cornerRadius="4dp"
                                 app:icon="@drawable/add"
                                 app:iconGravity="textStart"
                                 app:iconPadding="0dp"
-                                app:iconSize="32dp" />
+                                app:iconSize="32dp"
+                                app:iconTint="#999898" />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/deleteButton"
@@ -836,12 +836,12 @@
                                 android:insetBottom="0dp"
                                 android:stateListAnimator="@null"
                                 app:backgroundTint="#d9d9d9"
-                                app:iconTint="#999898"
                                 app:cornerRadius="4dp"
                                 app:icon="@drawable/delta"
                                 app:iconGravity="textStart"
                                 app:iconPadding="0dp"
-                                app:iconSize="32dp" />
+                                app:iconSize="32dp"
+                                app:iconTint="#999898" />
                         </LinearLayout>
 
 
@@ -909,17 +909,34 @@
                                             android:layout_margin="20dp"
                                             android:textColor="@color/textblackcolor" />
                     -->
-
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/updateFaultReportButton"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:padding="10dp"
-                        android:text="Update Fault Report"
-                        android:textColor="@color/textColorbutton"
-                        app:cornerRadius="25dp" />
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/requestPauseButton"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            android:padding="10dp"
+                            android:text="Request Pause"
+                            android:textColor="@color/textColorbutton"
+                            app:cornerRadius="25dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/updateFaultReportButton"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            android:padding="10dp"
+                            android:text="Update Fault Report"
+                            android:textColor="@color/textColorbutton"
+                            app:cornerRadius="25dp" />
+                    </LinearLayout>
 
 
                 </LinearLayout>

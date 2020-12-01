@@ -70,8 +70,7 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 public class EditFaultReportActivity extends AppCompatActivity {
     //test
 
-    private ExtendedFloatingActionButton fab_before, fab_after;
-    private ExtendedFloatingActionButton fab_main;
+    private FloatingActionButton fab_main, fab_before, fab_after;
     private Boolean isMenuOpen = false;
     private final OvershootInterpolator interpolator = new OvershootInterpolator();
     private Float translationY = 100f;
@@ -388,13 +387,28 @@ public class EditFaultReportActivity extends AppCompatActivity {
         genCostCebterList.add(new list("Select CostCenter", 0));*/
 
         String tech = "Technician";
-        if (!role.equals(tech)) {
+        String managingAgent="ManagingAgent";
+        if (role.equals(tech)) {
             genralStatusList.add("Select status");
-            genralStatusList.add("Closed");
+            genralStatusList.add("Open");
+           // genralStatusList.add("Pause");
+            genralStatusList.add("Completed");
+
         }
-        genralStatusList.add("Open");
-        genralStatusList.add("Pause");
-        genralStatusList.add("Completed");
+        else if (role.equals(managingAgent)){
+            genralStatusList.add("Select status");
+            genralStatusList.add("Open");
+            genralStatusList.add("Closed");
+            genralStatusList.add("Pause");
+
+        }
+            else {
+            genralStatusList.add("Select status");
+            genralStatusList.add("Open");
+            genralStatusList.add("Closed");
+            genralStatusList.add("Pause");
+            genralStatusList.add("Completed");
+        }
 
 
         statusListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralStatusList);
@@ -1062,8 +1076,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 eqId = Integer.parseInt(equipmentIdTv.getText().toString());
             }
 
-            statusNameCurrent = statusSpinner.getSelectedItem().toString();
-            idStatus = genralStatusList.indexOf(statusNameCurrent);
             attendedByIdsList = new ArrayList();
 
             String attendedbyString = techTv.getText().toString();
