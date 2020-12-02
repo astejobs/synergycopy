@@ -3,6 +3,7 @@ package com.synergy.EquipmentSearch;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.synergy.Workspace.CardAdapter;
 import com.synergy.Workspace.CardDetails;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearchAdapter.MyViewHolder> {
 
@@ -43,7 +46,10 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
         holder.statusTV.setText(String.valueOf(currentPosition.getStatus()));
         holder.buildingTV.setText(String.valueOf(currentPosition.getBuildingName()));
         holder.locationTV.setText(String.valueOf(currentPosition.getLocationName()));
-        holder.scheduleTV.setText(String.valueOf(currentPosition.getScheduleDate()));
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(currentPosition.getScheduleDate());
+        String date = String.valueOf(DateFormat.format("dd-MM-yyyy", cal));
+        holder.scheduleTV.setText(date);
         holder.taskNumberTV.setText(currentPosition.getTask_number());
         String workspace = currentPosition.getWorkspace();
         String afterImage = currentPosition.getAfterImage();

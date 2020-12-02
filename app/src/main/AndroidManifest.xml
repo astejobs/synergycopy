@@ -18,7 +18,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/iclogo"
+        android:icon="@drawable/indeco_logo"
         android:networkSecurityConfig="@xml/security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"

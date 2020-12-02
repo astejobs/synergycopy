@@ -41,9 +41,6 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class MyFirebaseInstanceService extends FirebaseMessagingService {
 
-    static final String TAG = "";
-    private static int count = 0;
-
     @Override
     public void onNewToken(@NotNull String token) {
         super.onNewToken(token);
@@ -70,7 +67,6 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
         String beforeImage = "";
         String source = "";
 
-        Log.d(TAG, "onMessageReceived Test1235: " + remoteMessage.getData());
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent intent = null;
@@ -117,10 +113,5 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         notificationManager.notify(0, notification);
-    }
-
-    @Override
-    public void handleIntent(Intent intent) {
-        super.handleIntent(intent);
     }
 }

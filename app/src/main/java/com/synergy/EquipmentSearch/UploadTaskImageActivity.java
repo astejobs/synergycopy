@@ -10,10 +10,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -26,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
+import com.synergy.CheckInternet;
 import com.synergy.Constants;
 import com.synergy.Dashboard.Dashboard;
 import com.synergy.FaultReport.BeforeImage;
@@ -54,6 +57,20 @@ public class UploadTaskImageActivity extends AppCompatActivity {
     private ImageView beforeImage, afterImage;
     public static final int TAKE_PHOTO_GALLERY = 5;
     private String workspace;
+
+    private final CheckInternet checkInternet = new CheckInternet();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

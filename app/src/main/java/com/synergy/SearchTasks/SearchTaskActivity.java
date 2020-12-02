@@ -46,9 +46,7 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 public class SearchTaskActivity extends AppCompatActivity {
 
     private List<String> taskIdList = new ArrayList<>();
-    private ListView listView;
     private ArrayList<TaskSearchResponse> contacts = new ArrayList<>();
-    private SearchResponseAdapter searchResponseAdapter;
     private String role;
     private ArrayList<EquipmentSearchCard> equipmentSearchCardArrayList = new ArrayList<>();
     private EquipmentSearchAdapter mAdapter = new EquipmentSearchAdapter(equipmentSearchCardArrayList);

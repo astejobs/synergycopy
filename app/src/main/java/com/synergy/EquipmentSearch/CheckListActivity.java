@@ -9,7 +9,9 @@ import retrofit2.Response;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
+import com.synergy.CheckInternet;
 import com.synergy.GetCheckListResponse;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
@@ -51,6 +54,19 @@ public class CheckListActivity extends AppCompatActivity {
     private final List<Integer> idList = new ArrayList<>();
     private Toolbar toolbar;
     private String role;
+    private final CheckInternet checkInternet = new CheckInternet();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,13 +107,13 @@ public class CheckListActivity extends AppCompatActivity {
         List<CheckListAddRequest> checkListAddRequestList = new ArrayList<>();
         for (int i = 0; i < textViewList.size(); i++) {
             String objectName;
-            if (descTypeList.get(i).equals("QUESTIONANSWER")) {
+            //if (descTypeList.get(i).equals("QUESTIONANSWER")) {
                 Spinner objectSpinner = (Spinner) objectList.get(i);
                 objectName = objectSpinner.getSelectedItem().toString();
-            } else {
+            /*} else {
                 EditText editText = (EditText) objectList.get(i);
                 objectName = editText.getText().toString();
-            }
+            }*/
             EditText remarksEditText = remarksEditTextList.get(i);
             String remarks = remarksEditText.getText().toString();
 
@@ -142,11 +158,11 @@ public class CheckListActivity extends AppCompatActivity {
 
                     List<GetCheckListResponse> listResponse = response.body();
                     for (int i = 0; i < listResponse.size(); i++) {
-                        descType = listResponse.get(i).getChecklistProperty().getDescriptionType();
+                        descType = listResponse.get(i).getDescriptionType();
                         descTypeList.add(descType);
                         int id = listResponse.get(i).getId();
                         idList.add(id);
-                        String desc = listResponse.get(i).getChecklistProperty().getDescription();
+                        String desc = listResponse.get(i).getDescription();
                         String status = listResponse.get(i).getStatus();
                         String remarks = listResponse.get(i).getRemarks();
 
@@ -181,7 +197,7 @@ public class CheckListActivity extends AppCompatActivity {
         linearLayout.addView(textView);
         textViewList.add(textView);
 
-        if (descType.equals("QUESTIONANSWER")) {
+        //if (descType.equals("QUESTIONANSWER")) {
             Spinner statusSpinner = new Spinner(this);
             statusSpinner.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             List<String> statusList = new ArrayList<>();
@@ -198,7 +214,7 @@ public class CheckListActivity extends AppCompatActivity {
             statusSpinner.setLayoutParams(lparams);
             objectList.add(statusSpinner);
             linearLayout.addView(statusSpinner);
-        } else {
+       /* } else {
             EditText editText = new EditText(this);
             editText.setHeight(60);
             editText.setWidth(300);
@@ -208,7 +224,7 @@ public class CheckListActivity extends AppCompatActivity {
             editText.setLayoutParams(lparams);
             objectList.add(editText);
             linearLayout.addView(editText, lparams);
-        }
+        }*/
 
         EditText remarksEditText = new EditText(this);
         remarksEditText.setHeight(60);
@@ -235,13 +251,6 @@ public class CheckListActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.logoutmenu) {
-            /*SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent intent = new Intent(this, MainActivityLogin.class);
-            startActivity(intent);
-            finishAffinity();*/
             LogoutClass logoutClass = new LogoutClass();
             logoutClass.logout(this);
         }

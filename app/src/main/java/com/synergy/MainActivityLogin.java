@@ -36,6 +36,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -52,15 +53,11 @@ public class MainActivityLogin extends AppCompatActivity {
     private TextInputLayout passwordTextName, usernameTextName;
     private EditText passwordEdit;
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String TEXT1 = "text";
-    public static final String PASSWORD1 = "password";
     private Button buttonLogin;
     private String nameString, passwordString, deviceToken;
-    private static final String TAG = "Tag";
     private SharedPreferences.Editor editor;
-    private LogoutClass logoutClass = new LogoutClass();
-
     private final CheckInternet checkInternet = new CheckInternet();
+    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onStart() {
@@ -98,6 +95,8 @@ public class MainActivityLogin extends AppCompatActivity {
         passwordEdit = findViewById(R.id.editTextPassword);
         passwordTextName = findViewById(R.id.login_password);
         usernameTextName = findViewById(R.id.login_username);
+        constraintLayout = findViewById(R.id.loginConstraint);
+
 
         editTextName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -166,7 +165,7 @@ public class MainActivityLogin extends AppCompatActivity {
         });
     }
 
-    private void requestStoragePermission() {
+    public void requestStoragePermission() {
 
         new AlertDialog.Builder(this)
                 .setTitle("Permission needed")

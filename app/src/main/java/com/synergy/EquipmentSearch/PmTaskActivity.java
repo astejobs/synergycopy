@@ -88,7 +88,6 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
 
     private final CheckInternet checkInternet = new CheckInternet();
 
-    Context context;
     @Override
     protected void onStart() {
         super.onStart();
