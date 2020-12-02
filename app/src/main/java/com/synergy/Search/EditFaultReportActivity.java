@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -27,6 +28,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -133,6 +136,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
             mainGrpSpinner, observationEditText,
             requestorNumberEditText, actionTakenEditText, equipmentTextView, editText, techTv;
 
+    private RadioButton radioSelectedButton;
+    String onClickNotification;
+
     String tech = "Technician";
     String managingAgent = "ManagingAgent";
     private final CheckInternet checkInternet = new CheckInternet();
@@ -162,8 +168,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         frid = i.getStringExtra("frId");
+        onClickNotification = i.getStringExtra("onclick");
         workSpaceid = i.getStringExtra("workspaceId");
         equipCode = i.getStringExtra("equipcode");
+        Log.d(TAG, "onCreate: www" + onClickNotification);
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
@@ -178,6 +186,13 @@ public class EditFaultReportActivity extends AppCompatActivity {
             initializeFab();
             calltech();
             if (frid != null) {
+                if ((onClickNotification.equals("onclick"))){
+                    Log.d(TAG, "onCreate: not"+onClickNotification);
+                    acceptButton.setVisibility(View.GONE);
+                    rejectButton.setVisibility(View.GONE);
+                }
+                acceptButton.setVisibility(View.GONE);
+                rejectButton.setVisibility(View.GONE);
                 updateFaultReportButton.setVisibility(View.GONE);
                 requestPauseButton.setVisibility(View.GONE);
                 initviewsAndGetInitialData(frid);
@@ -196,7 +211,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
             if (frid != null) {
                 updateFaultReportButton.setVisibility(View.GONE);
                 requestPauseButton.setVisibility(View.GONE);
-
                 initviewsAndGetInitialData(frid);
             } else {
                 initviewsAndGetInitialDataOnEquip(equipCode);
@@ -430,7 +444,40 @@ public class EditFaultReportActivity extends AppCompatActivity {
         requestPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pauseMethodCall();
+
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(EditFaultReportActivity.this);
+                final View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog_box, null);
+                final RadioGroup group = dialogView.findViewById(R.id.radioPersonGroup);
+                builder.setTitle("Fault Cost")
+                        .setView(dialogView)
+                        .setCancelable(false)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                int selectedId = group.getCheckedRadioButtonId();
+                                radioSelectedButton = (RadioButton) dialogView.findViewById(selectedId);
+
+                                if (radioSelectedButton.getText().toString().equals("Greater than 1000")) {
+                                    pauseMethodCall("greater");
+                                }
+                                if (radioSelectedButton.getText().toString().equals("Less than 1000")) {
+                                    pauseMethodCall("less");
+                                }
+
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
             }
         });
 
@@ -471,8 +518,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     private void rejectMethod() {
         progressDialog.show();
-        PauseRequestBody pauseRequestBody = new PauseRequestBody(frIdEditText.getText().toString());
-        Call<Void> call = APIClient.getUserServices().getReject(token, workSpaceid, pauseRequestBody);
+        AcceptRejectBody acceptRejectBody = new AcceptRejectBody(frIdEditText.getText().toString());
+        Call<Void> call = APIClient.getUserServices().getReject(token, workSpaceid, acceptRejectBody);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -496,8 +543,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     private void acceptMethod() {
         progressDialog.show();
-        PauseRequestBody pauseRequestBody = new PauseRequestBody(frIdEditText.getText().toString());
-        Call<Void> call = APIClient.getUserServices().getAccept(token, workSpaceid, pauseRequestBody);
+        Log.d(TAG, "acceptMethod: work" + workSpaceid);
+        AcceptRejectBody acceptRejectBody = new AcceptRejectBody(frIdEditText.getText().toString());
+        Call<Void> call = APIClient.getUserServices().getAccept(token, workSpaceid, acceptRejectBody);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -521,9 +569,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     }
 
-    private void pauseMethodCall() {
+    private void pauseMethodCall(String value) {
         progressDialog.show();
-        PauseRequestBody pauseRequestBody = new PauseRequestBody(frIdEditText.getText().toString());
+        PauseRequestBody pauseRequestBody = new PauseRequestBody(frIdEditText.getText().toString(), value);
         Call<Void> call = APIClient.getUserServices().getRequestPause(token, workSpaceid, pauseRequestBody);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -803,6 +851,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 progressDialog.dismiss();
+                requestPauseButton.setEnabled(false);
                 Toast.makeText(EditFaultReportActivity.this, "No Data Available ", Toast.LENGTH_LONG).show();
                 Log.d("TAG", "onFailure:equip call " + t.getMessage());
                 Log.d(TAG, "onFailure: equip call" + t.getCause());
@@ -1156,10 +1205,17 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
                 acceptButton.setVisibility(View.VISIBLE);
                 rejectButton.setVisibility(View.VISIBLE);
+                statusSpinner.setEnabled(false);
                 updateFaultReportButton.setVisibility(View.GONE);
                 // buttonEnableMethod();
             }
-            if (statusSpinner.getText().toString().equals("Open") || statusSpinner.getText().toString().equals("Closed")) {
+            if (statusSpinner.getText().toString().equals("Open") ){
+                acceptButton.setVisibility(View.GONE);
+                rejectButton.setVisibility(View.GONE);
+                updateFaultReportButton.setVisibility(View.VISIBLE);
+                buttonEnableMethod();
+            }
+            if ( statusSpinner.getText().toString().equals("Closed")) {
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
                 buttonEnableMethod();
@@ -1167,7 +1223,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
             if (statusSpinner.getText().toString().equals("Pause")
                     || statusSpinner.getText().toString().equals("Completed")) {
                 updateFaultReportButton.setEnabled(false);
-                //  buttonEnableMethod();
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
 
@@ -1203,10 +1258,11 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private void updateFaultReport() throws ParseException {
 
         String contactNumber = requestorNumberEditText.getText().toString();
-
         if ((TextUtils.isEmpty(requestorNumberEditText.getText())) || ((contactNumber.length() < 8))) {
             Toast.makeText(this, "Contact not valid", Toast.LENGTH_SHORT).show();
 
+        } else if (techTv.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Technician not Selected", Toast.LENGTH_SHORT).show();
         } else {
             ProgressDialog mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setCancelable(false);
@@ -1275,7 +1331,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 attendedBy.add(attendedbyObject);
 
             }
-            Log.d(TAG, "updateFaultReport: attendedby" + attendedBy);
             EditFaultReportRequest editFaultReportRequest = new EditFaultReportRequest(frId,
                     building,
                     location,

@@ -7,6 +7,7 @@ import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
+import com.synergy.Search.AcceptRejectBody;
 import com.synergy.Search.PauseRequestBody;
 import com.synergy.SearchTasks.TaskSearchResponse;
 import com.synergy.EquipmentSearch.UploadImageRequest;
@@ -306,7 +307,7 @@ public interface UserService {
                                                      @Header("role") String role);
 
 
-    //pause requedst
+    //pause request
     @POST("faultreport/pauserequest")
     @Headers("Content-Type: application/json")
     Call<Void> getRequestPause(@Header("Authorization") String token,
@@ -314,19 +315,19 @@ public interface UserService {
                               @Body PauseRequestBody pauseRequestBody
     );
 
-    //pause requedst
+    //pause Accept
     @POST("faultreport/pauserequest/accept")
     @Headers("Content-Type: application/json")
     Call<Void> getAccept(@Header("Authorization") String token,
                                @Header("workspace") String workspace,
-                               @Body PauseRequestBody pauseRequestBody
+                               @Body AcceptRejectBody acceptRejectBody
     );
-    //pause requedst
+    //pause reject
     @POST("faultreport/pauserequest/reject")
     @Headers("Content-Type: application/json")
     Call<Void> getReject(@Header("Authorization") String token,
                                @Header("workspace") String workspace,
-                               @Body PauseRequestBody pauseRequestBody
+                               @Body AcceptRejectBody acceptRejectBody
     );
 
 }

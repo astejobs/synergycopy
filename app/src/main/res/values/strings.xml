@@ -6,4 +6,8 @@ Please enter the code</string>
     <string name="fab1">Camera</string>
     <string name="extended_fab_label">Cam</string>
 
+   <!-- <string name="greater">1000></string>
+    <string name="less"></string>
+-->
+
 </resources>
