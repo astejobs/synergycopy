@@ -61,8 +61,10 @@ public class BeforeImage extends AppCompatActivity {
     private Toolbar toolbar;
     private String user;
     private String checkForFrid;
+    String managingagent = "ManagingAgent";
 
     private final CheckInternet checkInternet = new CheckInternet();
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -138,6 +140,32 @@ public class BeforeImage extends AppCompatActivity {
                     finish();
                 }
             });
+        }
+        if (user.equals(managingagent) && !(checkForFrid == null)) {
+            previousImagesbtn = findViewById(R.id.previous_images);
+            takeBtn = findViewById(R.id.take_photo_btn);
+            uploadBtn = findViewById(R.id.upload_btn);
+            doneBtn = findViewById(R.id.done_btn);
+            takeBtn.setVisibility(View.INVISIBLE);
+            uploadBtn.setVisibility(View.INVISIBLE);
+            doneBtn.setVisibility(View.INVISIBLE);
+            toolbar = findViewById(R.id.toolbar_globe);
+            setSupportActionBar(toolbar);
+            toolbar.setTitle(value + " Image");
+            previousImagesbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(BeforeImage.this, PreviousImagesActivity.class);
+                    intent.putExtra("token", token);
+                    intent.putExtra("workspace", workspace);
+                    intent.putExtra("frid", frId);
+                    intent.putExtra("role", user);
+                    intent.putExtra("value", value);
+                    startActivity(intent);
+                }
+            });
+
+
         } else {
             previousImagesbtn = findViewById(R.id.previous_images);
             takeBtn = findViewById(R.id.take_photo_btn);
@@ -165,6 +193,7 @@ public class BeforeImage extends AppCompatActivity {
 
 
         }
+
     }
 
 

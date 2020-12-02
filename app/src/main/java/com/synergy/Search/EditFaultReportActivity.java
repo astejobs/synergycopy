@@ -165,10 +165,13 @@ public class EditFaultReportActivity extends AppCompatActivity {
             initializeFab();
             calltech();
             if (frid != null) {
-//                if ((onClickNotification.equals("onclick"))){
+/*
+                if ((onClickNotification.equals("onclick"))){
+                    Log.d(TAG, "onCreate: not"+onClickNotification);
                     acceptButton.setVisibility(View.GONE);
                     rejectButton.setVisibility(View.GONE);
                 //}
+*/
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
                 updateFaultReportButton.setVisibility(View.GONE);
@@ -1346,6 +1349,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.code() == 200) {
+
+
                         if (statusSpinner.getText().toString().equals("Pause")) {
                             Intent intent = new Intent(EditFaultReportActivity.this, UploadFile.class);
                             intent.putExtra("frid", frId);
