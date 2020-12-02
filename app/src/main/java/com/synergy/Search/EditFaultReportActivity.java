@@ -115,7 +115,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             requestorNumberEditText, actionTakenEditText, equipmentTextView, editText, techTv;
 
     private RadioButton radioSelectedButton;
-    String onClickNotification;
+    //private String onClickNotification;
 
     String tech = "Technician";
     String managingAgent = "ManagingAgent";
@@ -147,10 +147,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         frid = i.getStringExtra("frId");
-        onClickNotification = i.getStringExtra("onclick");
+//        onClickNotification = "test";
+//        onClickNotification = i.getStringExtra("onclick");
         workSpaceid = i.getStringExtra("workspaceId");
         equipCode = i.getStringExtra("equipcode");
-        Log.d(TAG, "onCreate: www" + onClickNotification);
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
@@ -165,11 +165,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
             initializeFab();
             calltech();
             if (frid != null) {
-                if ((onClickNotification.equals("onclick"))){
-                    Log.d(TAG, "onCreate: not"+onClickNotification);
+//                if ((onClickNotification.equals("onclick"))){
                     acceptButton.setVisibility(View.GONE);
                     rejectButton.setVisibility(View.GONE);
-                }
+                //}
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
                 updateFaultReportButton.setVisibility(View.GONE);
