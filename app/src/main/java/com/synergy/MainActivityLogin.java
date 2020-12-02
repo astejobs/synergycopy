@@ -235,7 +235,6 @@ public class MainActivityLogin extends AppCompatActivity {
 
                     Intent intent = new Intent(getApplicationContext(), WorkspaceActivity.class);
                     intent.putExtra("devicetoken", deviceToken);
-
                     startActivity(intent);
                     finish();
 
