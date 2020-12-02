@@ -26,9 +26,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
 import com.synergy.CheckInternet;
+import com.synergy.Constants;
+import com.synergy.EquipmentSearch.PmTaskActivity;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
+import com.synergy.Search.EditFaultReportActivity;
 import com.synergy.Services.MyFirebaseInstanceService;
 
 import java.util.ArrayList;
@@ -74,12 +77,41 @@ public class WorkspaceActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.workLinear);
         linearLayout.setVisibility(View.GONE);
 
-        /*Bundle bundle = new Bundle();
+        Bundle bundle = new Bundle();
         bundle = getIntent().getExtras();
-        if (!bundle.equals(null)) {
-            Log.d(TAG, "onCreate: " + bundle.toString());
-        }*/
+        Log.d(TAG, "test1: " + bundle);
+        if (bundle != null) {
+            if (bundle.get("id") != null) {
+                Log.d(TAG, "test2: " + bundle.get("message"));
+                String workspace = bundle.get("workspace").toString();
+                String click_action = bundle.get("click_action").toString();
+                String id = bundle.get("id").toString();
+                String equipCode = "";
+                String taskNumber = "";
+                String afterImage = "";
+                String beforeImage = "";
+                String source = "";
 
+                Intent intent = null;
+
+                if (click_action.equals(Constants.EDITFAULTREPORT_ACTIVITY_NOTIFICATION)) {
+                    intent = new Intent(this, EditFaultReportActivity.class);
+                    intent.putExtra("equipcode", equipCode);
+                    intent.putExtra("frId", id);
+                    bundle.clear();
+                } else if (click_action.equals(Constants.PMTASK_ACTIVITY_NOTIFICATION)) {
+                    intent = new Intent(this, PmTaskActivity.class);
+                    intent.putExtra("taskId", Integer.parseInt(id));
+                    intent.putExtra("taskNumber", taskNumber);
+                    intent.putExtra("afterImage", afterImage);
+                    intent.putExtra("beforeImage", beforeImage);
+                    intent.putExtra("source", source);
+                    bundle.clear();
+                }
+                intent.putExtra("workspace", workspace);
+                startActivity(intent);
+            }
+        }
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
         user = sharedPreferences.getString("role", "");
@@ -91,7 +123,6 @@ public class WorkspaceActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
 
         callForWorkspace(token);
-
     }
 
     private void callForWorkspace(String token) {

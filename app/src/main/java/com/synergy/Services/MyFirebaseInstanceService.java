@@ -76,18 +76,20 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
         Intent intent = null;
 
         if (click_action.equals(Constants.EDITFAULTREPORT_ACTIVITY_NOTIFICATION)) {
-            intent = new Intent(click_action);
+            intent = new Intent(this, EditFaultReportActivity.class);
             intent.putExtra("equipcode", equipCode);
             intent.putExtra("frId", id);
+            intent.putExtra("workspaceId", workspace);
         } else if (click_action.equals(Constants.PMTASK_ACTIVITY_NOTIFICATION)) {
-            intent = new Intent(click_action);
+            intent = new Intent(this, PmTaskActivity.class);
             intent.putExtra("taskId", Integer.parseInt(id));
             intent.putExtra("taskNumber", taskNumber);
             intent.putExtra("afterImage", afterImage);
             intent.putExtra("beforeImage", beforeImage);
             intent.putExtra("source", source);
+            intent.putExtra("workspace", workspace);
         }
-        intent.putExtra("workspace", workspace);
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
