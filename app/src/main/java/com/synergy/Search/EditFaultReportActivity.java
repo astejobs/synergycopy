@@ -78,13 +78,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private String statusNameCurrent;
     Button uploadFileBtn;
     Intent uploadFileIntent;
-
     private String token, role;
     private String faultDetailString;
-
     private TextView equipmentIdTv;
-
-    private Button selectEquipmentButton, plusbtn, deletebtn;
+    private Button  plusbtn, deletebtn;
     private MaterialButton updateFaultReportButton, requestPauseButton, acceptButton, rejectButton;
     private LinearLayout mlayout;
     String frid, workSpaceid, equipCode;
@@ -94,42 +91,23 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private List<String> remarksList = new ArrayList<>();
     private List<TextInputEditText> editTextList = new ArrayList<TextInputEditText>();
 
-    List<list> genralDepList = new ArrayList<list>();
-    List<list> genralPriorityList = new ArrayList<list>();
-    List<list> genralDivisionList = new ArrayList<list>();
-    List<list> genralBuildingList = new ArrayList<list>();
-    List<list> genralFaultCatList = new ArrayList<list>();
-    List<list> genralMaintGrp = new ArrayList<list>();
-    List<list> genralLoaction = new ArrayList<list>();
     List<String> genralStatusList = new ArrayList<String>();
     List<list> genralTechnicalList = new ArrayList<list>();
-    List<list> genCostCebterList = new ArrayList<list>();
+
 
     int depId, divId, priId, buildId, locId, faultId, maintId;
     private Integer costId = null;
     private Integer techId = null;
-    private ArrayAdapter<list> costCenterListAdapter;
     private ArrayAdapter<String> statusListAdapter;
-    private ArrayAdapter<list> technicalListAdapter;
-    private ArrayAdapter<list> deptListAdapter;
-    private ArrayAdapter<list> priAdapter;
-    private ArrayAdapter<list> divisionAdapter;
-    private ArrayAdapter<list> buildingAdapter;
-    private ArrayAdapter<list> faultCatAdapter;
-    private ArrayAdapter<list> maintAdapter;
-    private ArrayAdapter<list> locationAdapter;
     ProgressDialog progressDialog;
     LinearLayout linearLayoutdisable;
     Toolbar toolbar;
-
     boolean[] checkedItems;
-    ArrayList<Integer> mUserItems = new ArrayList<>();
     List<String> stockList = new ArrayList<>();
     String[] listItems;
     List attendedByIdsList;
-    private Button selectTech;
-    private AutoCompleteTextView statusSpinner;
 
+    private AutoCompleteTextView statusSpinner;
     private TextInputEditText frIdEditText, deptSpinner, reqNameEditText, activationDate,
             activationTime, faultDetailsEditText, locDescEditText, faultCategorySpinner,
             divisionSpinner, locationSpinner, buildingSpinner, prioritySpinner,
@@ -160,6 +138,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_fault_report);
+
         progressDialog = new ProgressDialog(EditFaultReportActivity.this);
         progressDialog.setTitle("Loading...");
 
@@ -414,6 +393,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             genralStatusList.add("Open");
             genralStatusList.add("Pause");
             genralStatusList.add("Closed");
+            genralStatusList.add("Completed");
             genralStatusList.add("Pause Requested");
 
         } else {
@@ -455,6 +435,15 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
+                                if (group.getCheckedRadioButtonId() == -1)
+                                {
+                                    Toast.makeText(EditFaultReportActivity.this, "Please Select Cost", Toast.LENGTH_LONG).show();
+                                    // no radio buttons are checked
+                                }
+                                else
+                                {
+                                    // one of the radio buttons is checked
+
                                 int selectedId = group.getCheckedRadioButtonId();
                                 radioSelectedButton = (RadioButton) dialogView.findViewById(selectedId);
 
@@ -466,7 +455,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                                 }
 
                             }
-                        })
+                        }})
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -1201,6 +1190,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             }
         }
         if (role.equals(managingAgent)) {
+
             if ((statusSpinner.getText().toString().equals("Pause Requested"))) {
 
                 acceptButton.setVisibility(View.VISIBLE);

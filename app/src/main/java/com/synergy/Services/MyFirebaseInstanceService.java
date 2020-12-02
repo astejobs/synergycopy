@@ -75,6 +75,7 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
             intent = new Intent(this, EditFaultReportActivity.class);
             intent.putExtra("equipcode", equipCode);
             intent.putExtra("frId", id);
+            intent.putExtra("onclick", "onclick");
             intent.putExtra("workspaceId", workspace);
         } else if (click_action.equals(Constants.PMTASK_ACTIVITY_NOTIFICATION)) {
             intent = new Intent(this, PmTaskActivity.class);
