@@ -60,6 +60,7 @@ public class BeforeImage extends AppCompatActivity {
     private String value;
     private Toolbar toolbar;
     private String user;
+    private String status;
     private String checkForFrid;
     String managingagent = "ManagingAgent";
 
@@ -90,6 +91,8 @@ public class BeforeImage extends AppCompatActivity {
         frId = intent.getStringExtra("frId");
         value = intent.getStringExtra("value");
         user = intent.getStringExtra("role");
+        status = "test";
+        status = intent.getStringExtra("status");
         checkForFrid = intent.getStringExtra("checkForFrid");
         Log.d(TAG, "onCreate: hi" + user);
 
@@ -129,6 +132,7 @@ public class BeforeImage extends AppCompatActivity {
                     }
                 }
             });
+/*
             doneBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -140,8 +144,36 @@ public class BeforeImage extends AppCompatActivity {
                     finish();
                 }
             });
+*/
         }
-        if (user.equals(managingagent) && !(checkForFrid == null)) {
+
+        if (user.equals("Technician")) {
+            previousImagesbtn = findViewById(R.id.previous_images);
+            takeBtn = findViewById(R.id.take_photo_btn);
+            uploadBtn = findViewById(R.id.upload_btn);
+            doneBtn = findViewById(R.id.done_btn);
+            takeBtn.setVisibility(View.VISIBLE);
+            uploadBtn.setVisibility(View.VISIBLE);
+            doneBtn.setVisibility(View.INVISIBLE);
+            toolbar = findViewById(R.id.toolbar_globe);
+            setSupportActionBar(toolbar);
+            toolbar.setTitle(value + " Image");
+            previousImagesbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(BeforeImage.this, PreviousImagesActivity.class);
+                    intent.putExtra("token", token);
+                    intent.putExtra("workspace", workspace);
+                    intent.putExtra("frid", frId);
+                    intent.putExtra("role", user);
+                    intent.putExtra("value", value);
+                    startActivity(intent);
+                }
+            });
+
+
+        }
+        if (user.equals(managingagent)) {
             previousImagesbtn = findViewById(R.id.previous_images);
             takeBtn = findViewById(R.id.take_photo_btn);
             uploadBtn = findViewById(R.id.upload_btn);
@@ -152,6 +184,18 @@ public class BeforeImage extends AppCompatActivity {
             toolbar = findViewById(R.id.toolbar_globe);
             setSupportActionBar(toolbar);
             toolbar.setTitle(value + " Image");
+            //
+            takeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
+                }
+            });
+
             previousImagesbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -171,12 +215,23 @@ public class BeforeImage extends AppCompatActivity {
             takeBtn = findViewById(R.id.take_photo_btn);
             uploadBtn = findViewById(R.id.upload_btn);
             doneBtn = findViewById(R.id.done_btn);
-            takeBtn.setVisibility(View.INVISIBLE);
-            uploadBtn.setVisibility(View.INVISIBLE);
+            takeBtn.setVisibility(View.VISIBLE);
+            uploadBtn.setVisibility(View.VISIBLE);
             doneBtn.setVisibility(View.INVISIBLE);
             toolbar = findViewById(R.id.toolbar_globe);
             setSupportActionBar(toolbar);
             toolbar.setTitle(value + " Image");
+
+            takeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
+                }
+            });
 
             previousImagesbtn.setOnClickListener(new View.OnClickListener() {
                 @Override

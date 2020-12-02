@@ -1360,14 +1360,17 @@ public class EditFaultReportActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
 
-                        } else {
+                        }
+                        Toast.makeText(EditFaultReportActivity.this, "Fault Report Updated", Toast.LENGTH_LONG).show();
+                        updateFaultReportButton.setVisibility(View.INVISIBLE);
+                        /*else {
                             Intent intent1 = new Intent(EditFaultReportActivity.this, Dashboard.class);
                             intent1.putExtra("workspaceId", workSpaceid);
                             startActivity(intent1);
                             finish();
                             Toast.makeText(EditFaultReportActivity.this, "Fault Report updated successfully", Toast.LENGTH_SHORT).show();
 
-                        }
+                        }*/
 
 
                     } else if (response.code() == 401) {
@@ -1437,6 +1440,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 intent.putExtra("role", role);
                 intent.putExtra("workspace", workSpaceid);
                 intent.putExtra("frId", frIdEditText.getText().toString());
+                intent.putExtra("status", statusSpinner.getText().toString());
                 startActivity(intent);
 
             }
@@ -1450,6 +1454,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 intent.putExtra("checkForFrid", frid);
                 intent.putExtra("workspace", workSpaceid);
                 intent.putExtra("role", role);
+                intent.putExtra("status", statusSpinner.getText().toString());
                 intent.putExtra("frId", frIdEditText.getText().toString());
                 startActivity(intent);
 
