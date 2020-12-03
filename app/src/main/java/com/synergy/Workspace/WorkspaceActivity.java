@@ -69,40 +69,6 @@ public class WorkspaceActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         linearLayout = findViewById(R.id.workLinear);
 
-        /*Bundle bundle = new Bundle();
-        bundle = getIntent().getExtras();
-        if (bundle != null) {
-            if (bundle.get("id") != null) {
-                String workspace = bundle.get("workspace").toString();
-                String click_action = bundle.get("click_action").toString();
-                String id = bundle.get("id").toString();
-                String equipCode = "";
-                String taskNumber = "";
-                String afterImage = "";
-                String beforeImage = "";
-                String source = "";
-
-                Intent intent = null;
-
-                if (click_action.equals(Constants.EDITFAULTREPORT_ACTIVITY_NOTIFICATION)) {
-                    intent = new Intent(this, EditFaultReportActivity.class);
-                    intent.putExtra("equipcode", equipCode);
-                    intent.putExtra("frId", id);
-                    bundle.clear();
-                } else if (click_action.equals(Constants.PMTASK_ACTIVITY_NOTIFICATION)) {
-                    intent = new Intent(this, PmTaskActivity.class);
-                    intent.putExtra("taskId", Integer.parseInt(id));
-                    intent.putExtra("taskNumber", taskNumber);
-                    intent.putExtra("afterImage", afterImage);
-                    intent.putExtra("beforeImage", beforeImage);
-                    intent.putExtra("source", source);
-                    bundle.clear();
-                }
-                intent.putExtra("workspace", workspace);
-                startActivity(intent);
-            }
-        }
-*/
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
         role = sharedPreferences.getString("role", "");

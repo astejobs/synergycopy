@@ -327,7 +327,6 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<Void> getReject(@Header("Authorization") String token,
                                @Header("workspace") String workspace,
-                               @Body AcceptRejectBody acceptRejectBody
-    );
+                               @Body AcceptRejectBody acceptRejectBody);
 
 }
