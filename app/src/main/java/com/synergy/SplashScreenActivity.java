@@ -71,11 +71,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                             intent.putExtra("workspace", workspace);
                             startActivity(intent);
                             finish();
+                        }else {
+                            startActivity(new Intent(SplashScreenActivity.this, WorkspaceActivity.class));
+                            finish();
                         }
+                    } else {
+                        startActivity(new Intent(SplashScreenActivity.this, WorkspaceActivity.class));
+                        finish();
                     }
-                    startActivity(new Intent(SplashScreenActivity.this, WorkspaceActivity.class));
-                    finish();
-
                 } else if (response.code() == 401) {
                     startActivity(new Intent(SplashScreenActivity.this, MainActivityLogin.class));
                     finish();
