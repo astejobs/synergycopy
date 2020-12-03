@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 
 import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.LogoutClass;
-import com.synergy.MainActivityLogin;
 import com.synergy.R;
 import com.synergy.FaultReport.FaultReportActivity;
 import com.synergy.Search.Search;
@@ -30,7 +29,7 @@ public class Dashboard extends AppCompatActivity {
     private LinearLayout linearEquipmentFaultSearch, linearEquipmentTaskSearch,
             linearLayoutDashboard, linearSearchOnFrid, linearTaskSearch,
             linearCreateFaultReport, lineraSetting, layout_m1, layout_m2, layout_m3;
-    private String workspaceId, user;
+    private String workspaceId, role, username;
     private Toolbar toolbar;
 
     @Override
@@ -38,8 +37,8 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        user = preferences.getString("role", "");
-
+        role = preferences.getString("role", "");
+        username = preferences.getString("username", "");
         Intent intent = getIntent();
         workspaceId = intent.getStringExtra("workspaceId");
 
@@ -53,19 +52,18 @@ public class Dashboard extends AppCompatActivity {
         layout_m1 = findViewById(R.id.linear_lay_1_m);
         layout_m2 = findViewById(R.id.linear_lay_2_m);
         layout_m3 = findViewById(R.id.linear_lay_3_m);
-        CardView cardViewCreate=findViewById(R.id.card_view_create);
-        CardView cardViewSearch=findViewById(R.id.card_view_search);
-        CardView cardViewEqFault=findViewById(R.id.card_view_eq_qr_fault);
-        CardView cardViewEqTask=findViewById(R.id.id_card_view_eq_task);
-        CardView cardViewTaskSearch=findViewById(R.id.card_view_tsaksearch);
-        CardView cardViewSetting=findViewById(R.id.card_view_setting);
-
+        CardView cardViewCreate = findViewById(R.id.card_view_create);
+        CardView cardViewSearch = findViewById(R.id.card_view_search);
+        CardView cardViewEqFault = findViewById(R.id.card_view_eq_qr_fault);
+        CardView cardViewEqTask = findViewById(R.id.id_card_view_eq_task);
+        CardView cardViewTaskSearch = findViewById(R.id.card_view_tsaksearch);
+        CardView cardViewSetting = findViewById(R.id.card_view_setting);
 
 
         toolbar = findViewById(R.id.toolbar_dashboard);
         setSupportActionBar(toolbar);
 
-        if(user.equals("ManagingAgent") || user.equals("Technician")) {
+        if (role.equals("ManagingAgent") || role.equals("Technician")) {
 
             layout_m1.removeAllViews();
             layout_m2.removeAllViews();
@@ -123,7 +121,7 @@ public class Dashboard extends AppCompatActivity {
         linearEquipmentFaultSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intentMethod(EquipmentSearchActivity.class,"Fault");
+                intentMethod(EquipmentSearchActivity.class, "Fault");
             }
         });
 
@@ -136,11 +134,10 @@ public class Dashboard extends AppCompatActivity {
         });
 
 
-
         lineraSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intentMethod(SettingActivity.class,"");
+                intentMethod(SettingActivity.class, "");
             }
         });
 
@@ -158,7 +155,7 @@ public class Dashboard extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(user);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(username);
         return true;
     }
 

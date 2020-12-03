@@ -72,7 +72,7 @@ public class FaultReportActivity extends AppCompatActivity {
             faultDescriptionEditText, contactNumberEditText, techTv, eqwuipmentTextView;
     private MaterialButton selectTech, selectEquipBtn;
     private Button buttonCreateFaultReport;
-    private String requestorName, locDesc, faultDesc, token;
+    private String requestorName, locDesc, faultDesc, token,username;
     private String contactNo;
     private int depId, locId, buildId, maintId, priroityId, faultId, divisionid, equipId, techId, equipmentId;
     private ArrayAdapter<list> deptListAdapter;
@@ -120,6 +120,7 @@ public class FaultReportActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
         role = sharedPreferences.getString("role", "");
+        username=sharedPreferences.getString("username","");
         Intent intent = getIntent();
         workSpaceid = intent.getStringExtra("workspaceId");
 
@@ -763,7 +764,7 @@ public class FaultReportActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = menu.findItem(R.id.admin).setTitle(role);
+        MenuItem item = menu.findItem(R.id.admin).setTitle(username);
         return true;
     }
 

@@ -47,7 +47,7 @@ public class Search extends AppCompatActivity {
     private ArrayList<SearchResponse> contacts = new ArrayList<>();
     private SearchResponseAdapter searchResponseAdapter;
     Toolbar toolbar;
-    String role;
+    String role,username;
 
     private final CheckInternet checkInternet = new CheckInternet();
     @Override
@@ -73,6 +73,7 @@ public class Search extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
         role = sharedPreferences.getString("role", "");
+        username=sharedPreferences.getString("username","");
 
         ScrollView view = (ScrollView) findViewById(R.id.scrollViewSearch);
         view.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -230,7 +231,7 @@ public class Search extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
 
-        MenuItem item = menu.findItem(R.id.admin).setTitle(role);
+        MenuItem item = menu.findItem(R.id.admin).setTitle(username);
         return true;
     }
 

@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,12 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.synergy.Dashboard.Dashboard;
-import com.synergy.Otp.OtpActivity;
 import com.synergy.Workspace.WorkspaceActivity;
 
 import androidx.annotation.NonNull;
@@ -222,14 +217,14 @@ public class MainActivityLogin extends AppCompatActivity {
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.code() == 200) {
 
-                    String username = editTextName.getText().toString();
                     UserResponse userResponse = response.body();
                     String token = userResponse.getToken();
                     String role = userResponse.getRole();
-                    String user = userResponse.getUser();
+                    String username = userResponse.getUsername();
                     editor.clear();
                     editor.putString("token", token);
                     editor.putString("role", role);
+                    editor.putString("username",username);
                     editor.putString("devicetoken", deviceToken);
                     editor.apply();
 

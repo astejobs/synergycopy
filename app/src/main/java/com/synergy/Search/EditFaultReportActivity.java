@@ -69,7 +69,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private FloatingActionButton fab_main, fab_before, fab_after;
     private Boolean isMenuOpen = false;
     private final OvershootInterpolator interpolator = new OvershootInterpolator();
-    private Float translationY = 100f;
+    private Float translationY =600f;
     private static final String TAG = "EditFault";
     private String timeS, remarksString, techName;
     private String frId;
@@ -79,7 +79,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     Button uploadFileBtn;
     Intent uploadFileIntent;
     private String token, role;
-    private String faultDetailString;
+    private String faultDetailString,username;
     private TextView equipmentIdTv;
     private Button  plusbtn, deletebtn;
     private MaterialButton updateFaultReportButton, requestPauseButton, acceptButton, rejectButton;
@@ -155,6 +155,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
         token = sharedPreferences.getString("token", "");
+        username=sharedPreferences.getString("username","");
 
 
         linearLayoutdisable = findViewById(R.id.layout_disable);
@@ -165,13 +166,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             initializeFab();
             calltech();
             if (frid != null) {
-/*
-                if ((onClickNotification.equals("onclick"))){
-                    Log.d(TAG, "onCreate: not"+onClickNotification);
-                    acceptButton.setVisibility(View.GONE);
-                    rejectButton.setVisibility(View.GONE);
-                //}
-*/
+                Log.d(TAG, "onCreate: my frid "+frid);
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
                 updateFaultReportButton.setVisibility(View.GONE);
@@ -183,7 +178,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
             }
 
         } else {
-
             initViews();
             acceptButton.setVisibility(View.GONE);
             rejectButton.setVisibility(View.GONE);
@@ -203,9 +197,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     private void callDisable() {
         techTv.setEnabled(false);
-        //   selectTech.setEnabled(false);
         frIdEditText.setEnabled(false);
-        //   deptSpinner.setEnabled(false);
         prioritySpinner.setEnabled(false);
         requestorNumberEditText.setEnabled(false);
         buildingSpinner.setEnabled(false);
@@ -217,9 +209,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
         mainGrpSpinner.setEnabled(false);
         observationEditText.setEnabled(false);
         actionTakenEditText.setEnabled(false);
-        //costCenterSpinner.setEnabled(false);
-        //  technicianSpinner.setEnabled(false);
-        //  selectEquipmentButton.setEnabled(false);
         plusbtn.setEnabled(false);
         deletebtn.setEnabled(false);
     }
@@ -1136,7 +1125,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         editText = new TextInputEditText(this);
         editText.setId(remarksId);
-        editText.setGravity(Gravity.CENTER);
+        editText.setGravity(Gravity.START);
+
         editText.setBackgroundResource(R.drawable.mybutton);
         editText.setText(remarksString);
         editText.setLayoutParams(lparams);
@@ -1189,32 +1179,43 @@ public class EditFaultReportActivity extends AppCompatActivity {
             if (statusSpinner.getText().toString().equals("Pause")) {
                 updateFaultReportButton.setEnabled(false);
                 requestPauseButton.setEnabled(false);
+                genralStatusList.remove("Open");
+                statusListAdapter.notifyDataSetChanged();
             }
         }
         if (role.equals(managingAgent)) {
 
-            if ((statusSpinner.getText().toString().equals("Pause Requested"))) {
+            if ((statusSpinner.getText().toString().equals("Pause Requested")) && (frid==null)) {
+                Log.d(TAG, "checkFieldsForEmptyValues: uuuuu");
 
                 acceptButton.setVisibility(View.VISIBLE);
                 rejectButton.setVisibility(View.VISIBLE);
                 statusSpinner.setEnabled(false);
+                genralStatusList.clear();
                 updateFaultReportButton.setVisibility(View.GONE);
                 // buttonEnableMethod();
             }
             if (statusSpinner.getText().toString().equals("Open") ){
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
+                genralStatusList.remove("Pause Requested");
+                statusListAdapter.notifyDataSetChanged();
                 updateFaultReportButton.setVisibility(View.VISIBLE);
                 buttonEnableMethod();
             }
             if ( statusSpinner.getText().toString().equals("Closed")) {
                 acceptButton.setVisibility(View.GONE);
+                genralStatusList.remove("Pause Requested");
+                statusListAdapter.notifyDataSetChanged();
                 rejectButton.setVisibility(View.GONE);
+                updateFaultReportButton.setVisibility(View.VISIBLE);
                 buttonEnableMethod();
             }
             if (statusSpinner.getText().toString().equals("Pause")
                     || statusSpinner.getText().toString().equals("Completed")) {
                 updateFaultReportButton.setEnabled(false);
+                genralStatusList.remove("Pause Requested");
+                statusListAdapter.notifyDataSetChanged();
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
 
@@ -1466,23 +1467,23 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     private void openMenu() {
         isMenuOpen = !isMenuOpen;
-        // fab_main.animate().setInterpolator(interpolator).rotation(45f).setDuration(300).start();
+        fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
         fab_before.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
     }
 
     private void closeMenu() {
         isMenuOpen = !isMenuOpen;
-        //  fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
-        fab_before.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
-        fab_after.animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
+          fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
+        fab_before.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
+        fab_after.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
 
-        MenuItem item = menu.findItem(R.id.admin).setTitle(role);
+        MenuItem item = menu.findItem(R.id.admin).setTitle(username);
         return true;
     }
 

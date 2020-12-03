@@ -9,14 +9,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -24,7 +19,6 @@ import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
-import com.synergy.FaultReport.BeforeImage;
 import com.synergy.MainActivityLogin;
 import com.synergy.R;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
@@ -43,7 +37,7 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 public class PreviousImagesActivity extends AppCompatActivity {
     private static final String TAG = "";
     private List<String> urlList = new ArrayList<>();
-    private String frid, token, value, workspace,user;
+    private String frid, token, value, workspace, role,username;
     private Toolbar toolbar;
     private DotsIndicator dotsIndicator;
     List<InputStream> list = new ArrayList<InputStream>();
@@ -55,6 +49,7 @@ public class PreviousImagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_previous_images);
+
 
         initViews();
 
@@ -119,7 +114,7 @@ public class PreviousImagesActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar_images);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
-        user=intent.getStringExtra("role");
+        role =intent.getStringExtra("role");
         value = intent.getStringExtra("value");
         frid = intent.getStringExtra("frid");
         token = intent.getStringExtra("token");
@@ -128,6 +123,8 @@ public class PreviousImagesActivity extends AppCompatActivity {
         dotsIndicator = findViewById(R.id.dot);
         viewPager = findViewById(R.id.view_pager_layout);
         value = value.toLowerCase();
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        username = sharedPreferences.getString("username", "");
     }
 
     private void methodAddImage() {
@@ -151,7 +148,7 @@ public class PreviousImagesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle( user);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(username);
         return true;
     }
 

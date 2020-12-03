@@ -32,7 +32,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -969,9 +969,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -987,6 +985,7 @@
                 android:tooltipText="Before Image"
                 app:backgroundTint="#fff"
                 app:elevation="6dp"
+                android:backgroundTint="#000000"
                 app:fabSize="auto"
                 app:tint="#4F5FC5" />
 
@@ -1001,6 +1000,7 @@
                 android:tooltipText="After Image"
                 app:backgroundTint="#fff"
                 app:borderWidth="0dp"
+                android:backgroundTint="#E81010"
                 app:elevation="6dp"
                 app:fabSize="auto"
                 app:tint="#4F5FC5" />

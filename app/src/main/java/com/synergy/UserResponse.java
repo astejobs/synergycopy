@@ -6,10 +6,10 @@ public class UserResponse {
 
     private String role;
     private String token;
-    private String user;
+    private String username;
 
-    public String getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
     public String getRole() {
@@ -28,8 +28,8 @@ public class UserResponse {
         this.token = token;
     }
 
-    public UserResponse(String role, String token,String user) {
-        this.user=user;
+    public UserResponse(String role, String token,String username) {
+        this.username =username;
         this.role = role;
         this.token = token;
     }

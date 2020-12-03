@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,14 +27,10 @@ import android.widget.Toast;
 import com.synergy.APIClient;
 import com.synergy.CheckInternet;
 import com.synergy.Constants;
-import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.LogoutClass;
-import com.synergy.MainActivityLogin;
 import com.synergy.R;
-import com.synergy.Dashboard.Dashboard;
 import com.synergy.Search.PreviousImagesActivity;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import retrofit2.Call;
@@ -59,7 +54,7 @@ public class BeforeImage extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private String value;
     private Toolbar toolbar;
-    private String user;
+    private String role,username;
     private String status;
     private String checkForFrid;
     String managingagent = "ManagingAgent";
@@ -85,16 +80,20 @@ public class BeforeImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before_image);
 
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        username = sharedPreferences.getString("username", "");
         Intent intent = getIntent();
         token = intent.getStringExtra("token");
         workspace = intent.getStringExtra("workspace");
         frId = intent.getStringExtra("frId");
         value = intent.getStringExtra("value");
-        user = intent.getStringExtra("role");
+        role = intent.getStringExtra("role");
+
         status = "test";
         status = intent.getStringExtra("status");
         checkForFrid = intent.getStringExtra("checkForFrid");
-        Log.d(TAG, "onCreate: hi" + user);
+        Log.d(TAG, "onCreate: hi" + role);
 
         if (checkForFrid == null) {
 
@@ -116,7 +115,7 @@ public class BeforeImage extends AppCompatActivity {
                     intent.putExtra("token", token);
                     intent.putExtra("workspace", workspace);
                     intent.putExtra("frid", frId);
-                    intent.putExtra("role", user);
+                    intent.putExtra("role", role);
                     intent.putExtra("value", value);
                     startActivity(intent);
                 }
@@ -147,7 +146,7 @@ public class BeforeImage extends AppCompatActivity {
 */
         }
 
-        if (user.equals("Technician")) {
+        if (role.equals("Technician")) {
             previousImagesbtn = findViewById(R.id.previous_images);
             takeBtn = findViewById(R.id.take_photo_btn);
             uploadBtn = findViewById(R.id.upload_btn);
@@ -165,7 +164,7 @@ public class BeforeImage extends AppCompatActivity {
                     intent.putExtra("token", token);
                     intent.putExtra("workspace", workspace);
                     intent.putExtra("frid", frId);
-                    intent.putExtra("role", user);
+                    intent.putExtra("role", role);
                     intent.putExtra("value", value);
                     startActivity(intent);
                 }
@@ -173,7 +172,7 @@ public class BeforeImage extends AppCompatActivity {
 
 
         }
-        if (user.equals(managingagent)) {
+        if (role.equals(managingagent)) {
             previousImagesbtn = findViewById(R.id.previous_images);
             takeBtn = findViewById(R.id.take_photo_btn);
             uploadBtn = findViewById(R.id.upload_btn);
@@ -203,7 +202,7 @@ public class BeforeImage extends AppCompatActivity {
                     intent.putExtra("token", token);
                     intent.putExtra("workspace", workspace);
                     intent.putExtra("frid", frId);
-                    intent.putExtra("role", user);
+                    intent.putExtra("role", role);
                     intent.putExtra("value", value);
                     startActivity(intent);
                 }
@@ -240,7 +239,7 @@ public class BeforeImage extends AppCompatActivity {
                     intent.putExtra("token", token);
                     intent.putExtra("workspace", workspace);
                     intent.putExtra("frid", frId);
-                    intent.putExtra("role", user);
+                    intent.putExtra("role", role);
                     intent.putExtra("value", value);
                     startActivity(intent);
                 }
@@ -371,7 +370,7 @@ public class BeforeImage extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(user);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(username);
         return true;
     }
 

@@ -57,7 +57,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     private CodeScannerView codeScannerView;
     private TextView scanTextView;
     private ProgressDialog mProgress;
-    private String workspace, role, token;
+    private String workspace, role, token,username;
     private final CheckInternet checkInternet = new CheckInternet();
 
     @Override
@@ -82,6 +82,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
         role = sharedPreferences.getString("role", "");
+        username=sharedPreferences.getString("username","");
 
         scanTextView = findViewById(R.id.scan_tv);
         codeScannerView = findViewById(R.id.qr_btn);
@@ -199,7 +200,7 @@ public class EquipmentSearchActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(role);
+        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(username);
         return true;
     }
 
