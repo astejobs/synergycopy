@@ -10,8 +10,9 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -20,10 +21,16 @@
         android:allowBackup="true"
         android:icon="@drawable/indeco_logo"
         android:networkSecurityConfig="@xml/security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/indeco_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity"
         tools:targetApi="n">
+        <activity android:name=".SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".SearchTasks.SearchTaskActivity" />
         <activity android:name=".EquipmentSearch.UploadTaskImageActivity" />
         <activity android:name=".Otp.OtpActivity" />
@@ -51,13 +58,7 @@
         <activity android:name=".Dashboard.Dashboard" />
         <activity android:name=".EquipmentSearch.QrDetails" />
         <activity android:name=".FaultReport.FaultReportActivity" />
-        <activity android:name=".Workspace.WorkspaceActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
+        <activity android:name=".Workspace.WorkspaceActivity"/>
 
         <service android:name=".Services.MyFirebaseInstanceService">
             <intent-filter>
@@ -65,6 +66,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

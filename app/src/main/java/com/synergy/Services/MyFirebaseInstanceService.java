@@ -56,6 +56,8 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
+        Log.d("TEST123", "onMessageReceived: " + remoteMessage.getData());
+
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("message");
         String click_action = remoteMessage.getData().get("click_action");

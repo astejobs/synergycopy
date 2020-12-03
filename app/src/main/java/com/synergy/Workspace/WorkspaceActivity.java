@@ -56,8 +56,6 @@ public class WorkspaceActivity extends AppCompatActivity {
     private String user;
     private final CheckInternet checkInternet = new CheckInternet();
 
-    Context context;
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -78,14 +76,11 @@ public class WorkspaceActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_workspace);
         setSupportActionBar(toolbar);
         linearLayout = findViewById(R.id.workLinear);
-        linearLayout.setVisibility(View.GONE);
 
-        Bundle bundle = new Bundle();
+        /*Bundle bundle = new Bundle();
         bundle = getIntent().getExtras();
-        Log.d(TAG, "test1: " + bundle);
         if (bundle != null) {
             if (bundle.get("id") != null) {
-                Log.d(TAG, "test2: " + bundle.get("message"));
                 String workspace = bundle.get("workspace").toString();
                 String click_action = bundle.get("click_action").toString();
                 String id = bundle.get("id").toString();
@@ -115,7 +110,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }
-
+*/
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
         user = sharedPreferences.getString("role", "");
@@ -130,7 +125,6 @@ public class WorkspaceActivity extends AppCompatActivity {
     }
 
     private void callForWorkspace(String token) {
-        linearLayout.setVisibility(View.VISIBLE);
         progressDialog.show();
         Call<JsonArray> call = APIClient.getUserServices().getWorkspace(token);
         call.enqueue(new Callback<JsonArray>() {
@@ -162,7 +156,6 @@ public class WorkspaceActivity extends AppCompatActivity {
                     finish();
                 }
                 progressDialog.dismiss();
-
             }
 
             @Override
