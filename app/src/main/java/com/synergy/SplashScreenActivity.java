@@ -39,9 +39,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     Bundle bundle = new Bundle();
                     bundle = getIntent().getExtras();
-                    Log.d("TEST1234", "onResponse: " + bundle);
-                    if (bundle != null) {
 
+                    if (bundle != null) {
+                        Log.d("TEST1234", "onResponse: " + bundle.get("workspace"));
                         if (bundle.get("id") != null) {
                             String workspace = bundle.get("workspace").toString();
                             String click_action = bundle.get("click_action").toString();
@@ -71,7 +71,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             intent.putExtra("workspace", workspace);
                             startActivity(intent);
                             finish();
-                        }else {
+                        } else {
                             startActivity(new Intent(SplashScreenActivity.this, WorkspaceActivity.class));
                             finish();
                         }

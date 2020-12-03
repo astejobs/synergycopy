@@ -15,8 +15,8 @@
 
     <ProgressBar
         android:id="@+id/progressbar"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:indeterminateTint="@color/blue_indeco_color"
-        android:layout_height="100dp"/>
+        android:layout_height="80dp"/>
 
 </LinearLayout>
