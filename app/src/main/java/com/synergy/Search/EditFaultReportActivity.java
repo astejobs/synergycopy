@@ -1237,29 +1237,39 @@ public class EditFaultReportActivity extends AppCompatActivity {
         }
         if (role.equals(managingAgent) && (frid == null)) {
 
-
             if ((autoCompleteSpinner.getText().toString().equals("Pause Requested")) && (frid == null)) {
-                Log.d(TAG, "checkFieldsForEmptyValues: uuuuu");
-
                 acceptButton.setVisibility(View.VISIBLE);
                 rejectButton.setVisibility(View.VISIBLE);
                 autoCompleteSpinner.setEnabled(false);
                 genralStatusList.clear();
+                autoCompleteSpinner.setDropDownHeight(0);
                 updateFaultReportButton.setVisibility(View.GONE);
                 // buttonEnableMethod();
             }
             if (autoCompleteSpinner.getText().toString().equals("Open")) {
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
-                genralStatusList.remove("Pause Requested");
-                statusListAdapter.notifyDataSetChanged();
+               // statusListAdapter.notifyDataSetChanged();
+                Iterator<StatusItem> iterator = items.iterator();
+                while (iterator.hasNext()) {
+                    StatusItem next = iterator.next();
+                    if (next.getStatus().equals("Pause Requested")) {
+                        iterator.remove();
+                    }
+                }
                 updateFaultReportButton.setVisibility(View.VISIBLE);
                 buttonEnableMethod();
             }
             if (autoCompleteSpinner.getText().toString().equals("Closed")) {
                 acceptButton.setVisibility(View.GONE);
-                genralStatusList.remove("Pause Requested");
-                statusListAdapter.notifyDataSetChanged();
+                Iterator<StatusItem> iterator = items.iterator();
+                while (iterator.hasNext()) {
+                    StatusItem next = iterator.next();
+                    if (next.getStatus().equals("Pause Requested")) {
+                        iterator.remove();
+                    }
+                }
+             //   statusListAdapter.notifyDataSetChanged();
                 rejectButton.setVisibility(View.GONE);
                 updateFaultReportButton.setVisibility(View.VISIBLE);
                 buttonEnableMethod();
@@ -1267,8 +1277,15 @@ public class EditFaultReportActivity extends AppCompatActivity {
             if (autoCompleteSpinner.getText().toString().equals("Pause")
                     || autoCompleteSpinner.getText().toString().equals("Completed")) {
                 updateFaultReportButton.setEnabled(false);
-                genralStatusList.remove("Pause Requested");
-                statusListAdapter.notifyDataSetChanged();
+                Iterator<StatusItem> iterator = items.iterator();
+                while (iterator.hasNext()) {
+                    StatusItem next = iterator.next();
+                    if (next.getStatus().equals("Pause Requested")) {
+                        iterator.remove();
+                    }
+                }
+
+              //  statusListAdapter.notifyDataSetChanged();
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
 
