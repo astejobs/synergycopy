@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -41,7 +42,6 @@ import com.google.gson.JsonObject;
 import com.synergy.APIClient;
 import com.synergy.CheckInternet;
 import com.synergy.Constants;
-import com.synergy.Dashboard.Dashboard;
 import com.synergy.FaultReport.BeforeImage;
 import com.synergy.LogoutClass;
 import com.synergy.R;
@@ -53,6 +53,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
@@ -69,7 +70,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private FloatingActionButton fab_main, fab_before, fab_after;
     private Boolean isMenuOpen = false;
     private final OvershootInterpolator interpolator = new OvershootInterpolator();
-    private Float translationY =600f;
+    private Float translationY = 600f;
     private static final String TAG = "EditFault";
     private String timeS, remarksString, techName;
     private String frId;
@@ -79,9 +80,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
     Button uploadFileBtn;
     Intent uploadFileIntent;
     private String token, role;
-    private String faultDetailString,username;
+    private String faultDetailString, username;
     private TextView equipmentIdTv;
-    private Button  plusbtn, deletebtn;
+    private Button plusbtn, deletebtn;
     private MaterialButton updateFaultReportButton, requestPauseButton, acceptButton, rejectButton;
     private LinearLayout mlayout;
     String frid, workSpaceid, equipCode;
@@ -107,7 +108,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     String[] listItems;
     List attendedByIdsList;
 
-    private AutoCompleteTextView statusSpinner;
+    private AutoCompleteTextView autoCompleteSpinner;
     private TextInputEditText frIdEditText, deptSpinner, reqNameEditText, activationDate,
             activationTime, faultDetailsEditText, locDescEditText, faultCategorySpinner,
             divisionSpinner, locationSpinner, buildingSpinner, prioritySpinner,
@@ -115,24 +116,12 @@ public class EditFaultReportActivity extends AppCompatActivity {
             requestorNumberEditText, actionTakenEditText, equipmentTextView, editText, techTv;
 
     private RadioButton radioSelectedButton;
+    private List<StatusItem> items = new ArrayList<StatusItem>();
     //private String onClickNotification;
 
     String tech = "Technician";
     String managingAgent = "ManagingAgent";
     private final CheckInternet checkInternet = new CheckInternet();
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(checkInternet, intentFilter);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(checkInternet);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +133,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar_edit_fault);
         setSupportActionBar(toolbar);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        role = sharedPreferences.getString("role", "");
+        token = sharedPreferences.getString("token", "");
+        username = sharedPreferences.getString("username", "");
 
         Intent i = getIntent();
         frid = i.getStringExtra("frId");
@@ -152,10 +145,17 @@ public class EditFaultReportActivity extends AppCompatActivity {
         workSpaceid = i.getStringExtra("workspaceId");
         equipCode = i.getStringExtra("equipcode");
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        role = sharedPreferences.getString("role", "");
-        token = sharedPreferences.getString("token", "");
-        username=sharedPreferences.getString("username","");
+        items.add(new StatusItem("Select status"));
+        items.add(new StatusItem("Open"));
+        items.add(new StatusItem("Pause"));
+        items.add(new StatusItem("Closed"));
+        items.add(new StatusItem("Completed"));
+        items.add(new StatusItem("Pause Requested"));
+
+
+        autoCompleteSpinner = findViewById(R.id.statusSpinner);
+        AutoCompleteTextAdaptar adapter = new AutoCompleteTextAdaptar(EditFaultReportActivity.this, items, role);
+        autoCompleteSpinner.setAdapter(adapter);
 
 
         linearLayoutdisable = findViewById(R.id.layout_disable);
@@ -166,7 +166,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
             initializeFab();
             calltech();
             if (frid != null) {
-                Log.d(TAG, "onCreate: my frid "+frid);
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
                 updateFaultReportButton.setVisibility(View.GONE);
@@ -267,7 +266,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
         updateFaultReportButton = findViewById(R.id.updateFaultReportButton);
         //  diagnosisEditText = findViewById(R.id.diagnosis);
         actionTakenEditText = findViewById(R.id.actionTaken);
-        statusSpinner = findViewById(R.id.statusSpinner);
 
         //   technicianSpinner = findViewById(R.id.technicianSpinner);
         //  costCenterSpinner = findViewById(R.id.costCenter);
@@ -370,7 +368,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
         };
         observationEditText.addTextChangedListener(textWatcher);
         actionTakenEditText.addTextChangedListener(textWatcher);
-        statusSpinner.addTextChangedListener(textWatcher);
+        autoCompleteSpinner.addTextChangedListener(textWatcher);
 
 
         if (role.equals(tech)) {
@@ -399,9 +397,10 @@ public class EditFaultReportActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(adapter);*/
 
-        statusListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralStatusList);
+
+        /*statusListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, genralStatusList);
         statusListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(statusListAdapter);
+        statusSpinner.setAdapter(statusListAdapter);*/
 
         plusbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -426,27 +425,25 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                if (group.getCheckedRadioButtonId() == -1)
-                                {
+                                if (group.getCheckedRadioButtonId() == -1) {
                                     Toast.makeText(EditFaultReportActivity.this, "Please Select Cost", Toast.LENGTH_LONG).show();
                                     // no radio buttons are checked
-                                }
-                                else
-                                {
+                                } else {
                                     // one of the radio buttons is checked
 
-                                int selectedId = group.getCheckedRadioButtonId();
-                                radioSelectedButton = (RadioButton) dialogView.findViewById(selectedId);
+                                    int selectedId = group.getCheckedRadioButtonId();
+                                    radioSelectedButton = (RadioButton) dialogView.findViewById(selectedId);
 
-                                if (radioSelectedButton.getText().toString().equals("Greater than 1000")) {
-                                    pauseMethodCall("greater");
-                                }
-                                if (radioSelectedButton.getText().toString().equals("Less than 1000")) {
-                                    pauseMethodCall("less");
-                                }
+                                    if (radioSelectedButton.getText().toString().equals("Greater than 1000")) {
+                                        pauseMethodCall("greater");
+                                    }
+                                    if (radioSelectedButton.getText().toString().equals("Less than 1000")) {
+                                        pauseMethodCall("less");
+                                    }
 
+                                }
                             }
-                        }})
+                        })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -779,7 +776,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     if (!(jsonObject.get("status").isJsonNull())) {
                         String statuscomming = jsonObject.get("status").getAsString();
                         if (genralStatusList.contains(statuscomming)) {
-                            statusSpinner.setText(statuscomming, false);
+                            autoCompleteSpinner.setText(statuscomming, false);
                             //int index = genralStatusList.indexOf(statuscomming);
                             //statusSpinner.setText(statuscomming);
                             //  statusSpinner.setSelection(index);
@@ -1020,7 +1017,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     if (!(jsonObject.get("status").isJsonNull())) {
                         String statuscomming = jsonObject.get("status").getAsString();
                         if (genralStatusList.contains(statuscomming)) {
-                            statusSpinner.setText(statuscomming, false);
+                            autoCompleteSpinner.setText(statuscomming, false);
                         }
                         //   statusSpinner.setText(statuscomming);
                       /*  int indeex = 0;
@@ -1101,7 +1098,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private void deleteRemarks(View view) {
         if (!editTextList.isEmpty()) {
             if (mlayout.getChildCount() > 1) {
-                if (statusSpinner.getText().equals("Closed")) {
+                if (autoCompleteSpinner.getText().equals("Closed")) {
                     if (mlayout.getChildCount() > 2) {
                         mlayout.removeViewAt(mlayout.getChildCount() - 1);
                         int index = editTextList.size() - 1;
@@ -1164,38 +1161,94 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
 
     private void checkFieldsForEmptyValues() {
+        if (role.equals(managingAgent) && (!(frid == null))) {
+            Log.d(TAG, "checkFieldsForEmptyValues: yes manage work");
+            requestPauseButton.setVisibility(View.GONE);
+            updateFaultReportButton.setVisibility(View.GONE);
+            acceptButton.setVisibility(View.GONE);
+            autoCompleteSpinner.setEnabled(false);
+            rejectButton.setVisibility(View.GONE);
+            autoCompleteSpinner.setDropDownHeight(0);
+        }
+        if (role.equals(tech) && ((frid != null))) {
+            Log.d(TAG, "checkFieldsForEmptyValues: yes tech serach");
+            requestPauseButton.setVisibility(View.GONE);
+            updateFaultReportButton.setVisibility(View.GONE);
+            acceptButton.setVisibility(View.GONE);
+            autoCompleteSpinner.setEnabled(false);
+            rejectButton.setVisibility(View.GONE);
+            autoCompleteSpinner.dismissDropDown();
+            autoCompleteSpinner.setDropDownHeight(0);
+        }
 
 
-        if (role.equals(tech)) {
+        if (role.equals(tech) && ((frid == null))) {
 
-            if (statusSpinner.getText().toString().equals("Completed")) {
+            Iterator<StatusItem> iterator = items.iterator();
+            while (iterator.hasNext()) {
+                StatusItem next = iterator.next();
+                if (next.getStatus().equals("Pause Requested")) {
+                    iterator.remove();
+                }
+            }
+            Log.d(TAG, "checkFieldsForEmptyValues: this");
+
+            if (autoCompleteSpinner.getText().toString().equals("Completed")) {
+/*
+                if (!(genralStatusList.contains("Open"))) {
+                    genralStatusList.add("Open");
+//                    statusListAdapter.notifyDataSetChanged();
+                }
+*/
                 requestPauseButton.setEnabled(false);
+
                 buttonEnableMethod();
             }
-            if (statusSpinner.getText().toString().equals("Open")) {
+            if (autoCompleteSpinner.getText().toString().equals("Open")) {
                 requestPauseButton.setEnabled(true);
                 buttonEnableMethod();
             }
-            if (statusSpinner.getText().toString().equals("Pause")) {
+            if (autoCompleteSpinner.getText().toString().equals("Closed")){
+                Log.d(TAG, "checkFieldsForEmptyValues: close");
+                requestPauseButton.setEnabled(false);
+                updateFaultReportButton.setEnabled(false);
+
+            }
+            if (autoCompleteSpinner.getText().toString().equals("Pause Requested")) {
                 updateFaultReportButton.setEnabled(false);
                 requestPauseButton.setEnabled(false);
+            }
+            if (autoCompleteSpinner.getText().toString().equals("Pause") ||
+                    autoCompleteSpinner.getText().toString().equals("Select status")) {
+                updateFaultReportButton.setEnabled(false);
+                requestPauseButton.setEnabled(false);
+
                 genralStatusList.remove("Open");
-                statusListAdapter.notifyDataSetChanged();
+                //   statusListAdapter.notifyDataSetChanged();
+/*
+                autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        autoCompleteSpinner.setDropDownHeight(0);
+                    }
+                });
+*/
             }
         }
-        if (role.equals(managingAgent)) {
+        if (role.equals(managingAgent) && (frid == null)) {
 
-            if ((statusSpinner.getText().toString().equals("Pause Requested")) && (frid==null)) {
+
+            if ((autoCompleteSpinner.getText().toString().equals("Pause Requested")) && (frid == null)) {
                 Log.d(TAG, "checkFieldsForEmptyValues: uuuuu");
 
                 acceptButton.setVisibility(View.VISIBLE);
                 rejectButton.setVisibility(View.VISIBLE);
-                statusSpinner.setEnabled(false);
+                autoCompleteSpinner.setEnabled(false);
                 genralStatusList.clear();
                 updateFaultReportButton.setVisibility(View.GONE);
                 // buttonEnableMethod();
             }
-            if (statusSpinner.getText().toString().equals("Open") ){
+            if (autoCompleteSpinner.getText().toString().equals("Open")) {
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
                 genralStatusList.remove("Pause Requested");
@@ -1203,7 +1256,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 updateFaultReportButton.setVisibility(View.VISIBLE);
                 buttonEnableMethod();
             }
-            if ( statusSpinner.getText().toString().equals("Closed")) {
+            if (autoCompleteSpinner.getText().toString().equals("Closed")) {
                 acceptButton.setVisibility(View.GONE);
                 genralStatusList.remove("Pause Requested");
                 statusListAdapter.notifyDataSetChanged();
@@ -1211,8 +1264,8 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 updateFaultReportButton.setVisibility(View.VISIBLE);
                 buttonEnableMethod();
             }
-            if (statusSpinner.getText().toString().equals("Pause")
-                    || statusSpinner.getText().toString().equals("Completed")) {
+            if (autoCompleteSpinner.getText().toString().equals("Pause")
+                    || autoCompleteSpinner.getText().toString().equals("Completed")) {
                 updateFaultReportButton.setEnabled(false);
                 genralStatusList.remove("Pause Requested");
                 statusListAdapter.notifyDataSetChanged();
@@ -1269,7 +1322,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             faultDetailString = faultDetailsEditText.getText().toString();
             String observerString = observationEditText.getText().toString();
             String actionTakenString = actionTakenEditText.getText().toString();
-            String statusString = statusSpinner.getText().toString();
+            String statusString = autoCompleteSpinner.getText().toString();
             String diagnosesString = null;
             if (!editTextList.isEmpty()) {
                 for (int iRem = 0; iRem < editTextList.size(); iRem++) {
@@ -1352,7 +1405,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     if (response.code() == 200) {
 
 
-                        if (statusSpinner.getText().toString().equals("Pause")) {
+                        if (autoCompleteSpinner.getText().toString().equals("Pause")) {
                             Intent intent = new Intent(EditFaultReportActivity.this, UploadFile.class);
                             intent.putExtra("frid", frId);
                             intent.putExtra("workspace", workSpaceid);
@@ -1441,7 +1494,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 intent.putExtra("role", role);
                 intent.putExtra("workspace", workSpaceid);
                 intent.putExtra("frId", frIdEditText.getText().toString());
-                intent.putExtra("status", statusSpinner.getText().toString());
+                intent.putExtra("status", autoCompleteSpinner.getText().toString());
                 startActivity(intent);
 
             }
@@ -1455,7 +1508,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 intent.putExtra("checkForFrid", frid);
                 intent.putExtra("workspace", workSpaceid);
                 intent.putExtra("role", role);
-                intent.putExtra("status", statusSpinner.getText().toString());
+                intent.putExtra("status", autoCompleteSpinner.getText().toString());
                 intent.putExtra("frId", frIdEditText.getText().toString());
                 startActivity(intent);
 
@@ -1474,7 +1527,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     private void closeMenu() {
         isMenuOpen = !isMenuOpen;
-          fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
+        fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
         fab_before.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
     }
@@ -1497,4 +1550,18 @@ public class EditFaultReportActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(checkInternet, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(checkInternet);
+    }
+
 }

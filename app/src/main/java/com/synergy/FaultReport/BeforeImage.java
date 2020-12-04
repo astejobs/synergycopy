@@ -153,7 +153,7 @@ public class BeforeImage extends AppCompatActivity {
             doneBtn = findViewById(R.id.done_btn);
             takeBtn.setVisibility(View.VISIBLE);
             uploadBtn.setVisibility(View.VISIBLE);
-            doneBtn.setVisibility(View.INVISIBLE);
+            doneBtn.setVisibility(View.GONE);
             toolbar = findViewById(R.id.toolbar_globe);
             setSupportActionBar(toolbar);
             toolbar.setTitle(value + " Image");
@@ -177,9 +177,9 @@ public class BeforeImage extends AppCompatActivity {
             takeBtn = findViewById(R.id.take_photo_btn);
             uploadBtn = findViewById(R.id.upload_btn);
             doneBtn = findViewById(R.id.done_btn);
-            takeBtn.setVisibility(View.INVISIBLE);
-            uploadBtn.setVisibility(View.INVISIBLE);
-            doneBtn.setVisibility(View.INVISIBLE);
+            takeBtn.setVisibility(View.GONE);
+            uploadBtn.setVisibility(View.GONE);
+            doneBtn.setVisibility(View.GONE);
             toolbar = findViewById(R.id.toolbar_globe);
             setSupportActionBar(toolbar);
             toolbar.setTitle(value + " Image");
@@ -216,7 +216,7 @@ public class BeforeImage extends AppCompatActivity {
             doneBtn = findViewById(R.id.done_btn);
             takeBtn.setVisibility(View.VISIBLE);
             uploadBtn.setVisibility(View.VISIBLE);
-            doneBtn.setVisibility(View.INVISIBLE);
+            doneBtn.setVisibility(View.GONE);
             toolbar = findViewById(R.id.toolbar_globe);
             setSupportActionBar(toolbar);
             toolbar.setTitle(value + " Image");

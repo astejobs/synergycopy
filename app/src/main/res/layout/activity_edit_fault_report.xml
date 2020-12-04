@@ -985,7 +985,6 @@
                 android:tooltipText="Before Image"
                 app:backgroundTint="#fff"
                 app:elevation="6dp"
-                android:backgroundTint="#000000"
                 app:fabSize="auto"
                 app:tint="#4F5FC5" />
 
@@ -1000,7 +999,6 @@
                 android:tooltipText="After Image"
                 app:backgroundTint="#fff"
                 app:borderWidth="0dp"
-                android:backgroundTint="#E81010"
                 app:elevation="6dp"
                 app:fabSize="auto"
                 app:tint="#4F5FC5" />

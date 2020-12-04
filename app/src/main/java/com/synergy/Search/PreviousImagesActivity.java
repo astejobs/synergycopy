@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -37,23 +38,26 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 public class PreviousImagesActivity extends AppCompatActivity {
     private static final String TAG = "";
     private List<String> urlList = new ArrayList<>();
-    private String frid, token, value, workspace, role,username;
+    private String frid, token, value, workspace, role, username;
     private Toolbar toolbar;
     private DotsIndicator dotsIndicator;
     List<InputStream> list = new ArrayList<InputStream>();
     List<Integer> imageIdList = new ArrayList<Integer>();
     List<Bitmap> bitmapList = new ArrayList<Bitmap>();
     ViewPager viewPager;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_previous_images);
-
+        progressDialog = new ProgressDialog(PreviousImagesActivity.this);
+        progressDialog.setTitle("Loading...");
 
         initViews();
 
         Call<JsonObject> call = APIClient.getUserServices().getBeforeImage(value, frid, workspace, token);
+        progressDialog.show();
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -67,6 +71,7 @@ public class PreviousImagesActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                 if (response.code() == 200) {
+                                    progressDialog.dismiss();
                                     list.add(response.body().byteStream());
                                     Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
                                     bitmapList.add(bmp);
@@ -76,10 +81,11 @@ public class PreviousImagesActivity extends AppCompatActivity {
                                     viewPager.setAdapter(imageAdapter);
                                     dotsIndicator.setViewPager(viewPager);
                                     Log.d(TAG, "onResponse:in "+urlList);*/
-                                    ImageAdapter imageAdapter=new ImageAdapter(PreviousImagesActivity.this,bitmapList);
+                                    ImageAdapter imageAdapter = new ImageAdapter(PreviousImagesActivity.this, bitmapList);
                                     viewPager.setAdapter(imageAdapter);
                                     dotsIndicator.setViewPager(viewPager);
                                 }
+                                progressDialog.dismiss();
                             }
 
 
@@ -87,6 +93,7 @@ public class PreviousImagesActivity extends AppCompatActivity {
                             public void onFailure(Call<ResponseBody> call, Throwable t) {
                                 Toast.makeText(PreviousImagesActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "onFailure: " + t.getCause());
+                                progressDialog.dismiss();
                                 Log.d(TAG, "onFailure: " + t.getMessage());
                             }
                         });
@@ -98,6 +105,7 @@ public class PreviousImagesActivity extends AppCompatActivity {
 
                 } else
                     Toast.makeText(PreviousImagesActivity.this, "Error : " + response.code(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
 
             @Override
@@ -105,6 +113,7 @@ public class PreviousImagesActivity extends AppCompatActivity {
                 Toast.makeText(PreviousImagesActivity.this, "Failed : " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onFailure: " + t.getMessage());
                 Log.d(TAG, "onFailure: " + t.getCause());
+                progressDialog.dismiss();
             }
         });
 
@@ -114,7 +123,7 @@ public class PreviousImagesActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar_images);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
-        role =intent.getStringExtra("role");
+        role = intent.getStringExtra("role");
         value = intent.getStringExtra("value");
         frid = intent.getStringExtra("frid");
         token = intent.getStringExtra("token");
@@ -129,7 +138,6 @@ public class PreviousImagesActivity extends AppCompatActivity {
 
     private void methodAddImage() {
         for (int i = 0; i < list.size(); i++) {
-            Log.d(TAG, "methodAddImage: " + list);
 
             Bitmap bmp = BitmapFactory.decodeStream(list.get(i));
             LinearLayout layout = (LinearLayout) findViewById(R.id.image_layout_linear);

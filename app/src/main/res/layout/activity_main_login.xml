@@ -10,7 +10,7 @@
     android:focusableInTouchMode="true">
 
     <ImageView
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="60dp"
@@ -36,7 +36,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="170dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="80dp"
         android:alpha=".9"
         app:cardCornerRadius="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -122,11 +122,12 @@
 
                 <Button
                     android:id="@+id/btn_login"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="45dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginRight="40dp"
+
                     android:background="@drawable/mybutton"
                     android:padding="10dp"
                     android:shadowColor="#c4c9d6"
