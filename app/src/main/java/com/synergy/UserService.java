@@ -263,9 +263,10 @@ public interface UserService {
 
 
     //Logout user
-    @GET("logout")
+    @POST("logout?")
     @Headers("Content-Type: application/json")
-    Call<Void> logoutUser(@Header("Authorization") String token);
+    Call<Void> logoutUser(@Query("deviceToken") String query,
+                          @Header("Authorization") String token);
 
     //imageUploadTask
     @POST("task/{afterimage}image")
@@ -312,21 +313,22 @@ public interface UserService {
     @Headers("Content-Type: application/json")
     Call<Void> getRequestPause(@Header("Authorization") String token,
                                @Header("workspace") String workspace,
-                              @Body PauseRequestBody pauseRequestBody
+                               @Body PauseRequestBody pauseRequestBody
     );
 
     //pause Accept
     @POST("faultreport/pauserequest/accept")
     @Headers("Content-Type: application/json")
     Call<Void> getAccept(@Header("Authorization") String token,
-                               @Header("workspace") String workspace,
-                               @Body AcceptRejectBody acceptRejectBody
+                         @Header("workspace") String workspace,
+                         @Body AcceptRejectBody acceptRejectBody
     );
+
     //pause reject
     @POST("faultreport/pauserequest/reject")
     @Headers("Content-Type: application/json")
     Call<Void> getReject(@Header("Authorization") String token,
-                               @Header("workspace") String workspace,
-                               @Body AcceptRejectBody acceptRejectBody);
+                         @Header("workspace") String workspace,
+                         @Body AcceptRejectBody acceptRejectBody);
 
 }

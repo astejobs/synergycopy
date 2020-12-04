@@ -45,7 +45,7 @@ public class WorkspaceActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressDialog progressDialog;
     private LinearLayout linearLayout;
-    private String role,username;
+    private String role, username;
     private final CheckInternet checkInternet = new CheckInternet();
 
     @Override
@@ -72,7 +72,7 @@ public class WorkspaceActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
         role = sharedPreferences.getString("role", "");
-        username=sharedPreferences.getString("username","");
+        username = sharedPreferences.getString("username", "");
 
         recyclerView = findViewById(R.id.recycler_view_workspace);
         progressDialog = new ProgressDialog(WorkspaceActivity.this);

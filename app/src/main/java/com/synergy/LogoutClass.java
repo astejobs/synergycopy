@@ -8,7 +8,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,15 +26,22 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class LogoutClass {
+
     public void logout(Activity activity) {
+        MainActivityLogin mainActivityLogin = new MainActivityLogin();
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String deviceToken = sharedPreferences.getString("devicetoken", "");
+
         ProgressDialog progressDialog = new ProgressDialog(activity);
         progressDialog.setTitle("Signing out!");
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();
-        SharedPreferences sharedPreferences = activity.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+
+        Log.d("TAG", "logout: "+ deviceToken);
+
         String token = sharedPreferences.getString("token", "");
-        Call<Void> callLogout = APIClient.getUserServices().logoutUser(token);
+        Call<Void> callLogout = APIClient.getUserServices().logoutUser(deviceToken, token);
         callLogout.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
