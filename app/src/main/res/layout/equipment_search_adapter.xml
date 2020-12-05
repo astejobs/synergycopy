@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:elevation="8dp"
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical"
+    android:padding="12dp"
+    app:cardCornerRadius="15dp">
+
+    <LinearLayout
+        android:id="@+id/constrain_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="?android:dividerHorizontal"
+        android:orientation="vertical"
+        android:padding="14dp"
+        android:showDividers="middle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp"
+            android:padding="10dp"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/schduleDateRV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="viewStart"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/statusRV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/colorCodeSchemeApp"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/taskIdRV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/taskNumberRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:fontFamily="@font/roboto"
+            android:padding="16dp"
+            android:textColor="@color/textColor"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/buildingRV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="viewStart"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/locationRV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

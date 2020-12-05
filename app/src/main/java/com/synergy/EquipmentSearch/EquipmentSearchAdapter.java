@@ -34,7 +34,7 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.equip_search_adapter, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.equipment_search_adapter, parent, false);
         return new MyViewHolder(v);
     }
 

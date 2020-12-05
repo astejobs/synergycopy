@@ -3,6 +3,7 @@ package com.synergy.EquipmentSearch;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -11,33 +12,32 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
+import com.google.android.gms.vision.text.Line;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.synergy.APIClient;
 import com.synergy.CheckInternet;
 import com.synergy.GetCheckListResponse;
 import com.synergy.LogoutClass;
-import com.synergy.MainActivityLogin;
 import com.synergy.R;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
@@ -45,9 +45,9 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 public class CheckListActivity extends AppCompatActivity {
 
     private String descType;
-    private LinearLayout linearLayout;
+    private LinearLayout fullLinearLayout;
     private Button saveButton;
-    private final List<EditText> remarksEditTextList = new ArrayList<>();
+    private final List<TextInputLayout> remarksEditTextList = new ArrayList<>();
     private final List<TextView> textViewList = new ArrayList<>();
     private final List<Object> objectList = new ArrayList<>();
     private final List<String> descTypeList = new ArrayList<>();
@@ -55,6 +55,7 @@ public class CheckListActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private String role;
     private final CheckInternet checkInternet = new CheckInternet();
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -75,7 +76,7 @@ public class CheckListActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.checkListToolbar);
         setSupportActionBar(toolbar);
-        linearLayout = findViewById(R.id.linearLayoutCheck);
+        fullLinearLayout = findViewById(R.id.linearLayoutCheck);
         saveButton = findViewById(R.id.saveButtonCheckList);
         saveButton.setEnabled(false);
 
@@ -108,14 +109,14 @@ public class CheckListActivity extends AppCompatActivity {
         for (int i = 0; i < textViewList.size(); i++) {
             String objectName;
             //if (descTypeList.get(i).equals("QUESTIONANSWER")) {
-                Spinner objectSpinner = (Spinner) objectList.get(i);
-                objectName = objectSpinner.getSelectedItem().toString();
+            Spinner objectSpinner = (Spinner) objectList.get(i);
+            objectName = objectSpinner.getSelectedItem().toString();
             /*} else {
                 EditText editText = (EditText) objectList.get(i);
                 objectName = editText.getText().toString();
             }*/
-            EditText remarksEditText = remarksEditTextList.get(i);
-            String remarks = remarksEditText.getText().toString();
+            TextInputLayout remarksEditText = remarksEditTextList.get(i);
+            String remarks = remarksEditText.getEditText().getText().toString();
 
             int id = idList.get(i);
 
@@ -167,6 +168,7 @@ public class CheckListActivity extends AppCompatActivity {
                         String remarks = listResponse.get(i).getRemarks();
 
                         createDynamicLayout(desc, remarks, status);
+                        //createLayout(desc, remarks, status);
                         saveButton.setEnabled(true);
                     }
 
@@ -187,7 +189,19 @@ public class CheckListActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void createDynamicLayout(String desc, String remarks, String status) {
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lparams.setMargins(20, 20, 20, 50);
+        linearLayout.setLayoutParams(lparams);
+        GradientDrawable border = new GradientDrawable();
+        border.setColor(0xFFFFFFFF);
+        border.setCornerRadius(10f);
+        border.setStroke(2, 0xFF000000);
+        border.setGradientRadius(5f);
+        linearLayout.setBackground(border);
+
+
         TextView textView = new TextView(this);
         textView.setId(View.generateViewId());
         lparams.setMargins(20, 20, 20, 20);
@@ -197,46 +211,56 @@ public class CheckListActivity extends AppCompatActivity {
         linearLayout.addView(textView);
         textViewList.add(textView);
 
-        //if (descType.equals("QUESTIONANSWER")) {
-            Spinner statusSpinner = new Spinner(this);
-            statusSpinner.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            List<String> statusList = new ArrayList<>();
+        Spinner statusSpinner = (Spinner) getLayoutInflater().inflate(R.layout.tvspinnertemplate, null);
+        List<String> statusList = new ArrayList<>();
+        statusList.add("yes");
+        statusList.add("no");
+        statusList.add("na");
+        if (!status.equals("YES")) {
             statusList.add(status);
-            statusList.add("no");
-            statusList.add("yes");
-            statusList.add("na");
-            List<String> removedDupList = statusList.stream().distinct().collect(Collectors.toList());
-            statusSpinner.setSelection(removedDupList.indexOf(status));
-            ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, removedDupList);
-            statusSpinner.setAdapter(statusAdapter);
-            statusSpinner.setId(View.generateViewId());
-            lparams.setMargins(20, 20, 20, 20);
-            statusSpinner.setLayoutParams(lparams);
-            objectList.add(statusSpinner);
-            linearLayout.addView(statusSpinner);
-       /* } else {
-            EditText editText = new EditText(this);
-            editText.setHeight(60);
-            editText.setWidth(300);
-            editText.setInputType(InputType.TYPE_CLASS_TEXT);
-            editText.setId(View.generateViewId());
-            lparams.setMargins(20, 20, 20, 40);
-            editText.setLayoutParams(lparams);
-            objectList.add(editText);
-            linearLayout.addView(editText, lparams);
-        }*/
+            statusSpinner.setSelection(statusList.indexOf(status));
+        } else statusSpinner.setSelection(statusList.indexOf("yes"));
+        List<String> removedDupList = statusList.stream().distinct().collect(Collectors.toList());
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, removedDupList);
+        statusSpinner.setAdapter(statusAdapter);
+        lparams.setMargins(20, 20, 20, 20);
+        statusSpinner.setLayoutParams(lparams);
+        objectList.add(statusSpinner);
+        linearLayout.addView(statusSpinner);
 
-        EditText remarksEditText = new EditText(this);
-        remarksEditText.setHeight(60);
-        remarksEditText.setWidth(300);
-        remarksEditText.setText(remarks);
+        TextInputLayout remarksEditText = (TextInputLayout) getLayoutInflater().inflate(R.layout.tvtemplate, null);
         remarksEditText.setHint("Remarks");
-        remarksEditText.setInputType(InputType.TYPE_CLASS_TEXT);
         remarksEditText.setId(View.generateViewId());
-        lparams.setMargins(20, 20, 20, 40);
+        lparams.setMargins(20, 20, 20, 20);
         remarksEditText.setLayoutParams(lparams);
         remarksEditTextList.add(remarksEditText);
-        linearLayout.addView(remarksEditText, lparams);
+        linearLayout.addView(remarksEditText);
+        fullLinearLayout.addView(linearLayout);
+    }
+
+    void createLayout(String desc, String remarks, String status) {
+        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.checklist_template, null);
+
+        Spinner spinner = findViewById(R.id.checklistspinner);
+        List<String> statusList = new ArrayList<>();
+        statusList.add("yes");
+        statusList.add("no");
+        statusList.add("na");
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, statusList);
+        if (!status.equals("YES")) {
+            statusList.add(status);
+            spinner.setSelection(statusList.indexOf(status));
+        } else spinner.setSelection(statusList.indexOf("yes"));
+        spinner.setAdapter(statusAdapter);
+
+
+        TextView textView = findViewById(R.id.checklisttv);
+
+
+        TextView editText = findViewById(R.id.checklistremarks);
+
+
+        fullLinearLayout.addView(linearLayout);
     }
 
     @Override

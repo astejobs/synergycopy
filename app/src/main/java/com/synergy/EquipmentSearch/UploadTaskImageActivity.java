@@ -331,6 +331,7 @@ public class UploadTaskImageActivity extends AppCompatActivity {
         builder.show();
     }
 
+/*
     public void startActivityForSecondResult(Intent data, int requestCode, String imageViewValue, int galleryOrCamera, int CONSTANTVALUES) {
 
         assert data != null;
@@ -374,6 +375,7 @@ public class UploadTaskImageActivity extends AppCompatActivity {
 
         }
     }
+*/
 
 
 }

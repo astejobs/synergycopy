@@ -34,6 +34,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.util.CollectionUtils;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.synergy.APIClient;
 import com.synergy.CheckInternet;
 import com.synergy.Constants;
@@ -61,19 +63,19 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class PmTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private TextView taskNumberTextView;
-    private TextView scheduleNumberTextView;
-    private TextView buildingNameTextView;
-    private TextView locationNameTextView;
-    private TextView equipmentNameTextView;
-    private TextView briefDescTextView;
-    private TextView scheduleDateTextView;
-    private EditText remarksTextView;
-    private TextView nameTextView;
+    private TextInputEditText taskNumberTextView;
+    private TextInputEditText scheduleNumberTextView;
+    private TextInputEditText buildingNameTextView;
+    private TextInputEditText locationNameTextView;
+    private TextInputEditText equipmentNameTextView;
+    private TextInputEditText briefDescTextView;
+    private TextInputEditText scheduleDateTextView;
+    private TextInputEditText remarksTextView;
+    private TextInputEditText nameTextView;
     private Spinner statusSpinner;
     private Button buttonUpdate;
-    private TextView datePickerEdit;
-    private TextView timePickerEdit;
+    private TextInputEditText datePickerEdit;
+    private TextInputEditText timePickerEdit;
     private int tHour, tMinute;
     private ProgressDialog mProgress;
     private ArrayAdapter<String> statusSpinnerAdapter;
@@ -84,7 +86,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private String roleTask;
     private int taskId;
     private String afterImage, beforeImage;
-    private String source;
+    private String source = "";
 
     private final CheckInternet checkInternet = new CheckInternet();
 
@@ -127,6 +129,18 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         checkListButton = findViewById(R.id.buttonCheckList);
         checkListButton.setEnabled(false);
 
+        taskNumberTextView.setEnabled(false);
+        scheduleNumberTextView.setEnabled(false);
+        buildingNameTextView.setEnabled(false);
+        locationNameTextView.setEnabled(false);
+        equipmentNameTextView.setEnabled(false);
+        briefDescTextView.setEnabled(false);
+        scheduleDateTextView.setEnabled(false);
+        datePickerEdit.setEnabled(false);
+        timePickerEdit.setEnabled(false);
+        nameTextView.setEnabled(false);
+
+
         mProgress = new ProgressDialog(PmTaskActivity.this);
         mProgress.setMessage("Please wait...");
         mProgress.setCancelable(false);
@@ -143,7 +157,9 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         Intent intent = getIntent();
         String taskNumberString = intent.getStringExtra("taskNumber");
         taskId = intent.getIntExtra("taskId", 0);
+        //taskId = 3;
         String workspace = intent.getStringExtra("workspace");
+        //String workspace = "CMMS-DEMO-112020-001";
         afterImage = intent.getStringExtra("afterImage");
         beforeImage = intent.getStringExtra("beforeImage");
         source = intent.getStringExtra("source");
@@ -212,7 +228,6 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
             public void onResponse(Call<GetPmTaskItemsResponse> call, Response<GetPmTaskItemsResponse> response) {
                 mProgress.dismiss();
                 if (response.code() == 200) {
-
                     GetPmTaskItemsResponse getPmTaskItemsResponse = response.body();
                     if (getPmTaskItemsResponse.getTaskNumber() != null) {
                         taskNumberTextView.setText(getPmTaskItemsResponse.getTaskNumber());
@@ -319,7 +334,8 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
             @Override
             public void onFailure(Call<GetPmTaskItemsResponse> call, Throwable t) {
                 mProgress.dismiss();
-                Toast.makeText(PmTaskActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                LogoutClass logoutClass = new LogoutClass();
+                logoutClass.alertDialog("No tasks available! Please try again", PmTaskActivity.this);
             }
         });
     }

@@ -164,6 +164,7 @@ public class MainActivityLogin extends AppCompatActivity {
 
         new AlertDialog.Builder(this)
                 .setTitle("Permission needed")
+                .setCancelable(false)
                 .setMessage("This permission is needed for the application to run properly")
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -192,6 +193,7 @@ public class MainActivityLogin extends AppCompatActivity {
                 new AlertDialog.Builder(this)
                         .setTitle("Permission Denied")
                         .setMessage("Please enable the permissions in settings")
+                        .setCancelable(false)
                         .setPositiveButton("ok", null)
                         .create().show();
             }
