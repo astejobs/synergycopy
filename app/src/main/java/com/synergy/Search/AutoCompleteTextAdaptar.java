@@ -47,9 +47,11 @@ public class AutoCompleteTextAdaptar extends ArrayAdapter<StatusItem> {
         if (statusItem != null) {
             textView.setText(statusItem.getStatus());
         }
-        Log.d(TAG, "getView: to rol" + role);
         if (role.equals("Technician")) {
             String textviewText = textView.getText().toString();
+
+
+//to be continued
             convertView.setEnabled(!textviewText.equals("Pause"));
 
         }
