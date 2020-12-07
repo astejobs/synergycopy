@@ -55,6 +55,9 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
         String afterImage = currentPosition.getAfterImage();
         String beforeImage = currentPosition.getBeforeImage();
         String source = currentPosition.getSource();
+        String equipName = currentPosition.getEquipName();
+
+        holder.equipNameTV.setText(equipName);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +83,7 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView taskNumberTV, taskIdTV, statusTV, buildingTV, locationTV, scheduleTV;
+        TextView taskNumberTV, taskIdTV, statusTV, buildingTV, locationTV, scheduleTV, equipNameTV;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,6 +93,7 @@ public class EquipmentSearchAdapter extends RecyclerView.Adapter<EquipmentSearch
             buildingTV = itemView.findViewById(R.id.buildingRV);
             locationTV = itemView.findViewById(R.id.locationRV);
             scheduleTV = itemView.findViewById(R.id.schduleDateRV);
+            equipNameTV = itemView.findViewById(R.id.equipNameSearch);
         }
     }
 }

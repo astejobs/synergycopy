@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:background="#e2e2e2"
     android:orientation="vertical"
     tools:context=".EquipmentSearch.PmTaskActivity">
 
@@ -26,29 +26,32 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutCheck"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:divider="?dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="middle"/>
-            <Button
-                android:layout_margin="20dp"
-                android:background="@drawable/mybutton"
+            <LinearLayout
+                android:id="@+id/linearLayoutCheck"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColorbutton"
+                android:layout_margin="10dp"
+                android:divider="?dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="middle" />
+
+            <Button
                 android:id="@+id/saveButtonCheckList"
-                android:text="Save Checklist"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/mybutton"
+                android:text="Save Checklist"
+                android:textColor="@color/textColorbutton" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

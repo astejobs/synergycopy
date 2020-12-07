@@ -62,12 +62,11 @@ public class EquipmentSearchResponse {
 
     String beforeImage;
     String afterImage;
+    String equipmentName;
 
 
-    public EquipmentSearchResponse(Long taskId, String taskNumber, String status, String scheduleNumber, String briefDescription,
-                                   Long locationId, String locationName, Long buildingId, String buildingName, String equipmentCode, Long scheduleDate,
-                                   String completedBy, Long completedDate, String completedTime, String remarks, Long endDate,
-                                   Long dueDate, String beforeImage, String afterImage) {
+    public EquipmentSearchResponse(Long taskId, String taskNumber, String status, String scheduleNumber, String briefDescription, Long locationId, String locationName, Long buildingId, String buildingName, String equipmentCode, Long scheduleDate, String completedBy, Long completedDate,
+                                   String completedTime, String remarks, Long endDate, Long dueDate, String beforeImage, String afterImage, String equipmentName) {
         this.taskId = taskId;
         this.taskNumber = taskNumber;
         this.status = status;
@@ -87,6 +86,7 @@ public class EquipmentSearchResponse {
         this.dueDate = dueDate;
         this.beforeImage = beforeImage;
         this.afterImage = afterImage;
+        this.equipmentName = equipmentName;
     }
 
     public Long getTaskId() {
@@ -203,6 +203,10 @@ public class EquipmentSearchResponse {
 
     public String getRemarks() {
         return remarks;
+    }
+
+    public String getEquipmentName() {
+        return equipmentName;
     }
 
     public void setRemarks(String remarks) {

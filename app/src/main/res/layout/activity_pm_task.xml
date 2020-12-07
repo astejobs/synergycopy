@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:background="#e2e2e2"
     android:orientation="vertical"
     tools:context=".EquipmentSearch.PmTaskActivity">
 
@@ -28,13 +29,18 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp">
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:elevation="8dp"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="15dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:divider="?dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="middle">
+            android:orientation="vertical">
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -201,29 +207,20 @@
                     android:layout_height="match_parent"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_margin="10dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight=".8"
-                    android:text="Status" />
-
-                <Spinner
+                android:layout_margin="8dp"
+                android:textSize="16sp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:hint="Status">
+                <AutoCompleteTextView
                     android:id="@+id/spinner_status_pmtasks"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.2" />
-
-
-            </LinearLayout>
+                    android:layout_width="match_parent"
+                    android:inputType="none"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/buttonCheckList"
@@ -248,5 +245,6 @@
                 android:textColor="@color/textColorbutton" />
 
         </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </ScrollView>
 </LinearLayout>

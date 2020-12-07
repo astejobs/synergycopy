@@ -161,9 +161,11 @@ public class EquipmentSearchActivity extends AppCompatActivity {
                         String status = equipmentSearchResponse.get(i).getStatus();
                         String afterImage = equipmentSearchResponse.get(i).getAfterImage();
                         String beforeImage = equipmentSearchResponse.get(i).getBeforeImage();
+                        String equipName = equipmentSearchResponse.get(i).getEquipmentName();
 
 
-                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace, status, buildingName, locationName, scheduleDate, afterImage, beforeImage, source));
+                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace, status, buildingName,
+                                locationName, scheduleDate, afterImage, beforeImage, source, equipName));
                     }
                     recyclerView.setHasFixedSize(true);
                     EquipmentSearchAdapter mAdapter = new EquipmentSearchAdapter(equipmentSearchCardArrayList);

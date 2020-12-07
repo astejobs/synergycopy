@@ -52,6 +52,7 @@ public class SearchTaskActivity extends AppCompatActivity {
     private EquipmentSearchAdapter mAdapter = new EquipmentSearchAdapter(equipmentSearchCardArrayList);
 
     private final CheckInternet checkInternet = new CheckInternet();
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -64,6 +65,7 @@ public class SearchTaskActivity extends AppCompatActivity {
         super.onStop();
         unregisterReceiver(checkInternet);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,19 +137,23 @@ public class SearchTaskActivity extends AppCompatActivity {
                         int taskId = equipmentSearchResponse.get(i).getTaskId();
                         String buildingName = equipmentSearchResponse.get(i).getBuildingName();
                         String locationName = equipmentSearchResponse.get(i).getLocationName();
+                        String equipCode = equipmentSearchResponse.get(i).getEquipmentName();
                         long scheduleDate = Long.parseLong(equipmentSearchResponse.get(i).getScheduleDate());
                         String status = equipmentSearchResponse.get(i).getStatus();
                         String afterImage = equipmentSearchResponse.get(i).getAfterImage();
                         String beforeImage = equipmentSearchResponse.get(i).getBeforeImage();
-                      
-                        equipmentSearchCardArrayList.add(new EquipmentSearchCard(taskId, taskNumber, workspace, status, buildingName, locationName, scheduleDate, afterImage, beforeImage, source));
+
+                        equipmentSearchCardArrayList.
+                                add(new EquipmentSearchCard(taskId, taskNumber, workspace,
+                                        status, buildingName, locationName, scheduleDate,
+                                        afterImage, beforeImage, source, equipCode));
                     }
 
                     recyclerView.setHasFixedSize(true);
 
                     recyclerView.setLayoutManager(new LinearLayoutManager(SearchTaskActivity.this));
                     recyclerView.setAdapter(mAdapter);
-                }else if (response.code() == 401) {
+                } else if (response.code() == 401) {
                     Toast.makeText(SearchTaskActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
                     LogoutClass logoutClass = new LogoutClass();
                     logoutClass.logout(SearchTaskActivity.this);

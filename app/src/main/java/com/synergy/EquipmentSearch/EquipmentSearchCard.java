@@ -9,10 +9,11 @@ public class EquipmentSearchCard {
     String afterImage;
     String beforeImage;
     String source;
+    String equipName;
 
     public EquipmentSearchCard(int taskId, String task_number, String workspace,
                                String status, String buildingName, String locationName, long scheduleDate,
-                               String afterImage, String beforeImage, String source) {
+                               String afterImage, String beforeImage, String source, String equipName) {
         this.taskId = taskId;
         this.task_number = task_number;
         this.workspace = workspace;
@@ -23,6 +24,7 @@ public class EquipmentSearchCard {
         this.afterImage = afterImage;
         this.beforeImage = beforeImage;
         this.source = source;
+        this.equipName = equipName;
     }
 
     public String getStatus() {
@@ -71,5 +73,9 @@ public class EquipmentSearchCard {
 
     public String getSource() {
         return source;
+    }
+
+    public String getEquipName() {
+        return equipName;
     }
 }

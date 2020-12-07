@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -72,7 +73,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private TextInputEditText scheduleDateTextView;
     private TextInputEditText remarksTextView;
     private TextInputEditText nameTextView;
-    private Spinner statusSpinner;
+    private AutoCompleteTextView statusSpinner;
     private Button buttonUpdate;
     private TextInputEditText datePickerEdit;
     private TextInputEditText timePickerEdit;
@@ -156,13 +157,13 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
 
         Intent intent = getIntent();
         String taskNumberString = intent.getStringExtra("taskNumber");
-        taskId = intent.getIntExtra("taskId", 0);
-        //taskId = 3;
-        String workspace = intent.getStringExtra("workspace");
-        //String workspace = "CMMS-DEMO-112020-001";
-        afterImage = intent.getStringExtra("afterImage");
-        beforeImage = intent.getStringExtra("beforeImage");
-        source = intent.getStringExtra("source");
+        //taskId = intent.getIntExtra("taskId", 0);
+        taskId = 3;
+        //String workspace = intent.getStringExtra("workspace");
+        String workspace = "CMMS-DEMO-112020-001";
+//        afterImage = intent.getStringExtra("afterImage");
+//        beforeImage = intent.getStringExtra("beforeImage");
+//        source = intent.getStringExtra("source");
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
@@ -193,7 +194,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private void updateTaskMethod(int taskId, String token, String workspace) {
         String timeString = timePickerEdit.getText().toString();
         String dateString = datePickerEdit.getText().toString();
-        String status = statusSpinner.getSelectedItem().toString();
+        String status = statusSpinner.getText().toString();
         String remarksString = remarksTextView.getText().toString();
 
         String dateTimeString = dateString + timeString;
@@ -207,7 +208,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         }
 
         Long completedDateTime = null;
-        if (statusSpinner.getSelectedItem().equals("Completed")) {
+        if (statusSpinner.getText().equals("Completed")) {
             completedDateTime = date.getTime();
         }
         GetUpdatePmTaskRequest getUpdatePmTaskRequest = new GetUpdatePmTaskRequest(status, remarksString, completedDateTime, completedDateTime, taskId);
@@ -281,6 +282,10 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                         datePickerEdit.setText(sdf1.format(new Date()));
                     }
 
+                    statusList.add("Open");
+                    statusList.add("Closed");
+                    statusList.add("Completed");
+
                     if (getPmTaskItemsResponse.getStatus() != null) {
 
                         if (roleTask.equals("Technician")) {
@@ -305,8 +310,8 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                     }
                     statusSpinner.setAdapter(statusSpinnerAdapter);
                     if (!getPmTaskItemsResponse.getStatus().equals("OPEN")) {
-                        statusSpinner.setSelection(statusList.indexOf(getPmTaskItemsResponse.getStatus()), true);
-                    } else statusSpinner.setSelection(statusList.indexOf("Open"));
+                        statusSpinner.setText(getPmTaskItemsResponse.getStatus(), true);
+                    } else statusSpinner.setText("Open");
                     if (getPmTaskItemsResponse.getRemarks() != null) {
                         remarksTextView.setText(getPmTaskItemsResponse.getRemarks());
                     }
@@ -401,7 +406,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                 updateProgress.dismiss();
                 if (response.code() == 200) {
                     Toast.makeText(PmTaskActivity.this, "Task Updated", Toast.LENGTH_LONG).show();
-                    if (roleTask.equals("Technician") && statusSpinner.getSelectedItem().equals("Completed")) {
+                    if (roleTask.equals("Technician") && statusSpinner.getText().equals("Completed")) {
                         Intent intent = new Intent(getApplicationContext(), UploadTaskImageActivity.class);
                         intent.putExtra("workspace", workspace);
                         intent.putExtra("taskNumber", taskNumberTextView.getText().toString());
