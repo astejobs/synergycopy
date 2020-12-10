@@ -2,11 +2,6 @@
     <!-- Base application theme. -->
     <style name="Theme.LoginActivity" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-
-
-        <item name="windowActionBar">false</item>
-
-        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">#314EDF</item>
         <item name="colorPrimaryVariant">#2E6BAA</item>
         <item name="colorOnPrimary">@color/black</item>

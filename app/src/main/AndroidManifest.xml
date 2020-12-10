@@ -12,7 +12,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -25,40 +27,49 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity"
         tools:targetApi="n">
+        <activity android:name=".MyBaseActivity"/>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchTasks.SearchTaskActivity" />
-        <activity android:name=".EquipmentSearch.UploadTaskImageActivity" />
+        <activity android:name=".SearchTasks.SearchTaskActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".EquipmentSearch.UploadTaskImageActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".Otp.OtpActivity" />
         <activity android:name=".Search.UploadFile" />
         <activity android:name=".Search.PreviousImagesActivity" />
-        <activity android:name=".Setting.SettingActivity" />
+        <activity android:name=".Setting.SettingActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".EquipmentSearch.CheckListActivity" />
         <activity android:name=".Search.EditFaultReportActivity">
             <intent-filter>
                 <action android:name="EditFaultReportActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".EquipmentSearch.PmTaskActivity">
             <intent-filter>
                 <action android:name="PmTaskActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".Search.EquipmentSearchActivityforEdit" />
         <activity android:name=".MainActivityLogin" />
         <activity android:name=".EquipmentSearch.EquipmentSearchActivity" />
-        <activity android:name=".Search.Search" />
+        <activity android:name=".Search.Search"
+            android:launchMode="singleTop"/>
         <activity android:name=".FaultReport.BeforeImage" />
         <activity android:name=".Dashboard.Dashboard" />
         <activity android:name=".EquipmentSearch.QrDetails" />
-        <activity android:name=".FaultReport.FaultReportActivity" />
-        <activity android:name=".Workspace.WorkspaceActivity"/>
+        <activity android:name=".FaultReport.FaultReportActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".Workspace.WorkspaceActivity" />
 
         <service android:name=".Services.MyFirebaseInstanceService">
             <intent-filter>

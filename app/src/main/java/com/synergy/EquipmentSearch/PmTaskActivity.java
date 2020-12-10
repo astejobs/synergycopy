@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +43,7 @@ import com.synergy.CheckInternet;
 import com.synergy.Constants;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 
 import java.text.ParseException;
@@ -62,7 +64,7 @@ import java.util.stream.Collectors;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class PmTaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class PmTaskActivity extends MyBaseActivity implements DatePickerDialog.OnDateSetListener {
 
     private TextInputEditText taskNumberTextView;
     private TextInputEditText scheduleNumberTextView;
@@ -89,32 +91,27 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
     private String afterImage, beforeImage;
     private String source = "";
 
-    private final CheckInternet checkInternet = new CheckInternet();
-
     @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(checkInternet, intentFilter);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(checkInternet);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pm_task);
 
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_pm_task, null, false);
+        drawer.addView(viewLayout, 0);
 
         taskNumberTextView = findViewById(R.id.textViewTaskNumberPm);
         scheduleNumberTextView = findViewById(R.id.textViewScheduleNumberPm);
         scheduleNumberTextView.setMovementMethod(new ScrollingMovementMethod());
         nameTextView = findViewById(R.id.namePmTasks);
-        Toolbar toolbar = findViewById(R.id.pmtool);
+        toolbar.setTitle("Pm Task");
         setSupportActionBar(toolbar);
         remarksTextView = findViewById(R.id.remarks_pmTasks);
         buildingNameTextView = findViewById(R.id.textViewBuildingNumberPm);
@@ -157,13 +154,13 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
 
         Intent intent = getIntent();
         String taskNumberString = intent.getStringExtra("taskNumber");
-        //taskId = intent.getIntExtra("taskId", 0);
-        taskId = 3;
-        //String workspace = intent.getStringExtra("workspace");
-        String workspace = "CMMS-DEMO-112020-001";
-//        afterImage = intent.getStringExtra("afterImage");
-//        beforeImage = intent.getStringExtra("beforeImage");
-//        source = intent.getStringExtra("source");
+        taskId = intent.getIntExtra("taskId", 0);
+        //taskId = 3;
+        String workspace = intent.getStringExtra("workspace");
+        //String workspace = "CMMS-DEMO-112020-001";
+        afterImage = intent.getStringExtra("afterImage");
+        beforeImage = intent.getStringExtra("beforeImage");
+        source = intent.getStringExtra("source");
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
@@ -406,7 +403,7 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
                 updateProgress.dismiss();
                 if (response.code() == 200) {
                     Toast.makeText(PmTaskActivity.this, "Task Updated", Toast.LENGTH_LONG).show();
-                    if (roleTask.equals("Technician") && statusSpinner.getText().equals("Completed")) {
+                    if (roleTask.equals(Constants.ROLE_TECHNICIAN) && statusSpinner.getText().equals("Completed")) {
                         Intent intent = new Intent(getApplicationContext(), UploadTaskImageActivity.class);
                         intent.putExtra("workspace", workspace);
                         intent.putExtra("taskNumber", taskNumberTextView.getText().toString());
@@ -436,21 +433,4 @@ public class PmTaskActivity extends AppCompatActivity implements DatePickerDialo
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(roleTask);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-        }
-        return true;
-    }
 }

@@ -155,7 +155,7 @@ public class Dashboard extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(username);
+        //MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(username);
         return true;
     }
 

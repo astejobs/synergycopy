@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.synergy.APIClient;
 import com.synergy.MainActivityLogin;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.TaskResponse;
 
@@ -37,7 +38,7 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class QrDetails extends AppCompatActivity {
+public class QrDetails extends MyBaseActivity {
 
     private static final String TAG = "";
     private TextView codeTV, typeTV, nameTV, buildingTV, locationTV, assetTV;
@@ -48,15 +49,14 @@ public class QrDetails extends AppCompatActivity {
     private String equipmentCode;
     private ArrayList<String> taskNumberList = new ArrayList<>();
     private ArrayAdapter<String> listAdapter;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qr_details);
 
-        toolbar = findViewById(R.id.toolbar_QRDetails);
-        setSupportActionBar(toolbar);
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_qr_details, null, false);
+        drawer.addView(viewLayout, 0);
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
@@ -182,29 +182,6 @@ public class QrDetails extends AppCompatActivity {
                 mProgress.dismiss();
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle("Hello");
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent intent = new Intent(this, MainActivityLogin.class);
-            startActivity(intent);
-            finishAffinity();
-        }
-        return true;
     }
 
 }

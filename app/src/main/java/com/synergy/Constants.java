@@ -8,5 +8,6 @@ public interface Constants {
     final String EDITFAULTREPORT_ACTIVITY_NOTIFICATION = "EditFaultReportActivity";
     final String PMTASK_ACTIVITY_NOTIFICATION = "PmTaskActivity";
     final String ROLE_MANAGINGAGENT = "ManagingAgent";
+    final String ROLE_TECHNICIAN = "Technician";
 
 }

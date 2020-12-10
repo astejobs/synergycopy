@@ -21,9 +21,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -39,6 +41,7 @@ import com.synergy.APIClient;
 import com.synergy.CheckInternet;
 import com.synergy.GetCheckListResponse;
 import com.synergy.LogoutClass;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 
 import java.util.ArrayList;
@@ -47,7 +50,7 @@ import java.util.stream.Collectors;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class CheckListActivity extends AppCompatActivity {
+public class CheckListActivity extends MyBaseActivity {
 
     private String descType;
     private LinearLayout fullLinearLayout;
@@ -57,30 +60,16 @@ public class CheckListActivity extends AppCompatActivity {
     private final List<Object> objectList = new ArrayList<>();
     private final List<String> descTypeList = new ArrayList<>();
     private final List<Integer> idList = new ArrayList<>();
-    private Toolbar toolbar;
     private String role;
-    private final CheckInternet checkInternet = new CheckInternet();
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(checkInternet, intentFilter);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(checkInternet);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_list);
 
-        toolbar = findViewById(R.id.checkListToolbar);
-        setSupportActionBar(toolbar);
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_check_list, null, false);
+        drawer.addView(viewLayout, 0);
+
         fullLinearLayout = findViewById(R.id.linearLayoutCheck);
         saveButton = findViewById(R.id.saveButtonCheckList);
         saveButton.setEnabled(false);
@@ -112,12 +101,12 @@ public class CheckListActivity extends AppCompatActivity {
 
         List<CheckListAddRequest> checkListAddRequestList = new ArrayList<>();
         for (int i = 0; i < textViewList.size(); i++) {
-            String objectName;
             AutoCompleteTextView objectSpinner = (AutoCompleteTextView) objectList.get(i);
-            objectName = objectSpinner.getText().toString();
+            String objectName = objectSpinner.getText().toString();
             EditText remarksEditText = remarksEditTextList.get(i);
             String remarks = remarksEditText.getText().toString();
 
+            String desc = descTypeList.get(i);
             int id = idList.get(i);
 
             CheckListAddRequest checkListAddRequest = new CheckListAddRequest(id, taskId, objectName, remarks);
@@ -167,7 +156,6 @@ public class CheckListActivity extends AppCompatActivity {
                         String status = listResponse.get(i).getStatus();
                         String remarks = listResponse.get(i).getRemarks();
 
-                        //createDynamicLayout(desc, remarks, status);
                         createLayout(desc, remarks, status);
                         saveButton.setEnabled(true);
                     }
@@ -209,30 +197,19 @@ public class CheckListActivity extends AppCompatActivity {
             spinner.setText(status, false);
         } else spinner.setText("yes", false);
 
-
+        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (spinner.getText().toString().equals("na")){
+                    spinner.setText("no", false);
+                }
+            }
+        });
         editText.setText(remarks);
 
         textViewList.add(textView);
         objectList.add(spinner);
         remarksEditTextList.add(editText);
         fullLinearLayout.addView(linearLayout);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(role);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-        }
-        return true;
     }
 }

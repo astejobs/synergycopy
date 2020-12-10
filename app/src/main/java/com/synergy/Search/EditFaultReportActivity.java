@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,7 @@ import com.synergy.CheckInternet;
 import com.synergy.Constants;
 import com.synergy.FaultReport.BeforeImage;
 import com.synergy.LogoutClass;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.FaultReport.list;
 
@@ -64,7 +66,7 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class EditFaultReportActivity extends AppCompatActivity {
+public class EditFaultReportActivity extends MyBaseActivity {
     //test
 
     private FloatingActionButton fab_main, fab_before, fab_after;
@@ -78,6 +80,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private int idStatus;
     private String statusNameCurrent;
     Button uploadFileBtn;
+    private String statusComing = "";
     Intent uploadFileIntent;
     private String token, role;
     private String faultDetailString, username;
@@ -102,7 +105,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
     private ArrayAdapter<String> statusListAdapter;
     ProgressDialog progressDialog;
     LinearLayout linearLayoutdisable;
-    Toolbar toolbar;
     boolean[] checkedItems;
     List<String> stockList = new ArrayList<>();
     String[] listItems;
@@ -121,18 +123,29 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
     String tech = "Technician";
     String managingAgent = "ManagingAgent";
-    private final CheckInternet checkInternet = new CheckInternet();
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_fault_report);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_edit_fault_report, null, false);
+        drawer.addView(viewLayout, 0);
+
+        toolbar.setTitle("Edit Fault Report");
+        setSupportActionBar(toolbar);
 
         progressDialog = new ProgressDialog(EditFaultReportActivity.this);
         progressDialog.setTitle("Loading...");
 
-        toolbar = findViewById(R.id.toolbar_edit_fault);
-        setSupportActionBar(toolbar);
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
         token = sharedPreferences.getString("token", "");
@@ -155,6 +168,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
 
         autoCompleteSpinner = findViewById(R.id.statusSpinner);
         AutoCompleteTextAdaptar adapter = new AutoCompleteTextAdaptar(EditFaultReportActivity.this, items, role);
+        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, items);
         autoCompleteSpinner.setAdapter(adapter);
 
 
@@ -582,6 +596,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
     }
 
     private void initviewsAndGetInitialDataOnEquip(String data) {
+
         progressDialog.show();
         Call<JsonObject> call = APIClient.getUserServices().getCallEquipment(data, token, role, workSpaceid);
         call.enqueue(new Callback<JsonObject>() {
@@ -774,9 +789,9 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
 
                     if (!(jsonObject.get("status").isJsonNull())) {
-                        String statuscomming = jsonObject.get("status").getAsString();
-                        if (genralStatusList.contains(statuscomming)) {
-                            autoCompleteSpinner.setText(statuscomming, false);
+                        statusComing = jsonObject.get("status").getAsString();
+                        if (genralStatusList.contains(statusComing)) {
+                            autoCompleteSpinner.setText(statusComing, false);
                             //int index = genralStatusList.indexOf(statuscomming);
                             //statusSpinner.setText(statuscomming);
                             //  statusSpinner.setSelection(index);
@@ -829,7 +844,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 progressDialog.dismiss();
                 requestPauseButton.setEnabled(false);
-                Toast.makeText(EditFaultReportActivity.this, "No Data Available ", Toast.LENGTH_LONG).show();
+                Toast.makeText(EditFaultReportActivity.this, "No Data Available", Toast.LENGTH_LONG).show();
                 Log.d("TAG", "onFailure:equip call " + t.getMessage());
                 Log.d(TAG, "onFailure: equip call" + t.getCause());
 
@@ -1208,7 +1223,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                 requestPauseButton.setEnabled(true);
                 buttonEnableMethod();
             }
-            if (autoCompleteSpinner.getText().toString().equals("Closed")){
+            if (autoCompleteSpinner.getText().toString().equals("Closed")) {
                 Log.d(TAG, "checkFieldsForEmptyValues: close");
                 requestPauseButton.setEnabled(false);
                 updateFaultReportButton.setEnabled(false);
@@ -1249,7 +1264,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
             if (autoCompleteSpinner.getText().toString().equals("Open")) {
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
-               // statusListAdapter.notifyDataSetChanged();
+                // statusListAdapter.notifyDataSetChanged();
                 Iterator<StatusItem> iterator = items.iterator();
                 while (iterator.hasNext()) {
                     StatusItem next = iterator.next();
@@ -1269,7 +1284,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                         iterator.remove();
                     }
                 }
-             //   statusListAdapter.notifyDataSetChanged();
+                //   statusListAdapter.notifyDataSetChanged();
                 rejectButton.setVisibility(View.GONE);
                 updateFaultReportButton.setVisibility(View.VISIBLE);
                 buttonEnableMethod();
@@ -1285,7 +1300,7 @@ public class EditFaultReportActivity extends AppCompatActivity {
                     }
                 }
 
-              //  statusListAdapter.notifyDataSetChanged();
+                //  statusListAdapter.notifyDataSetChanged();
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
 
@@ -1547,38 +1562,6 @@ public class EditFaultReportActivity extends AppCompatActivity {
         fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
         fab_before.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-
-        MenuItem item = menu.findItem(R.id.admin).setTitle(username);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-        }
-        return true;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(checkInternet, intentFilter);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(checkInternet);
     }
 
 }

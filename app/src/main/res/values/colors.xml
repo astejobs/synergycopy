@@ -11,7 +11,7 @@
     <color name="textColorApp">#0754a4</color>
     <color name="textColorbutton">#ffffff</color>
     <color name="textColor">#000000</color>
-
+    <color name="custom_grey">#efefef</color>
     <color name="background">#e2e2e2</color>
 
 </resources>

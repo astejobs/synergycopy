@@ -11,8 +11,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
 import com.synergy.MainActivityLogin;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
@@ -35,11 +38,10 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class PreviousImagesActivity extends AppCompatActivity {
+public class PreviousImagesActivity extends MyBaseActivity {
     private static final String TAG = "";
     private List<String> urlList = new ArrayList<>();
     private String frid, token, value, workspace, role, username;
-    private Toolbar toolbar;
     private DotsIndicator dotsIndicator;
     List<InputStream> list = new ArrayList<InputStream>();
     List<Integer> imageIdList = new ArrayList<Integer>();
@@ -50,7 +52,11 @@ public class PreviousImagesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_previous_images);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_previous_images, null, false);
+        drawer.addView(viewLayout, 0);
+
         progressDialog = new ProgressDialog(PreviousImagesActivity.this);
         progressDialog.setTitle("Loading...");
 
@@ -151,29 +157,5 @@ public class PreviousImagesActivity extends AppCompatActivity {
             layout.addView(image);
             image.setImageBitmap(bmp);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(username);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-
-            SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent in = new Intent(PreviousImagesActivity.this, MainActivityLogin.class);
-            startActivity(in);
-            finishAffinity();
-        }
-        return true;
     }
 }

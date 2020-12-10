@@ -38,8 +38,6 @@ public class LogoutClass {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        Log.d("TAG", "logout: "+ deviceToken);
-
         String token = sharedPreferences.getString("token", "");
         Call<Void> callLogout = APIClient.getUserServices().logoutUser(deviceToken, token);
         callLogout.enqueue(new Callback<Void>() {

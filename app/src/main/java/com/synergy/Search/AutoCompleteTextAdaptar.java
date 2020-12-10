@@ -23,6 +23,7 @@ public class AutoCompleteTextAdaptar extends ArrayAdapter<StatusItem> {
     private List<StatusItem> items;
     String role;
     private int mLastClicked;
+    private String currentStatus;
 
     public void setLastClicked(int lastClicked) {
         mLastClicked = lastClicked;
@@ -54,9 +55,20 @@ public class AutoCompleteTextAdaptar extends ArrayAdapter<StatusItem> {
 //to be continued
             convertView.setEnabled(!textviewText.equals("Pause"));
 
+            if (role.equals("Technician")) {
+                currentStatus = textView.getText().toString();
+                if (currentStatus.equals("Pause")) {
+                    convertView.setEnabled(false);
+                }
+                // convertView.setEnabled(!textviewText.equals("Pause"));
+
+            }
+            if (role.equals("ManagingAgent")) {
+                if (currentStatus.equals("Pause")) {
+                    convertView.setEnabled(false);
+                }
+            }
         }
-
-
         return convertView;
     }
 
@@ -65,7 +77,11 @@ public class AutoCompleteTextAdaptar extends ArrayAdapter<StatusItem> {
 
         if (role.equals("Technician")) {
 
+
             return position != 1;
+        }
+        if (role.equals("ManagingAgent")) {
+            return position != 4;
         }
 
         return true;

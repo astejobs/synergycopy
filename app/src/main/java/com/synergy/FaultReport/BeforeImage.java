@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.synergy.APIClient;
 import com.synergy.CheckInternet;
 import com.synergy.Constants;
 import com.synergy.LogoutClass;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.Search.PreviousImagesActivity;
 
@@ -39,7 +41,7 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class BeforeImage extends AppCompatActivity {
+public class BeforeImage extends MyBaseActivity {
 
     private static final String TAG = "before";
     Button takeBtn, uploadBtn, doneBtn, previousImagesbtn;
@@ -59,27 +61,24 @@ public class BeforeImage extends AppCompatActivity {
     private String checkForFrid;
     String managingagent = "ManagingAgent";
 
-    private final CheckInternet checkInternet = new CheckInternet();
-
     @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(checkInternet, intentFilter);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(checkInternet);
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_before_image);
 
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_before_image, null, false);
+        drawer.addView(viewLayout, 0);
+
+        toolbar.setTitle("Upload Image");
+        setSupportActionBar(toolbar);
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         username = sharedPreferences.getString("username", "");
@@ -93,7 +92,6 @@ public class BeforeImage extends AppCompatActivity {
         status = "test";
         status = intent.getStringExtra("status");
         checkForFrid = intent.getStringExtra("checkForFrid");
-        Log.d(TAG, "onCreate: hi" + role);
 
         if (checkForFrid == null) {
 
@@ -365,25 +363,6 @@ public class BeforeImage extends AppCompatActivity {
             });
 
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(username);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-        }
-        return true;
     }
 
 }

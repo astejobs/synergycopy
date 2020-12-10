@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -29,6 +30,7 @@ import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.EquipmentSearch.EquipmentSearchAdapter;
 import com.synergy.EquipmentSearch.EquipmentSearchCard;
 import com.synergy.LogoutClass;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.Search.EditFaultReportActivity;
 import com.synergy.Search.SearchResponse;
@@ -43,7 +45,7 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class SearchTaskActivity extends AppCompatActivity {
+public class SearchTaskActivity extends MyBaseActivity {
 
     private List<String> taskIdList = new ArrayList<>();
     private ArrayList<TaskSearchResponse> contacts = new ArrayList<>();
@@ -51,25 +53,16 @@ public class SearchTaskActivity extends AppCompatActivity {
     private ArrayList<EquipmentSearchCard> equipmentSearchCardArrayList = new ArrayList<>();
     private EquipmentSearchAdapter mAdapter = new EquipmentSearchAdapter(equipmentSearchCardArrayList);
 
-    private final CheckInternet checkInternet = new CheckInternet();
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(checkInternet, intentFilter);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(checkInternet);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_task);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_search_task, null, false);
+        drawer.addView(viewLayout, 0);
+
+        toolbar.setTitle("Search Tasks");
+        setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         String workspace = intent.getStringExtra("workspaceId");
@@ -77,9 +70,6 @@ public class SearchTaskActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = preferences.getString("role", "");
         String token = preferences.getString("token", "");
-
-        Toolbar toolbar = findViewById(R.id.tool_searchTasks);
-        setSupportActionBar(toolbar);
 
         SearchView searchView = findViewById(R.id.search_viewTask);
         searchView.setIconifiedByDefault(false);
@@ -129,30 +119,33 @@ public class SearchTaskActivity extends AppCompatActivity {
                 if (response.code() == 200) {
 
                     String source = "search";
-
                     List<TaskSearchResponse> equipmentSearchResponse = response.body();
-                    RecyclerView recyclerView = findViewById(R.id.recycler_view_Task);
-                    for (int i = 0; i < equipmentSearchResponse.size(); i++) {
-                        String taskNumber = equipmentSearchResponse.get(i).getTaskNumber();
-                        int taskId = equipmentSearchResponse.get(i).getTaskId();
-                        String buildingName = equipmentSearchResponse.get(i).getBuildingName();
-                        String locationName = equipmentSearchResponse.get(i).getLocationName();
-                        String equipCode = equipmentSearchResponse.get(i).getEquipmentName();
-                        long scheduleDate = Long.parseLong(equipmentSearchResponse.get(i).getScheduleDate());
-                        String status = equipmentSearchResponse.get(i).getStatus();
-                        String afterImage = equipmentSearchResponse.get(i).getAfterImage();
-                        String beforeImage = equipmentSearchResponse.get(i).getBeforeImage();
 
-                        equipmentSearchCardArrayList.
-                                add(new EquipmentSearchCard(taskId, taskNumber, workspace,
-                                        status, buildingName, locationName, scheduleDate,
-                                        afterImage, beforeImage, source, equipCode));
-                    }
+                    if (equipmentSearchResponse.equals(null)) {
+                        RecyclerView recyclerView = findViewById(R.id.recycler_view_Task);
+                        for (int i = 0; i < equipmentSearchResponse.size(); i++) {
+                            String taskNumber = equipmentSearchResponse.get(i).getTaskNumber();
+                            int taskId = equipmentSearchResponse.get(i).getTaskId();
+                            String buildingName = equipmentSearchResponse.get(i).getBuildingName();
+                            String locationName = equipmentSearchResponse.get(i).getLocationName();
+                            String equipCode = equipmentSearchResponse.get(i).getEquipmentName();
+                            long scheduleDate = Long.parseLong(equipmentSearchResponse.get(i).getScheduleDate());
+                            String status = equipmentSearchResponse.get(i).getStatus();
+                            String afterImage = equipmentSearchResponse.get(i).getAfterImage();
+                            String beforeImage = equipmentSearchResponse.get(i).getBeforeImage();
 
-                    recyclerView.setHasFixedSize(true);
+                            equipmentSearchCardArrayList.
+                                    add(new EquipmentSearchCard(taskId, taskNumber, workspace,
+                                            status, buildingName, locationName, scheduleDate,
+                                            afterImage, beforeImage, source, equipCode));
+                        }
 
-                    recyclerView.setLayoutManager(new LinearLayoutManager(SearchTaskActivity.this));
-                    recyclerView.setAdapter(mAdapter);
+                        recyclerView.setHasFixedSize(true);
+
+                        recyclerView.setLayoutManager(new LinearLayoutManager(SearchTaskActivity.this));
+                        recyclerView.setAdapter(mAdapter);
+                    } else
+                        Toast.makeText(SearchTaskActivity.this, "No tasks Available!", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 401) {
                     Toast.makeText(SearchTaskActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
                     LogoutClass logoutClass = new LogoutClass();
@@ -173,20 +166,10 @@ public class SearchTaskActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(role);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
+        if(toggle.onOptionsItemSelected(item)) {
+            return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -42,6 +42,7 @@ import com.synergy.CheckInternet;
 import com.synergy.Constants;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.Search.EditFaultReportActivity;
 import com.synergy.Workspace.CardAdapter;
@@ -52,42 +53,36 @@ import java.util.List;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class EquipmentSearchActivity extends AppCompatActivity {
+public class EquipmentSearchActivity extends MyBaseActivity {
 
     private CodeScannerView codeScannerView;
     private TextView scanTextView;
     private ProgressDialog mProgress;
-    private String workspace, role, token,username;
-    private final CheckInternet checkInternet = new CheckInternet();
+    private String workspace, role, token, username;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(checkInternet, intentFilter);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(checkInternet);
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_equipment_search);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_equipment_search, null, false);
+        drawer.addView(viewLayout, 0);
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
         role = sharedPreferences.getString("role", "");
-        username=sharedPreferences.getString("username","");
+        username = sharedPreferences.getString("username", "");
 
         scanTextView = findViewById(R.id.scan_tv);
         codeScannerView = findViewById(R.id.qr_btn);
-        Toolbar toolbar = findViewById(R.id.toolbar_equipmentSearch);
-        setSupportActionBar(toolbar);
 
         mProgress = new ProgressDialog(EquipmentSearchActivity.this);
         mProgress.setTitle("Searching Equipment...");
@@ -98,6 +93,10 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
         workspace = intent.getStringExtra("workspaceId");
         String value = intent.getStringExtra("value");
+        if (value.equals("Fault")) {
+            toolbar.setTitle("Scan Fault Report");
+        } else toolbar.setTitle("Scan Tasks");
+        setSupportActionBar(toolbar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -199,24 +198,6 @@ public class EquipmentSearchActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(username);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-        }
-        return true;
-    }
 
     private void dialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(EquipmentSearchActivity.this).create(); //Read Update

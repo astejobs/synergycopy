@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -26,6 +27,7 @@ import com.synergy.CheckInternet;
 import com.synergy.Constants;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class Search extends AppCompatActivity {
+public class Search extends MyBaseActivity {
     private String TAG;
     private String frId = "";
     private String workspaceId, token;
@@ -46,34 +48,33 @@ public class Search extends AppCompatActivity {
     private ListView listView;
     private ArrayList<SearchResponse> contacts = new ArrayList<>();
     private SearchResponseAdapter searchResponseAdapter;
-    Toolbar toolbar;
     String role,username;
 
-    private final CheckInternet checkInternet = new CheckInternet();
     @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(checkInternet, intentFilter);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(checkInternet);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        toolbar = findViewById(R.id.tool_search);
-        setSupportActionBar(toolbar);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_search, null, false);
+        drawer.addView(viewLayout, 0);
+
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
         role = sharedPreferences.getString("role", "");
         username=sharedPreferences.getString("username","");
+        String wk = sharedPreferences.getString("workspaceId", "");
+
+        toolbar.setTitle("Search Fault Reports");
+        setSupportActionBar(toolbar);
 
         ScrollView view = (ScrollView) findViewById(R.id.scrollViewSearch);
         view.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -225,25 +226,5 @@ public class Search extends AppCompatActivity {
             }
         });*/
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-
-        MenuItem item = menu.findItem(R.id.admin).setTitle(username);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-        }
-        return true;
     }
 }

@@ -3,8 +3,10 @@ package com.synergy.Search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -12,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.synergy.LogoutClass;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 
 import java.util.ArrayList;
@@ -26,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EquipmentSearchActivityforEdit extends AppCompatActivity {
+public class EquipmentSearchActivityforEdit extends MyBaseActivity {
     private static final String TAG = "";
     ListView listView;
     SearchView searchView;
@@ -34,14 +37,15 @@ public class EquipmentSearchActivityforEdit extends AppCompatActivity {
     EquipmentSearchAdapterforEdit equipmentSearchAdapterforEdit;
     String token, role;
     String workspace;
-    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_seach_layout_list);
-        toolbar = findViewById(R.id.toolbar_eq_search);
-        setSupportActionBar(toolbar);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_seach_layout_list, null, false);
+        drawer.addView(viewLayout, 0);
+
         listView = findViewById(R.id.listview_equip_search);
         searchView = findViewById(R.id.search_equip_bar);
         Intent intent = getIntent();
@@ -125,31 +129,5 @@ public class EquipmentSearchActivityforEdit extends AppCompatActivity {
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = menu.findItem(R.id.admin).setTitle(role);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-            /*SharedPreferences preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            Intent intent = new Intent(this, MainActivityLogin.class);
-            startActivity(intent);
-            finishAffinity();*/
-
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-        }
-        return true;
     }
 }

@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,12 +29,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.synergy.APIClient;
-import com.synergy.CheckInternet;
 import com.synergy.Constants;
-import com.synergy.Dashboard.Dashboard;
-import com.synergy.FaultReport.BeforeImage;
-import com.synergy.LogoutClass;
-import com.synergy.MainActivityLogin;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 
 import java.io.ByteArrayOutputStream;
@@ -49,42 +46,37 @@ import static com.synergy.FaultReport.BeforeImage.REQUEST_IMAGEBEFORE_CAPTURE;
 import static com.synergy.FaultReport.BeforeImage.REQUEST_IMAGE_CAPTURE;
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class UploadTaskImageActivity extends AppCompatActivity {
+public class UploadTaskImageActivity extends MyBaseActivity {
 
     private String role;
     private String taskId;
     private String token;
     private ImageView beforeImage, afterImage;
     public static final int TAKE_PHOTO_GALLERY = 5;
-    private String workspace;
-
-    private final CheckInternet checkInternet = new CheckInternet();
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(checkInternet, intentFilter);
-    }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(checkInternet);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_task_image);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_UploadTask);
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_upload_task_image, null, false);
+        drawer.addView(viewLayout, 0);
+        toolbar.setTitle("Upload Image");
         setSupportActionBar(toolbar);
         beforeImage = findViewById(R.id.beforeImageTask);
         afterImage = findViewById(R.id.afterImageTask);
 
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");
-        workspace = intent.getStringExtra("workspace");
+        String workspace = intent.getStringExtra("workspace");
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
@@ -256,9 +248,6 @@ public class UploadTaskImageActivity extends AppCompatActivity {
                                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                /*Intent intent = new Intent(UploadTaskImageActivity.this, Dashboard.class);
-                                intent.putExtra("workspaceId", workspace);
-                                startActivity(intent);*/
                                 finish();
                             }
                         })
@@ -283,25 +272,6 @@ public class UploadTaskImageActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(role);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-
-        }
-        return true;
     }
 
     private void selectImage(Context context, int REQUEST_CODE) {

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.synergy.APIClient;
 import com.synergy.LogoutClass;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.UserResponse;
 import com.synergy.Workspace.WorkspaceActivity;
@@ -27,23 +29,26 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class OtpActivity extends AppCompatActivity {
+public class OtpActivity extends MyBaseActivity {
     private static final String TAG = "OtpActivity";
     EditText otp_textbox_one, otp_textbox_two, otp_textbox_three, otp_textbox_four;
     Button verify_otp, resendBtn;
     String username, token, deviceToken;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    Toolbar toolbar;
     ProgressDialog progressDialog;
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_otp);
-        toolbar = findViewById(R.id.toolbar_otp);
-        setSupportActionBar(toolbar);
+        //setContentView(R.layout.activity_otp);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_otp, null, false);
+        drawer.addView(viewLayout, 0);
+
+
         progressDialog=new ProgressDialog(OtpActivity.this);
         progressDialog.setTitle("verifying...");
         sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
@@ -146,24 +151,5 @@ public class OtpActivity extends AppCompatActivity {
 
 
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = menu.findItem(R.id.admin).setTitle(username);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-        }
-        return true;
-    }
-
 
 }

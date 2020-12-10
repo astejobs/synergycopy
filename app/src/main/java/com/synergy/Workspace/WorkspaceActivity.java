@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.synergy.Constants;
 import com.synergy.EquipmentSearch.PmTaskActivity;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.Search.EditFaultReportActivity;
 
@@ -38,7 +40,7 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class WorkspaceActivity extends AppCompatActivity {
+public class WorkspaceActivity extends MyBaseActivity {
     private static final String TAG = "Message";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -65,6 +67,10 @@ public class WorkspaceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
+
+        /*LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View view = layoutInflater.inflate(R.layout.activity_workspace, null, false);
+        drawer.addView(view, 0);*/
         Toolbar toolbar = findViewById(R.id.toolbar_workspace);
         setSupportActionBar(toolbar);
         linearLayout = findViewById(R.id.workLinear);
@@ -101,7 +107,7 @@ public class WorkspaceActivity extends AppCompatActivity {
                     }
                     recyclerView.setHasFixedSize(true);
                     mLayoutManager = new LinearLayoutManager(WorkspaceActivity.this);
-                    mAdapter = new CardAdapter(cardDetailsArrayList);
+                    mAdapter = new CardAdapter(cardDetailsArrayList, WorkspaceActivity.this);
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
@@ -133,8 +139,7 @@ public class WorkspaceActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = menu.findItem(R.id.admin).setTitle(username);
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return true;
     }
 

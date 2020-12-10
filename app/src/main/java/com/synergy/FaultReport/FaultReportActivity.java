@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,7 @@ import com.synergy.Constants;
 import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.LogoutClass;
 import com.synergy.MainActivityLogin;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.Search.EquipmentSearchActivityforEdit;
 
@@ -52,7 +54,7 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class FaultReportActivity extends AppCompatActivity {
+public class FaultReportActivity extends MyBaseActivity {
 
     private static final String TAG = "";
     private String workSpaceid, role;
@@ -83,36 +85,35 @@ public class FaultReportActivity extends AppCompatActivity {
     private ArrayAdapter<list> maintAdapter;
     private ArrayAdapter<list> locationAdapter;
     private ArrayAdapter<list> equipmentAdapter;
-    private Toolbar toolbar;
     boolean[] checkedItems;
     ArrayList<Integer> mUserItems = new ArrayList<>();
     List<String> stockList = new ArrayList<>();
     String[] listItems;
     List attendedByIdsList;
 
-    private final CheckInternet checkInternet = new CheckInternet();
     @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(checkInternet, intentFilter);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(checkInternet);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fault_report);
-        toolbar = findViewById(R.id.toolbar_fault);
-        toolbar.setNavigationIcon(R.drawable.backarrow);
+
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_fault_report, null, false);
+        drawer.addView(viewLayout, 0);
+
+        toolbar.setTitle("Create Fault Report");
+        setSupportActionBar(toolbar);
+
         attendedByIdsList = new ArrayList();
 
-        setSupportActionBar(toolbar);
 
         progressDialog = new ProgressDialog(FaultReportActivity.this);
         progressDialog.setTitle("Loading");
@@ -761,24 +762,6 @@ public class FaultReportActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = menu.findItem(R.id.admin).setTitle(username);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-        }
-        return true;
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

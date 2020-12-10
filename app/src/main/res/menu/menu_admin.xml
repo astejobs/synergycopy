@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/grp3"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/searchFNav"
+            android:checkable="true"
+            android:icon="@drawable/searchb"
+            android:title="Search Fault Report" />
+    </group>
+    <group
+        android:id="@+id/grp4"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/EqFNav"
+            android:checkable="true"
+            android:icon="@drawable/faultsoneq"
+            android:title="Scan Fault Reports" />
+    </group>
+
+    <group
+        android:id="@+id/grp8"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/upload_qoutation_nav"
+            android:checkable="true"
+            android:icon="@drawable/purchase_qoutation"
+            android:title="Upload Quotation" />
+    </group>
+    <group
+        android:id="@+id/grp9"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/upload_po_nav"
+            android:checkable="true"
+            android:icon="@drawable/purchase_order"
+            android:title="Upload Purchase Order" />
+    </group>
+    <group
+        android:id="@+id/grp6"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/tSearchNav"
+            android:checkable="true"
+            android:icon="@drawable/taskkksearchh"
+            android:title="Search Tasks" />
+    </group>
+    <group
+        android:id="@+id/grp5"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/eqTNav"
+            android:checkable="true"
+            android:icon="@drawable/eqtaskk"
+            android:title="Scan Tasks" />
+    </group>
+    <group
+        android:id="@+id/grp2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/createFNav"
+            android:checkable="true"
+            android:icon="@drawable/createfault"
+            android:title="Create Fault Report" />
+    </group>
+    <group
+        android:id="@+id/grp7"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/setNav"
+            android:checkable="true"
+            android:icon="@drawable/settting"
+            android:title="Settings" />
+    </group>
+    <group
+        android:id="@+id/grp1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/messageNav"
+            android:checkable="true"
+            android:icon="@drawable/messages_original"
+            android:title="Messages" />
+    </group>
+</menu>

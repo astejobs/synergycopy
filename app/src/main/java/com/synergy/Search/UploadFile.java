@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.synergy.APIClient;
 import com.synergy.Dashboard.Dashboard;
 import com.synergy.LogoutClass;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 
 import java.io.File;
@@ -39,7 +41,7 @@ import retrofit2.Response;
 import static android.content.Intent.ACTION_GET_CONTENT;
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class UploadFile extends AppCompatActivity {
+public class UploadFile extends MyBaseActivity {
     TextView uploadFileTv;
     Button uplaodButton;
     Intent uploadFileIntent;
@@ -48,9 +50,23 @@ public class UploadFile extends AppCompatActivity {
     private String user;
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_file);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_upload_file, null, false);
+        drawer.addView(viewLayout, 0);
+
+        toolbar.setTitle("Upload File");
+        setSupportActionBar(toolbar);
         uploadFileTv = findViewById(R.id.upload_file);
         uplaodButton = findViewById(R.id.upload_file_btn);
         uplaodButton.setEnabled(false);
@@ -59,12 +75,9 @@ public class UploadFile extends AppCompatActivity {
         progressDialog.setCancelable(false);
         Intent intent = getIntent();
         frid = intent.getStringExtra("frid");
-        //  frid = "FR-DEMO-112020-00003";
         token = intent.getStringExtra("token");
-        //  token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWNobmljaWFuNiIsImV4cCI6MTYwNTE5MTY2MSwiaWF0IjoxNjA1MDgzNjYxfQ.-gqwRXi6tocxQo8UXsNLDrF2kD1cVPZ3gAOQoq8GKCDb0icPMUjJajEHg2HUvxLWY7r-d4JD2-ZRdsgOA6x0JA";
         workspace = intent.getStringExtra("workspace");
         user = intent.getStringExtra("role");
-        //   workspace = "lsme-DEMO-112016-001";
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
 
@@ -153,23 +166,5 @@ public class UploadFile extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = (MenuItem) menu.findItem(R.id.admin).setTitle(role);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
-        }
-        return true;
     }
 }
