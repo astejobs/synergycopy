@@ -1,13 +1,26 @@
 package com.synergy.Search;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +35,12 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.synergy.APIClient;
 import com.synergy.CheckInternet;
 import com.synergy.Constants;
@@ -30,9 +49,14 @@ import com.synergy.MainActivityLogin;
 import com.synergy.MyBaseActivity;
 import com.synergy.R;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,6 +73,14 @@ public class Search extends MyBaseActivity {
     private ArrayList<SearchResponse> contacts = new ArrayList<>();
     private SearchResponseAdapter searchResponseAdapter;
     String role,username;
+
+    Toolbar toolbar;
+    private FusedLocationProviderClient client;
+    private double latitude, longitude;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    ArrayList<String> list;
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -75,6 +107,51 @@ public class Search extends MyBaseActivity {
 
         toolbar.setTitle("Search Fault Reports");
         setSupportActionBar(toolbar);
+        username = sharedPreferences.getString("username", "");
+        Intent intent = getIntent();
+        workspaceId = intent.getStringExtra("workspaceId");
+
+        viewPager = findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tab_layout);
+        list = new ArrayList<String>();
+        list.add("Active");
+        list.add("Inactive");
+
+        prepareViewPager(viewPager, list);
+        tabLayout.setupWithViewPager(viewPager);
+        client = LocationServices.getFusedLocationProviderClient(Search.this);
+        client.flushLocations();
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this
+                , Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Please on GPS", Toast.LENGTH_SHORT).show();
+            return;
+        }
+/*
+        client.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+
+
+                Location location = task.getResult();
+                if (location != null) {
+                    try {
+                        Geocoder geocoder = new Geocoder(Search.this, Locale.getDefault());
+                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude()
+                                , location.getLongitude(), 1);
+                        latitude = addresses.get(0).getLatitude();
+                        longitude = addresses.get(0).getLongitude();
+                        Log.d(TAG, "onComplete: lat" + addresses.get(0).getLatitude());
+                        Log.d(TAG, "onComplete: long" + addresses.get(0).getLongitude());
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+*/
 
         ScrollView view = (ScrollView) findViewById(R.id.scrollViewSearch);
         view.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -88,8 +165,7 @@ public class Search extends MyBaseActivity {
             }
         });
 
-        Intent intent = getIntent();
-        workspaceId = intent.getStringExtra("workspaceId");
+
         SearchView searchView = findViewById(R.id.search_view);
         searchView.setIconifiedByDefault(false);
         listView = findViewById(R.id.list_view);
@@ -118,6 +194,7 @@ public class Search extends MyBaseActivity {
 
     }
 
+
     private void loadSearch(String callQueryDependent) {
 
         ProgressDialog progressDialog = new ProgressDialog(this);
@@ -125,8 +202,8 @@ public class Search extends MyBaseActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.show();
 
-        Log.d(TAG, "loadSearch: nmk"+workspaceId);
-        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspaceId, callQueryDependent, token,role);
+        Log.d(TAG, "loadSearch: nmk" + workspaceId);
+        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspaceId, callQueryDependent, token, role,"Active");
         call.enqueue(new Callback<List<SearchResponse>>() {
             @Override
             public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {
@@ -146,28 +223,30 @@ public class Search extends MyBaseActivity {
                             String status = searchResponse.getStatus();
                             String buildingg = searchResponse.getBuildingName();
                             String locationn = searchResponse.getLocationName();
-                            ActivationTime activationDate=searchResponse.getActivationTime();
-                            /*.getDayOfMonth()+"-"+searchResponse.getActivationTime().getMonthValue()
-                                    +"-"+searchResponse.getActivationTime().getYear();*/
+
+                            LocalDateTime localDateTime = searchResponse.getActivationTime();
 
                             searchResp.setFrId(frId);
                             searchResp.setReportedDate(rtdate);
                             searchResp.setStatus(status);
                             searchResp.setBuilding(buildingg);
                             searchResp.setLocation(locationn);
-                            searchResp.setActivationTime(activationDate);
+                            searchResp.setActivationTime(localDateTime);
                             searchResp.setWorkspaceId(workspaceId);
+                            searchResp.setLatitude(latitude);
+                            searchResp.setLongitude(longitude);
                             //  frIdList.add(frId);
                             contacts.add(searchResp);
                         }
                     }
                     Collections.sort(frIdList);
-                    searchResponseAdapter = new SearchResponseAdapter(Search.this, contacts, workspaceId);
+                    searchResponseAdapter = new SearchResponseAdapter(Search.this,
+                            contacts, workspaceId, latitude, longitude);
                     listView.setAdapter(searchResponseAdapter);
                     searchResponseAdapter.notifyDataSetChanged();
 
 
-                }else if (response.code() == 401) {
+                } else if (response.code() == 401) {
                     Toast.makeText(Search.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
                     LogoutClass logoutClass = new LogoutClass();
                     logoutClass.logout(Search.this);
@@ -226,5 +305,54 @@ public class Search extends MyBaseActivity {
             }
         });*/
 
+    }
+
+
+    private void prepareViewPager(ViewPager viewPager, ArrayList<String> list) {
+        MainAdapter adapter = new MainAdapter(getSupportFragmentManager());
+        MainFragment fragment = new MainFragment();
+        for (int i = 0; i < list.size(); i++) {
+            Bundle bundle = new Bundle();
+            bundle.putString("tittle", list.get(i));
+            bundle.putString("workspace",workspaceId);
+            fragment.setArguments(bundle);
+            adapter.addFragment(fragment, list.get(i));
+            fragment = new MainFragment();
+        }
+        viewPager.setAdapter(adapter);
+    }
+
+
+    private class MainAdapter extends FragmentPagerAdapter {
+        ArrayList<String> arrayList = new ArrayList<>();
+        List<Fragment> fragmentList = new ArrayList<>();
+
+        public void addFragment(Fragment fragment, String tittle) {
+            arrayList.add(tittle);
+            fragmentList.add(fragment);
+        }
+
+        ;
+
+        public MainAdapter(@NonNull FragmentManager fm) {
+            super(fm);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragmentList.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return arrayList.get(position);
+        }
     }
 }

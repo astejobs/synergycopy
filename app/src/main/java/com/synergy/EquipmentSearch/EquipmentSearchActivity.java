@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +40,10 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.zxing.Result;
 import com.synergy.APIClient;
 import com.synergy.CheckInternet;
@@ -45,12 +53,16 @@ import com.synergy.MainActivityLogin;
 import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.Search.EditFaultReportActivity;
+import com.synergy.Search.Search;
 import com.synergy.Workspace.CardAdapter;
 import com.synergy.Workspace.WorkspaceActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import static com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY;
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class EquipmentSearchActivity extends MyBaseActivity {
@@ -59,6 +71,10 @@ public class EquipmentSearchActivity extends MyBaseActivity {
     private TextView scanTextView;
     private ProgressDialog mProgress;
     private String workspace, role, token, username;
+
+
+    private FusedLocationProviderClient client;
+    private  double latitude,longitude;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -98,6 +114,44 @@ public class EquipmentSearchActivity extends MyBaseActivity {
         } else toolbar.setTitle("Scan Tasks");
         setSupportActionBar(toolbar);
 
+
+        client = LocationServices.getFusedLocationProviderClient(EquipmentSearchActivity.this);
+       // client.flushLocations();
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Please on GPS", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        client.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
+                .addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+
+
+                Location location = task.getResult();
+                if (location != null) {
+                    try {
+                        Geocoder geocoder = new Geocoder(EquipmentSearchActivity.this, Locale.getDefault());
+                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude()
+                                , location.getLongitude(), 1);
+                        latitude=addresses.get(0).getLatitude();
+                        longitude=addresses.get(0).getLongitude();
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
+
+
+
+
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
@@ -117,9 +171,12 @@ public class EquipmentSearchActivity extends MyBaseActivity {
                             scanTextView.setVisibility(View.VISIBLE);
                             scanTextView.setText(result.getText());
                             if (value.equals("Fault")) {
-                                Intent intent1 = new Intent(EquipmentSearchActivity.this, EditFaultReportActivity.class);
+                                Intent intent1 = new Intent(EquipmentSearchActivity.this,
+                                        EditFaultReportActivity.class);
                                 intent1.putExtra("equipcode", result.getText());
                                 intent1.putExtra("workspaceId", workspace);
+                                intent1.putExtra("lat",latitude);
+                                intent1.putExtra("long",longitude);
                                 startActivity(intent1);
                                 finish();
                             } else {

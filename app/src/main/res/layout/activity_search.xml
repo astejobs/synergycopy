@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background=" #e2e2e2"
+    android:background="#e2e2e2"
     android:orientation="vertical"
     tools:context=".Search.Search">
 
@@ -22,56 +22,73 @@
         app:titleMargin="8dp"
         app:titleTextColor="#ffffff" />
 
-    <ScrollView
-        android:id="@+id/scrollViewSearch"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:scrollbarSize="4dp"
-        android:scrollbars="vertical"
-        android:verticalScrollbarPosition="right">
+        android:layout_height="wrap_content"
+        android:background="#e2e2e2"
+        app:tabIndicatorColor="#1A4AC5"
+        app:tabSelectedTextColor="#1A4AC5"
+        />
 
-        <LinearLayout
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scrollViewSearch"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <SearchView
-                android:id="@+id/search_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/mysearcht"
-                android:elevation="2dp"
-                android:padding="2dp"
-                android:queryBackground="@android:color/transparent"
-                android:queryHint="Search here"
-                android:textColorHint="@color/textColor"
-                app:queryBackground="@android:color/transparent" />
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbarSize="4dp"
+            android:scrollbars="vertical"
+            android:verticalScrollbarPosition="right">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="6dp"
                 android:orientation="vertical">
 
-                <ListView
-                    android:id="@+id/list_view"
+                <SearchView
+                    android:id="@+id/search_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="4sp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/mysearcht"
                     android:elevation="2dp"
-                    android:padding="4dp" />
+                    android:padding="2dp"
+                    android:queryBackground="@android:color/transparent"
+                    android:queryHint="Search here"
+                    android:textColorHint="@color/textColor"
+                    app:queryBackground="@android:color/transparent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="6dp"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:id="@+id/list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="4sp"
+                        android:elevation="2dp"
+                        android:padding="4dp" />
+                </LinearLayout>
+
+
             </LinearLayout>
+        </ScrollView>
 
+    </androidx.viewpager.widget.ViewPager>
 
-        </LinearLayout>
-    </ScrollView>
 </LinearLayout>
 

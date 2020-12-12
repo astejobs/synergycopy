@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +45,7 @@ import com.google.gson.JsonObject;
 import com.synergy.APIClient;
 import com.synergy.CheckInternet;
 import com.synergy.Constants;
+import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.FaultReport.BeforeImage;
 import com.synergy.LogoutClass;
 import com.synergy.MyBaseActivity;
@@ -52,7 +55,6 @@ import com.synergy.FaultReport.list;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -78,15 +80,16 @@ public class EditFaultReportActivity extends MyBaseActivity {
     private String frId;
     TextView uploadFileTv;
     private int idStatus;
+    String statuscomming;
+    private String statusComing = "";
     private String statusNameCurrent;
     Button uploadFileBtn;
-    private String statusComing = "";
     Intent uploadFileIntent;
     private String token, role;
     private String faultDetailString, username;
     private TextView equipmentIdTv;
     private Button plusbtn, deletebtn;
-    private MaterialButton updateFaultReportButton, requestPauseButton, acceptButton, rejectButton;
+    private MaterialButton updateFaultReportButton, requestPauseButton, acceptButton, rejectButton, scanEquipmentBtn;
     private LinearLayout mlayout;
     String frid, workSpaceid, equipCode;
     private int remarksId;
@@ -110,6 +113,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
     String[] listItems;
     List attendedByIdsList;
 
+    private double latitude, longitude, latOfSearch, longOfSearch;
     private AutoCompleteTextView autoCompleteSpinner;
     private TextInputEditText frIdEditText, deptSpinner, reqNameEditText, activationDate,
             activationTime, faultDetailsEditText, locDescEditText, faultCategorySpinner,
@@ -131,6 +135,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    private double latitudeEquipment, longitudeEquipment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,17 +158,17 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
         Intent i = getIntent();
         frid = i.getStringExtra("frId");
-//        onClickNotification = "test";
+        Log.d(TAG, "onCreate: frid" + frId);
+        longitude = i.getDoubleExtra("longitude", 0);
+        latitude = i.getDoubleExtra("latitude", 0);
+        latitudeEquipment = i.getDoubleExtra("lat", 0);
+        longitudeEquipment = i.getDoubleExtra("long", 0);
+        latOfSearch = i.getDoubleExtra("latOfSearch", 0);
+        longOfSearch = i.getDoubleExtra("longOfSearch", 0);
+        //        onClickNotification = "test";
 //        onClickNotification = i.getStringExtra("onclick");
         workSpaceid = i.getStringExtra("workspaceId");
         equipCode = i.getStringExtra("equipcode");
-
-        items.add(new StatusItem("Select status"));
-        items.add(new StatusItem("Open"));
-        items.add(new StatusItem("Pause"));
-        items.add(new StatusItem("Closed"));
-        items.add(new StatusItem("Completed"));
-        items.add(new StatusItem("Pause Requested"));
 
 
         autoCompleteSpinner = findViewById(R.id.statusSpinner);
@@ -179,6 +184,13 @@ public class EditFaultReportActivity extends MyBaseActivity {
             callDisable();
             initializeFab();
             calltech();
+
+            items.add(new StatusItem("Select status"));
+            items.add(new StatusItem("Open"));
+            items.add(new StatusItem("Pause"));
+            items.add(new StatusItem("Closed"));
+            items.add(new StatusItem("Completed"));
+            items.add(new StatusItem("Pause Requested"));
             if (frid != null) {
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
@@ -191,20 +203,37 @@ public class EditFaultReportActivity extends MyBaseActivity {
             }
 
         } else {
+            items.add(new StatusItem("Select status"));
+            items.add(new StatusItem("Open"));
+            items.add(new StatusItem("Pause"));
+            //      items.add(new StatusItem("Closed"));
+            items.add(new StatusItem("Completed"));
+            //     items.add(new StatusItem("Pause Requested"));
             initViews();
             acceptButton.setVisibility(View.GONE);
             rejectButton.setVisibility(View.GONE);
             initializeFab();
             calltech();
             if (frid != null) {
-                updateFaultReportButton.setVisibility(View.GONE);
-                requestPauseButton.setVisibility(View.GONE);
+                //  updateFaultReportButton.setVisibility(View.GONE);
+                // requestPauseButton.setVisibility(View.GONE);
                 initviewsAndGetInitialData(frid);
             } else {
                 initviewsAndGetInitialDataOnEquip(equipCode);
 
             }
         }
+        updateFaultReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    updateFaultReport();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
 
@@ -273,16 +302,12 @@ public class EditFaultReportActivity extends MyBaseActivity {
     private void initViews() {
         acceptButton = findViewById(R.id.acceptbttn);
         rejectButton = findViewById(R.id.rejectbtn);
+        scanEquipmentBtn = findViewById(R.id.equipmentScanButton);
         requestPauseButton = findViewById(R.id.requestPauseButton);
         techTv = findViewById(R.id.techtv);
-        //  selectTech = findViewById(R.id.selecttech);
         equipmentIdTv = findViewById(R.id.eq_id_send);
         updateFaultReportButton = findViewById(R.id.updateFaultReportButton);
-        //  diagnosisEditText = findViewById(R.id.diagnosis);
         actionTakenEditText = findViewById(R.id.actionTaken);
-
-        //   technicianSpinner = findViewById(R.id.technicianSpinner);
-        //  costCenterSpinner = findViewById(R.id.costCenter);
         mainGrpSpinner = findViewById(R.id.mainGrp);
         //selectEquipmentButton = findViewById(R.id.selectEquipmentButton);
         faultCategorySpinner = findViewById(R.id.faultCategory);
@@ -377,12 +402,13 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+
                 checkFieldsForEmptyValues();
             }
         };
         observationEditText.addTextChangedListener(textWatcher);
         actionTakenEditText.addTextChangedListener(textWatcher);
-        autoCompleteSpinner.addTextChangedListener(textWatcher);
+        //autoCompleteSpinner.addTextChangedListener(textWatcher);
 
 
         if (role.equals(tech)) {
@@ -598,7 +624,10 @@ public class EditFaultReportActivity extends MyBaseActivity {
     private void initviewsAndGetInitialDataOnEquip(String data) {
 
         progressDialog.show();
-        Call<JsonObject> call = APIClient.getUserServices().getCallEquipment(data, token, role, workSpaceid);
+        GeoLocation geoLocation = new GeoLocation(latitudeEquipment, longitudeEquipment);
+        EquipmentGeoLocationClass geoLocationClass = new EquipmentGeoLocationClass(geoLocation, data);
+        Call<JsonObject> call = APIClient.getUserServices().getEquipmentDetailsOnGeolocation
+                (workSpaceid, token, role, geoLocationClass);
         call.enqueue(new Callback<JsonObject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -622,14 +651,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
                         buildId = jsonObject.get("building").getAsJsonObject().get("id").getAsInt();
                         // genralBuildingList.add(new list(buildingname, id));
                         buildingSpinner.setText(buildingname);
-                        //buildingSpinner.setAdapter(buildingAdapter);
-                      /*  OptionalInt index = IntStream.range(0, genralBuildingList.size())
-                                .filter(i -> genralBuildingList.get(i).name.equals(buildingname))
-                                .findFirst();
-                        if (index.isPresent()) {
-                            int realid = index.getAsInt();
-                            buildingSpinner.setSelection(realid);
-                        }*/
+
                     }
 
 
@@ -649,13 +671,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
                             //   genralDivisionList.add(new list(divisionname, id));
                             divisionSpinner.setText(divisionname);
                             // divisionSpinner.setAdapter(divisionAdapter);
-                          /*  OptionalInt index = IntStream.range(0, genralDivisionList.size())
-                                    .filter(i -> genralDivisionList.get(i).name.equals(divisionname))
-                                    .findFirst();
-                            if (index.isPresent()) {
-                                int realid = index.getAsInt();
-                                divisionSpinner.setSelection(realid);
-                            }*/
                         }
                     }
                     if (!(jsonObject.get("department").isJsonNull())) {
@@ -665,19 +680,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
                         // deptSpinner.setAdapter(deptListAdapter);
                         deptSpinner.setText(deptname);
 
-                    /*    list list = new list(deptname, id);
-                        if (!(genralDepList.contains(list))) {
-                            genralDepList.add(new list(deptname, id));
-                            deptSpinner.setAdapter(deptListAdapter);
-                        }
-                        OptionalInt index = IntStream.range(0, genralDepList.size())
-                                .filter(i -> genralDepList.get(i).name.equals(deptname))
-                                .findFirst();
-                        if (index.isPresent()) {
-                            int realid = index.getAsInt();
-                            Log.d(TAG, "onResponse: dep" + realid);
-                            deptSpinner.setSelection(realid);
-                        }*/
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String prirityname = jsonObject.get("priority").getAsJsonObject().get("name").getAsString();
@@ -685,54 +687,27 @@ public class EditFaultReportActivity extends MyBaseActivity {
                         //    genralPriorityList.add(new list(prirityname, id));
                         prioritySpinner.setText(prirityname);
                         //   prioritySpinner.setAdapter(priAdapter);
-                      /*  OptionalInt index = IntStream.range(0, genralPriorityList.size())
-                                .filter(i -> genralPriorityList.get(i).name.equals(prirityname))
-                                .findFirst();
-                        if (index.isPresent()) {
-                            int realid = index.getAsInt();
-                            prioritySpinner.setSelection(realid);
-                        }*/
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String maintname = jsonObject.get("maintGrp").getAsJsonObject().get("name").getAsString();
                         maintId = jsonObject.get("maintGrp").getAsJsonObject().get("id").getAsInt();
                         mainGrpSpinner.setText(maintname);
-                        //   genralMaintGrp.add(new list(maintname, id));
-                        // mainGrpSpinner.setAdapter(maintAdapter);
-                       /* OptionalInt index = IntStream.range(0, genralMaintGrp.size())
-                                .filter(i -> genralMaintGrp.get(i).name.equals(maintname))
-                                .findFirst();
-                        if (index.isPresent()) {
-                            int realid = index.getAsInt();
-                            mainGrpSpinner.setSelection(realid);
-                        }*/
+
                     }
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String faulname = jsonObject.get("faultCategory").getAsJsonObject().get("name").getAsString();
                         faultId = jsonObject.get("faultCategory").getAsJsonObject().get("id").getAsInt();
-                        // genralFaultCatList.add(new list(faulname, id));
                         faultCategorySpinner.setText(faulname);
-                        //  faultCategorySpinner.setAdapter(faultCatAdapter);
-                        /*OptionalInt index = IntStream.range(0, genralFaultCatList.size())
-                                .filter(i -> genralFaultCatList.get(i).name.equals(faulname))
-                                .findFirst();
-                        if (index.isPresent()) {
-                            int realid = index.getAsInt();
-                            Log.d(TAG, "onResponse: fff" + realid);
-                            faultCategorySpinner.setSelection(realid);
-                        }*/
+
                     }
                     if (!(jsonObject.get("attendedBy").isJsonNull())) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                             JsonArray ja = jsonObject.get("attendedBy").getAsJsonArray();
-                            Log.d(TAG, "onResponse: jaray attendedby" + ja);
                             for (int j = 0; j < ja.size(); j++) {
                                 JsonObject jsonObject1 = ja.get(j).getAsJsonObject();
                                 if (!(jsonObject1.isJsonNull())) {
                                     String techname = ja.get(j).getAsJsonObject().get("name").getAsString();
-
-                                    Log.d(TAG, "onResponse: hhhh" + techname);
                                     techTv.setText(techname);
                                     OptionalInt index = IntStream.range(0, genralTechnicalList.size())
                                             .filter(i -> genralTechnicalList.get(i).name.equals(techname))
@@ -745,23 +720,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
                             }
                         }
                     }
-/*
-                    if (!(jsonObject.get("costCenter").isJsonNull())) {
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                            JsonObject jsonObject1 = jsonObject.get("costCenter").getAsJsonObject();
-                            String costName = jsonObject1.get("costCenterName").getAsString();
-                            OptionalInt index = IntStream.range(0, genCostCebterList.size())
-                                    .filter(i -> genCostCebterList.get(i).name.equals(costName))
-                                    .findFirst();
-                            if (index.isPresent()) {
-                                int realid = index.getAsInt();
-                                Log.d(TAG, "onResponse: cost" + realid);
-                                costCenterSpinner.setSelection(realid);
-                            }
-                        }
-
-                    }
-*/
 
                     if (!(jsonObject.get("locationDesc").isJsonNull())) {
                         locDescEditText.setText(jsonObject.get("locationDesc").getAsString());
@@ -798,12 +756,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
                         }
                         //  statusSpinner.setText(statuscomming);
-                       /* int indeex = 0;
-                        if (genralStatusList.contains(statuscomming)) {
-                            indeex = statusListAdapter.getPosition(statuscomming);
-                            statusSpinner.setSelection(indeex);
-                            statusListAdapter.notifyDataSetChanged();
-                        }*/
                     }
                     if (!(jsonObject.get("activationTime").isJsonNull())) {
                         String hour = jsonObject.get("activationTime").getAsJsonObject().get("hour").getAsString();
@@ -812,8 +764,8 @@ public class EditFaultReportActivity extends MyBaseActivity {
                         String monthValue = jsonObject.get("activationTime").getAsJsonObject().get("monthValue").getAsString();
                         String dayOfMonth = jsonObject.get("activationTime").getAsJsonObject().get("dayOfMonth").getAsString();
 
-                        String time = hour + ":" + minute;
-                        String date = dayOfMonth + "-" + monthValue + "-" + year + "  " + time;
+                        String time = prependZero(hour) + ":" + prependZero(minute);
+                        String date = prependZero(dayOfMonth) + "-" + prependZero(monthValue) + "-" + year + "  " + time;
                         activationDate.setText(date);
                     }
                     if (!(jsonObject.get("arrivalTime").isJsonNull())) {
@@ -823,11 +775,229 @@ public class EditFaultReportActivity extends MyBaseActivity {
                         String monthValue = jsonObject.get("arrivalTime").getAsJsonObject().get("monthValue").getAsString();
                         String dayOfMonth = jsonObject.get("arrivalTime").getAsJsonObject().get("dayOfMonth").getAsString();
 
-                        String time = hour + ":" + minute;
-                        String date = dayOfMonth + "-" + monthValue + "-" + year + "   " + time;
+                        String time = prependZero(hour) + ":" + prependZero(minute);
+                        String date = prependZero(dayOfMonth) + "-" + prependZero(monthValue) + "-" + year + "   " + time;
                         activationTime.setText(date);
                     }
+                    String editableVariable = jsonObject.get("editable").getAsString();
 
+                    if (role.equals(Constants.ROLE_MANAGINGAGENT) && editableVariable.equals("false")) {
+                        if (role.equals(Constants.ROLE_MANAGINGAGENT) && statusComing.equals("Closed")) {
+                            updateFaultReportButton.setVisibility(View.GONE);
+                            acceptButton.setVisibility(View.GONE);
+                            rejectButton.setVisibility(View.GONE);
+                            autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Completed")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Pause")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+
+                                }
+                            });
+
+                        }
+
+
+                    } else if ((role.equals(Constants.ROLE_MANAGINGAGENT) && editableVariable.equals("true"))) {
+
+
+                        if (role.equals(Constants.ROLE_MANAGINGAGENT) && statusComing.equals("Pause Requested")) {
+                            acceptButton.setVisibility(View.VISIBLE);
+                            rejectButton.setVisibility(View.VISIBLE);
+                            updateFaultReportButton.setVisibility(View.GONE);
+                        } else if (role.equals(Constants.ROLE_MANAGINGAGENT) && statusComing.equals("Completed")) {
+                            updateFaultReportButton.setVisibility(View.VISIBLE);
+                            acceptButton.setVisibility(View.GONE);
+                            rejectButton.setVisibility(View.GONE);
+                            autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Pause")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+
+                                    if (autoCompleteSpinner.getText().toString().equals("Completed")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Pause Requested")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+
+                                }
+                            });
+
+                        } else if (role.equals(Constants.ROLE_MANAGINGAGENT) && statusComing.equals("Pause")) {
+                            updateFaultReportButton.setVisibility(View.GONE);
+                            acceptButton.setVisibility(View.GONE);
+                            rejectButton.setVisibility(View.GONE);
+                            autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Completed")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Closed")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Pause")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+
+                                }
+                            });
+
+                        } else if (role.equals(Constants.ROLE_MANAGINGAGENT) && statusComing.equals("Closed")) {
+                            updateFaultReportButton.setVisibility(View.GONE);
+                            acceptButton.setVisibility(View.GONE);
+                            rejectButton.setVisibility(View.GONE);
+                            autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Completed")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Pause")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+
+                                }
+                            });
+
+                        } else if (role.equals(Constants.ROLE_MANAGINGAGENT) && statusComing.equals("Closeed")) {
+                            updateFaultReportButton.setVisibility(View.VISIBLE);
+                            updateFaultReportButton.setEnabled(true);
+                            autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Completed")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Pause")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+
+                                }
+                            });
+
+                        }
+                    }
+
+                    if (editableVariable.equals("false")) {
+                        Toast.makeText(EditFaultReportActivity.this,
+                                "You are not currently at the location of the equipment", Toast.LENGTH_LONG).show();
+                        scanEquipmentBtn.setVisibility(View.GONE);
+                        updateFaultReportButton.setVisibility(View.GONE);
+                        requestPauseButton.setVisibility(View.GONE);
+                        acceptButton.setVisibility(View.GONE);
+                        rejectButton.setVisibility(View.GONE);
+
+                    } else if (editableVariable.equals("true")) {
+
+                        if (role.equals(Constants.ROLE_TECHNICIAN) && statusComing.equals("Open")) {
+                            requestPauseButton.setVisibility(View.VISIBLE);
+                            updateFaultReportButton.setVisibility(View.VISIBLE);
+                            autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    //performAction(currentStatus);
+                                    if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Pause")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Closed")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Completed")) {
+                                        requestPauseButton.setEnabled(false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Open")) {
+                                        requestPauseButton.setEnabled(true);
+                                    }
+                                }
+                            });
+                        } else if (role.equals(Constants.ROLE_TECHNICIAN) && statusComing.equals("Pause")) {
+                            requestPauseButton.setVisibility(View.INVISIBLE);
+                            autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Open")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Closed")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                }
+                            });
+                        } else if (role.equals(Constants.ROLE_TECHNICIAN) && statusComing.equals("Closed")) {
+                            requestPauseButton.setVisibility(View.VISIBLE);
+                            updateFaultReportButton.setVisibility(View.VISIBLE);
+                            autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Open")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Completed")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Pause")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+
+
+                                }
+                            });
+
+                        } else if (role.equals(Constants.ROLE_TECHNICIAN) && statusComing.equals("Completed")) {
+                            updateFaultReportButton.setVisibility(View.VISIBLE);
+                            updateFaultReportButton.setEnabled(true);
+                            autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Open")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Closed")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+                                    if (autoCompleteSpinner.getText().toString().equals("Pause")) {
+                                        autoCompleteSpinner.setText(statusComing, false);
+                                    }
+
+                                }
+                            });
+                        }
+                    }
                 } else if (response.code() == 401) {
                     Toast.makeText(EditFaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
                     LogoutClass logoutClass = new LogoutClass();
@@ -854,8 +1024,11 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
 
     private void initviewsAndGetInitialData(String data) {
+        // data from frid
         progressDialog.show();
-        Call<JsonObject> call = APIClient.getUserServices().getEditfaultDetails(data, workSpaceid, token, role);
+        GeoLocation geolocation = new GeoLocation(latOfSearch, longOfSearch);
+        SearchResposeWithLatLon respose = new SearchResposeWithLatLon(geolocation, data);
+        Call<JsonObject> call = APIClient.getUserServices().getFindOne(workSpaceid, token, role, respose);
         call.enqueue(new Callback<JsonObject>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -864,6 +1037,89 @@ public class EditFaultReportActivity extends MyBaseActivity {
                     progressDialog.dismiss();
                     JsonObject jsonObject = response.body();
                     Log.d(TAG, "onResponse: json on frid search" + jsonObject);
+                    String editablevariable = jsonObject.get("editable").getAsString();
+                    statuscomming = jsonObject.get("status").getAsString();
+
+                    if (role.equals(Constants.ROLE_TECHNICIAN) && statuscomming.equals("Open")) {
+                        acceptButton.setVisibility(View.INVISIBLE);
+                        rejectButton.setVisibility(View.INVISIBLE);
+                        requestPauseButton.setVisibility(View.VISIBLE);
+                        autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                    autoCompleteSpinner.setText(statuscomming, false);
+                                }
+
+                                if (autoCompleteSpinner.getText().toString().equals("Closed")) {
+                                    autoCompleteSpinner.setText(statuscomming, false);
+
+                                }
+                                if (autoCompleteSpinner.getText().toString().equals("Pause")) {
+                                    autoCompleteSpinner.setText(statuscomming,false);
+
+                                }
+                                if (autoCompleteSpinner.getText().toString().equals("Pause Requested")) {
+                                    autoCompleteSpinner.setText(statuscomming, false);
+
+                                }
+                            }
+                        });
+                    }
+                    if (role.equals(Constants.ROLE_TECHNICIAN) && statuscomming.equals("Pause")) {
+                        acceptButton.setVisibility(View.INVISIBLE);
+                        rejectButton.setVisibility(View.INVISIBLE);
+                        requestPauseButton.setVisibility(View.GONE);
+                        autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                    autoCompleteSpinner.setText(statuscomming, false);
+                                }
+                                if (autoCompleteSpinner.getText().toString().equals("Open")) {
+                                    autoCompleteSpinner.setText(statuscomming, false);
+                                }
+                                if (autoCompleteSpinner.getText().toString().equals("Closed")) {
+                                    autoCompleteSpinner.setText(statuscomming, false);
+
+                                }
+                                if (autoCompleteSpinner.getText().toString().equals("Pause Requested")) {
+                                    autoCompleteSpinner.setText(statuscomming, false);
+
+                                }
+
+                            }
+                        });
+
+
+                    }
+                    if (editablevariable.equals("true")) {
+
+
+                        updateFaultReportButton.setVisibility(View.VISIBLE);
+                        //let edit
+
+                    } else if (editablevariable.equals("false")) {
+                        updateFaultReportButton.setEnabled(false);
+                        if (!(jsonObject.get("equipment").isJsonNull())) {
+                            scanEquipmentBtn.setVisibility(View.VISIBLE);
+                            scanEquipmentBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(EditFaultReportActivity.this, EquipmentSearchActivity.class);
+                                    intent.putExtra("workspaceId", workSpaceid);
+                                    intent.putExtra("value", "Fault");
+                                    startActivity(intent);
+                                }
+                            });
+                        } else if (jsonObject.get("equipment").isJsonNull()) {
+                            Toast.makeText(EditFaultReportActivity.this, "you dont have equipment", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    }
                     assert jsonObject != null;
 
                     frIdEditText.setText(jsonObject.get("frId").getAsString());
@@ -979,12 +1235,10 @@ public class EditFaultReportActivity extends MyBaseActivity {
                     if (!(jsonObject.get("attendedBy").isJsonNull())) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                             JsonArray ja = jsonObject.get("attendedBy").getAsJsonArray();
-                            Log.d(TAG, "onResponse: jaray attendedby" + ja);
                             for (int j = 0; j < ja.size(); j++) {
                                 JsonObject jsonObject1 = ja.get(j).getAsJsonObject();
                                 if (!(jsonObject1.isJsonNull())) {
                                     String techname = ja.get(j).getAsJsonObject().get("name").getAsString();
-                                    Log.d(TAG, "onResponse: hhhh" + techname);
                                     techTv.setText(techname);
                                  /*   OptionalInt index = IntStream.range(0, genralTechnicalList.size())
                                             .filter(i -> genralTechnicalList.get(i).name.equals(techname))
@@ -1030,7 +1284,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
                     }
 
                     if (!(jsonObject.get("status").isJsonNull())) {
-                        String statuscomming = jsonObject.get("status").getAsString();
+                        statuscomming = jsonObject.get("status").getAsString();
                         if (genralStatusList.contains(statuscomming)) {
                             autoCompleteSpinner.setText(statuscomming, false);
                         }
@@ -1052,12 +1306,9 @@ public class EditFaultReportActivity extends MyBaseActivity {
                         String monthValue = jsonObject.get("activationTime").getAsJsonObject().get("monthValue").getAsString();
                         String dayOfMonth = jsonObject.get("activationTime").getAsJsonObject().get("dayOfMonth").getAsString();
 
-                        String time = hour + ":" + minute;
-                        String date = dayOfMonth + "-" + monthValue + "-" + year + "  " + time;
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm aa ");
-                        //    String sedate=sdf.format(date);
+                        String time = prependZero(hour) + ":" + prependZero(minute);
+                        String date = prependZero(dayOfMonth) + "-" + prependZero(monthValue) + "-" + year + "  " + time;
                         activationDate.setText(date);
-                        //   activationTime.setText(time);
                     }
                     if (!(jsonObject.get("arrivalTime").isJsonNull())) {
                         String hour = jsonObject.get("arrivalTime").getAsJsonObject().get("hour").getAsString();
@@ -1066,10 +1317,8 @@ public class EditFaultReportActivity extends MyBaseActivity {
                         String monthValue = jsonObject.get("arrivalTime").getAsJsonObject().get("monthValue").getAsString();
                         String dayOfMonth = jsonObject.get("arrivalTime").getAsJsonObject().get("dayOfMonth").getAsString();
 
-                        String time = hour + ":" + minute;
-                        String date = dayOfMonth + "-" + monthValue + "-" + year + "   " + time;
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm aa ");
-                        //   String sedate=sdf.format(date);
+                        String time = prependZero(hour) + ":" + prependZero(minute);
+                        String date = prependZero(dayOfMonth) + "-" + prependZero(monthValue) + "-" + year + "   " + time;
                         activationTime.setText(date);
                     }
 
@@ -1133,11 +1382,11 @@ public class EditFaultReportActivity extends MyBaseActivity {
     private TextView createNewEditText(String remarksString, int remarksId) {
         LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout
                 .LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lparams.setMargins(10, 8, 10, 8);
+        lparams.setMargins(12, 8, 12, 8);
 
         editText = new TextInputEditText(this);
         editText.setId(remarksId);
-        editText.setGravity(Gravity.START);
+        //    editText.setGravity(View.TEXT_ALIGNMENT_TEXT_START);
 
         editText.setBackgroundResource(R.drawable.mybutton);
         editText.setText(remarksString);
@@ -1187,18 +1436,17 @@ public class EditFaultReportActivity extends MyBaseActivity {
         }
         if (role.equals(tech) && ((frid != null))) {
             Log.d(TAG, "checkFieldsForEmptyValues: yes tech serach");
-            requestPauseButton.setVisibility(View.GONE);
-            updateFaultReportButton.setVisibility(View.GONE);
+            //  requestPauseButton.setVisibility(View.GONE);
+            //   updateFaultReportButton.setVisibility(View.GONE);
             acceptButton.setVisibility(View.GONE);
-            autoCompleteSpinner.setEnabled(false);
+            //   autoCompleteSpinner.setEnabled(false);
             rejectButton.setVisibility(View.GONE);
-            autoCompleteSpinner.dismissDropDown();
-            autoCompleteSpinner.setDropDownHeight(0);
+            //  autoCompleteSpinner.dismissDropDown();
+            // autoCompleteSpinner.setDropDownHeight(0);
         }
 
 
         if (role.equals(tech) && ((frid == null))) {
-
             Iterator<StatusItem> iterator = items.iterator();
             while (iterator.hasNext()) {
                 StatusItem next = iterator.next();
@@ -1206,25 +1454,18 @@ public class EditFaultReportActivity extends MyBaseActivity {
                     iterator.remove();
                 }
             }
-            Log.d(TAG, "checkFieldsForEmptyValues: this");
-
             if (autoCompleteSpinner.getText().toString().equals("Completed")) {
-/*
-                if (!(genralStatusList.contains("Open"))) {
-                    genralStatusList.add("Open");
-//                    statusListAdapter.notifyDataSetChanged();
-                }
-*/
                 requestPauseButton.setEnabled(false);
 
                 buttonEnableMethod();
             }
             if (autoCompleteSpinner.getText().toString().equals("Open")) {
                 requestPauseButton.setEnabled(true);
+
                 buttonEnableMethod();
             }
             if (autoCompleteSpinner.getText().toString().equals("Closed")) {
-                Log.d(TAG, "checkFieldsForEmptyValues: close");
+
                 requestPauseButton.setEnabled(false);
                 updateFaultReportButton.setEnabled(false);
 
@@ -1430,7 +1671,8 @@ public class EditFaultReportActivity extends MyBaseActivity {
                     remarksList,
                     attendedBy);
 
-            Call<Void> callEditFaultReport = APIClient.getUserServices().updateReport(editFaultReportRequest, token, workSpaceid, role);
+            Call<Void> callEditFaultReport = APIClient.getUserServices().updateReport(editFaultReportRequest,
+                    token, workSpaceid, role);
             callEditFaultReport.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -1562,6 +1804,14 @@ public class EditFaultReportActivity extends MyBaseActivity {
         fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
         fab_before.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
+    }
+
+
+    private String prependZero(String text) {
+        if (text.length() == 1) {
+            return '0' + text;
+        }
+        return text;
     }
 
 }

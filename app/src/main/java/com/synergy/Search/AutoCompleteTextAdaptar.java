@@ -48,12 +48,14 @@ public class AutoCompleteTextAdaptar extends ArrayAdapter<StatusItem> {
         if (statusItem != null) {
             textView.setText(statusItem.getStatus());
         }
+
+/*
         if (role.equals("Technician")) {
-            String textviewText = textView.getText().toString();
-
-
-//to be continued
-            convertView.setEnabled(!textviewText.equals("Pause"));
+            currentStatus = textView.getText().toString();
+            if (currentStatus.equals("Pause")) {
+                convertView.setEnabled(false);
+            }
+            // convertView.setEnabled(!textviewText.equals("Pause"));
 
             if (role.equals("Technician")) {
                 currentStatus = textView.getText().toString();
@@ -69,12 +71,24 @@ public class AutoCompleteTextAdaptar extends ArrayAdapter<StatusItem> {
                 }
             }
         }
+
+*/
+/*
+        if (role.equals("ManagingAgent")) {
+            String textviewText = textView.getText().toString();
+            if (currentStatus.equals("Pause")){
+                convertView.setEnabled(false);
+            }
+        }
+*/
+
         return convertView;
     }
 
     @Override
     public boolean isEnabled(int position) {
 
+/*
         if (role.equals("Technician")) {
 
 
@@ -83,6 +97,7 @@ public class AutoCompleteTextAdaptar extends ArrayAdapter<StatusItem> {
         if (role.equals("ManagingAgent")) {
             return position != 4;
         }
+*/
 
         return true;
 

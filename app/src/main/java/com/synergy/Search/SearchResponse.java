@@ -1,8 +1,10 @@
 package com.synergy.Search;
 
+import java.time.LocalDateTime;
+
 public class SearchResponse {
 
-    private ActivationTime activationTime;
+    private LocalDateTime activationTime;
     String frId, clientFrId, customerRefId, requestorName, requestorContactNo, location,
             building, division, locationDesc, faultCategory, faultCategoryName, priority,
             department, maintGrp, status, reportedTime, equipment, observation, actionTaken, remarks, startDate,
@@ -10,6 +12,23 @@ public class SearchResponse {
     long reportedDate;
     String workspaceId;
     String buildingName, locationName;
+    double longitude,latitude;
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
 
     public String getBuildingName() {
         return buildingName;
@@ -38,20 +57,23 @@ public class SearchResponse {
     public SearchResponse() {
     }
 
-    public ActivationTime getActivationTime() {
+    public LocalDateTime getActivationTime() {
         return activationTime;
     }
 
-    public void setActivationTime(ActivationTime activationTime) {
+    public void setActivationTime(LocalDateTime activationTime) {
         this.activationTime = activationTime;
     }
 
-    public SearchResponse(ActivationTime activationTime, String buildingName, String locationName, String frId, String clientFrId, String customerRefId, String requestorName,
+    public SearchResponse(LocalDateTime activationTime, String buildingName, String locationName, String frId, String clientFrId, String customerRefId, String requestorName,
                           String requestorContactNo, String location, String building, String division,
                           String locationDesc, String faultCategory, String faultCategoryName, String priority,
                           String department, String maintGrp, String status, String reportedTime,
                           String equipment, String observation, String actionTaken, String remarks, String startDate,
-                          String endDate, String startTime, String endTime, String costCenter, String labourHrs, long reportedDate, String workspaceId) {
+                          String endDate, String startTime, String endTime, String costCenter, String labourHrs,
+                          long reportedDate, String workspaceId,double longitude,double latitude) {
+        this.longitude=longitude;
+        this.latitude=latitude;
         this.frId = frId;
         this.activationTime=activationTime;
         this.buildingName = locationName;

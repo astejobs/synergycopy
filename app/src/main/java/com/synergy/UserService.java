@@ -8,7 +8,9 @@ import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
 import com.synergy.Search.AcceptRejectBody;
+import com.synergy.Search.EquipmentGeoLocationClass;
 import com.synergy.Search.PauseRequestBody;
+import com.synergy.Search.SearchResposeWithLatLon;
 import com.synergy.SearchTasks.TaskSearchResponse;
 import com.synergy.EquipmentSearch.UploadImageRequest;
 import com.synergy.FaultReport.CreateFaultRequestPojo;
@@ -33,6 +35,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.PUT;
+import retrofit2.http.QueryName;
 
 public interface UserService {
 
@@ -121,11 +124,13 @@ public interface UserService {
             , @Header("role") String role);
 
     //get search
-    @GET("faultreport/search/?")
+    @GET("faultreport/search")
     @Headers("Content-Type: application/json")
     Call<List<SearchResponse>> getSearchResult(@Header("workspace") String dynamicWorkSpace,
                                                @Query("query") String param,
-                                               @Header("Authorization") String token, @Header("role") String role);
+                                               @Query("type") String type,
+                                               @Header("Authorization") String token,
+                                               @Header("role") String role);
     //before image upload http://ifarms.com.sg:8086/lsme/api/faultreport/beforeimage
    /* @POST("ws/upload{before}image")
     @Headers("Content-Type: application/json")
@@ -330,5 +335,20 @@ public interface UserService {
     Call<Void> getReject(@Header("Authorization") String token,
                          @Header("workspace") String workspace,
                          @Body AcceptRejectBody acceptRejectBody);
+
+    @POST("faultreport/findOne")
+    @Headers("Content-Type: application/json")
+    Call<JsonObject> getFindOne(@Header("WorkspaceId") String workspaceId,
+                                @Header("Authorization") String token,
+                                @Header("role") String role,
+                                @Body SearchResposeWithLatLon searchResposeWithLatLon);
+
+
+    @POST("faultreport/equipment")
+    @Headers("Content-Type: application/json")
+    Call<JsonObject> getEquipmentDetailsOnGeolocation(@Header("WorkspaceId") String workspaceId,
+                                @Header("Authorization") String token,
+                                @Header("role") String role,
+                                @Body EquipmentGeoLocationClass geoLocationClass);
 
 }

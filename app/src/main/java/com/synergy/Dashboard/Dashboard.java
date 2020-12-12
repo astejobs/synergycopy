@@ -4,10 +4,16 @@ package com.synergy.Dashboard;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +25,7 @@ import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.LogoutClass;
 import com.synergy.R;
 import com.synergy.FaultReport.FaultReportActivity;
+import com.synergy.Search.LocationManager_check;
 import com.synergy.Search.Search;
 import com.synergy.SearchTasks.SearchTaskActivity;
 import com.synergy.Setting.SettingActivity;
@@ -41,7 +48,26 @@ public class Dashboard extends AppCompatActivity {
         username = preferences.getString("username", "");
         Intent intent = getIntent();
         workspaceId = intent.getStringExtra("workspaceId");
+        LocationManager_check locationManagerCheck = new LocationManager_check(Dashboard.this);
+        Location location = null;
+        if (locationManagerCheck.isLocationServiceAvailable()) {
 
+            if (locationManagerCheck.getProviderType() == 1)
+                if (ActivityCompat.checkSelfPermission(Dashboard.this,
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(Dashboard.this
+                        , Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    return;
+                } else if (locationManagerCheck.getProviderType() == 2)
+
+                    location = locationManagerCheck.locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            location = locationManagerCheck.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            //  double lat = location.getLongitude();
+
+        } else {
+            locationManagerCheck.createLocationServiceError(Dashboard.this);
+        }
         linearLayoutDashboard = findViewById(R.id.lay_dashboard);
         linearCreateFaultReport = findViewById(R.id.linear_create_fault);
         linearEquipmentFaultSearch = findViewById(R.id.linear_qr_create);
