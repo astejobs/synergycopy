@@ -52,7 +52,6 @@ public class MainActivityLogin extends AppCompatActivity {
     private String nameString, passwordString, deviceToken;
     private SharedPreferences.Editor editor;
     private final CheckInternet checkInternet = new CheckInternet();
-    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onStart() {
@@ -90,7 +89,7 @@ public class MainActivityLogin extends AppCompatActivity {
         passwordEdit = findViewById(R.id.editTextPassword);
         passwordTextName = findViewById(R.id.login_password);
         usernameTextName = findViewById(R.id.login_username);
-        constraintLayout = findViewById(R.id.loginConstraint);
+        ConstraintLayout constraintLayout = findViewById(R.id.loginConstraint);
 
 
         editTextName.addTextChangedListener(new TextWatcher() {

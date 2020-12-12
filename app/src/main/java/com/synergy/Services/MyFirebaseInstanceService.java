@@ -107,7 +107,7 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
         Notification notification = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setSmallIcon(R.drawable.iclogo)
+                .setSmallIcon(R.drawable.circularcmmslogo)
                 .setContentIntent(pendingIntent)
                 .setChannelId(channelId)
                 .build();

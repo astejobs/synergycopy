@@ -40,7 +40,7 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class WorkspaceActivity extends MyBaseActivity {
+public class WorkspaceActivity extends AppCompatActivity {
     private static final String TAG = "Message";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -68,9 +68,6 @@ public class WorkspaceActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
 
-        /*LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View view = layoutInflater.inflate(R.layout.activity_workspace, null, false);
-        drawer.addView(view, 0);*/
         Toolbar toolbar = findViewById(R.id.toolbar_workspace);
         setSupportActionBar(toolbar);
         linearLayout = findViewById(R.id.workLinear);

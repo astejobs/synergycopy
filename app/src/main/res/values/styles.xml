@@ -19,6 +19,7 @@
     <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         ...
         <item name="actionMenuTextColor">@color/blue_indeco_color</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:iconTint" tools:targetApi="o">@color/blue_indeco_color</item>
         ...
     </style>

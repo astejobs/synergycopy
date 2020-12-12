@@ -43,7 +43,7 @@
         <item
             android:id="@+id/tSearchNav"
             android:checkable="true"
-            android:icon="@drawable/taskkksearchh"
+            android:icon="@drawable/task_search_pm"
             android:title="Search Tasks" />
     </group>
     <group
@@ -52,7 +52,7 @@
         <item
             android:id="@+id/eqTNav"
             android:checkable="true"
-            android:icon="@drawable/eqtaskk"
+            android:icon="@drawable/task_scan_pm"
             android:title="Scan Tasks" />
     </group>
     <group

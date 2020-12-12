@@ -28,8 +28,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity"
         tools:targetApi="n">
-        <activity android:name=".MyBaseActivity"/>
         <activity android:name=".Search.EditFaultOnSearchActivity"></activity>
+        <activity android:name=".Messages.ChatActivity"/>
+        <activity android:name=".Messages.MessagesActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".MyBaseActivity" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,15 +40,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchTasks.SearchTaskActivity"
-            android:launchMode="singleTop"/>
-        <activity android:name=".EquipmentSearch.UploadTaskImageActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".SearchTasks.SearchTaskActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".EquipmentSearch.UploadTaskImageActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".Otp.OtpActivity" />
         <activity android:name=".Search.UploadFile" />
         <activity android:name=".Search.PreviousImagesActivity" />
-        <activity android:name=".Setting.SettingActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".Setting.SettingActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".EquipmentSearch.CheckListActivity" />
         <activity android:name=".Search.EditFaultReportActivity">
             <intent-filter>
@@ -64,13 +70,15 @@
         <activity android:name=".Search.EquipmentSearchActivityforEdit" />
         <activity android:name=".MainActivityLogin" />
         <activity android:name=".EquipmentSearch.EquipmentSearchActivity" />
-        <activity android:name=".Search.Search"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".Search.Search"
+            android:launchMode="singleTop" />
         <activity android:name=".FaultReport.BeforeImage" />
         <activity android:name=".Dashboard.Dashboard" />
         <activity android:name=".EquipmentSearch.QrDetails" />
-        <activity android:name=".FaultReport.FaultReportActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".FaultReport.FaultReportActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".Workspace.WorkspaceActivity" />
 
         <service android:name=".Services.MyFirebaseInstanceService">

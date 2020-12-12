@@ -2,29 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/workLinear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e2e2e2"
     android:orientation="vertical"
-    tools:context=".Workspace.WorkspaceActivity">
+    android:background="#e2e2e2"
+    tools:context=".Messages.MessagesActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_workspace"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorCodeSchemeApp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:menu="@menu/menu_dashboard"
-        app:title="Workspaces"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:titleMargin="8dp"
-        app:titleTextColor="#e2e2e2" />
+        app:titleTextColor="#ffffff" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_workspace"
+        android:id="@+id/rv_chat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="6dp"
-        android:orientation="vertical" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </LinearLayout>

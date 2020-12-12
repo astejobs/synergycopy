@@ -105,7 +105,7 @@ public class Search extends MyBaseActivity {
         username=sharedPreferences.getString("username","");
         String wk = sharedPreferences.getString("workspaceId", "");
 
-        toolbar.setTitle("Search Fault Reports");
+        toolbar.setTitle("Search Fault Report");
         setSupportActionBar(toolbar);
         username = sharedPreferences.getString("username", "");
         Intent intent = getIntent();

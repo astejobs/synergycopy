@@ -26,6 +26,7 @@ import com.google.android.material.internal.NavigationMenuView;
 import com.google.android.material.navigation.NavigationView;
 import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.FaultReport.FaultReportActivity;
+import com.synergy.Messages.MessagesActivity;
 import com.synergy.Search.Search;
 import com.synergy.SearchTasks.SearchTaskActivity;
 import com.synergy.Setting.SettingActivity;
@@ -36,9 +37,11 @@ public class MyBaseActivity extends AppCompatActivity implements NavigationView.
 
     public DrawerLayout drawer;
     public Toolbar toolbar;
+    public String token;
+    public String username;
     NavigationView navigationView, navigationViewTech, navigationViewAgent;
     public ActionBarDrawerToggle toggle;
-    String role, username, workspaceId;
+    String role, workspaceId;
     private final CheckInternet checkInternet = new CheckInternet();
 
     @Override
@@ -60,7 +63,7 @@ public class MyBaseActivity extends AppCompatActivity implements NavigationView.
         setContentView(R.layout.activity_my_base);
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", "");
+        token = sharedPreferences.getString("token", "");
         role = sharedPreferences.getString("role", "");
         username = sharedPreferences.getString("username", "").toUpperCase();
         workspaceId = sharedPreferences.getString("workspaceId", "");
@@ -78,7 +81,7 @@ public class MyBaseActivity extends AppCompatActivity implements NavigationView.
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        Context context = drawer.getContext();
+
         navigationView.setItemIconTintList(null);
         Menu nav_Menu = navigationView.getMenu();
 
@@ -100,6 +103,9 @@ public class MyBaseActivity extends AppCompatActivity implements NavigationView.
         if (id == R.id.logoutmenu) {
             LogoutClass logoutClass = new LogoutClass();
             logoutClass.logout(this);
+        }else if (id == R.id.messaging_menu){
+            Intent intent = new Intent(getApplicationContext(), MessagesActivity.class);
+            startActivity(intent);
         }
         return true;
     }
@@ -123,9 +129,9 @@ public class MyBaseActivity extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.messageNav:
+                intentMethod(MessagesActivity.class, "");
                 break;
             case R.id.createFNav:
-                toolbar.setTitle("Fault Report");
                 intentMethod(FaultReportActivity.class, "");
                 break;
             case R.id.searchFNav:

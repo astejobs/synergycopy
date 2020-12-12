@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -36,6 +37,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.util.CollectionUtils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.synergy.APIClient;
@@ -78,18 +80,22 @@ public class PmTaskActivity extends MyBaseActivity implements DatePickerDialog.O
     private AutoCompleteTextView statusSpinner;
     private Button buttonUpdate;
     private TextInputEditText datePickerEdit;
+    private final OvershootInterpolator interpolator = new OvershootInterpolator();
+    private Float translationY = 600f;
     private TextInputEditText timePickerEdit;
     private int tHour, tMinute;
     private ProgressDialog mProgress;
     private ArrayAdapter<String> statusSpinnerAdapter;
     private List<String> statusList = new ArrayList<>();
     private ProgressDialog updateProgress;
-    private Button checkListButton;
     private long scheduleDate;
     private String roleTask;
     private int taskId;
+    private String workspace;
     private String afterImage, beforeImage;
     private String source = "";
+    private FloatingActionButton moreFab, uploadFab, checlistFab;
+    private boolean isOpen;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -124,8 +130,17 @@ public class PmTaskActivity extends MyBaseActivity implements DatePickerDialog.O
         buttonUpdate = findViewById(R.id.buttonUpdateTaskPm);
         buttonUpdate.setEnabled(false);
         statusSpinner = findViewById(R.id.spinner_status_pmtasks);
-        checkListButton = findViewById(R.id.buttonCheckList);
-        checkListButton.setEnabled(false);
+        moreFab = findViewById(R.id.more_pmtask);
+        checlistFab = findViewById(R.id.checklist_pmtask);
+        uploadFab = findViewById(R.id.image_pmtask);
+
+        isOpen = false;
+
+        checlistFab.setAlpha(0f);
+        uploadFab.setAlpha(0f);
+        checlistFab.setTranslationY(translationY);
+        uploadFab.setTranslationY(translationY);
+
 
         taskNumberTextView.setEnabled(false);
         scheduleNumberTextView.setEnabled(false);
@@ -156,7 +171,7 @@ public class PmTaskActivity extends MyBaseActivity implements DatePickerDialog.O
         String taskNumberString = intent.getStringExtra("taskNumber");
         taskId = intent.getIntExtra("taskId", 0);
         //taskId = 3;
-        String workspace = intent.getStringExtra("workspace");
+        workspace = intent.getStringExtra("workspace");
         //String workspace = "CMMS-DEMO-112020-001";
         afterImage = intent.getStringExtra("afterImage");
         beforeImage = intent.getStringExtra("beforeImage");
@@ -176,12 +191,23 @@ public class PmTaskActivity extends MyBaseActivity implements DatePickerDialog.O
             }
         });
 
-        checkListButton.setOnClickListener(new View.OnClickListener() {
+        /*checkListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent setIntent = new Intent(getApplicationContext(), CheckListActivity.class);
                 setIntent.putExtra("taskId", taskId);
                 startActivity(setIntent);
+            }
+        });*/
+
+        moreFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
             }
         });
 
@@ -320,7 +346,7 @@ public class PmTaskActivity extends MyBaseActivity implements DatePickerDialog.O
                         buttonUpdate.setEnabled(true);
                     }
 
-                    checkListButton.setEnabled(true);
+                    //checkListButton.setEnabled(true);
                 } else if (response.code() == 401) {
                     Toast.makeText(PmTaskActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
                     LogoutClass logoutClass = new LogoutClass();
@@ -433,4 +459,39 @@ public class PmTaskActivity extends MyBaseActivity implements DatePickerDialog.O
         });
     }
 
+    private void openMenu() {
+        isOpen = !isOpen;
+        moreFab.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
+        uploadFab.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
+        checlistFab.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
+
+        uploadFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UploadTaskImageActivity.class);
+                intent.putExtra("workspace", workspace);
+                intent.putExtra("taskNumber", taskNumberTextView.getText().toString());
+                intent.putExtra("taskId", String.valueOf(taskId));
+                intent.putExtra("afterImage", afterImage);
+                intent.putExtra("beforeImage", beforeImage);
+                startActivity(intent);
+            }
+        });
+
+        checlistFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent setIntent = new Intent(getApplicationContext(), CheckListActivity.class);
+                setIntent.putExtra("taskId", taskId);
+                startActivity(setIntent);
+            }
+        });
+    }
+
+    private void closeMenu() {
+        isOpen = !isOpen;
+        moreFab.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
+        uploadFab.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
+        checlistFab.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
+    }
 }

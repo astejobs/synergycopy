@@ -7,6 +7,7 @@ import com.synergy.EquipmentSearch.EquipmentSearchResponse;
 import com.synergy.EquipmentSearch.GetPmTaskItemsResponse;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskRequest;
 import com.synergy.EquipmentSearch.GetUpdatePmTaskResponse;
+import com.synergy.Messages.MessageResponse;
 import com.synergy.Search.AcceptRejectBody;
 import com.synergy.Search.EquipmentGeoLocationClass;
 import com.synergy.Search.PauseRequestBody;
@@ -350,5 +351,30 @@ public interface UserService {
                                 @Header("Authorization") String token,
                                 @Header("role") String role,
                                 @Body EquipmentGeoLocationClass geoLocationClass);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //Get Message List
+    @GET("api/msg/search/")
+    @Headers("Content-Type: application/json")
+    Call<MessageResponse> getMessageList(@Header("Authorization") String token,
+                                         @Header("") String username);
 
 }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e2e2e2"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="#e2e2e2"
     android:orientation="vertical"
     tools:context=".EquipmentSearch.PmTaskActivity">
 
@@ -26,225 +26,290 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/pmtool"
+        app:layout_constraintStart_toStartOf="@id/pmtool">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:background="#fff"
             android:elevation="8dp"
-            android:layout_margin="10dp"
             app:cardCornerRadius="15dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-            <com.google.android.material.textfield.TextInputLayout
-
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textViewTaskNumberPm"
+                android:layout_marginBottom="50dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:textColor="#000000"
-                    android:hint="Task Number"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
 
-            <com.google.android.material.textfield.TextInputLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewTaskNumberPm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Task Number"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textViewScheduleNumberPm"
+                <com.google.android.material.textfield.TextInputLayout
+
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:textColor="#000000"
-                    android:hint="Schedule Number"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
 
-            <com.google.android.material.textfield.TextInputLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewScheduleNumberPm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Schedule Number"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textViewBuildingNumberPm"
+                <com.google.android.material.textfield.TextInputLayout
+
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:textColor="#000000"
-                    android:hint="Building"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
 
-            <com.google.android.material.textfield.TextInputLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewBuildingNumberPm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Building"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textViewLocationNumberPm"
+                <com.google.android.material.textfield.TextInputLayout
+
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:textColor="#000000"
-                    android:hint="Location"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
 
-            <com.google.android.material.textfield.TextInputLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewLocationNumberPm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Location"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textViewEquipmentPm"
+                <com.google.android.material.textfield.TextInputLayout
+
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:textColor="#000000"
-                    android:hint="Equipment"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewEquipmentPm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Equipment"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textViewBriefDescriptionPm"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:hint="Brief Description"
-                    android:textColor="#000000"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewBriefDescriptionPm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Brief Description"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textViewScheduleDatePm"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:textColor="#000000"
-                    android:hint="Schedule Date"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/date_picker_pmtasksPm"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewScheduleDatePm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Schedule Date"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:textColor="#000000"
-                    android:hint="Completed Date"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/time_picker_pmtasks"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/date_picker_pmtasksPm"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Completed Date"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:hint="Completed Time"
-                    android:textColor="#000000"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/namePmTasks"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/time_picker_pmtasks"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Completed Time"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:textColor="#000000"
-                    android:hint="Completed By"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:textSize="16sp" >
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/remarks_pmTasks"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/namePmTasks"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Completed By"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:inputType="text"
-                    android:textColor="#000000"
-                    android:hint="Remarks"
-                    android:layout_height="match_parent"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:textSize="16sp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/remarks_pmTasks"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Remarks"
+                        android:inputType="text"
+                        android:textColor="#000000" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textSize="16sp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:hint="Status">
-                <AutoCompleteTextView
-                    android:id="@+id/spinner_status_pmtasks"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
-                    android:inputType="none"
-                    android:layout_height="wrap_content"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:hint="Status"
+                    android:textSize="16sp">
 
-            <Button
-                android:id="@+id/buttonCheckList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@drawable/mybutton"
-                android:padding="10dp"
-                android:shadowColor="#c4c9d6"
-                android:text="View Checklist"
-                android:textColor="@color/textColorbutton" />
+                    <AutoCompleteTextView
+                        android:id="@+id/spinner_status_pmtasks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/buttonUpdateTaskPm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@drawable/mybutton"
-                android:padding="10dp"
-                android:shadowColor="#c4c9d6"
-                android:text="Update Task"
-                android:textColor="@color/textColorbutton" />
+                   <!-- <Button
+                        android:id="@+id/buttonCheckList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/mybutton"
+                        android:padding="10dp"
+                        android:shadowColor="#c4c9d6"
+                        android:text="View Checklist"
+                        android:textColor="@color/textColorbutton" />-->
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/buttonUpdateTaskPm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/mybutton"
+                    android:padding="10dp"
+                    android:shadowColor="#c4c9d6"
+                    android:text="Update Task"
+                    android:textColor="@color/textColorbutton" />
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </ScrollView>
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/checklist_pmtask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:src="@drawable/listicon_pm"
+            app:backgroundTint="#fff"
+            app:elevation="6dp"
+            app:fabSize="auto"
+            app:tint="#4F5FC5" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/image_pmtask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:elevation="6dp"
+            android:src="@drawable/iconcam"
+            app:backgroundTint="#fff"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:fabSize="auto"
+            app:tint="#4F5FC5" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/more_pmtask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:src="@drawable/more_icon_pm"
+            android:clickable="true"
+            android:text="images"
+            app:backgroundTint="#fff"
+            app:borderWidth="0dp"
+            app:fabSize="normal"
+            app:tint="#4F5FC5"
+            android:focusable="true" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

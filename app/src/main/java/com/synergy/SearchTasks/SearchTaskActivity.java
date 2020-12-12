@@ -121,7 +121,7 @@ public class SearchTaskActivity extends MyBaseActivity {
                     String source = "search";
                     List<TaskSearchResponse> equipmentSearchResponse = response.body();
 
-                    if (equipmentSearchResponse.equals(null)) {
+                    //if (equipmentSearchResponse.equals(null)) {
                         RecyclerView recyclerView = findViewById(R.id.recycler_view_Task);
                         for (int i = 0; i < equipmentSearchResponse.size(); i++) {
                             String taskNumber = equipmentSearchResponse.get(i).getTaskNumber();
@@ -144,8 +144,8 @@ public class SearchTaskActivity extends MyBaseActivity {
 
                         recyclerView.setLayoutManager(new LinearLayoutManager(SearchTaskActivity.this));
                         recyclerView.setAdapter(mAdapter);
-                    } else
-                        Toast.makeText(SearchTaskActivity.this, "No tasks Available!", Toast.LENGTH_SHORT).show();
+//                    } else
+//                        Toast.makeText(SearchTaskActivity.this, "No tasks Available!", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 401) {
                     Toast.makeText(SearchTaskActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
                     LogoutClass logoutClass = new LogoutClass();
