@@ -72,9 +72,7 @@ public class Search extends MyBaseActivity {
     private ListView listView;
     private ArrayList<SearchResponse> contacts = new ArrayList<>();
     private SearchResponseAdapter searchResponseAdapter;
-    String role,username;
-
-    Toolbar toolbar;
+    private String role,username;
     private FusedLocationProviderClient client;
     private double latitude, longitude;
     private ViewPager viewPager;
@@ -212,7 +210,7 @@ public class Search extends MyBaseActivity {
                 if (response.code() == 200) {
                     List<SearchResponse> list = response.body();
                     if (list.isEmpty()) {
-                        Toast.makeText(Search.this, "Nothing Here", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Search.this, "No Faults Available", Toast.LENGTH_SHORT).show();
                     } else {
 
                         for (SearchResponse searchResponse : list) {

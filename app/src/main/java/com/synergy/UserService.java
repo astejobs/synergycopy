@@ -372,9 +372,15 @@ public interface UserService {
 
 
     //Get Message List
-    @GET("api/msg/search/")
+    @GET("msg/")
     @Headers("Content-Type: application/json")
-    Call<MessageResponse> getMessageList(@Header("Authorization") String token,
-                                         @Header("") String username);
+    Call<List<MessageResponse>> getMessageList(@Header("Authorization") String token,
+                                         @Header("username") String username);
+
+    @GET("msg/type")
+    @Headers("Content-Type: application/json")
+    Call<List<MessageResponse>> getChatList(@Header("Authorization") String token,
+                                            @Header("username") String username,
+                                            @Query("type") String type);
 
 }

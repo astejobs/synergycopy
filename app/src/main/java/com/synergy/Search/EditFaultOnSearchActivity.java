@@ -5,12 +5,16 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +23,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +49,8 @@ import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.FaultReport.BeforeImage;
 import com.synergy.FaultReport.list;
 import com.synergy.LogoutClass;
+import com.synergy.MainActivityLogin;
+import com.synergy.MyBaseActivity;
 import com.synergy.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -62,7 +69,7 @@ import retrofit2.Response;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
-public class EditFaultOnSearchActivity extends AppCompatActivity {
+public class EditFaultOnSearchActivity extends MyBaseActivity {
 
 
     private FloatingActionButton fab_main, fab_before, fab_after;
@@ -100,7 +107,6 @@ public class EditFaultOnSearchActivity extends AppCompatActivity {
     private ArrayAdapter<String> statusListAdapter;
     ProgressDialog progressDialog;
     LinearLayout linearLayoutdisable;
-    Toolbar toolbar;
     boolean[] checkedItems;
     List<String> stockList = new ArrayList<>();
     String[] listItems;
@@ -126,13 +132,17 @@ public class EditFaultOnSearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_fault_on_search);
+        //setContentView(R.layout.activity_edit_fault_on_search);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View viewLayout = layoutInflater.inflate(R.layout.activity_edit_fault_on_search, null, false);
+        drawer.addView(viewLayout, 0);
 
         progressDialog = new ProgressDialog(com.synergy.Search.EditFaultOnSearchActivity.this);
         progressDialog.setTitle("Loading...");
 
         linearLayoutdisable = findViewById(R.id.layout_disable);
-        toolbar = findViewById(R.id.toolbar_edit_fault);
+        toolbar.setTitle("FR Detail");
         setSupportActionBar(toolbar);
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
@@ -144,6 +154,9 @@ public class EditFaultOnSearchActivity extends AppCompatActivity {
         longitude = i.getDoubleExtra("longitude", 0);
         latitude = i.getDoubleExtra("latitude", 0);
         workSpaceid = i.getStringExtra("workspaceId");
+
+        Log.d(TAG, "initviewsAndGetInitialData1: This is working here tharm1");
+        Log.d(TAG, "onCreate: tharm1 " + role);
 
         initViews();
         callDisable();
@@ -711,7 +724,8 @@ public class EditFaultOnSearchActivity extends AppCompatActivity {
                     Toast.makeText(EditFaultOnSearchActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 404) {
                     Toast.makeText(EditFaultOnSearchActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
-                }
+                }   else
+                    Toast.makeText(EditFaultOnSearchActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
 
             }
@@ -863,22 +877,11 @@ public class EditFaultOnSearchActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-
-        MenuItem item = menu.findItem(R.id.admin).setTitle(username);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.logoutmenu) {
-            LogoutClass logoutClass = new LogoutClass();
-            logoutClass.logout(this);
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

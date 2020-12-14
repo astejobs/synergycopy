@@ -16,9 +16,9 @@ import java.util.ArrayList;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
-    ArrayList<CardDetails> chatList = new ArrayList<>();
+    ArrayList<ChatCardDetails> chatList = new ArrayList<>();
 
-    public ChatAdapter(ArrayList<CardDetails> chatList) {
+    public ChatAdapter(ArrayList<ChatCardDetails> chatList) {
         this.chatList = chatList;
     }
 
@@ -33,10 +33,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        final CardDetails currentDetails = chatList.get(position);
-        holder.chatTime.setText("09:13");
-        holder.chatBody.setText(currentDetails.getBuildingDescription());
-        holder.chatTitle.setText(currentDetails.getWorkspaceId());
+        final ChatCardDetails currentDetails = chatList.get(position);
+        holder.chatTime.setText(currentDetails.getChatTime());
+        holder.chatBody.setText(currentDetails.getChatBody());
+        holder.chatTitle.setText(currentDetails.getChatTitle());
 
     }
 

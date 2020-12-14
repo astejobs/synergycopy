@@ -17,12 +17,12 @@ public class MessageResponse {
     public String text;
     @SerializedName("createdDate")
     @Expose
-    public CreatedDate createdDate;
+    public long createdDate;
     @SerializedName("type")
     @Expose
     public String type;
 
-    public MessageResponse(Integer id, String title, String text, CreatedDate createdDate, String type) {
+    public MessageResponse(Integer id, String title, String text, long createdDate, String type) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -42,7 +42,7 @@ public class MessageResponse {
         return text;
     }
 
-    public CreatedDate getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 

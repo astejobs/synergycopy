@@ -5,13 +5,18 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -37,6 +42,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -48,6 +62,7 @@ import com.synergy.Constants;
 import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.FaultReport.BeforeImage;
 import com.synergy.LogoutClass;
+import com.synergy.MainActivityLogin;
 import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.FaultReport.list;
@@ -130,11 +145,12 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(toggle.onOptionsItemSelected(item)) {
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
     private double latitudeEquipment, longitudeEquipment;
 
     @Override
@@ -155,6 +171,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
         role = sharedPreferences.getString("role", "");
         token = sharedPreferences.getString("token", "");
         username = sharedPreferences.getString("username", "");
+
 
         Intent i = getIntent();
         frid = i.getStringExtra("frId");
@@ -235,7 +252,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
         });
 
     }
-
 
     private void callDisable() {
         techTv.setEnabled(false);
@@ -1056,7 +1072,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
                                 }
                                 if (autoCompleteSpinner.getText().toString().equals("Pause")) {
-                                    autoCompleteSpinner.setText(statuscomming,false);
+                                    autoCompleteSpinner.setText(statuscomming, false);
 
                                 }
                                 if (autoCompleteSpinner.getText().toString().equals("Pause Requested")) {
@@ -1603,7 +1619,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
                     remarksList.add(remarks1String);
                 }
             } else remarksList = null;
-            int eqId = 0;
+            Integer eqId = null;
             if (!(TextUtils.isEmpty(equipmentIdTv.getText()))) {
                 eqId = Integer.parseInt(equipmentIdTv.getText().toString());
             }
@@ -1624,7 +1640,12 @@ public class EditFaultReportActivity extends MyBaseActivity {
                     }
                 }
             }
-            Equipment equipment = new Equipment(eqId);
+            Equipment equipment;
+            if (eqId != null) {
+                equipment = new Equipment(eqId);
+            } else {
+                equipment = null;
+            }
             Location location = new Location();
             location.setId(locId);
             Building building = new Building();

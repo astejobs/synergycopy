@@ -98,7 +98,6 @@ public class SearchResponseAdapter extends BaseAdapter {
         workspaceId = currentItem.getWorkspaceId();
         longitude=currentItem.getLongitude();
         latitude=currentItem.getLatitude();
-        Log.d(TAG, "getView: "+currentItem.getLongitude());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

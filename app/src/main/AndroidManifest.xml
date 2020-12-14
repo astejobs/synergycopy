@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.synergy">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -19,6 +18,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -28,10 +28,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity"
         tools:targetApi="n">
-        <activity android:name=".Search.EditFaultOnSearchActivity"></activity>
-        <activity android:name=".Messages.ChatActivity"/>
-        <activity android:name=".Messages.MessagesActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".Search.EditFaultOnSearchActivity"
+            android:launchMode="singleTop" />
+        <activity android:name=".Messages.ChatActivity" />
+        <activity
+            android:name=".Messages.MessagesActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".MyBaseActivity" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>

@@ -19,10 +19,10 @@ import java.util.ArrayList;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
-    private ArrayList<CardDetails> messageList = new ArrayList<>();
+    private ArrayList<MessageCardDetails> messageList = new ArrayList<>();
     private Context context;
 
-    public MessageAdapter(ArrayList<CardDetails> messageList, Context context) {
+    public MessageAdapter(ArrayList<MessageCardDetails> messageList, Context context) {
         this.messageList = messageList;
         this.context = context;
     }
@@ -37,16 +37,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
 
-        final CardDetails currentDetails = messageList.get(position);
+        final MessageCardDetails currentDetails = messageList.get(position);
 
-        holder.mBody.setText(currentDetails.getWorkspaceId());
-        holder.mTitle.setText(currentDetails.getBuildingDescription());
-        holder.mTime.setText("12:12");
+        holder.mBody.setText(currentDetails.getMessageText());
+        holder.mTitle.setText(currentDetails.getMessageTitle());
+        holder.mTime.setText(currentDetails.getMessageTime());
+        String type = currentDetails.getMessageType();
         holder.mImage.setImageResource(R.drawable.user_icon);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                intent.putExtra("type", type);
                 v.getContext().startActivity(intent);
             }
         });
