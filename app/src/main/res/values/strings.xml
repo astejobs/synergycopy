@@ -7,5 +7,20 @@ Please enter the code</string>
     <string name="extended_fab_label">Cam</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="required_asterisk"><![CDATA[<font color=\'#cc0029\'>&nbsp*</font>]]></string>
+    <string name="hint_reqstname">Requestor Name <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_dept">Select Department <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_location">Select Location <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_building">Select Building <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_equipment">Equipment Name <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_division">Select Division <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_priority">Select Priority <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_contact">Contact No <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_locdesc">Location Description <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_faltcat">Select Fault Category <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_faultdesc">Fault Description <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_maintgrp">Select Maintenance Group <font fgcolor='#FF0000'>*</font></string>
+    <string name="hint_tech">Technicians <font fgcolor='#FF0000'>*</font></string>
+
 
 </resources>

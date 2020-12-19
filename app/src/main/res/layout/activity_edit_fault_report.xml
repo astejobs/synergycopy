@@ -990,6 +990,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/pdf_fab_btn_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:src="@drawable/quote"
+                android:tooltipText="Upload Pdf"
+                app:backgroundTint="#fff"
+                app:elevation="6dp"
+                app:fabSize="auto"
+                app:tint="#4F5FC5" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/before_id"

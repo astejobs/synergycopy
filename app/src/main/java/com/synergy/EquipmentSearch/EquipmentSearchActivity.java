@@ -13,6 +13,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -72,7 +74,6 @@ public class EquipmentSearchActivity extends MyBaseActivity {
     private ProgressDialog mProgress;
     private String workspace, role, token, username;
 
-
     private FusedLocationProviderClient client;
     private  double latitude,longitude;
 
@@ -87,7 +88,8 @@ public class EquipmentSearchActivity extends MyBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        client = LocationServices.getFusedLocationProviderClient(EquipmentSearchActivity.this);
+        locationMethod();
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View viewLayout = layoutInflater.inflate(R.layout.activity_equipment_search, null, false);
         drawer.addView(viewLayout, 0);
@@ -113,52 +115,14 @@ public class EquipmentSearchActivity extends MyBaseActivity {
             toolbar.setTitle("Scan Fault Report");
         } else toolbar.setTitle("Scan Tasks");
         setSupportActionBar(toolbar);
-
-
-        client = LocationServices.getFusedLocationProviderClient(EquipmentSearchActivity.this);
-       // client.flushLocations();
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Please on GPS", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        client.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
-                .addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-
-
-                Location location = task.getResult();
-                if (location != null) {
-                    try {
-                        Geocoder geocoder = new Geocoder(EquipmentSearchActivity.this, Locale.getDefault());
-                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude()
-                                , location.getLongitude(), 1);
-                        latitude=addresses.get(0).getLatitude();
-                        longitude=addresses.get(0).getLongitude();
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-
-
-
-
-
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, 1);
             }
 
-
             codeScannerView.setVisibility(View.VISIBLE);
+            locationMethod();
+
             CodeScanner codeScanner = new CodeScanner(EquipmentSearchActivity.this, codeScannerView);
             codeScanner.startPreview();
             codeScanner.setDecodeCallback(new DecodeCallback() {
@@ -169,7 +133,7 @@ public class EquipmentSearchActivity extends MyBaseActivity {
                         public void run() {
                             codeScannerView.setVisibility(View.GONE);
                             scanTextView.setVisibility(View.VISIBLE);
-                            scanTextView.setText(result.getText());
+                            scanTextView.setText(result.getText() + latitude +longitude);
                             if (value.equals("Fault")) {
                                 Intent intent1 = new Intent(EquipmentSearchActivity.this,
                                         EditFaultReportActivity.class);
@@ -189,6 +153,23 @@ public class EquipmentSearchActivity extends MyBaseActivity {
             });
         }
     }
+
+    @SuppressLint("MissingPermission")
+    private void locationMethod() {
+            LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        client.getCurrentLocation(PRIORITY_HIGH_ACCURACY,null).addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                Location location=task.getResult();
+                if (location!=null){
+                    longitude=location.getLongitude();
+                    latitude=location.getLatitude();
+                }
+                Log.d("TAG", "onComplete: hey "+location.getLatitude());
+                Log.d("TAG", "onComplete: hey"+location.getLongitude());
+            }
+        });
+        }
 
     private void callQrCodeSearch(String result, String status) {
         mProgress.show();
@@ -283,5 +264,6 @@ public class EquipmentSearchActivity extends MyBaseActivity {
         });
         alertDialog.show();
     }
+
 
 }

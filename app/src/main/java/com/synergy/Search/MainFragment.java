@@ -246,45 +246,11 @@ public class MainFragment extends Fragment  {
 
     }
 
-/*
-    private void locationMethod() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity()
-                , Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getActivity(), "Please Turn On GPS Location", Toast.LENGTH_LONG).show();
-        } else
-            client.getCurrentLocation(PRIORITY_HIGH_ACCURACY,null).addOnCompleteListener(new OnCompleteListener<android.location.Location>() {
-                @Override
-                public void onComplete(@NonNull Task<android.location.Location> task) {
-
-                    Location location = task.getResult();
-                    if (location != null) {
-                        try {
-                            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude()
-                                    , location.getLongitude(), 1);
-                            latitude = addresses.get(0).getLatitude();
-                            longitude = addresses.get(0).getLongitude();
-                            Log.d(TAG, "onComplete: lat" + addresses.get(0).getLatitude());
-                            Log.d(TAG, "onComplete: long" + addresses.get(0).getLongitude());
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-
-
-
-    }
-*/
 
     @SuppressLint("MissingPermission")
     private void locationMethodPriority() {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        //  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,500,10,(LocationListener)getActivity());
-//        client.requestLocationUpdates(locationRequest, locationCallback, null);
+
         client.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null).addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
@@ -299,47 +265,5 @@ public class MainFragment extends Fragment  {
 
             }
         });
-
-
-
-
-
-
-/*        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            client.getCurrentLocation(PRIORITY_HIGH_ACCURACY,null)
-                    .addOnCompleteListener(new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    Location location = task.getResult();
-                    if (location != null) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        Log.d(TAG, "onComplete: new method" + latitude);
-                        Log.d(TAG, "onComplete: new method" + longitude);
-                    } else {
-                        locationRequest = new LocationRequest()
-                                .setPriority(PRIORITY_HIGH_ACCURACY)
-                                .setInterval(1000)
-                                .setFastestInterval(1000).setSmallestDisplacement(2)
-                                .setNumUpdates(1);
-                        locationCallback = new LocationCallback() {
-                            @Override
-                            public void onLocationResult(LocationResult locationResult) {
-                                Location location1 = locationResult.getLastLocation();
-                                Log.d(TAG, "onLocationResult: re requsest" + location1.getLongitude());
-                                Log.d(TAG, "onLocationResult: re request" + location1.getLatitude());
-
-                            }
-                        };
-                        client.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-
-                    }
-                }
-            });
-
-        } *//*else
-            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))*/;
-        // client.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
     }
 }

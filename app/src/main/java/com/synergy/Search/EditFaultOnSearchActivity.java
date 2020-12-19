@@ -552,7 +552,19 @@ public class EditFaultOnSearchActivity extends MyBaseActivity {
 
                             }
 
-                        }
+                        }else {if (jsonObject.get("equipment").isJsonNull()){
+
+                        //added this now
+                            Intent intent=new Intent(EditFaultOnSearchActivity.this,
+                                    EditFaultReportActivity.class);
+                            intent.putExtra("workspaceId", workSpaceid);
+                            intent.putExtra("value", "Fault");
+                            intent.putExtra("frId", jsonObject.get("frId").getAsString());
+                            intent.putExtra("latOfSearch", latitude);
+                            intent.putExtra("longOfSearch", longitude);
+                            startActivity(intent);
+                            finish();
+                        }}
 
 
                     }
@@ -574,6 +586,8 @@ public class EditFaultOnSearchActivity extends MyBaseActivity {
                         if (statuscomming.equals("Pause Requested") || statuscomming.equals("Completed")
                                 || statuscomming.equals("Closed")) {
                             scanEquipmentBtn.setVisibility(View.GONE);
+                            //added this line 1pm 14 dec before app submission
+                            autoCompleteSpinner.setDropDownHeight(0);
                         } else if (statuscomming.equals("Open") || statuscomming.equals("Pause")) {
 
                             if (!(jsonObject.get("equipment").isJsonNull())) {

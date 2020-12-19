@@ -6,19 +6,24 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -77,6 +82,9 @@ public class WorkspaceActivity extends AppCompatActivity {
         role = sharedPreferences.getString("role", "");
         username = sharedPreferences.getString("username", "");
 
+        checkForGps();
+
+
         recyclerView = findViewById(R.id.recycler_view_workspace);
         progressDialog = new ProgressDialog(WorkspaceActivity.this);
         progressDialog.setTitle("Loading");
@@ -84,6 +92,15 @@ public class WorkspaceActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
 
         callForWorkspace(token);
+    }
+
+    private void checkForGps() {
+        final LocationManager manager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+        if (!(manager.isProviderEnabled(LocationManager.GPS_PROVIDER))) {
+            showSettingsAlert();
+        } else
+            Toast.makeText(WorkspaceActivity.this, "GPS is enabled!", Toast.LENGTH_LONG).show();
     }
 
     private void callForWorkspace(String token) {
@@ -149,5 +166,20 @@ public class WorkspaceActivity extends AppCompatActivity {
             logoutClass.logout(this);
         }
         return true;
+    }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(WorkspaceActivity.this);
+        alertDialog.setTitle("GPS  settings");
+        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+        alertDialog.setPositiveButton("Settings",
+                (dialog, which) -> {
+                    Intent intent = new Intent(
+                            Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                });
+        alertDialog.setNegativeButton("Cancel",
+                (dialog, which) -> dialog.cancel());
+        alertDialog.show();
     }
 }

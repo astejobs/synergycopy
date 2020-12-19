@@ -1,5 +1,6 @@
 package com.synergy.Search;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,7 @@ public class EquipmentSearchActivityforEdit extends MyBaseActivity {
     EquipmentSearchAdapterforEdit equipmentSearchAdapterforEdit;
     String token, role;
     String workspace;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,9 @@ public class EquipmentSearchActivityforEdit extends MyBaseActivity {
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View viewLayout = layoutInflater.inflate(R.layout.activity_seach_layout_list, null, false);
         drawer.addView(viewLayout, 0);
-
+        progressDialog = new ProgressDialog(EquipmentSearchActivityforEdit.this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.setCancelable(false);
         listView = findViewById(R.id.listview_equip_search);
         searchView = findViewById(R.id.search_equip_bar);
         Intent intent = getIntent();
@@ -65,7 +69,7 @@ public class EquipmentSearchActivityforEdit extends MyBaseActivity {
             public boolean onQueryTextChange(String queryParam) {
                 if (queryParam.isEmpty()) {
                     equipDetails.clear();
-                     equipmentSearchAdapterforEdit.notifyDataSetInvalidated();
+                    equipmentSearchAdapterforEdit.notifyDataSetInvalidated();
                 } else {
                     equipDetails.clear();
                     getEquipment(queryParam, token);
@@ -78,15 +82,16 @@ public class EquipmentSearchActivityforEdit extends MyBaseActivity {
 
     private void getEquipment(String queryParam, String token) {
         equipDetails.clear();
+        progressDialog.show();
 
         Call<List<EquipmentSearchResponseforEdit>> call = APIClient.getUserServices().
                 getSearchEquipment(queryParam, token, workspace, role);
 
         call.enqueue(new Callback<List<EquipmentSearchResponseforEdit>>() {
             @Override
-            public void onResponse(Call<List<EquipmentSearchResponseforEdit>> call,
-                                   Response<List<EquipmentSearchResponseforEdit>> response) {
-                if (response.code() == 200) {
+            public void onResponse(Call<List<EquipmentSearchResponseforEdit>> call, Response<List<EquipmentSearchResponseforEdit>> response) {
+                if (response.code() == 200 ) {
+                    progressDialog.dismiss();
                     List<EquipmentSearchResponseforEdit> equipmentSearchResponse = response.body();
                     for (int i = 0; i < equipmentSearchResponse.size(); i++) {
                         int id = equipmentSearchResponse.get(i).getId();
@@ -107,7 +112,7 @@ public class EquipmentSearchActivityforEdit extends MyBaseActivity {
                     equipmentSearchAdapterforEdit.notifyDataSetChanged();
 
                 } else
-                    Toast.makeText(EquipmentSearchActivityforEdit.this, "Error : " + response.message(), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
             }
 
             @Override
@@ -115,6 +120,7 @@ public class EquipmentSearchActivityforEdit extends MyBaseActivity {
                 Toast.makeText(EquipmentSearchActivityforEdit.this, "Failed to SearchActivity Equipment", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onFailure get message of fail:  " + t.getMessage());
                 Log.d(TAG, "onFailure: cause" + t.getCause());
+                progressDialog.dismiss();
             }
         });
     }

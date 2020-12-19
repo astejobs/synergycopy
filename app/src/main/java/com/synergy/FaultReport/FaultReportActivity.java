@@ -74,7 +74,7 @@ public class FaultReportActivity extends MyBaseActivity {
             faultDescriptionEditText, contactNumberEditText, techTv, eqwuipmentTextView;
     private MaterialButton selectTech, selectEquipBtn;
     private Button buttonCreateFaultReport;
-    private String requestorName, locDesc, faultDesc, token,username;
+    private String requestorName, locDesc, faultDesc, token, username;
     private String contactNo;
     private int depId, locId, buildId, maintId, priroityId, faultId, divisionid, equipId, techId, equipmentId;
     private ArrayAdapter<list> deptListAdapter;
@@ -93,7 +93,7 @@ public class FaultReportActivity extends MyBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(toggle.onOptionsItemSelected(item)) {
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -121,7 +121,7 @@ public class FaultReportActivity extends MyBaseActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
         role = sharedPreferences.getString("role", "");
-        username=sharedPreferences.getString("username","");
+        username = sharedPreferences.getString("username", "");
         Intent intent = getIntent();
         workSpaceid = intent.getStringExtra("workspaceId");
 
@@ -327,7 +327,7 @@ public class FaultReportActivity extends MyBaseActivity {
                         genralEquipment.add(new list(eqName, eqId));
                         //equipmentSpinner.setAdapter(equipmentAdapter);
                     }
-                }else if (response.code() == 401) {
+                } else if (response.code() == 401) {
                     Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_401_MESSAGE, Toast.LENGTH_SHORT).show();
                     LogoutClass logoutClass = new LogoutClass();
                     logoutClass.logout(FaultReportActivity.this);
@@ -677,18 +677,63 @@ public class FaultReportActivity extends MyBaseActivity {
                 }
             }
         }
-        if (TextUtils.isEmpty(contactNumberEditText.getText())
+        if (requestorName.isEmpty()) {
+            requestorNameEditText.setError("Please Enter Requestor Name");
+            Toast.makeText(this, "Please Enter Requestor Name", Toast.LENGTH_SHORT).show();
+        } else if (depId == 0) {
+            departmentSpinner.setError("Please Select Department");
+            Toast.makeText(this, "Please Select Department", Toast.LENGTH_SHORT).show();
+
+        } else if (buildId == 0) {
+            buildingSpinner.setError("Please Select Building");
+            Toast.makeText(this, "Please Select Building", Toast.LENGTH_SHORT).show();
+        } else if (locId==0){
+            locationSpinner.setError("Please Select Location");
+            Toast.makeText(this, "Please Select Toast", Toast.LENGTH_SHORT).show();
+        }else if (equipmentId==0){
+            eqwuipmentTextView.setError("Please Select Equipment");
+            Toast.makeText(this, "Please Select Equipment", Toast.LENGTH_SHORT).show();
+        }else if (TextUtils.isEmpty(contactNumberEditText.getText())||contactNo.length() < 10){
+            contactNumberEditText.setError("Please Enter Contact no");
+            Toast.makeText(this, "Please Enter Contact No", Toast.LENGTH_SHORT).show();
+        }else if (priroityId==0){
+            prioritySpinner.setError("Please Select Priority");
+            Toast.makeText(this, "Please Select Priority", Toast.LENGTH_SHORT).show();
+
+        }else if ( TextUtils.isEmpty(locationDescriptionEditText.getText())){
+            locationDescriptionEditText.setError("Location description is needed");
+            Toast.makeText(this, "Loaction Description is Needed", Toast.LENGTH_SHORT).show();
+        }else if (faultId==0){
+            faultCategorySpinner.setError("Please Select Fault Category");
+            Toast.makeText(this, "Please Select Fault Category", Toast.LENGTH_SHORT).show();
+        }else if ( TextUtils.isEmpty(faultDescriptionEditText.getText())){
+            faultDescriptionEditText.setError("Fault description is Needed");
+            Toast.makeText(this, "Fault description is Needed", Toast.LENGTH_SHORT).show();
+        }else if (maintId==0){
+            selectMaintenanceSpinner.setError("Please Select Maintainance Group");
+            Toast.makeText(this, "Please Select Maintainance Group", Toast.LENGTH_SHORT).show();
+
+        }else if (divisionid==0){
+            divisionSpinner.setError("Please Select Division");
+            Toast.makeText(this, "Please Select Division", Toast.LENGTH_SHORT).show();
+        }else if (attendedByIdsList.isEmpty()){
+            techTv.setError("Please Select Technician");
+            Toast.makeText(this, "Please Select Technician", Toast.LENGTH_SHORT).show();
+        }else
+
+           /* if (TextUtils.isEmpty(contactNumberEditText.getText())
                 || buildId == 0 || locId == 0 || maintId == 0 ||
                 priroityId == 0 || depId == 0 || faultId == 0 ||
                 equipmentId == 0 || attendedByIdsList.isEmpty() ||
-                TextUtils.isEmpty(locationDescriptionEditText.getText())
+                TextUtils.isEmpty(locationDescriptionEditText.getText()) ||
+                TextUtils.isEmpty(faultDescriptionEditText.getText())
                 || TextUtils.isEmpty(requestorNameEditText.getText())) {
 
             Toast.makeText(this, "Please Select All Feilds", Toast.LENGTH_SHORT).show();
         } else if (contactNo.length() < 8) {
 
             Toast.makeText(this, "Contact Number not Valid", Toast.LENGTH_SHORT).show();
-        } else {
+        } else */{
 
             Location location = new Location();
             location.setId(locId);
@@ -734,6 +779,7 @@ public class FaultReportActivity extends MyBaseActivity {
                         intent.putExtra("value", "Before");
                         intent.putExtra("workspace", workSpaceid);
                         intent.putExtra("token", token);
+                        intent.putExtra("role", role);
                         startActivity(intent);
                         Toast.makeText(FaultReportActivity.this, "Fault Report Created Successfully",
                                 Toast.LENGTH_SHORT).show();
@@ -744,6 +790,9 @@ public class FaultReportActivity extends MyBaseActivity {
                         Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_500_MESSAGE, Toast.LENGTH_SHORT).show();
                     } else if (response.code() == 404) {
                         Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_404_MESSAGE, Toast.LENGTH_SHORT).show();
+                    } else if (response.code() == 400) {
+                        Toast.makeText(FaultReportActivity.this, Constants.ERROR_CODE_400_MESSAGE, Toast.LENGTH_SHORT).show();
+
                     } else
                         Log.d(TAG, "onResponse: hi" + response.message());
                     Log.d(TAG, "onResponse: hl" + response.raw());

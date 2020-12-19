@@ -18,6 +18,7 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,10 +26,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
@@ -57,7 +56,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.synergy.APIClient;
-import com.synergy.CheckInternet;
 import com.synergy.Constants;
 import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.FaultReport.BeforeImage;
@@ -66,6 +64,7 @@ import com.synergy.MainActivityLogin;
 import com.synergy.MyBaseActivity;
 import com.synergy.R;
 import com.synergy.FaultReport.list;
+import com.synergy.UploadPdf.UploadPdf;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -86,7 +85,7 @@ import static com.synergy.MainActivityLogin.SHARED_PREFS;
 public class EditFaultReportActivity extends MyBaseActivity {
     //test
 
-    private FloatingActionButton fab_main, fab_before, fab_after;
+    private FloatingActionButton fab_main, fab_before, fab_after, fab_upload_pdf;
     private Boolean isMenuOpen = false;
     private final OvershootInterpolator interpolator = new OvershootInterpolator();
     private Float translationY = 600f;
@@ -138,7 +137,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
     private RadioButton radioSelectedButton;
     private List<StatusItem> items = new ArrayList<StatusItem>();
-    //private String onClickNotification;
 
     String tech = "Technician";
     String managingAgent = "ManagingAgent";
@@ -195,7 +193,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
 
         linearLayoutdisable = findViewById(R.id.layout_disable);
-        if (role.equals("ManagingAgent")) {
+        if (role.equals(Constants.ROLE_MANAGINGAGENT)) {
 
             initViews();
             callDisable();
@@ -267,8 +265,8 @@ public class EditFaultReportActivity extends MyBaseActivity {
         mainGrpSpinner.setEnabled(false);
         observationEditText.setEnabled(false);
         actionTakenEditText.setEnabled(false);
-        plusbtn.setEnabled(false);
-        deletebtn.setEnabled(false);
+        // plusbtn.setEnabled(false);
+        //deletebtn.setEnabled(false);
     }
 
 
@@ -279,7 +277,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 if (response.code() == 200) {
-
                     JsonArray jsonarraytech = response.body();
                     Log.d(TAG, "onResponse: hi my texh" + jsonarraytech);
                     for (int i = 0; i < jsonarraytech.size(); i++) {
@@ -287,7 +284,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
                         int id = jsonarraytech.get(i).getAsJsonObject().get("id").getAsInt();
                         genralTechnicalList.add(new list(technicianName, id));
                         stockList.add(technicianName);
-
                     }
                     listItems = new String[stockList.size()];
                     listItems = stockList.toArray(listItems);
@@ -311,9 +307,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
                 Toast.makeText(EditFaultReportActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
     }
-
 
     private void initViews() {
         acceptButton = findViewById(R.id.acceptbttn);
@@ -348,6 +342,8 @@ public class EditFaultReportActivity extends MyBaseActivity {
         fab_main = findViewById(R.id.images_id);
         fab_before = findViewById(R.id.before_id);
         fab_after = findViewById(R.id.after_id);
+        fab_upload_pdf = findViewById(R.id.pdf_fab_btn_id);
+
 
         locationSpinner.setEnabled(false);
         buildingSpinner.setEnabled(false);
@@ -413,17 +409,17 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                checkFieldsForEmptyValues();
+                // checkFieldsForEmptyValues();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
 
-                checkFieldsForEmptyValues();
+                //checkFieldsForEmptyValues();
             }
         };
-        observationEditText.addTextChangedListener(textWatcher);
-        actionTakenEditText.addTextChangedListener(textWatcher);
+        //  observationEditText.addTextChangedListener(textWatcher);
+        // actionTakenEditText.addTextChangedListener(textWatcher);
         //autoCompleteSpinner.addTextChangedListener(textWatcher);
 
 
@@ -953,7 +949,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
                                 }
                             });
                         } else if (role.equals(Constants.ROLE_TECHNICIAN) && statusComing.equals("Pause")) {
-                            requestPauseButton.setVisibility(View.INVISIBLE);
+                            requestPauseButton.setVisibility(View.GONE);
                             autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -1056,9 +1052,10 @@ public class EditFaultReportActivity extends MyBaseActivity {
                     String editablevariable = jsonObject.get("editable").getAsString();
                     statuscomming = jsonObject.get("status").getAsString();
 
+
                     if (role.equals(Constants.ROLE_TECHNICIAN) && statuscomming.equals("Open")) {
-                        acceptButton.setVisibility(View.INVISIBLE);
-                        rejectButton.setVisibility(View.INVISIBLE);
+                        acceptButton.setVisibility(View.GONE);
+                        rejectButton.setVisibility(View.GONE);
                         requestPauseButton.setVisibility(View.VISIBLE);
                         autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -1083,8 +1080,8 @@ public class EditFaultReportActivity extends MyBaseActivity {
                         });
                     }
                     if (role.equals(Constants.ROLE_TECHNICIAN) && statuscomming.equals("Pause")) {
-                        acceptButton.setVisibility(View.INVISIBLE);
-                        rejectButton.setVisibility(View.INVISIBLE);
+                        acceptButton.setVisibility(View.GONE);
+                        rejectButton.setVisibility(View.GONE);
                         requestPauseButton.setVisibility(View.GONE);
                         autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -1221,32 +1218,15 @@ public class EditFaultReportActivity extends MyBaseActivity {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String maintname = jsonObject.get("maintGrp").getAsJsonObject().get("name").getAsString();
                         maintId = jsonObject.get("maintGrp").getAsJsonObject().get("id").getAsInt();
-                        //  genralMaintGrp.add(new list(maintname, id));
                         mainGrpSpinner.setText(maintname);
-                        //  mainGrpSpinner.setAdapter(maintAdapter);
-                       /* OptionalInt index = IntStream.range(0, genralMaintGrp.size())
-                                .filter(i -> genralMaintGrp.get(i).name.equals(maintname))
-                                .findFirst();
-                        if (index.isPresent()) {
-                            int realid = index.getAsInt();
-                            mainGrpSpinner.setSelection(realid);
-                        }*/
+
                     }
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         String faulname = jsonObject.get("faultCategory").getAsJsonObject().get("name").getAsString();
                         faultId = jsonObject.get("faultCategory").getAsJsonObject().get("id").getAsInt();
-                        //  genralFaultCatList.add(new list(faulname, id));
                         faultCategorySpinner.setText(faulname);
-                        // faultCategorySpinner.setAdapter(faultCatAdapter);
-                      /*  OptionalInt index = IntStream.range(0, genralFaultCatList.size())
-                                .filter(i -> genralFaultCatList.get(i).name.equals(faulname))
-                                .findFirst();
-                        if (index.isPresent()) {
-                            int realid = index.getAsInt();
-                            Log.d(TAG, "onResponse: fff" + realid);
-                            faultCategorySpinner.setSelection(realid);
-                        }*/
+
                     }
                     if (!(jsonObject.get("attendedBy").isJsonNull())) {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -1256,34 +1236,11 @@ public class EditFaultReportActivity extends MyBaseActivity {
                                 if (!(jsonObject1.isJsonNull())) {
                                     String techname = ja.get(j).getAsJsonObject().get("name").getAsString();
                                     techTv.setText(techname);
-                                 /*   OptionalInt index = IntStream.range(0, genralTechnicalList.size())
-                                            .filter(i -> genralTechnicalList.get(i).name.equals(techname))
-                                            .findFirst();
-                                    if (index.isPresent()) {
-                                        int realid = index.getAsInt();
-                                        //  technicianSpinner.setSelection(realid);
-                                    }*/
+
                                 }
                             }
                         }
                     }
-/*
-                    if (!(jsonObject.get("costCenter").isJsonNull())) {
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                            JsonObject jsonObject1 = jsonObject.get("costCenter").getAsJsonObject();
-                            String costName = jsonObject1.get("costCenterName").getAsString();
-                            OptionalInt index = IntStream.range(0, genCostCebterList.size())
-                                    .filter(i -> genCostCebterList.get(i).name.equals(costName))
-                                    .findFirst();
-                            if (index.isPresent()) {
-                                int realid = index.getAsInt();
-                                Log.d(TAG, "onResponse: cost" + realid);
-                                costCenterSpinner.setSelection(realid);
-                            }
-                        }
-
-                    }
-*/
 
                     if ((jsonObject.get("locationDesc").getAsString()) != null) {
                         locDescEditText.setText(jsonObject.get("locationDesc").getAsString());
@@ -1304,14 +1261,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
                         if (genralStatusList.contains(statuscomming)) {
                             autoCompleteSpinner.setText(statuscomming, false);
                         }
-                        //   statusSpinner.setText(statuscomming);
-                      /*  int indeex = 0;
-                        if (genralStatusList.contains(statuscomming)) {
-                            indeex = statusListAdapter.getPosition(statuscomming);
-                            statusSpinner.setSelection(indeex);
-                            statusListAdapter.notifyDataSetChanged();
-                        }*/
-
                     }
 
 
@@ -1348,6 +1297,31 @@ public class EditFaultReportActivity extends MyBaseActivity {
                                 mlayout.addView(createNewEditText(remString, i));
                             }
                         }
+                    }
+                    if (role.equals(Constants.ROLE_MANAGINGAGENT) && statuscomming.equals("Completed")
+                            && jsonObject.get("equipment").isJsonNull()) {
+                        acceptButton.setVisibility(View.GONE);
+                        rejectButton.setVisibility(View.GONE);
+                        requestPauseButton.setVisibility(View.GONE);
+                        updateFaultReportButton.setVisibility(View.VISIBLE);
+                        autoCompleteSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (autoCompleteSpinner.getText().toString().equals("Select status")) {
+                                    autoCompleteSpinner.setText(statuscomming, false);
+                                }
+
+                                if (autoCompleteSpinner.getText().toString().equals("Pause")) {
+                                    autoCompleteSpinner.setText(statuscomming, false);
+
+                                }
+                                if (autoCompleteSpinner.getText().toString().equals("Pause Requested")) {
+                                    autoCompleteSpinner.setText(statuscomming, false);
+
+                                }
+                            }
+                        });
+
                     }
 
 
@@ -1402,7 +1376,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
         editText = new TextInputEditText(this);
         editText.setId(remarksId);
-        //    editText.setGravity(View.TEXT_ALIGNMENT_TEXT_START);
 
         editText.setBackgroundResource(R.drawable.mybutton);
         editText.setText(remarksString);
@@ -1433,7 +1406,6 @@ public class EditFaultReportActivity extends MyBaseActivity {
                 uploadFileTv.setText(data.getData().getPath());
                 uploadFileBtn.setVisibility(View.VISIBLE);
                 Uri uri = data.getData();
-                //   callUpload(uri);
 
             }
         }
@@ -1645,6 +1617,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
                 equipment = new Equipment(eqId);
             } else {
                 equipment = null;
+
             }
             Location location = new Location();
             location.setId(locId);
@@ -1660,8 +1633,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
             maintGrp.setId(maintId);
             Priority priority = new Priority();
             priority.setId(priId);
-            CostCenter costCenter = null;// = new CostCenter(costId);
-
+            CostCenter costCenter = null;
             ArrayList<AttendedBy> attendedBy = new ArrayList<>();
 
 
@@ -1711,7 +1683,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
                         }
                         Toast.makeText(EditFaultReportActivity.this, "Fault Report Updated", Toast.LENGTH_LONG).show();
-                        updateFaultReportButton.setVisibility(View.INVISIBLE);
+                        updateFaultReportButton.setVisibility(View.GONE);
                         /*else {
                             Intent intent1 = new Intent(EditFaultReportActivity.this, Dashboard.class);
                             intent1.putExtra("workspaceId", workSpaceid);
@@ -1761,10 +1733,12 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
         fab_before.setAlpha(0f);
         fab_after.setAlpha(0f);
+        fab_upload_pdf.setAlpha(0f);
 
 
         fab_before.setTranslationY(translationY);
         fab_after.setTranslationY(translationY);
+        fab_upload_pdf.setTranslationY(translationY);
 
 
         fab_main.setOnClickListener(new View.OnClickListener() {
@@ -1778,6 +1752,23 @@ public class EditFaultReportActivity extends MyBaseActivity {
 
             }
         });
+
+        fab_upload_pdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditFaultReportActivity.this, UploadPdf.class);
+                intent.putExtra("token", token);
+                intent.putExtra("value", "Before");
+                intent.putExtra("checkForFrid", frid);
+                intent.putExtra("role", role);
+                intent.putExtra("workspace", workSpaceid);
+                intent.putExtra("frId", frIdEditText.getText().toString());
+                intent.putExtra("status", autoCompleteSpinner.getText().toString());
+                startActivity(intent);
+
+            }
+        });
+
 
         fab_before.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1816,6 +1807,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
     private void openMenu() {
         isMenuOpen = !isMenuOpen;
         fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
+        fab_upload_pdf.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         fab_before.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
     }
@@ -1823,6 +1815,7 @@ public class EditFaultReportActivity extends MyBaseActivity {
     private void closeMenu() {
         isMenuOpen = !isMenuOpen;
         fab_main.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start();
+        fab_upload_pdf.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
         fab_before.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
         fab_after.animate().translationY(translationY).setInterpolator(interpolator).setDuration(300).start();
     }

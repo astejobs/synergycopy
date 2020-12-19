@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="#e2e2e2"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_equipmentSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorCodeSchemeApp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:menu="@menu/menu"
+        app:title="QR Code Scanner"
+        app:titleMargin="8dp"
+        app:titleTextColor="#ffffff" />
+
+
+    <com.budiyev.android.codescanner.CodeScannerView
+        android:id="@+id/qr_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_equipmentSearch" />
+
+
+
+    <TextView
+        android:id="@+id/scan_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="16dp"
+
+        android:layout_gravity="center"
+        android:background="@drawable/mysearcht"
+        android:visibility="invisible"
+        android:layout_marginTop="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/qr_btn" />
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view_equip"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_equipmentSearch"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</LinearLayout>

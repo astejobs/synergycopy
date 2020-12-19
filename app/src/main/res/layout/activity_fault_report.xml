@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Requestor Name">
+                    android:hint="@string/hint_reqstname">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/requestorNameEditText"
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Select Department">
+                    android:hint="@string/hint_dept">
 
                     <AutoCompleteTextView
                         android:id="@+id/departmentSpinner"
@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Select building">
+                    android:hint="@string/hint_building">
 
                     <AutoCompleteTextView
                         android:id="@+id/buildingSpinner"
@@ -99,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Select location">
+                    android:hint="@string/hint_location">
 
                     <AutoCompleteTextView
                         android:id="@+id/locationSpinner"
@@ -116,60 +116,60 @@
                     android:layout_margin="8dp"
                     android:orientation="horizontal"
                     android:weightSum="2">
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
-                        android:layout_weight="1.65"
                         android:layout_height="wrap_content"
-                        android:hint="Equipment Name">
+                        android:layout_weight="1.65"
+                        android:hint="@string/hint_equipment">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/equipment_textview"
                             android:layout_width="match_parent"
-                            android:editable="false"
-                            android:layout_height="wrap_content" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-<!--
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.65"
-                        android:hint="Select Equipment">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/equipmentSpinner"
-                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none" />
+                            android:editable="false" />
 
                     </com.google.android.material.textfield.TextInputLayout>
--->
+
+                    <!--
+                                        <com.google.android.material.textfield.TextInputLayout
+                                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1.65"
+                                            android:hint="Select Equipment">
+
+                                            <AutoCompleteTextView
+                                                android:id="@+id/equipmentSpinner"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:inputType="none" />
+
+                                        </com.google.android.material.textfield.TextInputLayout>
+                    -->
 
                     <com.google.android.material.button.MaterialButton
-                        android:layout_width="0dp"
-
-
-                        android:elevation="20dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-
-
-
                         android:id="@+id/select_equip_btn"
+
+
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_weight=".35"
+                        android:elevation="20dp"
+
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+
+
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
                         android:padding="10dp"
                         app:cornerRadius="4dp"
                         app:icon="@drawable/searchicon"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
                         app:iconSize="32dp" />
 
 
@@ -180,7 +180,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Contact No">
+
+                    android:hint="@string/hint_contact">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/contactNumber_fault"
@@ -197,7 +198,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Select Priority">
+                    android:hint="@string/hint_priority">
 
                     <AutoCompleteTextView
                         android:id="@+id/prioritySpinner"
@@ -213,7 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="location description">
+                    android:hint="@string/hint_locdesc">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/LocationDescriptionEditText"
@@ -227,7 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Select Fault Category">
+                    android:hint="@string/hint_faltcat">
 
                     <AutoCompleteTextView
                         android:id="@+id/faultCategorySpinner"
@@ -242,7 +243,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Fault description">
+                    android:hint="@string/hint_faultdesc">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/FaultDescriptionEditText"
@@ -256,7 +257,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Select Maintenance Group">
+                    android:hint="@string/hint_maintgrp">
 
                     <AutoCompleteTextView
                         android:id="@+id/selectMaintenanceSpinner"
@@ -271,7 +272,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Select Division">
+                    android:hint="@string/hint_division">
 
                     <AutoCompleteTextView
                         android:id="@+id/divisionSpinner"
@@ -294,7 +295,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.65"
-                        android:hint="Technicians">
+                        android:hint="@string/hint_tech">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/techtv"
@@ -310,17 +311,17 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_weight=".35"
-                        android:padding="10dp"
-                        app:cornerRadius="4dp"
-                        app:icon="@drawable/searchicon"
-                        app:iconSize="32dp"
                         android:elevation="20dp"
                         android:insetLeft="0dp"
                         android:insetTop="0dp"
                         android:insetRight="0dp"
                         android:insetBottom="0dp"
+                        android:padding="10dp"
+                        app:cornerRadius="4dp"
+                        app:icon="@drawable/searchicon"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
+                        app:iconSize="32dp"
 
                         />
 

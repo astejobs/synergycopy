@@ -28,9 +28,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.synergy.EquipmentSearch.EquipmentSearchActivity;
 import com.synergy.FaultReport.FaultReportActivity;
 import com.synergy.Messages.MessagesActivity;
+import com.synergy.ScanLocation.ScanLocation;
 import com.synergy.Search.Search;
 import com.synergy.SearchTasks.SearchTaskActivity;
 import com.synergy.Setting.SettingActivity;
+import com.synergy.UploadPdf.UploadPdf;
 
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
@@ -150,7 +152,11 @@ public class MyBaseActivity extends AppCompatActivity implements NavigationView.
             case R.id.setNav:
                 intentMethod(SettingActivity.class, "");
                 break;
+            case R.id.scanlocation:
+                intentMethod(ScanLocation.class, "");
+                break;
             case R.id.upload_qoutation_nav:
+                intentMethod(UploadPdf.class,"");
                 break;
             case R.id.upload_po_nav:
                 break;

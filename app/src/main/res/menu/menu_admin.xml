@@ -66,6 +66,16 @@
             android:title="Create Fault Report" />
     </group>
     <group
+        android:id="@+id/grp11"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/scanlocation"
+            android:checkable="true"
+            android:icon="@drawable/faultsoneq"
+            android:title="ScanLocation" />
+    </group>
+
+    <group
         android:id="@+id/grp7"
         android:checkableBehavior="single">
         <item
@@ -84,4 +94,5 @@
             android:icon="@drawable/messages_original"
             android:title="Messages" />
     </group>
+
 </menu>

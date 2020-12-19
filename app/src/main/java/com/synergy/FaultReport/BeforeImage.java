@@ -75,7 +75,7 @@ public class BeforeImage extends MyBaseActivity {
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View viewLayout = layoutInflater.inflate(R.layout.activity_before_image, null, false);
         drawer.addView(viewLayout, 0);
-
+        toolbar = findViewById(R.id.toolbar_globe);
         toolbar.setTitle("Upload Image");
         setSupportActionBar(toolbar);
 
@@ -97,7 +97,7 @@ public class BeforeImage extends MyBaseActivity {
             takeBtn = findViewById(R.id.take_photo_btn);
             uploadBtn = findViewById(R.id.upload_btn);
             uploadBtn.setEnabled(false);
-            toolbar = findViewById(R.id.toolbar_globe);
+
             doneBtn = findViewById(R.id.done_btn);
             previousImagesbtn = findViewById(R.id.previous_images);
             beforeImgPre = findViewById(R.id.before_image_preview);
@@ -142,6 +142,35 @@ public class BeforeImage extends MyBaseActivity {
             });
 */
         }
+
+        if (role.equals("Admin")){
+            previousImagesbtn = findViewById(R.id.previous_images);
+            takeBtn = findViewById(R.id.take_photo_btn);
+            uploadBtn = findViewById(R.id.upload_btn);
+            doneBtn = findViewById(R.id.done_btn);
+            takeBtn.setVisibility(View.VISIBLE);
+            uploadBtn.setVisibility(View.VISIBLE);
+            doneBtn.setVisibility(View.GONE);
+            toolbar = findViewById(R.id.toolbar_globe);
+            setSupportActionBar(toolbar);
+            toolbar.setTitle(value + " Image");
+            previousImagesbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(BeforeImage.this, PreviousImagesActivity.class);
+                    intent.putExtra("token", token);
+                    intent.putExtra("workspace", workspace);
+                    intent.putExtra("frid", frId);
+                    intent.putExtra("role", role);
+                    intent.putExtra("value", value);
+                    startActivity(intent);
+                }
+            });
+
+
+        }
+
+
 
         if (role.equals("Technician")) {
             previousImagesbtn = findViewById(R.id.previous_images);

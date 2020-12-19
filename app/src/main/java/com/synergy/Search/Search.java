@@ -73,6 +73,7 @@ public class Search extends MyBaseActivity {
     private ArrayList<SearchResponse> contacts = new ArrayList<>();
     private SearchResponseAdapter searchResponseAdapter;
     private String role,username;
+
     private FusedLocationProviderClient client;
     private double latitude, longitude;
     private ViewPager viewPager;
@@ -82,7 +83,7 @@ public class Search extends MyBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(toggle.onOptionsItemSelected(item)) {
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -100,9 +101,8 @@ public class Search extends MyBaseActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
         role = sharedPreferences.getString("role", "");
-        username=sharedPreferences.getString("username","");
+        username = sharedPreferences.getString("username", "");
         String wk = sharedPreferences.getString("workspaceId", "");
-
         toolbar.setTitle("Search Fault Report");
         setSupportActionBar(toolbar);
         username = sharedPreferences.getString("username", "");
@@ -201,7 +201,7 @@ public class Search extends MyBaseActivity {
         progressDialog.show();
 
         Log.d(TAG, "loadSearch: nmk" + workspaceId);
-        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspaceId, callQueryDependent, token, role,"Active");
+        Call<List<SearchResponse>> call = APIClient.getUserServices().getSearchResult(workspaceId, callQueryDependent, token, role, "Active");
         call.enqueue(new Callback<List<SearchResponse>>() {
             @Override
             public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {
@@ -312,7 +312,7 @@ public class Search extends MyBaseActivity {
         for (int i = 0; i < list.size(); i++) {
             Bundle bundle = new Bundle();
             bundle.putString("tittle", list.get(i));
-            bundle.putString("workspace",workspaceId);
+            bundle.putString("workspace", workspaceId);
             fragment.setArguments(bundle);
             adapter.addFragment(fragment, list.get(i));
             fragment = new MainFragment();

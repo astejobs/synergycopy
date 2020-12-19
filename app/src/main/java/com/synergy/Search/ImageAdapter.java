@@ -57,25 +57,8 @@ public class ImageAdapter extends PagerAdapter {
             }
 
         });
-      /*  if (!(urlList.isEmpty())) {
-            for (int i=0;i<urlList.size();i++){
-                byte[] decodedString = Base64.decode(String.valueOf(urlList.get(i)), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                imageView.setImageBitmap(decodedByte);
-                container.addView(imageView);
-            }
-            Picasso.get().load("http://192.168.1.116:8081/api/faultreport/getimage/" + urlList.get(position))
-                    .into(imageView);
-            container.addView(imageView);
-       } else {
-
-            imageView.setImageResource(imgId);
-            container.addView(imageView, 0);
-        }*/
         return imageView;
-
     }
-
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((ImageView) object);

@@ -40,7 +40,7 @@ public class EditFaultReportRequest {
 
     private String status;
 
-    private Equipment equipment;
+    private Equipment equipment=null;
 
     private List<String> remarks = null;
 
