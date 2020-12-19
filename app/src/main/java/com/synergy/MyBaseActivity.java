@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.internal.NavigationMenuView;
@@ -39,9 +40,9 @@ public class MyBaseActivity extends AppCompatActivity implements NavigationView.
     public Toolbar toolbar;
     public String token;
     public String username;
-    NavigationView navigationView, navigationViewTech, navigationViewAgent;
+    NavigationView navigationView;
     public ActionBarDrawerToggle toggle;
-    String role, workspaceId;
+    public String role, workspaceId;
     private final CheckInternet checkInternet = new CheckInternet();
 
     @Override

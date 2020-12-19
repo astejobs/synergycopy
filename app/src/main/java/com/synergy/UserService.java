@@ -348,34 +348,16 @@ public interface UserService {
     @POST("faultreport/equipment")
     @Headers("Content-Type: application/json")
     Call<JsonObject> getEquipmentDetailsOnGeolocation(@Header("WorkspaceId") String workspaceId,
-                                @Header("Authorization") String token,
-                                @Header("role") String role,
-                                @Body EquipmentGeoLocationClass geoLocationClass);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                                      @Header("Authorization") String token,
+                                                      @Header("role") String role,
+                                                      @Body EquipmentGeoLocationClass geoLocationClass);
 
 
     //Get Message List
     @GET("msg/")
     @Headers("Content-Type: application/json")
     Call<List<MessageResponse>> getMessageList(@Header("Authorization") String token,
-                                         @Header("username") String username);
+                                               @Header("username") String username);
 
     @GET("msg/type")
     @Headers("Content-Type: application/json")

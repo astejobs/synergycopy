@@ -28,15 +28,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity"
         tools:targetApi="n">
+        <activity android:name=".SearchTasks.ImagesActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".Search.EditFaultOnSearchActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop" />
-        <activity android:name=".Messages.ChatActivity" />
+        <activity android:name=".Messages.ChatActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Messages.MessagesActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop" />
-        <activity android:name=".MyBaseActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".MyBaseActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,44 +54,62 @@
         </activity>
         <activity
             android:name=".SearchTasks.SearchTaskActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop" />
         <activity
             android:name=".EquipmentSearch.UploadTaskImageActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop" />
-        <activity android:name=".Otp.OtpActivity" />
-        <activity android:name=".Search.UploadFile" />
-        <activity android:name=".Search.PreviousImagesActivity" />
+        <activity android:name=".Otp.OtpActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Search.UploadFile"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Search.PreviousImagesActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Setting.SettingActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop" />
-        <activity android:name=".EquipmentSearch.CheckListActivity" />
-        <activity android:name=".Search.EditFaultReportActivity">
+        <activity android:name=".EquipmentSearch.CheckListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Search.EditFaultReportActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="EditFaultReportActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".EquipmentSearch.PmTaskActivity">
+        <activity android:name=".EquipmentSearch.PmTaskActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="PmTaskActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Search.EquipmentSearchActivityforEdit" />
-        <activity android:name=".MainActivityLogin" />
-        <activity android:name=".EquipmentSearch.EquipmentSearchActivity" />
+        <activity android:name=".Search.EquipmentSearchActivityforEdit"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivityLogin"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EquipmentSearch.EquipmentSearchActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Search.Search"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop" />
-        <activity android:name=".FaultReport.BeforeImage" />
-        <activity android:name=".Dashboard.Dashboard" />
-        <activity android:name=".EquipmentSearch.QrDetails" />
+        <activity android:name=".FaultReport.BeforeImage"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Dashboard.Dashboard"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EquipmentSearch.QrDetails"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".FaultReport.FaultReportActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop" />
-        <activity android:name=".Workspace.WorkspaceActivity" />
+        <activity android:name=".Workspace.WorkspaceActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name=".Services.MyFirebaseInstanceService">
             <intent-filter>

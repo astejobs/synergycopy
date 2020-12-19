@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group
         android:id="@+id/grp3"
         android:checkableBehavior="single">
@@ -79,6 +80,7 @@
         <item
             android:id="@+id/messageNav"
             android:checkable="true"
+            app:iconTint="@color/blue_indeco_color"
             android:icon="@drawable/messages_original"
             android:title="Messages" />
     </group>

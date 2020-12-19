@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fff"
-    android:elevation="8dp"
     android:layout_marginBottom="10dp"
+    android:background="#fff"
     android:orientation="vertical"
     android:padding="12dp"
-    app:cardCornerRadius="15dp">
+    app:cardCornerRadius="15dp"
+    app:cardElevation="8dp">
 
     <LinearLayout
         android:id="@+id/constrain_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
         android:divider="?android:dividerHorizontal"
         android:orientation="vertical"
+        android:padding="10dp"
         android:showDividers="middle">
 
         <LinearLayout
@@ -55,29 +55,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/taskNumberRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:fontFamily="@font/roboto"
-            android:padding="8dp"
-            android:textColor="@color/textColor"
-            android:textSize="15sp" />
+            <TextView
+                android:id="@+id/taskNumberRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/textColor"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/equipNameSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/textColor"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/equipNameSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:textColor="@color/textColor"
+                android:textSize="14sp" />
 
         </LinearLayout>
 

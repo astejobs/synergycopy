@@ -25,10 +25,11 @@ public class APIClient {
         Retrofit retrofit = new Retrofit.Builder()
 
 //                .baseUrl("http://192.168.2.18:8081/api/")
-                .baseUrl("http://192.168.2.15:8081/api/")
-//                .baseUrl("http://103.53.172.75:8080/cmms/api/")
+//                .baseUrl("http://192.168.2.15:8081/api/")
+                .baseUrl("http://103.53.172.75:8080/cmms/api/")
 //                .baseUrl("http://192.168.2.12:8081/api/")
 //                .baseUrl("http://192.168.2.14:8081/api/")
+//                .baseUrl("http://192.168.2.21:8081/api/")
 //                .baseUrl("http://ifarms.com.sg:8086/cmms/api/")
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory

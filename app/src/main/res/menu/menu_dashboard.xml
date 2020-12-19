@@ -6,5 +6,6 @@
         android:id="@+id/logoutmenu"
         android:icon="@drawable/logout"
         android:title="Logout"
+        app:iconTint="#ffffff"
         app:showAsAction="ifRoom" />
 </menu>

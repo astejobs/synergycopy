@@ -55,7 +55,6 @@ public class BeforeImage extends MyBaseActivity {
     private String frId;
     private ProgressDialog progressDialog;
     private String value;
-    private Toolbar toolbar;
     private String role,username;
     private String status;
     private String checkForFrid;

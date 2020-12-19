@@ -13,5 +13,6 @@
     <color name="textColor">#000000</color>
     <color name="custom_grey">#efefef</color>
     <color name="background">#e2e2e2</color>
+    <color name="trans_black">#CC000000</color>
 
 </resources>

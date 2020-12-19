@@ -18,13 +18,14 @@
         app:titleMargin="8dp"
         app:titleTextColor="#ffffff" />
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="350dp"
         android:layout_height="300dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:background="@drawable/layout_bg"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -34,18 +35,20 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="10dp"
+            android:layout_gravity="center"
             android:background="@drawable/imgbefore"
             android:elevation="30dp" />
 
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="350dp"
         android:layout_height="300dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:background="@drawable/layout_bg"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -54,11 +57,12 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="10dp"
+            android:layout_gravity="center"
             android:background="@drawable/imgafter"
             android:elevation="30dp" />
 
 
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:layout_width="1dp"

@@ -27,8 +27,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/pmtool"
-        app:layout_constraintStart_toStartOf="@id/pmtool">
+        app:layout_constraintStart_toStartOf="@id/pmtool"
+        app:layout_constraintTop_toBottomOf="@id/pmtool">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -234,17 +234,6 @@
                         android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                   <!-- <Button
-                        android:id="@+id/buttonCheckList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/mybutton"
-                        android:padding="10dp"
-                        android:shadowColor="#c4c9d6"
-                        android:text="View Checklist"
-                        android:textColor="@color/textColorbutton" />-->
-
                 <Button
                     android:id="@+id/buttonUpdateTaskPm"
                     android:layout_width="match_parent"
@@ -263,11 +252,12 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </ScrollView>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="10dp"
         android:layout_margin="20dp"
+        android:elevation="10dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -302,14 +292,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:src="@drawable/more_icon_pm"
             android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/more_icon_pm"
             android:text="images"
             app:backgroundTint="#fff"
             app:borderWidth="0dp"
             app:fabSize="normal"
-            app:tint="#4F5FC5"
-            android:focusable="true" />
+            app:tint="#4F5FC5" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

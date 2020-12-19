@@ -2,27 +2,20 @@ package com.synergy.EquipmentSearch;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,7 +27,6 @@ import com.synergy.MyBaseActivity;
 import com.synergy.R;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -43,7 +35,6 @@ import retrofit2.Response;
 
 import static com.synergy.FaultReport.BeforeImage.REQUEST_IMAGEAFTER_CAPTURE;
 import static com.synergy.FaultReport.BeforeImage.REQUEST_IMAGEBEFORE_CAPTURE;
-import static com.synergy.FaultReport.BeforeImage.REQUEST_IMAGE_CAPTURE;
 import static com.synergy.MainActivityLogin.SHARED_PREFS;
 
 public class UploadTaskImageActivity extends MyBaseActivity {
@@ -51,12 +42,12 @@ public class UploadTaskImageActivity extends MyBaseActivity {
     private String role;
     private String taskId;
     private String token;
-    private ImageView beforeImage, afterImage;
+    private ImageView beforeImageView, afterImageView;
     public static final int TAKE_PHOTO_GALLERY = 5;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(toggle.onOptionsItemSelected(item)) {
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -71,8 +62,8 @@ public class UploadTaskImageActivity extends MyBaseActivity {
         drawer.addView(viewLayout, 0);
         toolbar.setTitle("Upload Image");
         setSupportActionBar(toolbar);
-        beforeImage = findViewById(R.id.beforeImageTask);
-        afterImage = findViewById(R.id.afterImageTask);
+        beforeImageView = findViewById(R.id.beforeImageTask);
+        afterImageView = findViewById(R.id.afterImageTask);
 
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");
@@ -81,16 +72,16 @@ public class UploadTaskImageActivity extends MyBaseActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         role = sharedPreferences.getString("role", "");
         token = sharedPreferences.getString("token", "");
-        String afterImageV = intent.getStringExtra("afterImage");
-        String beforeImageV = intent.getStringExtra("beforeImage");
+        String afterImageName = intent.getStringExtra("afterImage");
+        String beforeImageName = intent.getStringExtra("beforeImage");
 
-        if (afterImageV != null) {
-            retrieveImage(afterImageV, role, token, workspace, afterImage);
+        if (afterImageName != null) {
+            retrieveImage(afterImageName, role, token, workspace, afterImageView);
         }
-        if (beforeImageV != null) {
-            retrieveImage(beforeImageV, role, token, workspace, beforeImage);
+        if (beforeImageName != null) {
+            retrieveImage(beforeImageName, role, token, workspace, beforeImageView);
         }
-        beforeImage.setOnClickListener(new View.OnClickListener() {
+        beforeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -98,7 +89,7 @@ public class UploadTaskImageActivity extends MyBaseActivity {
             }
         });
 
-        afterImage.setOnClickListener(new View.OnClickListener() {
+        afterImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage(UploadTaskImageActivity.this, REQUEST_IMAGEAFTER_CAPTURE);
@@ -162,7 +153,7 @@ public class UploadTaskImageActivity extends MyBaseActivity {
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
 
                         encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        uploadPicture(encodedStringBuilder, photo, beforeImage, imageViewValue);
+                        uploadPicture(encodedStringBuilder, photo, beforeImageView, imageViewValue);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -177,7 +168,7 @@ public class UploadTaskImageActivity extends MyBaseActivity {
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
 
                         encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        uploadPicture(encodedStringBuilder, photo1, beforeImage, imageViewValue);
+                        uploadPicture(encodedStringBuilder, photo1, beforeImageView, imageViewValue);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -196,7 +187,7 @@ public class UploadTaskImageActivity extends MyBaseActivity {
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
 
                         encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        uploadPicture(encodedStringBuilder, photo, afterImage, imageViewValue);
+                        uploadPicture(encodedStringBuilder, photo, afterImageView, imageViewValue);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -211,7 +202,7 @@ public class UploadTaskImageActivity extends MyBaseActivity {
                         byte[] byteArray = byteArrayOutputStream.toByteArray();
 
                         encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        uploadPicture(encodedStringBuilder, photoBmp, afterImage, imageViewValue);
+                        uploadPicture(encodedStringBuilder, photoBmp, afterImageView, imageViewValue);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -346,6 +337,14 @@ public class UploadTaskImageActivity extends MyBaseActivity {
         }
     }
 */
+
+    public String bmpToString(Bitmap photoBmp) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        photoBmp.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        String encodedStringBuilder = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return encodedStringBuilder;
+    }
 
 
 }
